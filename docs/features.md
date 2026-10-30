@@ -21,6 +21,7 @@ Skills for a coding agent. Each skill is a folder in `skills/` with a `SKILL.md`
 
 - **What it gives** skills to take a site live with search, ads and Google Play, then find the first users.
 - **Skills** `launch`, `seo-setup`, `ads-setup`, `play-release`, `marketing`, `domain-check`.
+- **Reddit comments** `reddit-comments` picks hot threads the repo can answer, drafts a human-sounding reply for each, and types it into the comment box in Chrome. The person presses Comment. It needs the Reddit MCP server and Google Chrome.
 
 ## Voice at the end of a turn
 
