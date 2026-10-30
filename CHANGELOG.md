@@ -3,9 +3,9 @@
 ## Unreleased
 
 - **Releases** each push to `main` that passes `check` gets a GitHub release such as `v2026.10.30.1`. Its notes list the commits since the release before.
-- **turn-voice** Claude speaks the end of a turn in Russian by default,
-  whatever the review language. `install.ps1 -VoiceLang English` brings the
-  English phrases back.
+- **turn-voice** Claude speaks the end of a turn in English by default, in
+  the British voice `en-GB-MaisieNeural`, whatever the review language.
+  `install.ps1 -VoiceLang Russian` switches the phrases to Russian.
 - **Rules file** `writing-style.instructions.md` holds only the writing rules now. The spec, ship, TODO and session end rules were one setup's process, so the install no longer adds them to every agent.
 - **Audit fixes** `domain-check` keeps accented letters, a voice picked for turn-voice survives a reinstall, turn-voice drops clips unplayed for 30 days, and CI runs the install on Linux.
 
