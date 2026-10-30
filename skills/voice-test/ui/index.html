@@ -39,6 +39,8 @@
   }
   button:hover { border-color: var(--accent); }
   button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+  #pitch { accent-color: var(--accent); max-width: 320px; }
+  #pitch-value { text-transform: none; color: var(--text); margin-left: 6px; }
   select { font: inherit; color: inherit; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 6px 10px; }
   .dropdown { position: relative; }
   .dropdown > button { width: 100%; text-align: left; border-radius: 10px; display: flex; justify-content: space-between; }
@@ -93,6 +95,10 @@
         <option value="ru">Russian and multilingual</option>
         <option value="all">Every language</option>
       </select>
+    </div>
+    <div class="field">
+      <label class="label" for="pitch">Pitch <span id="pitch-value">0 Hz</span></label>
+      <input type="range" id="pitch" min="-50" max="50" step="5" value="0">
     </div>
     <div class="field">
       <span class="label">Voices</span>

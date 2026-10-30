@@ -2,7 +2,7 @@
 // server.ts strips the types and serves this file as /app.js.
 
 type Voice = { number: number; id: string; name: string; group: string; heading: string };
-type Settings = { line: string; groups: string[]; lang: string; off: string[] };
+type Settings = { line: string; groups: string[]; lang: string; off: string[]; pitch: number };
 
 const LINES: [string, string][] = [["All 4", ""], ["English", "en"], ["Russian", "ru"], ["Mixed", "mix"], ["Chunks", "chunks"]];
 const GROUPS: [string, string][] = [["Women", "female"], ["Men", "male"], ["Children", "child"]];
@@ -16,7 +16,7 @@ let voices: Voice[] = [];
 let playing = false;
 
 function load(): Settings {
-  const fallback: Settings = { line: "chunks", groups: ["female", "male", "child"], lang: "en,ru", off: [] };
+  const fallback: Settings = { line: "chunks", groups: ["female", "male", "child"], lang: "en,ru", off: [], pitch: 0 };
   try {
     return { ...fallback, ...JSON.parse(localStorage.getItem(KEY) ?? "{}") };
   } catch {
@@ -58,6 +58,12 @@ function renderFilters(): void {
     refresh();
   });
   $<HTMLSelectElement>("lang").value = settings.lang;
+  $<HTMLInputElement>("pitch").value = String(settings.pitch);
+  showPitch();
+}
+
+function showPitch(): void {
+  $("pitch-value").textContent = `${settings.pitch > 0 ? "+" : ""}${settings.pitch} Hz`;
 }
 
 async function api<T>(path: string, body?: object): Promise<T> {
@@ -174,7 +180,7 @@ async function play(): Promise<void> {
   $("log").replaceChildren();
   openPanel(false);
   setPlaying(true);
-  await api("/api/play", { line: settings.line, groups: settings.groups, lang: settings.lang, ids: chosen.map((v) => v.id) });
+  await api("/api/play", { line: settings.line, groups: settings.groups, lang: settings.lang, ids: chosen.map((v) => v.id), pitch: settings.pitch });
 }
 
 function onLine(text: string): void {
@@ -211,6 +217,11 @@ $("voices-none").onclick = () => setAll(false);
 $<HTMLSelectElement>("lang").onchange = (e) => {
   settings.lang = (e.target as HTMLSelectElement).value;
   refresh();
+};
+$<HTMLInputElement>("pitch").oninput = (e) => {
+  settings.pitch = Number((e.target as HTMLInputElement).value);
+  showPitch();
+  save();
 };
 $("play").onclick = () => void play();
 $("stop").onclick = () => void api("/api/stop").then(() => note("Stopped."));
