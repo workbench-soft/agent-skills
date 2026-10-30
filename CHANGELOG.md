@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **Releases** each push to `main` that passes `check` gets a GitHub release such as `v2026.10.30.1`. Its notes list the commits since the release before.
 - **turn-voice** Claude speaks the end of a turn in Russian by default,
   whatever the review language. `install.ps1 -VoiceLang English` brings the
   English phrases back.
