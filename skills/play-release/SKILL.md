@@ -127,7 +127,7 @@ user. Touch only the `## play-release` section, adding or updating it.
 ```markdown
 ## play-release
 
-- [ ] Back up the upload key from `~/keys/` to a password manager
+- [ ] Back up the upload key from `%USERPROFILE%\.android-keys\<repo-name>` to a password manager
 - [ ] Open the tester link on an Android phone and accept: <link>
 ```
 

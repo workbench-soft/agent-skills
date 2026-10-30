@@ -15,8 +15,8 @@ mise --version
 ```
 
 - **Missing** install mise itself, the one install outside mise:
-  `brew install mise`, `winget install jdx.mise`, or
-  `curl https://mise.run | sh`. Say so in the answer.
+  `winget install jdx.mise` on Windows, `brew install mise` on a Mac, or
+  `curl https://mise.run | sh` on Linux. Say so in the answer.
 - **Old** a warning that a newer mise exists MAY be ignored. Run
   `mise self-update` when a command fails on a setting the old one lacks.
 
