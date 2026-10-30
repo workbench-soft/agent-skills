@@ -70,7 +70,8 @@
   - **Archive** tada, "finished the task and archived the session".
 - **Voice** the free Microsoft neural voices through `edge-tts`, which the
   installer adds through mise. Each phrase is fetched once and cached in
-  `%LOCALAPPDATA%\turn-voice`. Offline, the Windows voice reads it.
+  `%LOCALAPPDATA%\turn-voice`, and a clip unplayed for 30 days goes.
+  Offline, the Windows voice reads it.
 - **Language** Russian or English, from `LANGUAGE.md`.
 - **Rules** on Windows with Claude the agent no longer plays the sound itself.
   macOS and Linux keep the one line command.
