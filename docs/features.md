@@ -21,6 +21,7 @@ Skills for a coding agent. Each skill is a folder in `skills/` with a `SKILL.md`
 
 - **What it gives** skills to take a site live with search, ads and Google Play, then find the first users.
 - **Skills** `launch`, `seo-setup`, `ads-setup`, `play-release`, `marketing`, `domain-check`.
+- **Legal risks** `legal-check` scans a repo for dependency licenses, data SDKs, sensitive permissions and missing legal pages, then rates each risk in `docs/legal-risks.md`. It fixes the safe ones in a PR. The report is a signal for a lawyer, not advice.
 - **Reddit comments** `reddit-comments` picks hot threads the repo can answer, drafts a human-sounding reply for each, and types it into the comment box in Chrome. The person presses Comment. It needs the Reddit MCP server and Google Chrome.
 
 ## App icons
