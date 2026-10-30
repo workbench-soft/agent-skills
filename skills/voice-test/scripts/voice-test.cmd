@@ -1,4 +1,5 @@
 @echo off
-rem Double click opens the voice-test window. mise gives the pinned Python and edge-tts.
-cd /d "%~dp0"
-start "" mise x -- pythonw voice_test_ui.py
+rem Double click opens the voice-test window. mise gives the pinned Node, Python and edge-tts.
+rem server.ts starts itself again hidden, so this console closes at once.
+cd /d "%~dp0..\ui"
+mise x -- node server.ts

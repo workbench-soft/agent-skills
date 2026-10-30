@@ -1,3 +1,4 @@
 [tools]
+node = "24.22.2"
 python = "3.15"
 shellcheck = "0.11"

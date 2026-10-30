@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Voice test</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f6f7f9; --card: #ffffff; --text: #16181d; --muted: #6b7280; --line: #e3e6eb;
+    --accent: #4f46e5; --accent-soft: #eef0ff; --on-accent: #ffffff; --danger: #dc2626;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f1115; --card: #181b21; --text: #e8eaee; --muted: #9097a3; --line: #2a2f38;
+      --accent: #8b85ff; --accent-soft: #23234a; --on-accent: #0f1115; --danger: #f87171;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 14px/1.45 "Segoe UI Variable", "Segoe UI", system-ui, sans-serif;
+  }
+  main { max-width: 760px; margin: 0 auto; padding: 24px 16px 32px; display: grid; gap: 16px; }
+  h1 { margin: 0; font-size: 20px; font-weight: 600; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px; display: grid; gap: 14px; }
+  .field { display: grid; gap: 6px; }
+  .label { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+  .segmented, .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  button {
+    font: inherit; color: inherit; cursor: pointer; border-radius: 999px; padding: 6px 14px;
+    border: 1px solid var(--line); background: transparent;
+  }
+  button:hover { border-color: var(--accent); }
+  button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+  select { font: inherit; color: inherit; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 6px 10px; }
+  .dropdown { position: relative; }
+  .dropdown > button { width: 100%; text-align: left; border-radius: 10px; display: flex; justify-content: space-between; }
+  .panel {
+    position: absolute; z-index: 10; top: calc(100% + 6px); left: 0; right: 0; background: var(--card);
+    border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 12px 32px rgb(0 0 0 / .18);
+    display: grid; grid-template-rows: auto auto 1fr; max-height: 420px;
+  }
+  .panel[hidden] { display: none; }
+  .panel input[type="search"] {
+    font: inherit; color: inherit; background: transparent; border: 0; border-bottom: 1px solid var(--line);
+    padding: 10px 14px; outline: none;
+  }
+  .bulk { display: flex; gap: 6px; padding: 8px 14px; border-bottom: 1px solid var(--line); }
+  .bulk button { padding: 3px 10px; font-size: 12px; }
+  .list { overflow: auto; padding: 6px 0; }
+  .list h3 { margin: 8px 14px 4px; font-size: 12px; color: var(--muted); font-weight: 600; }
+  .list label { display: flex; gap: 10px; align-items: center; padding: 5px 14px; cursor: pointer; }
+  .list label:hover { background: var(--accent-soft); }
+  .list small { color: var(--muted); margin-left: auto; font-family: ui-monospace, Consolas, monospace; font-size: 11px; }
+  .actions { display: flex; gap: 8px; align-items: center; }
+  .actions button { padding: 8px 22px; font-weight: 600; }
+  #play { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+  #play:disabled { opacity: .5; cursor: default; }
+  #stop { color: var(--danger); }
+  #stop:disabled { opacity: .4; cursor: default; }
+  #status { color: var(--muted); margin-left: auto; }
+  #now { font-size: 18px; font-weight: 600; min-height: 26px; }
+  #log { margin: 0; padding: 0; list-style: none; display: grid; gap: 2px; max-height: 300px; overflow: auto; }
+  #log li { display: flex; gap: 10px; padding: 4px 8px; border-radius: 8px; font-family: ui-monospace, Consolas, monospace; font-size: 12px; }
+  #log li.voice { background: var(--accent-soft); }
+  #log li.note { color: var(--muted); font-family: inherit; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Voice test</h1>
+  <section class="card">
+    <div class="field">
+      <span class="label">Line</span>
+      <div class="segmented" id="line"></div>
+    </div>
+    <div class="field">
+      <span class="label">Who</span>
+      <div class="chips" id="groups"></div>
+    </div>
+    <div class="field">
+      <span class="label">Languages</span>
+      <select id="lang">
+        <option value="en,ru">English, Russian and multilingual</option>
+        <option value="en">English and multilingual</option>
+        <option value="ru">Russian and multilingual</option>
+        <option value="all">Every language</option>
+      </select>
+    </div>
+    <div class="field">
+      <span class="label">Voices</span>
+      <div class="dropdown">
+        <button id="voices-button" aria-haspopup="listbox" aria-expanded="false"><span id="voices-summary">Loading…</span><span>▾</span></button>
+        <div class="panel" id="voices-panel" hidden>
+          <input type="search" id="voices-search" placeholder="Search by name or id">
+          <div class="bulk"><button id="voices-all">All</button><button id="voices-none">None</button></div>
+          <div class="list" id="voices-list"></div>
+        </div>
+      </div>
+    </div>
+    <div class="actions">
+      <button id="play">Play</button>
+      <button id="stop" disabled>Stop</button>
+      <span id="status"></span>
+    </div>
+  </section>
+  <section class="card">
+    <div id="now">Pick the voices and press Play.</div>
+    <ul id="log"></ul>
+  </section>
+</main>
+<script type="module" src="/app.js"></script>
+</body>
+</html>

@@ -244,9 +244,40 @@ the one you want. A Python script then writes the PNG sizes, the Windows
 in the repo under `design/icons/<date>/`.
 
 **`voice-test`** plays the Microsoft neural voices of `edge-tts` one after
-another. Each says its number and name, then an English line, a Russian line
-and a line that mixes both. You note the numbers you like and pick a voice for
+another. Each says its number and name, then an English line, a Russian line,
+a line that mixes both, and the same mix joined from chunks the way
+`turn-voice` builds it. You note the numbers you like and pick a voice for
 `turn-voice` or an app.
+
+On Windows, double click `skills/voice-test/scripts/voice-test.cmd`. A page
+opens in its own Edge window, with no tabs and no console windows. Pick the
+line, women, men or children and the languages, then tick the voices in the
+dropdown, which has a search box and All and None. Play starts them, the page
+shows the voice that speaks, and Stop ends it. The page keeps your choices
+for the next time. A desktop shortcut can point to the copy in
+`~/.agents/skills/voice-test/scripts`.
+
+Elsewhere, run `mise x -- node server.ts` in `skills/voice-test/ui`. It opens
+the page in the default browser. `server.ts` is a Node 24 server with no
+packages. It serves `index.html` and `app.ts`, runs `voice_test.py` for the
+list and the playback, and quits a few seconds after the page closes.
+
+The same choices work from the terminal:
+
+```bash
+mise x -- python skills/voice-test/scripts/voice_test.py --line chunks --group female,child
+```
+
+| Flag | What it does |
+| --- | --- |
+| `--line en\|ru\|mix\|chunks` | each voice says only that line |
+| `--group female,male,child` | only those groups. A child voice is a `Cartoon` one |
+| `--voice Ava,Emma` | only voices whose name holds a word |
+| `--lang en,ru` | those locales, plus the multilingual voices |
+| `--start 12 --count 5` | resume at a number, stop after a few |
+
+The clips stay in `%LOCALAPPDATA%\voice-test`, so a second run plays without
+the network. It needs `edge-tts` on `PATH`, and Node 24 for the page.
 
 **`reddit-comments`** finds Reddit threads your repo can answer and gets the
 reply as far as the Comment button. It reads the hot threads through the
