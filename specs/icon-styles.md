@@ -40,6 +40,7 @@
 - **`skills/icon-styles/scripts/preview.py`** builds `preview.html` from the
   SVGs in a folder. `--serve` serves it on `127.0.0.1`, opens the browser,
   waits for Use or Redo, and prints the answer. Standard library only.
+- **`skills/icon-styles/scripts/contact_sheet.py`** renders all drafts onto one PNG through `resvg`, so the agent can send it as an image.
 - **`skills/icon-styles/scripts/picker_widget.py`** prints the widget HTML.
   Each SVG goes in once as a `<symbol>` with its ids prefixed per icon, and
   each preview size reuses it with `<use>`.
@@ -100,3 +101,12 @@
   previews point at it with `<use>`. One copy per icon keeps the widget small.
 - **Steps** this entry, then the scripts, then the skill and the docs.
 - **Docs** `README.md`, `docs/features.md`, `CHANGELOG.md`.
+
+### 2026-10-31 always show the icons in the session as an image
+
+- **Why** the picker widget failed to render in one session, so the person saw no icons and had to ask for them. They want the skill to always show the icons in the session.
+- **Changes**
+  - **`contact_sheet.py`** a new script renders every draft onto one `sheet.png` through `resvg`: the icon at 128 px and its small version at 32 and 16 px on light and dark.
+  - **`SKILL.md`** step 4 sends that image through the agent's file tool before any question. The widget, the served page or the question tool comes after it.
+- **Found on the way** a `feTurbulence` wobble rendered fine in the browser and tore the letters apart in `resvg`. The sheet comes from `resvg`, so the agent now sees such a draft before the export does.
+- **Docs** `CHANGELOG.md`.

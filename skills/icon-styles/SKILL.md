@@ -1,6 +1,6 @@
 ---
 name: icon-styles
-description: 'Use when someone wants an icon, a logo mark or an app icon for the repo, or wants to see icon options in different styles, in any language: "draw an icon", "make an app icon", "design a logo for the app", "show me icons in different styles", "придумай иконку", "нарисуй иконки в разных стилях", "сделай иконку для приложения". Reads the repo to learn what the app does, picks 10 visual styles that fit its theme, such as neon, steampunk, pixel art or blueprint, and draws one SVG per style by hand that still reads at 16 px. Shows a picker in the chat, or a small local page, with all 10 at 16, 32 and 96 px or more on light and dark. The person clicks one and presses Use, or asks for a redo with a comment. Then a script turns the pick into the PNG sizes, a multi size .ico for Windows and the Android, iOS, Expo and PWA sets, wires them into the repo, and commits them with all 10 drafts kept in design/icons.'
+description: 'Use when someone wants an icon, a logo mark or an app icon for the repo, or wants to see icon options in different styles, in any language: "draw an icon", "make an app icon", "design a logo for the app", "show me icons in different styles", "придумай иконку", "нарисуй иконки в разных стилях", "сделай иконку для приложения". Reads the repo to learn what the app does, picks 10 visual styles that fit its theme, such as neon, steampunk, pixel art or blueprint, and draws one SVG per style by hand that still reads at 16 px. Sends a picture of all 10 into the session, then a picker in the chat or a small local page, with each icon at 16, 32 and 96 px or more on light and dark. The person clicks one and presses Use, or asks for a redo with a comment. Then a script turns the pick into the PNG sizes, a multi size .ico for Windows and the Android, iOS, Expo and PWA sets, wires them into the repo, and commits them with all 10 drafts kept in design/icons.'
 ---
 
 # Draw 10 icons, pick one
@@ -88,8 +88,26 @@ into a blob there before the person sees it.
 mise x python@3.13 -- python <skill-dir>/scripts/preview.py design/icons/<date> --title "<App name>"
 ```
 
-`<skill-dir>` is the folder of this file. Then show the picker, in the chat
-when the agent can.
+`<skill-dir>` is the folder of this file.
+
+### Show the icons in the session
+
+The person MUST see every draft in the session before any question about the
+pick. A widget that fails to render leaves them blind, so the image always
+goes first.
+
+```bash
+mise x python@3.13 github:linebender/resvg@0.49.0 -- python <skill-dir>/scripts/contact_sheet.py design/icons/<date>
+```
+
+- **Look first** read the `sheet.png` it writes. It comes from `resvg`, the
+  renderer the export uses, so a draft that breaks only there shows up here.
+  Fix it before the person sees it.
+- **Send it** through the agent's file tool, such as `SendUserFile` with
+  `display: render`, or the agent's own image output. A path in the text
+  doesn't count.
+- **Then the choice** the widget below, or the served page, or a question
+  through the question tool that lists the numbers.
 
 ### In the chat
 
@@ -126,7 +144,7 @@ mise x python@3.13 -- python <skill-dir>/scripts/preview.py design/icons/<date> 
 ### Rounds
 
 - **Redo** redraw the named icon from the comment, keep its number and file
-  name, and show the picker again.
+  name, and send a new sheet and the picker again.
 - **Mix** "mix 3 and 7" replaces 3 with the mix. The numbers of the others
   stay.
 - **New styles** pick 10 styles that differ from the ones shown and draw
