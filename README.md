@@ -75,6 +75,9 @@ turn, unasked: the VS Code prompts folder, `~/.claude/CLAUDE.md`,
 - **Spoken turn end** on Windows, `install.ps1` gives Claude hooks that play
   a cue and say the folder, the outcome and the session title. Done gets
   tada, not done a falling trombone, a question two rising notes.
+- **What it adds for the voice** hooks in `~/.claude/settings.json`,
+  `turn-voice.exe` in `~/.claude/hooks`, and `uv` and `edge-tts` in your
+  global mise config when mise is installed.
 
 New skills reach the agents by themselves. The installer adds git hooks to
 the folder the agents link to. After a `git pull`, `merge`, `checkout` or
@@ -318,7 +321,6 @@ Ask in plain words:
 - "install jq through mise"
 - "audit the app and fix what you can"
 - "why is this page slow"
-- "rewrite the repo: new names, new folders, new docs"
 - "where does this package go" or "split it into micro frontends"
 - "set up a monorepo for the web app, the mobile app and the API"
 - "reset the history and make a fresh initial commit"

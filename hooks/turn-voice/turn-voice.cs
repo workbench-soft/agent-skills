@@ -172,7 +172,8 @@ static class TurnVoice {
                 files.Add(file);
             }
             string joined = Path.Combine(Path.GetDirectoryName(files[0]), Hash("lead-in|" + string.Join("|", files)) + "-joined.mp3");
-            if (!File.Exists(joined)) {
+            if (File.Exists(joined)) Touch(joined);
+            else {
                 var all = new MemoryStream();
                 byte[] lead = LeadIn(File.ReadAllBytes(files[0]));
                 all.Write(lead, 0, lead.Length);
@@ -259,8 +260,9 @@ static class TurnVoice {
     static string Fetch(string text, string voice, string tts) {
         string dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "turn-voice");
         Directory.CreateDirectory(dir);
+        Prune(dir);
         string file = Path.Combine(dir, Hash(voice + "|" + text) + ".mp3");
-        if (File.Exists(file)) return file;
+        if (File.Exists(file)) { Touch(file); return file; }
         string part = file + ".part";
         var p = Process.Start(new ProcessStartInfo(tts,
             "--voice " + voice + " --text \"" + text.Replace("\"", "") + "\" --write-media \"" + part + "\"") {
@@ -269,6 +271,17 @@ static class TurnVoice {
         if (p.ExitCode != 0 || !File.Exists(part) || new FileInfo(part).Length == 0) { Log("edge-tts exit " + p.ExitCode); return null; }
         File.Move(part, file);
         return file;
+    }
+
+    // Each session title adds clips, so a clip unplayed for 30 days goes, with any .part a killed fetch left.
+    static void Prune(string dir) {
+        foreach (var old in Directory.GetFiles(dir))
+            if (File.GetLastWriteTimeUtc(old) < DateTime.UtcNow.AddDays(-30)) try { File.Delete(old); } catch { }
+    }
+
+    // A clip in use stays younger than the prune age.
+    static void Touch(string file) {
+        try { File.SetLastWriteTimeUtc(file, DateTime.UtcNow); } catch { }
     }
 
     static bool PlayMp3(string file) {

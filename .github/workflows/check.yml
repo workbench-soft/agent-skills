@@ -68,3 +68,13 @@ jobs:
           if (Test-Path "$env:HOME\.claude\skills\review") { throw "review not removed" }
           if (Test-Path "$env:HOME\.claude\hooks\turn-voice.exe") { throw "turn-voice not removed" }
           if (Select-String -Quiet "turn-voice.exe" "$env:HOME\.claude\settings.json") { throw "turn-voice hooks left" }
+
+  # macOS and Linux run install.sh with their own sh, such as dash, where
+  # the Windows job runs Git Bash.
+  install-posix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Install and uninstall in a clean home
+        run: sh scripts/install-in-temp-home.sh
