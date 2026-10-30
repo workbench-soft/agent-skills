@@ -8,14 +8,14 @@ using System.Text.RegularExpressions;
 using System.Threading;
 
 // Claude Code hook: plays a sound and says how the turn ended.
-//   turn-voice.exe <mode> <lang> [<Russian voice> <English voice> <edge-tts.exe>]
+//   turn-voice.exe <mode> <lang> [<Russian voice> <English voice> <edge-tts.exe> [<Russian pitch> <English pitch>]]
 //   stop     Stop: done, not done or running, by the end-of-turn marker
 //   fail     StopFailure: the turn died on an API error
 //   ask      a question or a permission prompt waits for the person
 //   archive  the agent is about to archive its session
 // <lang> is ru or en. The hook JSON comes on stdin. With edge-tts each Russian
 // and each English run of the phrase gets a native neural voice, cached per run.
-// Without edge-tts, or offline, only the cue plays.
+// A pitch such as -10Hz moves that voice down 10 Hz. Without edge-tts, or offline, only the cue plays.
 static class TurnVoice {
     const string Tada = @"C:\Windows\Media\tada.wav";
 
@@ -39,6 +39,7 @@ static class TurnVoice {
         string ruVoice = args.Length > 2 ? args[2] : null;
         string enVoice = args.Length > 3 ? args[3] : null;
         string tts = args.Length > 4 ? args[4] : null;
+        string ruPitch = Pitch(args, 5), enPitch = Pitch(args, 6);
         string input = ReadStdin();
         // Twins of one event can differ in stdin, so the session and the mode name the event.
         string session = Field(input, "session_id") ?? input;
@@ -59,7 +60,7 @@ static class TurnVoice {
             try { owned = turn.WaitOne(90000); } catch (AbandonedMutexException) { owned = true; }
             try {
                 PlayCue(outcome);
-                SayNeural(string.IsNullOrEmpty(task) ? lead : lead + ": " + task, ruVoice, enVoice, tts);
+                SayNeural(string.IsNullOrEmpty(task) ? lead : lead + ": " + task, ruVoice, enVoice, tts, ruPitch, enPitch);
             } finally { if (owned) turn.ReleaseMutex(); }
         }
     }
@@ -158,7 +159,7 @@ static class TurnVoice {
 
     // ruVoice reads the Cyrillic runs and enVoice the Latin ones, each run fetched apart.
     // The runs go into one mp3 with their silence cut, so no pause opens between voices.
-    static bool SayNeural(string text, string ruVoice, string enVoice, string tts) {
+    static bool SayNeural(string text, string ruVoice, string enVoice, string tts, string ruPitch, string enPitch) {
         if (string.IsNullOrEmpty(ruVoice) || string.IsNullOrEmpty(enVoice) || string.IsNullOrEmpty(tts) || !File.Exists(tts)) {
             Log("no edge-tts at " + tts); return false;
         }
@@ -167,7 +168,8 @@ static class TurnVoice {
             if (runs.Count == 0) return false;
             var files = new System.Collections.Generic.List<string>();
             foreach (var run in runs) {
-                string file = Fetch(run, Regex.IsMatch(run, @"\p{IsCyrillic}") ? ruVoice : enVoice, tts);
+                bool cyrillic = Regex.IsMatch(run, @"\p{IsCyrillic}");
+                string file = Fetch(run, cyrillic ? ruVoice : enVoice, cyrillic ? ruPitch : enPitch, tts);
                 if (file == null) return false;
                 files.Add(file);
             }
@@ -256,16 +258,22 @@ static class TurnVoice {
         return samples / 8 * bitrate / rate + ((b[i + 2] >> 1) & 1);
     }
 
+    // A pitch arg such as -10Hz, or null for the voice's own pitch or a malformed arg.
+    static string Pitch(string[] args, int i) {
+        return args.Length > i && Regex.IsMatch(args[i], @"^[+-][1-9]\d{0,2}Hz$") ? args[i] : null;
+    }
+
     // Each run is fetched once, then played from %LOCALAPPDATA%\turn-voice.
-    static string Fetch(string text, string voice, string tts) {
+    static string Fetch(string text, string voice, string pitch, string tts) {
         string dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "turn-voice");
         Directory.CreateDirectory(dir);
         Prune(dir);
-        string file = Path.Combine(dir, Hash(voice + "|" + text) + ".mp3");
+        // A clip at the voice's own pitch keeps the name it had before pitches.
+        string file = Path.Combine(dir, Hash(voice + "|" + (pitch == null ? "" : pitch + "|") + text) + ".mp3");
         if (File.Exists(file)) { Touch(file); return file; }
         string part = file + ".part";
         var p = Process.Start(new ProcessStartInfo(tts,
-            "--voice " + voice + " --text \"" + text.Replace("\"", "") + "\" --write-media \"" + part + "\"") {
+            "--voice " + voice + (pitch == null ? "" : " --pitch=" + pitch) + " --text \"" + text.Replace("\"", "") + "\" --write-media \"" + part + "\"") {
             UseShellExecute = false, CreateNoWindow = true });
         if (!p.WaitForExit(30000)) { try { p.Kill(); } catch { } Log("edge-tts timed out"); return null; }
         if (p.ExitCode != 0 || !File.Exists(part) || new FileInfo(part).Length == 0) { Log("edge-tts exit " + p.ExitCode); return null; }

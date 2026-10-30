@@ -278,6 +278,7 @@ mise x -- python skills/voice-test/scripts/voice_test.py --line chunks --group f
 | --- | --- |
 | `--line en\|ru\|mix\|chunks` | each voice says only that line |
 | `--group female,male,child` | only those groups. A child voice is a `Cartoon` one |
+| `--pitch -10` | each voice 10 Hz lower, or higher with a plus |
 | `--voice Ava,Emma` | only voices whose name holds a word |
 | `--lang en,ru` | those locales, plus the multilingual voices |
 | `--start 12 --count 5` | resume at a number, stop after a few |

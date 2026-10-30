@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **voice-test** a pitch for each voice: `--pitch -10` and a Pitch slider on the page. `turn-voice` speaks with that pitch after `install.ps1 -RuPitch -10 -EnPitch 5`, and a reinstall keeps it.
 - **app-audit** each lens agent fixes its own findings in its own worktree, one commit each. The main agent checks and cherry-picks each commit as soon as its report lands, so fixes start before the slowest lens ends.
 - **voice-test** the voice dropdown is a checkbox tree from Web Awesome. A group's box ticks or unticks all its voices.
 - **voice-test** the window is now a page in an Edge app window: pick the line, the groups and the languages, then tick voices in a dropdown. No console windows pop up. The README and the docs describe it and the flags.

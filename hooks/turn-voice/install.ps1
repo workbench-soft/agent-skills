@@ -6,6 +6,9 @@ param(
   # Each run gets a voice with one language, so no run is read with a foreign accent.
   [string]$RuVoice = "ru-RU-SvetlanaNeural",
   [string]$EnVoice = "en-GB-MaisieNeural",
+  # Hz above or below each voice's own pitch, such as -10.
+  [ValidateRange(-100, 100)][int]$RuPitch = 0,
+  [ValidateRange(-100, 100)][int]$EnPitch = 0,
   [switch]$Uninstall
 )
 $ErrorActionPreference = "Stop"
@@ -50,13 +53,13 @@ function New-Group($matcher, $mode, [bool]$async) {
   return [pscustomobject]$group
 }
 
-# The voices of the hooks already there: <mode> <lang> <ru voice> <en voice> <edge-tts>.
-function Get-OwnVoices($settings) {
+# The args of the hooks already there: <mode> <lang> <ru voice> <en voice> <edge-tts> [<ru pitch> <en pitch>].
+function Get-OwnArgs($settings) {
   if (-not $settings.PSObject.Properties["hooks"]) { return $null }
   foreach ($event in @($settings.hooks.PSObject.Properties)) {
     foreach ($group in @($event.Value)) {
       foreach ($hook in @($group.hooks)) {
-        if ($hook.command -like "*turn-voice.exe" -and @($hook.args).Count -ge 4) { return @($hook.args)[2..3] }
+        if ($hook.command -like "*turn-voice.exe" -and @($hook.args).Count -ge 4) { return @($hook.args) }
       }
     }
   }
@@ -65,11 +68,13 @@ function Get-OwnVoices($settings) {
 
 if (-not (Test-Path $claude)) { return }
 $settings = Read-Settings
-# The root install.ps1 passes no voice, so a voice picked by hand stays.
-$keptVoices = Get-OwnVoices $settings
-if ($keptVoices) {
-  if (-not $PSBoundParameters.ContainsKey("RuVoice")) { $RuVoice = $keptVoices[0] }
-  if (-not $PSBoundParameters.ContainsKey("EnVoice")) { $EnVoice = $keptVoices[1] }
+# The root install.ps1 passes no voice or pitch, so the ones picked by hand stay.
+$kept = Get-OwnArgs $settings
+if ($kept) {
+  if (-not $PSBoundParameters.ContainsKey("RuVoice")) { $RuVoice = $kept[2] }
+  if (-not $PSBoundParameters.ContainsKey("EnVoice")) { $EnVoice = $kept[3] }
+  if (-not $PSBoundParameters.ContainsKey("RuPitch") -and $kept.Count -ge 7) { $RuPitch = [int]($kept[5] -replace "Hz$") }
+  if (-not $PSBoundParameters.ContainsKey("EnPitch") -and $kept.Count -ge 7) { $EnPitch = [int]($kept[6] -replace "Hz$") }
 }
 Remove-OwnHooks $settings
 
@@ -109,6 +114,8 @@ if (-not $env:CI -and (Get-Command mise -ErrorAction SilentlyContinue)) {
   $tts = "$(& mise which edge-tts 2>$null)".Trim()
   if ($tts -and (Test-Path $tts)) {
     $voiceArgs += $RuVoice, $EnVoice, $tts
+    # edge-tts takes a signed pitch such as +0Hz or -10Hz.
+    if ($RuPitch -or $EnPitch) { $voiceArgs += ($RuPitch.ToString("+0;-0;+0") + "Hz"), ($EnPitch.ToString("+0;-0;+0") + "Hz") }
   } else {
     Write-Warning "turn-voice: edge-tts is missing, so only the cues play."
   }
