@@ -90,3 +90,13 @@
     its language. Other locales read the English line.
   - **Inside each** women, then men, then children, each under a heading.
 - **Docs** `skills/voice-test/SKILL.md`, `CHANGELOG.md`.
+
+### 2026-10-31 one line per voice
+
+- **Why** the person wants to compare voices on one kind of line, such as
+  only the phrase joined from chunks, without the other 3.
+- **Changes** in `skills/voice-test/scripts/voice_test.py`, `--line` takes
+  `en`, `ru`, `mix` or `chunks`, and each voice says its name and that line
+  only. `mix` and `chunks` play the multilingual voices only, `ru` adds the
+  Russian only ones, `en` the rest.
+- **Docs** `skills/voice-test/SKILL.md`, `CHANGELOG.md`.
