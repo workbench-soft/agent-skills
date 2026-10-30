@@ -3,7 +3,7 @@
 
 Usage: voice_test.py [--all] [--lang en,ru] [--voice Ava] [--group female,male,child] [--start 5]
                      [--count 10] [--no-play] [--list] [--refresh] [--out DIR] [--tts PATH]
-                     [--en TEXT] [--ru TEXT] [--mix TEXT] [--line en|ru|mix|chunks]
+                     [--en TEXT] [--ru TEXT] [--mix TEXT] [--line en|ru|mix|chunks] [--pitch HZ]
 
 A multilingual voice says 4 lines: English, Russian, the mixed phrase in one piece,
 and the mixed phrase joined from chunks the way turn-voice builds it. A voice for one
@@ -47,6 +47,8 @@ AHEAD = 3
 TIMEOUT = 30
 # A child console program would open a window of its own when the parent has none.
 NO_WINDOW = subprocess.CREATE_NO_WINDOW if sys.platform == "win32" else 0
+# --pitch in Hz, such as -10. main sets it before the first fetch.
+PITCH = 0
 
 
 def default_out() -> Path:
@@ -111,7 +113,9 @@ def spoken_name(voice: str) -> str:
 
 
 def fetch(tts: str, voice: str, text: str, out: Path) -> Path | None:
-    file = out / (hashlib.sha1(f"{voice}|{text}".encode()).hexdigest()[:16] + ".mp3")
+    # A clip at the voice's own pitch keeps the key it had before --pitch.
+    key = f"{voice}|{text}" if not PITCH else f"{voice}|{PITCH:+d}Hz|{text}"
+    file = out / (hashlib.sha1(key.encode()).hexdigest()[:16] + ".mp3")
     # A .none file marks a line the voice returned no audio for, so a later run skips it.
     none = file.with_suffix(".none")
     if file.exists():
@@ -124,7 +128,7 @@ def fetch(tts: str, voice: str, text: str, out: Path) -> Path | None:
         for _ in range(2):
             # stderr goes to a file: a pipe stays open in the child edge-tts starts, and the wait hangs on it.
             with open(log, "w+b") as err:
-                proc = subprocess.Popen([tts, "--voice", voice, "--text", text, "--write-media", str(part)],
+                proc = subprocess.Popen([tts, "--voice", voice, f"--pitch={PITCH:+d}Hz", "--text", text, "--write-media", str(part)],
                                         stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=err,
                                         creationflags=NO_WINDOW)
                 try:
@@ -211,7 +215,8 @@ def trim(mp3: bytes, cut_start: bool, cut_end: bool) -> bytes:
 
 def fetch_chunked(tts: str, voice: str, text: str, out: Path) -> Path | None:
     """The voice reads each chunk apart. A chunk it has no audio for goes to Svetlana or Ava."""
-    file = out / (hashlib.sha1(f"chunked|{voice}|{text}".encode()).hexdigest()[:16] + ".mp3")
+    key = f"chunked|{voice}|{text}" if not PITCH else f"chunked|{voice}|{PITCH:+d}Hz|{text}"
+    file = out / (hashlib.sha1(key.encode()).hexdigest()[:16] + ".mp3")
     if file.exists():
         return file
     parts = []
@@ -271,7 +276,10 @@ def main() -> int:
     p.add_argument("--ru", default=RU)
     p.add_argument("--mix", default=MIX)
     p.add_argument("--line", choices=LINES, help="only this line: en, ru, mix in one piece, or mix joined from chunks")
+    p.add_argument("--pitch", type=int, default=0, help="Hz above or below the voice's own pitch, such as -10")
     args = p.parse_args()
+    global PITCH
+    PITCH = args.pitch
 
     tts = find_tts(args.tts)
     args.out.mkdir(parents=True, exist_ok=True)

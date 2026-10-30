@@ -48,9 +48,10 @@ it, run `mise use -g pipx:edge-tts@7.3.1` first.
 - **One line** `--line chunks` has each voice say its name and line 4 only.
   `mix` and `chunks` play the multilingual voices, `ru` adds the Russian only
   ones, `en` the English only ones.
+- **Pitch** `--pitch -10` lowers each voice by 10 Hz, `--pitch 15` raises it.
 - **Page** `scripts/voice-test.cmd` on Windows, or `node server.ts` in
-  `ui/`, opens a page with the same filters, a dropdown to tick voices, and
-  Play and Stop. Offer it when the person wants to pick by hand.
+  `ui/`, opens a page with the same filters, a pitch slider, a dropdown to
+  tick voices, and Play and Stop. Offer it when the person wants to pick by hand.
 - **List** `--list` prints the picked voices as JSON and exits.
 - **Resume** `--start 12` begins at number 12, and `--count 5` stops after 5
   voices. The numbers hold while the set stays the same.
@@ -69,8 +70,8 @@ Microsoft side, as `ru-RU-DmitryNeural` did in October 2026. Name it as
 broken, and a later run MAY try it again.
 
 Ask the person which numbers they liked. When they pick a voice for
-`turn-voice`, give the installer line with it:
+`turn-voice`, give the installer line with it, and the pitch they liked:
 
 ```powershell
-.\hooks\turn-voice\install.ps1 -Lang ru -RuVoice ru-RU-DmitryNeural -EnVoice en-US-AndrewNeural
+.\hooks\turn-voice\install.ps1 -Lang ru -RuVoice ru-RU-DmitryNeural -EnVoice en-US-AndrewNeural -RuPitch -10 -EnPitch 0
 ```

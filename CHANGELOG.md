@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **voice-test** a pitch for each voice: `--pitch -10` and a Pitch slider on the page. `turn-voice` speaks with that pitch after `install.ps1 -RuPitch -10 -EnPitch 5`, and a reinstall keeps it.
 - **demo-media** a new skill runs the app with made-up demo data, takes screenshots and short videos on the web, the desktop or a phone over adb, checks each frame for real people and private data, and shows them in the README from `docs/screenshots/`.
 - **store-media** a new skill uploads those shots, the promo video and the icon to Google Play, checks AdMob and AdSense, and swaps the icon on the site, the GitHub preview and each installer.
 - **marketing** Reddit posts attach the shots and the GIF from `docs/screenshots/`.

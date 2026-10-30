@@ -26,7 +26,7 @@ if (!process.env.VOICE_TEST_SERVER) {
   process.exit(0);
 }
 
-type Pick = { line: string; groups: string[]; lang: string; ids?: string[] };
+type Pick = { line: string; groups: string[]; lang: string; ids?: string[]; pitch?: number };
 
 const clients = new Set<ServerResponse>();
 let player: ChildProcess | undefined;
@@ -39,6 +39,8 @@ function send(event: object): void {
 function scriptArgs(pick: Pick): string[] {
   const args = [script, "--group", pick.groups.join(",") || "female,male,child"];
   if (pick.line) args.push("--line", pick.line);
+  // With = argparse reads a negative pitch as the value, not as a flag.
+  if (pick.pitch) args.push(`--pitch=${Math.trunc(pick.pitch)}`);
   if (pick.ids) args.push("--voice", pick.ids.join(","));
   else if (pick.lang === "all") args.push("--all");
   else args.push("--lang", pick.lang || "en,ru");
