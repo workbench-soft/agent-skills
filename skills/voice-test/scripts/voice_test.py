@@ -3,12 +3,13 @@
 
 Usage: voice_test.py [--all] [--lang en,ru] [--voice Ava] [--group female,male,child] [--start 5]
                      [--count 10] [--no-play] [--refresh] [--out DIR] [--tts PATH]
-                     [--en TEXT] [--ru TEXT] [--mix TEXT]
+                     [--en TEXT] [--ru TEXT] [--mix TEXT] [--line en|ru|mix|chunks]
 
 A multilingual voice says 4 lines: English, Russian, the mixed phrase in one piece,
 and the mixed phrase joined from chunks the way turn-voice builds it. A voice for one
 language says only the line in its language. The multilingual voices play first, then
 the English, Russian and other ones, and inside each women, men and children. By default it plays the English, Russian and multilingual voices. The voice
+--line keeps one of the 4 lines and the voices that read it. The voice
 list and the clips are kept in --out, so a later run plays without the network.
 Standard library only.
 """
@@ -29,6 +30,7 @@ EN = "The build finished, and every check passed on the first try."
 RU = "Сборка закончилась, и все проверки прошли с первого раза."
 MIX = "Агент agent skills сделал задачу: fix the release pipeline, и открыл pull request."
 BOTH_LABELS = ("name", "1 English", "2 Russian", "3 mixed", "4 chunks")
+LINES = ("en", "ru", "mix", "chunks")
 READS = ("both", "en", "ru")
 READ_TITLES = {"both": "Russian and English", "en": "English only", "ru": "Russian only"}
 GROUPS = ("female", "male", "child")
@@ -80,6 +82,10 @@ def pick(voices: list[tuple[str, str]], args: argparse.Namespace) -> list[tuple[
     elif not args.all:
         langs = tuple(l.strip() + "-" for l in args.lang.split(","))
         voices = [(v, g) for v, g in voices if v.startswith(langs) or "Multilingual" in v]
+    if args.line:
+        # mix and chunks need both languages. Other locales read the English line.
+        voices = [(v, g) for v, g in voices if reads(v) == "both"
+                  or (args.line == "ru") == (reads(v) == "ru") and args.line in ("en", "ru")]
     order = lambda vg: (READS.index(reads(vg[0])) if reads(vg[0]) in READS else len(READS), reads(vg[0]), GROUPS.index(vg[1]))
     return sorted(voices, key=order)
 
@@ -221,8 +227,10 @@ def fetch_voice(pool: ThreadPoolExecutor, tts: str, voice: str, number: int, arg
         # A voice for one language says only its own line. Other locales try the English one.
         line, label = (args.ru, "1 Russian") if language == "ru" else (args.en, "1 English")
         return ("name", label), [name, pool.submit(fetch, tts, voice, f"1. {line}", args.out)]
-    whole = [pool.submit(fetch, tts, voice, text, args.out) for text in (f"1. {args.en}", f"2. {args.ru}", f"3. {args.mix}")]
-    return BOTH_LABELS, [name] + whole + [pool.submit(fetch_chunked, tts, voice, f"4. {args.mix}", args.out)]
+    lines = [(fetch, f"1. {args.en}"), (fetch, f"2. {args.ru}"), (fetch, f"3. {args.mix}"), (fetch_chunked, f"4. {args.mix}")]
+    keep = [LINES.index(args.line)] if args.line else range(len(lines))
+    labels = ("name",) + tuple(BOTH_LABELS[k + 1] for k in keep)
+    return labels, [name] + [pool.submit(lines[k][0], tts, voice, lines[k][1], args.out) for k in keep]
 
 
 def play(file: Path) -> None:
@@ -256,6 +264,7 @@ def main() -> int:
     p.add_argument("--en", default=EN)
     p.add_argument("--ru", default=RU)
     p.add_argument("--mix", default=MIX)
+    p.add_argument("--line", choices=LINES, help="only this line: en, ru, mix in one piece, or mix joined from chunks")
     args = p.parse_args()
 
     tts = find_tts(args.tts)
