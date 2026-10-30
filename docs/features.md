@@ -25,8 +25,8 @@ Skills for a coding agent. Each skill is a folder in `skills/` with a `SKILL.md`
 
 ## App icons
 
-- **What it gives** `icon-styles` draws 10 icons for the repo's app, each in a style picked for its theme, and shows them on one HTML sheet.
-- **Where** the drafts go to `icon-drafts/`. A script exports the pick to PNG, `.ico`, Android, iOS, Expo and PWA sets.
+- **What it gives** `icon-styles` draws 10 icons for the repo's app, each in a style picked for its theme, and shows them on a small local page. A click on an icon picks it.
+- **Where** the drafts stay in `design/icons/<date>/` in every repo, committed with the pick. A script exports the pick to PNG, `.ico`, Android, iOS, Expo and PWA sets.
 - **Limits** the agent draws flat SVG shapes by hand, and the export needs `resvg` through mise. macOS `.icns` needs `iconutil` on a Mac.
 
 ## Voice at the end of a turn
