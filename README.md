@@ -247,6 +247,13 @@ another. Each says its number and name, then an English line, a Russian line
 and a line that mixes both. You note the numbers you like and pick a voice for
 `turn-voice` or an app.
 
+**`reddit-comments`** finds Reddit threads your repo can answer and gets the
+reply as far as the Comment button. It reads the hot threads through the
+Reddit MCP server, keeps the ones where a question matches a practice in the
+repo, and writes a short comment in a human voice for each. A Playwright
+script then opens each thread in Chrome and types the draft into the comment
+box. You read it and press Comment.
+
 These skills open dashboards in the agent's browser and ask you to log in
 there. They don't type passwords or card details. Each leaves `TODO.md` in the
 repo with the tasks still yours and the dates to check back.
