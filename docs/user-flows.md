@@ -65,15 +65,16 @@ flowchart LR
 ## Hear the voices
 
 1. The person double clicks `voice-test.cmd`, or the desktop shortcut to it.
-2. They pick the line, the groups and the names or locales.
-3. Play starts `voice_test.py` with those flags, and the log shows each
-   number and voice id.
+2. A page opens in an Edge app window. They pick the line, the groups and
+   the languages, then tick the voices in the dropdown.
+3. Play starts `voice_test.py` with those voices, and the page shows each
+   number and voice id as it speaks.
 4. Each voice says its number and name, then the chosen line.
 5. They note the numbers they like, and Stop ends the run.
 
 ```mermaid
 flowchart LR
-  click["double click voice-test.cmd"] --> window["window: line, groups, names"]
+  click["double click voice-test.cmd"] --> window["page: line, groups, voices"]
   window --> play["Play runs voice_test.py"]
   play --> hear["number, name, line"]
   hear --> note["person notes the numbers"]

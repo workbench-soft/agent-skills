@@ -48,13 +48,14 @@ it, run `mise use -g pipx:edge-tts@7.3.1` first.
 - **One line** `--line chunks` has each voice say its name and line 4 only.
   `mix` and `chunks` play the multilingual voices, `ru` adds the Russian only
   ones, `en` the English only ones.
-- **Window** `scripts/voice-test.cmd` on Windows, or
-  `python scripts/voice_test_ui.py`, opens a window with the same choices
-  and Play and Stop buttons. Offer it when the person wants to pick by hand.
+- **Page** `scripts/voice-test.cmd` on Windows, or `node server.ts` in
+  `ui/`, opens a page with the same filters, a dropdown to tick voices, and
+  Play and Stop. Offer it when the person wants to pick by hand.
+- **List** `--list` prints the picked voices as JSON and exits.
 - **Resume** `--start 12` begins at number 12, and `--count 5` stops after 5
   voices. The numbers hold while the set stays the same.
 - **Cache** the voice list and the clips stay in `--out`,
-  `%LOCALAPPDATA%oice-test` or `~/.cache/voice-test`. The next run plays
+  `%LOCALAPPDATA%\voice-test` or `~/.cache/voice-test`. The next run plays
   them without the network. `--refresh` fetches the list again and retries
   lines that had no audio.
 - **Fetch only** `--no-play` fills the cache and lists the voices.

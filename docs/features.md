@@ -38,9 +38,9 @@ Skills for a coding agent. Each skill is a folder in `skills/` with a `SKILL.md`
 ## Hear and pick a voice
 
 - **What it gives** `voice-test` plays each `edge-tts` voice: its number and name, then English, Russian, a mixed line and the mix joined from chunks.
-- **Where** ask the agent to play the voices, double click `voice-test.cmd` for a window, or run `voice_test.py` with flags.
-- **Filters** one line with `--line`, women, men or children with `--group`, names with `--voice`, locales with `--lang`.
-- **Limits** `edge-tts` gives no age past the child `Cartoon` voices, and no child voice reads Russian. The window is tkinter, and the shortcut is Windows only.
+- **Where** ask the agent to play the voices, double click `voice-test.cmd` for a page in an Edge app window, or run `voice_test.py` with flags.
+- **Filters** one line with `--line`, women, men or children with `--group`, names with `--voice`, locales with `--lang`. The page has the same filters and a dropdown with a checkbox per voice.
+- **Limits** `edge-tts` gives no age past the child `Cartoon` voices, and no child voice reads Russian. The page needs Node 24, and the double click is Windows only.
 
 ## Install
 

@@ -2,7 +2,7 @@
 """Play every edge-tts voice: its number and name, then numbered lines in the languages it reads.
 
 Usage: voice_test.py [--all] [--lang en,ru] [--voice Ava] [--group female,male,child] [--start 5]
-                     [--count 10] [--no-play] [--refresh] [--out DIR] [--tts PATH]
+                     [--count 10] [--no-play] [--list] [--refresh] [--out DIR] [--tts PATH]
                      [--en TEXT] [--ru TEXT] [--mix TEXT] [--line en|ru|mix|chunks]
 
 A multilingual voice says 4 lines: English, Russian, the mixed phrase in one piece,
@@ -16,6 +16,7 @@ Standard library only.
 
 import argparse
 import hashlib
+import json
 import os
 import re
 import shutil
@@ -44,6 +45,8 @@ CLIP_GAP = 0.6
 VOICE_GAP = 1.2
 AHEAD = 3
 TIMEOUT = 30
+# A child console program would open a window of its own when the parent has none.
+NO_WINDOW = subprocess.CREATE_NO_WINDOW if sys.platform == "win32" else 0
 
 
 def default_out() -> Path:
@@ -62,7 +65,8 @@ def list_voices(tts: str, out: Path, refresh: bool) -> list[tuple[str, str]]:
     """Each voice id with its group. The list is kept in voices.txt until --refresh."""
     cached = out / "voices.txt"
     if refresh or not cached.exists():
-        text = subprocess.run([tts, "--list-voices"], capture_output=True, text=True, encoding="utf-8", check=True).stdout
+        text = subprocess.run([tts, "--list-voices"], capture_output=True, text=True, encoding="utf-8", check=True,
+                              creationflags=NO_WINDOW).stdout
         cached.write_text(text, encoding="utf-8")
     voices = []
     for line in cached.read_text(encoding="utf-8").splitlines():
@@ -121,7 +125,8 @@ def fetch(tts: str, voice: str, text: str, out: Path) -> Path | None:
             # stderr goes to a file: a pipe stays open in the child edge-tts starts, and the wait hangs on it.
             with open(log, "w+b") as err:
                 proc = subprocess.Popen([tts, "--voice", voice, "--text", text, "--write-media", str(part)],
-                                        stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=err)
+                                        stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=err,
+                                        creationflags=NO_WINDOW)
                 try:
                     code = proc.wait(timeout=TIMEOUT)
                 except subprocess.TimeoutExpired:
@@ -147,7 +152,7 @@ def fetch(tts: str, voice: str, text: str, out: Path) -> Path | None:
 def kill_tree(proc: subprocess.Popen) -> None:
     # On Windows edge-tts.exe is a launcher, and its Python child keeps running after a plain kill.
     if sys.platform == "win32":
-        subprocess.run(["taskkill", "/T", "/F", "/PID", str(proc.pid)], capture_output=True, check=False)
+        subprocess.run(["taskkill", "/T", "/F", "/PID", str(proc.pid)], capture_output=True, check=False, creationflags=NO_WINDOW)
     else:
         proc.kill()
     proc.wait()
@@ -258,6 +263,7 @@ def main() -> int:
     p.add_argument("--start", type=int, default=1, help="number to start from")
     p.add_argument("--count", type=int, help="how many voices to play")
     p.add_argument("--no-play", action="store_true", help="only fetch the clips and list the voices")
+    p.add_argument("--list", action="store_true", help="print the picked voices as JSON and exit")
     p.add_argument("--refresh", action="store_true", help="fetch the voice list again and retry lines without audio")
     p.add_argument("--out", type=Path, default=default_out(), help="where the voice list and the clips are kept")
     p.add_argument("--tts", help="path to edge-tts")
@@ -273,6 +279,10 @@ def main() -> int:
         for none in args.out.glob("*.none"):
             none.unlink()
     voices = pick(list_voices(tts, args.out, args.refresh), args)
+    if args.list:
+        print(json.dumps([{"number": n, "id": v, "name": spoken_name(v), "group": g, "heading": heading(v, g)}
+                          for n, (v, g) in enumerate(voices, 1)], ensure_ascii=False))
+        return 0
     if not voices:
         sys.exit("No voice matches.")
     numbered = list(enumerate(voices, 1))[args.start - 1:]

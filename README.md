@@ -248,12 +248,18 @@ a line that mixes both, and the same mix joined from chunks the way
 `turn-voice` builds it. You note the numbers you like and pick a voice for
 `turn-voice` or an app.
 
-On Windows, double click `skills/voice-test/scripts/voice-test.cmd` to open a
-small window. Pick the line, women, men or children, voice names or locales
-and the number to start from, then press Play. Stop ends the playback. A
-shortcut on the desktop can point to the copy in
-`~/.agents/skills/voice-test/scripts`. Elsewhere, run
-`python skills/voice-test/scripts/voice_test_ui.py`.
+On Windows, double click `skills/voice-test/scripts/voice-test.cmd`. A page
+opens in its own Edge window, with no tabs and no console windows. Pick the
+line, women, men or children and the languages, then tick the voices in the
+dropdown, which has a search box and All and None. Play starts them, the page
+shows the voice that speaks, and Stop ends it. The page keeps your choices
+for the next time. A desktop shortcut can point to the copy in
+`~/.agents/skills/voice-test/scripts`.
+
+Elsewhere, run `mise x -- node server.ts` in `skills/voice-test/ui`. It opens
+the page in the default browser. `server.ts` is a Node 24 server with no
+packages. It serves `index.html` and `app.ts`, runs `voice_test.py` for the
+list and the playback, and quits a few seconds after the page closes.
 
 The same choices work from the terminal:
 
@@ -269,9 +275,8 @@ mise x -- python skills/voice-test/scripts/voice_test.py --line chunks --group f
 | `--lang en,ru` | those locales, plus the multilingual voices |
 | `--start 12 --count 5` | resume at a number, stop after a few |
 
-The clips stay in `%LOCALAPPDATA%oice-test`, so a second run plays without
-the network. It needs `edge-tts` on `PATH` and a Python with tkinter for the
-window.
+The clips stay in `%LOCALAPPDATA%\voice-test`, so a second run plays without
+the network. It needs `edge-tts` on `PATH`, and Node 24 for the page.
 
 **`reddit-comments`** finds Reddit threads your repo can answer and gets the
 reply as far as the Comment button. It reads the hot threads through the
