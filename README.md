@@ -246,6 +246,17 @@ the PNG sizes, the Windows
 `.ico` and the Android, iOS and PWA sets through `resvg`. All 10 drafts stay
 in the repo under `design/icons/<date>/`.
 
+**`demo-media`** takes screenshots and short videos of the app for the
+README. It writes made-up demo data that looks like real use, runs the app on
+the web, the desktop, an emulator or a phone over adb, and records each flow.
+It checks every frame for real people, faces, emails and tokens. The files go
+in `docs/screenshots/`, with a GIF for each video, and the README shows them.
+
+**`store-media`** puts those shots, the video and the icon in each place the
+app shows. It uploads the Play listing graphics with you logged in, links the
+promo video, checks AdMob and AdSense, and swaps the icon on the site, the
+GitHub preview and each installer. It asks before any send for review.
+
 **`voice-test`** plays the Microsoft neural voices of `edge-tts` one after
 another. Each says its number and name, then an English line, a Russian line,
 a line that mixes both, and the same mix joined from chunks the way
@@ -375,6 +386,8 @@ Ask in plain words:
 - "launch the site and the app"
 - "do the marketing, I can spend $100 a year"
 - "suggest a name for a dog grooming van and check the domains"
+- "take screenshots and a demo video for the README"
+- "upload the screenshots to Google Play and change the icon everywhere"
 
 ## Change the language later
 

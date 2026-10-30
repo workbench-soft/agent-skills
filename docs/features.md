@@ -29,6 +29,12 @@ Skills for a coding agent. Each skill is a folder in `skills/` with a `SKILL.md`
 - **Where** the drafts stay in `design/icons/<date>/` in every repo, committed with the pick. A script exports the pick to PNG, `.ico`, Android, iOS, Expo and PWA sets.
 - **Limits** the agent draws flat SVG shapes by hand, and the export needs `resvg` through mise. macOS `.icns` needs `iconutil` on a Mac.
 
+## Demo screenshots and store media
+
+- **What it gives** `demo-media` runs the app with made-up demo data, takes screenshots and short videos, checks each frame for real people and private data, and shows them in the README. `store-media` uploads the same media and the icon to Google Play, checks AdMob and AdSense, and swaps the icon in every other place.
+- **Where** the media sits in `docs/screenshots/` and the shot list in `demo/shots.json`, so a rerun takes the same shots. The `marketing` skill attaches them to Reddit posts.
+- **Limits** a README plays a GIF and links the MP4. Play takes a YouTube link for the video. AdMob and AdSense take no media, so they read it from the Play listing and the site.
+
 ## Voice at the end of a turn
 
 - **What it gives** the `turn-voice` hook speaks a short line when the agent finishes.
