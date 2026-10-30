@@ -7,9 +7,15 @@ DIR holds the drafts, 01-neon.svg to 10-blueprint.svg, and defaults to the
 newest folder in design/icons. A 01-neon-small.svg beside a draft replaces
 it at 32 px and below. The <title> of each SVG gives the caption.
 
---serve serves the sheet on 127.0.0.1 and opens it in the browser. A click
-on a card writes its file name to DIR/picked.txt, prints "picked: <path>"
-and exits. Standard library only.
+--serve serves the sheet on 127.0.0.1 and opens it in the browser. The
+person clicks a card, may write a comment, and presses a button. The script
+prints one line and exits:
+
+    use: <path>                 also writes the file name to DIR/picked.txt
+    redo: <path>: <comment>
+    new: <comment>
+
+Standard library only.
 """
 
 import argparse
@@ -39,7 +45,11 @@ PAGE = """<!doctype html>
 <style>
   body {{ margin: 0; padding: 24px; font: 14px/1.4 system-ui, sans-serif; background: #f4f4f5; color: #18181b; }}
   h1 {{ font-size: 20px; margin: 0 0 16px; }}
-  #status {{ position: sticky; top: 0; z-index: 1; margin: -24px -24px 16px; padding: 12px 24px; background: #18181b; color: #fff; }}
+  #bar {{ position: sticky; top: 0; z-index: 1; margin: -24px -24px 16px; padding: 12px 24px; background: #18181b; color: #fff; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }}
+  #bar textarea {{ flex: 1 1 240px; font: inherit; padding: 6px 8px; border-radius: 6px; border: 0; resize: vertical; }}
+  #bar button {{ font: inherit; padding: 6px 12px; border-radius: 6px; border: 1px solid #52525b; background: #27272a; color: #fff; cursor: pointer; }}
+  #bar button:hover {{ background: #3f3f46; }}
+  #status {{ flex-basis: 100%; }}
   .grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; }}
   .card {{ background: #fff; border-radius: 12px; padding: 16px; box-shadow: 0 1px 3px #0002; cursor: pointer; outline: 3px solid transparent; }}
   .card:hover {{ outline-color: #a1a1aa; }}
@@ -54,7 +64,13 @@ PAGE = """<!doctype html>
 </style>
 </head>
 <body>
-<div id="status">Click the icon you want.</div>
+<div id="bar">
+  <textarea id="note" rows="1" placeholder="What to change, for Redo or new styles"></textarea>
+  <button type="button" data-action="use">Use this icon</button>
+  <button type="button" data-action="redo">Redo this one</button>
+  <button type="button" data-action="new">Draw 10 new styles</button>
+  <div id="status">Click the icon you want, then press a button.</div>
+</div>
 <h1>{title}</h1>
 <div class="grid">
 {cards}
@@ -71,22 +87,33 @@ PAGE = """<!doctype html>
   }}
 
   const status = document.getElementById("status");
-  for (const card of document.querySelectorAll(".card")) {{
-    card.addEventListener("click", async () => {{
-      const label = card.querySelector("h2").textContent;
+  const note = document.getElementById("note");
+  const cards = [...document.querySelectorAll(".card")];
+  let picked = document.querySelector(".card.picked");
+  for (const card of cards) {{
+    card.addEventListener("click", () => {{
+      picked = card;
+      cards.forEach((c) => c.classList.toggle("picked", c === card));
+      status.textContent = `Selected ${{card.querySelector("h2").textContent}}`;
+    }});
+  }}
+  for (const button of document.querySelectorAll("#bar button")) {{
+    button.addEventListener("click", async () => {{
+      const action = button.dataset.action;
+      const comment = note.value.trim();
+      const label = picked ? picked.querySelector("h2").textContent : "";
+      if (action !== "new" && !picked) {{ status.textContent = "Pick an icon first."; return; }}
+      if (action === "redo" && !comment) {{ status.textContent = "Write what to change first."; return; }}
+      const words = {{ use: `Use ${{label}}`, redo: `Redo ${{label}}: ${{comment}}`, new: `Draw 10 new styles: ${{comment}}` }}[action];
       // Opened as a file, the page has no server to tell.
-      if (!location.protocol.startsWith("http")) {{
-        status.textContent = `Tell the agent: ${{label}}`;
-        return;
-      }}
+      if (!location.protocol.startsWith("http")) {{ status.textContent = `Tell the agent: ${{words}}`; return; }}
       try {{
-        const answer = await fetch("/pick", {{ method: "POST", body: JSON.stringify({{ file: card.dataset.file }}) }});
+        const body = JSON.stringify({{ action, comment, file: picked ? picked.dataset.file : "" }});
+        const answer = await fetch("/answer", {{ method: "POST", body }});
         if (!answer.ok) throw new Error(await answer.text());
-        document.querySelectorAll(".card.picked").forEach((c) => c.classList.remove("picked"));
-        card.classList.add("picked");
-        status.textContent = `Picked ${{label}}. The agent takes it from here, and this tab can close.`;
+        status.textContent = `Sent: ${{words}}. The agent takes it from here, and this tab can close.`;
       }} catch (error) {{
-        status.textContent = `The agent stopped listening. Tell it in chat: ${{label}}`;
+        status.textContent = `The agent stopped listening. Tell it in chat: ${{words}}`;
       }}
     }});
   }}
@@ -136,21 +163,32 @@ def build(folder: Path, title: str) -> Path:
 
 
 class PickHandler(SimpleHTTPRequestHandler):
-    """Serves the drafts folder, and takes the pick as POST /pick."""
+    """Serves the drafts folder, and takes the answer as POST /answer."""
 
     def do_POST(self) -> None:
         folder = Path(self.directory)
         try:
             length = int(self.headers.get("Content-Length", 0))
-            name = json.loads(self.rfile.read(length))["file"]
-        except (ValueError, KeyError, TypeError):
-            return self.send_error(400, 'expected {"file": "NN-style.svg"}')
-        if self.path != "/pick" or name not in {p.name for p in drafts_in(folder)}:
+            data = json.loads(self.rfile.read(length))
+            action, name = data["action"], data.get("file", "")
+            comment = " ".join(str(data.get("comment", "")).split())
+        except (ValueError, KeyError, TypeError, AttributeError):
+            return self.send_error(400, 'expected {"action": "use", "file": "NN-style.svg"}')
+        if self.path != "/answer" or action not in ("use", "redo", "new"):
+            return self.send_error(404, "no such action")
+        if action != "new" and name not in {p.name for p in drafts_in(folder)}:
             return self.send_error(404, "no such draft")
-        (folder / PICKED).write_text(name + "\n", encoding="utf-8")
+        if action == "redo" and not comment:
+            return self.send_error(400, "redo needs a comment")
+        if action == "use":
+            (folder / PICKED).write_text(name + "\n", encoding="utf-8")
+            self.server.answer = f"use: {folder / name}"
+        elif action == "redo":
+            self.server.answer = f"redo: {folder / name}: {comment}"
+        else:
+            self.server.answer = f"new: {comment}"
         self.send_response(204)
         self.end_headers()
-        self.server.picked = folder / name
         # shutdown() waits for serve_forever, so it can't run on this thread.
         threading.Thread(target=self.server.shutdown).start()
 
@@ -161,14 +199,14 @@ class PickHandler(SimpleHTTPRequestHandler):
 def serve(folder: Path, title: str, open_browser: bool) -> None:
     handler = partial(PickHandler, directory=str(folder))
     with ThreadingHTTPServer(("127.0.0.1", 0), handler) as server:
-        server.picked = None
+        server.answer = ""
         url = f"http://127.0.0.1:{server.server_address[1]}/preview.html"
-        print(f"waiting for a click on {url}", flush=True)
+        print(f"waiting for an answer on {url}", flush=True)
         if open_browser:
             webbrowser.open(url)
         server.serve_forever()
     build(folder, title)  # The saved sheet now marks the pick.
-    print(f"picked: {server.picked}")
+    print(server.answer)
 
 
 def newest(root: Path) -> Path:
@@ -182,7 +220,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("dir", nargs="?", type=Path)
     parser.add_argument("--title", default="App")
-    parser.add_argument("--serve", action="store_true", help="wait for a click on an icon")
+    parser.add_argument("--serve", action="store_true", help="wait for Use, Redo or new styles")
     parser.add_argument("--no-open", action="store_true", help="print the URL, open no browser")
     args = parser.parse_args()
 

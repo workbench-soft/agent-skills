@@ -1,12 +1,12 @@
 ---
 name: icon-styles
-description: 'Use when someone wants an icon, a logo mark or an app icon for the repo, or wants to see icon options in different styles, in any language: "draw an icon", "make an app icon", "design a logo for the app", "show me icons in different styles", "придумай иконку", "нарисуй иконки в разных стилях", "сделай иконку для приложения". Reads the repo to learn what the app does, picks 10 visual styles that fit its theme, such as neon, steampunk, pixel art or blueprint, and draws one SVG per style by hand that still reads at 16 px. Serves a small page with all 10 at 16, 32, 64 and 256 px on light and dark, and the person clicks the one to use. Then a script turns the pick into the PNG sizes, a multi size .ico for Windows and the Android, iOS, Expo and PWA sets, wires them into the repo, and commits them with all 10 drafts kept in design/icons.'
+description: 'Use when someone wants an icon, a logo mark or an app icon for the repo, or wants to see icon options in different styles, in any language: "draw an icon", "make an app icon", "design a logo for the app", "show me icons in different styles", "придумай иконку", "нарисуй иконки в разных стилях", "сделай иконку для приложения". Reads the repo to learn what the app does, picks 10 visual styles that fit its theme, such as neon, steampunk, pixel art or blueprint, and draws one SVG per style by hand that still reads at 16 px. Shows a picker in the chat, or a small local page, with all 10 at 16, 32 and 96 px or more on light and dark. The person clicks one and presses Use, or asks for a redo with a comment. Then a script turns the pick into the PNG sizes, a multi size .ico for Windows and the Android, iOS, Expo and PWA sets, wires them into the repo, and commits them with all 10 drafts kept in design/icons.'
 ---
 
 # Draw 10 icons, pick one
 
 The person gets 10 icons for the app, each in its own style, and clicks one
-on a small local page. The pick then lands in the repo in every format it
+in a picker in the chat. The pick then lands in the repo in every format it
 uses, and all 10 drafts stay in the repo.
 
 Load the `writing-style` skill before the first line a person reads, unless
@@ -52,8 +52,8 @@ repo root, with today's date: `01-neon.svg` to `10-blueprint.svg`.
 
 - **Same path** every repo MUST use `design/icons/`, so the drafts of any
   repo sit in one known place.
-- **Second round** on the same day reuses the folder. A later day gets a
-  folder of its own, and the old one stays.
+- **Later rounds** a redo replaces files in the same folder. Draw 10 new
+  styles, or a later day, gets a folder of its own, and the old one stays.
 
 ```xml
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
@@ -78,7 +78,7 @@ A style whose detail turns to mush at 32 px gets a second file,
 `NN-style-small.svg`: the same idea with the detail dropped. The sheet and
 the export use it at 32 px and below.
 
-## 4. Let the person click one
+## 4. Let the person pick one
 
 Check the drafts first. Build the sheet, open `preview.html` in the browser
 the agent has, and look at the 16 and 32 px rows. Redraw an icon that blurs
@@ -88,20 +88,49 @@ into a blob there before the person sees it.
 mise x python@3.13 -- python <skill-dir>/scripts/preview.py design/icons/<date> --title "<App name>"
 ```
 
-`<skill-dir>` is the folder of this file. Then serve the sheet for the pick:
+`<skill-dir>` is the folder of this file. Then show the picker, in the chat
+when the agent can.
+
+### In the chat
+
+With the `mcp__visualize__show_widget` tool, call `mcp__visualize__read_me`
+with the `interactive` module first, then print the widget:
+
+```bash
+mise x python@3.13 -- python <skill-dir>/scripts/picker_widget.py design/icons/<date>
+```
+
+- **Show it** pass the output as `widget_code` unchanged. Each card shows the
+  icon at 96 px and at 32 and 16 px on a light and a dark chip.
+- **Answer** a click selects a card. The buttons send the answer to the chat
+  as the person's next message: `Use icon 03 (blueprint)`,
+  `Redo icon 03 (blueprint): <comment>` or `Draw 10 new styles: <comment>`.
+- **Use** write the file name to `design/icons/<date>/picked.txt`, then go
+  to step 5.
+
+### Without widgets
+
+Serve the same choice as a local page, and run it in the background:
 
 ```bash
 mise x python@3.13 -- python <skill-dir>/scripts/preview.py design/icons/<date> --title "<App name>" --serve
 ```
 
-- **Wait** run it in the background. It opens the page in the person's
-  browser and prints the URL. A click on a card writes `picked.txt`, prints
-  `picked: <path>` and exits, and that exit is the answer.
-- **Tell the person** in one line: click the icon you want, or write in chat
-  to redo or mix some.
-- **Chat instead** a reply such as "mix 3 and 7" or "redo 4" wins. Stop the
-  server, redraw the files it names, and serve again. The numbers of the
-  others stay.
+- **Wait** it opens the page in the person's browser. Each button there
+  prints one line and exits: `use: <path>`, `redo: <path>: <comment>` or
+  `new: <comment>`. `use` also writes `picked.txt`.
+- **Tell the person** in one line: click the icon you want and press a
+  button, or write in chat.
+- **Chat wins** a chat reply comes first. Stop the server and act on it.
+
+### Rounds
+
+- **Redo** redraw the named icon from the comment, keep its number and file
+  name, and show the picker again.
+- **Mix** "mix 3 and 7" replaces 3 with the mix. The numbers of the others
+  stay.
+- **New styles** pick 10 styles that differ from the ones shown and draw
+  them into a new folder, `design/icons/<date>-2/`. The old round stays.
 
 ## 5. Export the pick
 
