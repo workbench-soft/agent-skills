@@ -238,8 +238,10 @@ and the picks with the reason for each. It needs no API keys.
 
 **`icon-styles`** draws 10 icons for the app in the repo, each in its own
 style. It reads the repo first and picks the styles that fit, such as neon for
-a hacker tool. A small local page shows all 10 at 16 to 256 px, and you click
-the one you want. A Python script then writes the PNG sizes, the Windows
+a hacker tool. A picker in the chat shows all 10 at 16 to 96 px. You click
+one and press Use, or ask for a redo with a comment. An agent without chat
+widgets serves the same picker as a local page. A Python script then writes
+the PNG sizes, the Windows
 `.ico` and the Android, iOS and PWA sets through `resvg`. All 10 drafts stay
 in the repo under `design/icons/<date>/`.
 
