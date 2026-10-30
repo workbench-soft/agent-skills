@@ -318,7 +318,6 @@ Ask in plain words:
 - "install jq through mise"
 - "audit the app and fix what you can"
 - "why is this page slow"
-- "rewrite the repo: new names, new folders, new docs"
 - "where does this package go" or "split it into micro frontends"
 - "set up a monorepo for the web app, the mobile app and the API"
 - "reset the history and make a fresh initial commit"
