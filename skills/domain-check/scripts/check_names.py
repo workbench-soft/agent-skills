@@ -4,7 +4,8 @@
 Usage: check_names.py [--json] [--file names.txt] [--confirm 10] NAME...
 
 A name may hold spaces ("Kiwi Nest"). The domain label drops everything but
-letters, digits and hyphens ("kiwinest"). Standard library only.
+letters, digits and hyphens ("kiwinest"), after accents fold ("Café" to
+"cafe"). Standard library only.
 """
 
 import argparse
@@ -17,6 +18,7 @@ import struct
 import sys
 import threading
 import time
+import unicodedata
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -66,12 +68,22 @@ def fetch(url, host):
     raise RuntimeError(f"no answer from {url}")
 
 
+# Letters NFKD leaves whole.
+FOLD = str.maketrans({"æ": "ae", "ø": "o", "œ": "oe", "ß": "ss", "ł": "l", "đ": "d", "þ": "th"})
+
+
+def ascii_fold(text):
+    # "Café" becomes "cafe", so the label and the register match keep the letter.
+    text = unicodedata.normalize("NFKD", text.lower().translate(FOLD))
+    return text.encode("ascii", "ignore").decode()
+
+
 def squash(text):
-    return re.sub(r"[^a-z0-9]", "", text.lower())
+    return re.sub(r"[^a-z0-9]", "", ascii_fold(text))
 
 
 def label_of(name):
-    return re.sub(r"[^a-z0-9-]", "", name.lower().replace(" ", "")).strip("-")
+    return re.sub(r"[^a-z0-9-]", "", ascii_fold(name).replace(" ", "")).strip("-")
 
 
 def text_of(fragment):
