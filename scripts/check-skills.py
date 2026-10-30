@@ -27,6 +27,9 @@ def main() -> int:
         errors += check_links(page)
         if page.parts[1] != "writing-style":
             errors += check_words(page)
+    # AGENTS.md puts these under the same rules, and every agent turn loads the rules file.
+    for page in (Path("README.md"), Path("writing-style.instructions.md")):
+        errors += check_words(page)
     for error in errors:
         print(error)
     return 1 if errors else 0
