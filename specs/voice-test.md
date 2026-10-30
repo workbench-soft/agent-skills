@@ -130,3 +130,21 @@
   page already needs the network, since `edge-tts` does.
 - **Docs** `README.md`, `docs/features.md`, `CHANGELOG.md`.
 
+
+### 2026-10-31 pitch for a voice, and a pitched voice for the agents
+
+- **Why** the person wants a voice higher or lower than its default, and the
+  agents to speak with that pitched voice.
+- **Changes**
+  - **Script** `voice_test.py --pitch -10` passes `--pitch=-10Hz` to
+    `edge-tts`. A clip with a pitch other than 0 gets its own cache key.
+  - **Page** the voice picker gets a Pitch slider from -50 to +50 Hz, kept in
+    `localStorage` and passed to the script on Play.
+  - **Hook** `turn-voice.exe` takes 2 more args after `edge-tts`: the Russian
+    and the English pitch, such as `-10Hz`. Without them the voice speaks at
+    its own pitch, so old hooks keep working.
+  - **Install** `install.ps1 -RuPitch -10 -EnPitch 5` writes them, and a
+    reinstall without them keeps the pitches already set.
+- **Steps** this entry, then the script and the page, then the hook and the
+  install, then the docs.
+- **Docs** `docs/features.md`, `skills/voice-test/SKILL.md`, `CHANGELOG.md`.
