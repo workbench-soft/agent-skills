@@ -3,6 +3,7 @@
 ## Unreleased
 
 - **voice-test** `--line en`, `ru`, `mix` or `chunks` plays one of the 4 lines per voice. `voice-test.cmd` opens a window to pick the line, women, men or children, and the voices, then play them.
+- **reddit-comments** a new skill picks Reddit threads the repo can answer, drafts a reply in a human voice, and a Playwright script types it into the comment box in Chrome. The person presses Comment.
 - **Releases** each push to `main` that passes `check` gets a GitHub release such as `v2026.10.30.1`. Its notes list the commits since the release before.
 - **turn-voice** Claude speaks the end of a turn in English by default, in
   the British voice `en-GB-MaisieNeural`, whatever the review language.
