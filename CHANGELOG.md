@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **Windows paths** the skills name Windows paths such as `%USERPROFILE%\.android-keys`, `Ctrl+F` before `Cmd+F`, and `winget` before `brew`. The README lists the Windows install first, and `voice-test` shows its cache folder again.
 - **icon-styles** a new skill draws 10 icons for the repo's app in 10 styles it picks for the theme. You click one on a small local page, and a script exports it to PNG, `.ico`, Android, iOS, Expo and PWA sets. All 10 drafts get committed to `design/icons/<date>/`.
 - **voice-test** `--line en`, `ru`, `mix` or `chunks` plays one of the 4 lines per voice. `voice-test.cmd` opens a window to pick the line, women, men or children, and the voices, then play them.
 - **reddit-comments** a new skill picks Reddit threads the repo can answer, drafts a reply in a human voice, and a Playwright script types it into the comment box in Chrome. The person presses Comment.

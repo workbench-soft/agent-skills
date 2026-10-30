@@ -3,8 +3,8 @@
 Each finding is two entries under one heading: one tagged `C1` in
 `## Comments`, one tagged `E1` in `## Explanations`. The user copies the
 comment and opens the explanation only when the comment leaves them puzzled.
-Cmd+F on the tag jumps from one to the other, in Copilot Chat and Claude Code
-both.
+Ctrl+F (Cmd+F on a Mac) on the tag jumps from one to the other, in Copilot
+Chat and Claude Code both.
 
 ## The comment entry
 

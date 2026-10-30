@@ -13,15 +13,6 @@ the skills into it.
 
 Every agent links to one clone. An edit to a rule there reaches them at once.
 
-### macOS and Linux
-
-```sh
-git clone https://github.com/workbench-soft/agent-skills ~/.agent-skills
-~/.agent-skills/install.sh --lang English
-```
-
-It needs `git` and a POSIX shell, and a Mac comes with both.
-
 ### Windows
 
 In PowerShell:
@@ -33,7 +24,7 @@ powershell -ExecutionPolicy Bypass -File "$HOME\.agent-skills\install.ps1" -Lang
 
 The script finds the bash that ships with Git for Windows and runs the same
 installer through it. Without Git, it installs Git through `winget` first. The
-macOS lines also work unchanged in Git Bash.
+macOS lines below also work unchanged in Git Bash.
 
 - **Developer Mode** MAY stay off. The agents then get a junction to each
   skill folder, and a copy of the writing rules file.
@@ -41,6 +32,15 @@ macOS lines also work unchanged in Git Bash.
   `writing-style.instructions.md`, so the copy stays current.
 - **Turning it on** Settings, then System, then For developers. The next
   install then makes real symlinks.
+
+### macOS and Linux
+
+```sh
+git clone https://github.com/workbench-soft/agent-skills ~/.agent-skills
+~/.agent-skills/install.sh --lang English
+```
+
+It needs `git` and a POSIX shell, and a Mac comes with both.
 
 ### Take only one skill
 
