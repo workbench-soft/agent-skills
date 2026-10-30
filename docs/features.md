@@ -10,7 +10,7 @@ Skills for a coding agent. Each skill is a folder in `skills/` with a `SKILL.md`
 ## Code work
 
 - **What it gives** skills to do a ticket, open a PR, answer review threads, review a PR and audit a whole app.
-- **Skills** `implement-ticket`, `create-pr`, `address-comments`, `review`, `app-audit`, `specs`, `git-worktrees`.
+- **Skills** `implement-ticket`, `create-pr`, `address-comments`, `review`, `app-audit`, `specs`, `git-worktrees`, `reset-history`.
 
 ## Project setup
 
@@ -26,6 +26,7 @@ Skills for a coding agent. Each skill is a folder in `skills/` with a `SKILL.md`
 
 - **What it gives** the `turn-voice` hook speaks a short line when the agent finishes.
 - **Where** `hooks/turn-voice`, Windows only.
+- **Pick a voice** `voice-test` plays each `edge-tts` voice by number, so the person can choose one for the hook.
 
 ## Install
 
