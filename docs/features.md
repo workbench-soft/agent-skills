@@ -32,3 +32,9 @@ Skills for a coding agent. Each skill is a folder in `skills/` with a `SKILL.md`
 
 - **What it gives** one clone linked into each agent on the machine. An edit reaches all of them at once.
 - **Where** `install.sh` on macOS and Linux, `install.ps1` on Windows.
+
+## Releases
+
+- **What it gives** a tagged release such as `v2026.10.30.1` for each push to `main` that passes `check`. Its notes list the commits since the release before.
+- **Where** the [Releases page](https://github.com/workbench-soft/agent-skills/releases).
+- **Limits** notes only, with no files to download.

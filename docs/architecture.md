@@ -10,6 +10,7 @@ flowchart LR
   install -->|links| other["Cursor, Copilot and more"]
   claude --> hook["hooks/turn-voice<br/>C#, speaks at turn end"]
   ci["CI: check-skills.py,<br/>check-prose-budget.py"] --> repo
+  ci -->|passes on main| release["Release: tag and notes"]
 ```
 
 | Part | Technology | Job |
@@ -18,3 +19,4 @@ flowchart LR
 | Installer | POSIX shell, PowerShell | Links the skills into each agent |
 | Hook | C# | Speaks a line at the end of a turn |
 | Checks | Python | Checks the skill format and text length |
+| Release | GitHub Actions, shell | Tags each push to main that passes the checks and publishes its notes |
