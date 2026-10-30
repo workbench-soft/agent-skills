@@ -13,15 +13,6 @@ the skills into it.
 
 Every agent links to one clone. An edit to a rule there reaches them at once.
 
-### macOS and Linux
-
-```sh
-git clone https://github.com/workbench-soft/agent-skills ~/.agent-skills
-~/.agent-skills/install.sh --lang English
-```
-
-It needs `git` and a POSIX shell, and a Mac comes with both.
-
 ### Windows
 
 In PowerShell:
@@ -33,7 +24,7 @@ powershell -ExecutionPolicy Bypass -File "$HOME\.agent-skills\install.ps1" -Lang
 
 The script finds the bash that ships with Git for Windows and runs the same
 installer through it. Without Git, it installs Git through `winget` first. The
-macOS lines also work unchanged in Git Bash.
+macOS lines below also work unchanged in Git Bash.
 
 - **Developer Mode** MAY stay off. The agents then get a junction to each
   skill folder, and a copy of the writing rules file.
@@ -41,6 +32,15 @@ macOS lines also work unchanged in Git Bash.
   `writing-style.instructions.md`, so the copy stays current.
 - **Turning it on** Settings, then System, then For developers. The next
   install then makes real symlinks.
+
+### macOS and Linux
+
+```sh
+git clone https://github.com/workbench-soft/agent-skills ~/.agent-skills
+~/.agent-skills/install.sh --lang English
+```
+
+It needs `git` and a POSIX shell, and a Mac comes with both.
 
 ### Take only one skill
 
@@ -238,9 +238,10 @@ and the picks with the reason for each. It needs no API keys.
 
 **`icon-styles`** draws 10 icons for the app in the repo, each in its own
 style. It reads the repo first and picks the styles that fit, such as neon for
-a hacker tool. A sheet shows all 10 at 16 to 256 px, and you pick a number.
-A Python script then writes the PNG sizes, the Windows `.ico` and the
-Android, iOS and PWA sets through `resvg`.
+a hacker tool. A small local page shows all 10 at 16 to 256 px, and you click
+the one you want. A Python script then writes the PNG sizes, the Windows
+`.ico` and the Android, iOS and PWA sets through `resvg`. All 10 drafts stay
+in the repo under `design/icons/<date>/`.
 
 **`voice-test`** plays the Microsoft neural voices of `edge-tts` one after
 another. Each says its number and name, then an English line, a Russian line,

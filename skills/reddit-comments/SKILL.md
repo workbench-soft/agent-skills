@@ -66,8 +66,8 @@ mise x -- uv run --with playwright python <skill-dir>/scripts/prefill.py reddit-
 ```
 
 - **Login** the first run opens Chrome with an empty profile under
-  `~/.reddit-comments/profile`. The person logs in once, and the script
-  goes on by itself.
+  `%USERPROFILE%\.reddit-comments\profile`. The person logs in once, and
+  the script goes on by itself.
 - **Per thread** the script types the draft and waits. The person reads it,
   presses Comment, then presses Enter in the terminal. `s` skips, `q` stops.
 - **Resume** `--start N` picks up at item N. Items marked `posted` are

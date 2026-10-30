@@ -55,9 +55,9 @@ it, run `mise use -g pipx:edge-tts@7.3.1` first.
 - **Resume** `--start 12` begins at number 12, and `--count 5` stops after 5
   voices. The numbers hold while the set stays the same.
 - **Cache** the voice list and the clips stay in `--out`,
-  `%LOCALAPPDATA%\voice-test` or `~/.cache/voice-test`. The next run plays
-  them without the network. `--refresh` fetches the list again and retries
-  lines that had no audio.
+  `%LOCALAPPDATA%\voice-test` on Windows, `~/.cache/voice-test` on a Mac.
+  The next run plays them without the network. `--refresh` fetches the list
+  again and retries lines that had no audio.
 - **Fetch only** `--no-play` fills the cache and lists the voices.
 
 ## 3. Report
