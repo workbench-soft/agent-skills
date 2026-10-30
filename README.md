@@ -56,25 +56,13 @@ the machine: Claude Code, Codex, Cursor, Copilot, Crush, Goose, Roo, Windsurf
 and others. The writing rules also land where an agent reads them on every
 turn, unasked: the VS Code prompts folder, `~/.claude/CLAUDE.md`,
 `~/.codex/AGENTS.md`. On Windows `~` means your user folder, and VS Code reads
-`%APPDATA%\Code\User\prompts`. That rules file sets more than writing:
+`%APPDATA%\Code\User\prompts`. The rules file holds the short version of
+`writing-style`, so each answer follows it before the skill loads.
 
-- **Spec per feature** each feature gets one file in `specs/`, written before
-  the code. Later work on it adds to that file, and a small bug fix needs
-  none.
-- **Docs** each change updates the README, the architecture, the user flows
-  and the features list, with mermaid diagrams.
-- **New app** the first plan covers search, ads, Google Play and marketing.
-- **Shipping** each change goes through a worktree and a PR with a changelog
-  entry, and the agent merges it when CI is green.
-- **Leftovers** what is still yours to do goes in `TODO.md` at the repo root,
-  in English.
-- **Session end** the last line says `✅ !!!COMPLETED!!!`,
-  `⏳ !!!RUNNING!!!`, `❓ !!!QUESTION!!!` or `⚠️ !!!NOT COMPLETED!!!`. A
-  finished session plays a
-  sound, and questions go through the agent's question tool.
 - **Spoken turn end** on Windows, `install.ps1` gives Claude hooks that play
-  a cue and say the folder, the outcome and the session title. Done gets
-  tada, not done a falling trombone, a question two rising notes.
+  a cue and say the folder, the outcome and the session title. The outcome
+  comes from a marker on the last line, such as `!!!COMPLETED!!!` or
+  `!!!QUESTION!!!`, when your own rules ask the agent to write one.
 - **What it adds for the voice** hooks in `~/.claude/settings.json`,
   `turn-voice.exe` in `~/.claude/hooks`, and `uv` and `edge-tts` in your
   global mise config when mise is installed.

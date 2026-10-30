@@ -97,7 +97,6 @@ On Windows, run `git config --global core.symlinks true` before the clone. Other
 
 ## Commit and push
 
-- Each change MUST ship as `writing-style.instructions.md` describes: a
-  worktree, a PR through `create-pr`, and a merge once CI is green. Do it
-  without waiting to be asked.
+- Each change MUST ship as a PR with a line under `## Unreleased` in
+  `CHANGELOG.md`, as `CONTRIBUTING.md` describes.
 - The subject SHOULD start with the skill it changes: `review: ...`.
