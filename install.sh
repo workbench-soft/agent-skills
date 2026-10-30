@@ -246,7 +246,7 @@ link_writing_rules() {
   IFS=$old_ifs
 
   append_rules_block "$claude_rules" "@~/.agents/$rules_file"
-  append_rules_block "$codex_rules" "Follow ~/.agents/$rules_file: how to write text a person reads, the plan in specs/ and the docs every change updates, how every change ships, and where to list work left undone."
+  append_rules_block "$codex_rules" "Follow ~/.agents/$rules_file: how to write text a person reads."
 }
 
 # Worktrees share hooks with the main clone and get deleted when done, so
