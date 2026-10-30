@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **Docs** the README, `docs/features.md` and `docs/user-flows.md` describe the `voice-test` window, its flags and how to open it.
 - **icon-styles** a new skill draws 10 icons for the repo's app in 10 styles it picks for the theme. You pick one from a preview sheet, and a script exports it to PNG, `.ico`, Android, iOS, Expo and PWA sets.
 - **voice-test** `--line en`, `ru`, `mix` or `chunks` plays one of the 4 lines per voice. `voice-test.cmd` opens a window to pick the line, women, men or children, and the voices, then play them.
 - **reddit-comments** a new skill picks Reddit threads the repo can answer, drafts a reply in a human voice, and a Playwright script types it into the comment box in Chrome. The person presses Comment.

@@ -35,6 +35,13 @@ Skills for a coding agent. Each skill is a folder in `skills/` with a `SKILL.md`
 - **Where** `hooks/turn-voice`, Windows only.
 - **Pick a voice** `voice-test` plays each `edge-tts` voice by number, so the person can choose one for the hook.
 
+## Hear and pick a voice
+
+- **What it gives** `voice-test` plays each `edge-tts` voice: its number and name, then English, Russian, a mixed line and the mix joined from chunks.
+- **Where** ask the agent to play the voices, double click `voice-test.cmd` for a window, or run `voice_test.py` with flags.
+- **Filters** one line with `--line`, women, men or children with `--group`, names with `--voice`, locales with `--lang`.
+- **Limits** `edge-tts` gives no age past the child `Cartoon` voices, and no child voice reads Russian. The window is tkinter, and the shortcut is Windows only.
+
 ## Install
 
 - **What it gives** one clone linked into each agent on the machine. An edit reaches all of them at once.

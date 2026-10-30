@@ -243,9 +243,35 @@ A Python script then writes the PNG sizes, the Windows `.ico` and the
 Android, iOS and PWA sets through `resvg`.
 
 **`voice-test`** plays the Microsoft neural voices of `edge-tts` one after
-another. Each says its number and name, then an English line, a Russian line
-and a line that mixes both. You note the numbers you like and pick a voice for
+another. Each says its number and name, then an English line, a Russian line,
+a line that mixes both, and the same mix joined from chunks the way
+`turn-voice` builds it. You note the numbers you like and pick a voice for
 `turn-voice` or an app.
+
+On Windows, double click `skills/voice-test/scripts/voice-test.cmd` to open a
+small window. Pick the line, women, men or children, voice names or locales
+and the number to start from, then press Play. Stop ends the playback. A
+shortcut on the desktop can point to the copy in
+`~/.agents/skills/voice-test/scripts`. Elsewhere, run
+`python skills/voice-test/scripts/voice_test_ui.py`.
+
+The same choices work from the terminal:
+
+```bash
+mise x -- python skills/voice-test/scripts/voice_test.py --line chunks --group female,child
+```
+
+| Flag | What it does |
+| --- | --- |
+| `--line en\|ru\|mix\|chunks` | each voice says only that line |
+| `--group female,male,child` | only those groups. A child voice is a `Cartoon` one |
+| `--voice Ava,Emma` | only voices whose name holds a word |
+| `--lang en,ru` | those locales, plus the multilingual voices |
+| `--start 12 --count 5` | resume at a number, stop after a few |
+
+The clips stay in `%LOCALAPPDATA%oice-test`, so a second run plays without
+the network. It needs `edge-tts` on `PATH` and a Python with tkinter for the
+window.
 
 **`reddit-comments`** finds Reddit threads your repo can answer and gets the
 reply as far as the Comment button. It reads the hot threads through the
