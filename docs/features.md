@@ -22,6 +22,12 @@ Skills for a coding agent. Each skill is a folder in `skills/` with a `SKILL.md`
 - **What it gives** skills to take a site live with search, ads and Google Play, then find the first users.
 - **Skills** `launch`, `seo-setup`, `ads-setup`, `play-release`, `marketing`, `domain-check`.
 
+## App icons
+
+- **What it gives** `icon-styles` draws 10 icons for the repo's app, each in a style picked for its theme, and shows them on one HTML sheet.
+- **Where** the drafts go to `icon-drafts/`. A script exports the pick to PNG, `.ico`, Android, iOS, Expo and PWA sets.
+- **Limits** the agent draws flat SVG shapes by hand, and the export needs `resvg` through mise. macOS `.icns` needs `iconutil` on a Mac.
+
 ## Voice at the end of a turn
 
 - **What it gives** the `turn-voice` hook speaks a short line when the agent finishes.

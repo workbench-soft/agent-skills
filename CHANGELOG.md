@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **icon-styles** a new skill draws 10 icons for the repo's app in 10 styles it picks for the theme. You pick one from a preview sheet, and a script exports it to PNG, `.ico`, Android, iOS, Expo and PWA sets.
 - **Releases** each push to `main` that passes `check` gets a GitHub release such as `v2026.10.30.1`. Its notes list the commits since the release before.
 - **turn-voice** Claude speaks the end of a turn in English by default, in
   the British voice `en-GB-MaisieNeural`, whatever the review language.
