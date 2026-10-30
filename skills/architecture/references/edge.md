@@ -5,12 +5,12 @@ the first line of JavaScript runs.
 
 ## Who does what
 
-| Piece | Job |
-| --- | --- |
+| Piece           | Job                                                                        |
+| --------------- | -------------------------------------------------------------------------- |
 | Document worker | Resolves the route owner, checks auth, composes the HTML from its template |
-| Assets worker | Serves `/_mfe/*`: files from object storage, manifests, route claims |
-| Object storage | Every built file, under a deploy key |
-| Key-value store | Build manifests, preview ids, route claims, the live manifest |
+| Assets worker   | Serves `/_mfe/*`: files from object storage, manifests, route claims       |
+| Object storage  | Every built file, under a deploy key                                       |
+| Key-value store | Build manifests, preview ids, route claims, the live manifest              |
 
 ```text
 GET /supply/orders

@@ -12,7 +12,7 @@ package generates them, so MFEs don't hand write their own.
 export const { bootstrap, mount, unmount, rootClassList } = createMfeLifecycles({
   rootComponent: Root,
   errorFallback: RootFallback,
-  initI18n,                       // bootstrap loads translations before the first mount
+  initI18n, // bootstrap loads translations before the first mount
 });
 ```
 
@@ -34,9 +34,9 @@ To mount an MFE, the shell goes through these steps:
 
 ```ts
 interface HostProvidedProps {
-  eventBus: EventBus;          // typed cross-MFE messages
-  queryClient: QueryClient;    // one cache for the page
-  mountParcel: MountParcel;    // mount a peer MFE inside a node the caller owns
+  eventBus: EventBus; // typed cross-MFE messages
+  queryClient: QueryClient; // one cache for the page
+  mountParcel: MountParcel; // mount a peer MFE inside a node the caller owns
 }
 ```
 
@@ -68,11 +68,11 @@ and the legacy fallback all read that one file.
              audience: [{ flag: "supply-mfe" }], pendingReservation: [{ flag: "supply-mfe" }] } }
 ```
 
-| Status | The MFE | The legacy app |
-| --- | --- | --- |
-| `active` | Mounts | Stays out |
-| `reserved` | Waits, its flag is loading or off | Stays out, so it can't flash in |
-| `unclaimed` | None | Takes the route |
+| Status      | The MFE                           | The legacy app                  |
+| ----------- | --------------------------------- | ------------------------------- |
+| `active`    | Mounts                            | Stays out                       |
+| `reserved`  | Waits, its flag is loading or off | Stays out, so it can't flash in |
+| `unclaimed` | None                              | Takes the route                 |
 
 - Claims MUST be plain data. A worker reads JSON, and a predicate function
   can't make it across that boundary.

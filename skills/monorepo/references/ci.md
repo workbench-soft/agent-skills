@@ -12,12 +12,12 @@ jobs:
     steps:
       - uses: actions/checkout@<sha>
         with: { fetch-depth: 0 }
-      - uses: jdx/mise-action@<sha>          # Node, pnpm, Java, Go from mise.toml
+      - uses: jdx/mise-action@<sha> # Node, pnpm, Java, Go from mise.toml
       - run: pnpm install --frozen-lockfile
       - uses: nrwl/nx-set-shas@<sha>
       - run: pnpm nx sync:check
       - run: pnpm nx affected -t lint typecheck test build
-  ci-ok:                                     # the one required check
+  ci-ok: # the one required check
     needs: [check]
     if: always()
     runs-on: ubuntu-latest
@@ -38,17 +38,17 @@ jobs:
 ## Deploy per app
 
 ```yaml
-  plan:
-    outputs: { projects: "${{ steps.p.outputs.list }}" }
-    steps:
-      - id: p
-        run: echo "list=$(pnpm -s nx show projects --affected --withTarget deploy --json)" >> "$GITHUB_OUTPUT"
-  deploy:
-    needs: plan
-    strategy: { matrix: { project: "${{ fromJson(needs.plan.outputs.projects) }}" } }
-    environment: production
-    steps:
-      - run: pnpm nx run ${{ matrix.project }}:deploy
+plan:
+  outputs: { projects: "${{ steps.p.outputs.list }}" }
+  steps:
+    - id: p
+      run: echo "list=$(pnpm -s nx show projects --affected --withTarget deploy --json)" >> "$GITHUB_OUTPUT"
+deploy:
+  needs: plan
+  strategy: { matrix: { project: "${{ fromJson(needs.plan.outputs.projects) }}" } }
+  environment: production
+  steps:
+    - run: pnpm nx run ${{ matrix.project }}:deploy
 ```
 
 - Each deploy SHOULD use its own environment and secrets, so one app's key

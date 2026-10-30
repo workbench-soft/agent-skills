@@ -81,7 +81,7 @@ def main() -> None:
     out = args.out or folder / "sheet.png"
     if shutil.which(args.resvg) is None:
         sys.exit("resvg is not on PATH. Run through: mise x github:linebender/resvg@0.49.0 -- ...")
-    done = subprocess.run([args.resvg, "-", str(out)], input=sheet(folder).encode("utf-8"))
+    done = subprocess.run([args.resvg, "-", str(out)], check=False, input=sheet(folder).encode("utf-8"))
     if done.returncode != 0:
         sys.exit("resvg failed")
     print(out.resolve())

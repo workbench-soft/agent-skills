@@ -299,14 +299,14 @@ The same choices work from the terminal:
 mise x -- python skills/voice-test/scripts/voice_test.py --line chunks --group female,child
 ```
 
-| Flag | What it does |
-| --- | --- |
-| `--line en\|ru\|mix\|chunks` | each voice says only that line |
-| `--group female,male,child` | only those groups. A child voice is a `Cartoon` one |
-| `--pitch -10` | each voice 10 Hz lower, or higher with a plus |
-| `--voice Ava,Emma` | only voices whose name holds a word |
-| `--lang en,ru` | those locales, plus the multilingual voices |
-| `--start 12 --count 5` | resume at a number, stop after a few |
+| Flag                         | What it does                                        |
+| ---------------------------- | --------------------------------------------------- |
+| `--line en\|ru\|mix\|chunks` | each voice says only that line                      |
+| `--group female,male,child`  | only those groups. A child voice is a `Cartoon` one |
+| `--pitch -10`                | each voice 10 Hz lower, or higher with a plus       |
+| `--voice Ava,Emma`           | only voices whose name holds a word                 |
+| `--lang en,ru`               | those locales, plus the multilingual voices         |
+| `--start 12 --count 5`       | resume at a number, stop after a few                |
 
 The clips stay in `%LOCALAPPDATA%\voice-test`, so a second run plays without
 the network. It needs `edge-tts` on `PATH`, and Node 24 for the page.
@@ -329,11 +329,11 @@ load `writing-style` first, so their writing matches.
 
 The review opens with a table, so the whole verdict fits on one screen:
 
-| # | Severity | Where | What |
-| --- | --- | --- | --- |
-| 1 | Blocker | `SaveName.tsx:42` | the typed name is lost when the save is slow |
-| 2 | Should fix | `profile.ts:88` | the save error is swallowed, so the page stays silent |
-| 3 | Nit | `SaveName.tsx:20` | no code reads the `isLoading` flag |
+| #   | Severity   | Where             | What                                                  |
+| --- | ---------- | ----------------- | ----------------------------------------------------- |
+| 1   | Blocker    | `SaveName.tsx:42` | the typed name is lost when the save is slow          |
+| 2   | Should fix | `profile.ts:88`   | the save error is swallowed, so the page stays silent |
+| 3   | Nit        | `SaveName.tsx:20` | no code reads the `isLoading` flag                    |
 
 <details>
 <summary>One finding out of that table</summary>

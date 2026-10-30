@@ -14,8 +14,8 @@ or `REQUEST_INSTALL_PACKAGES`. The commands in section 4 verify it.
   `play.tsx` to the front of `resolver.sourceExts`, and Metro bundles the stubs:
 
 ```js
-if (process.env.PLAY === '1')
-  config.resolver.sourceExts = ['play.ts', 'play.tsx', ...config.resolver.sourceExts];
+if (process.env.PLAY === "1")
+  config.resolver.sourceExts = ["play.ts", "play.tsx", ...config.resolver.sourceExts];
 ```
 
 - **Stubs** `latest-release.play.ts` and `UpdateButton.play.tsx` return null,

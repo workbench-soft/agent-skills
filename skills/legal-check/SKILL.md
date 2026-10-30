@@ -53,11 +53,11 @@ Read `references/areas.md` and go through each area for the scope.
 
 ## 4. Rate each risk
 
-| Severity | Meaning |
-| --- | --- |
-| high | the store can pull the app, a rights holder can sue, or a regulator can fine |
-| medium | a policy or a license gets broken, with a fix that takes a day |
-| low | a gap that matters later, such as a missing notice |
+| Severity | Meaning                                                                      |
+| -------- | ---------------------------------------------------------------------------- |
+| high     | the store can pull the app, a rights holder can sue, or a regulator can fine |
+| medium   | a policy or a license gets broken, with a fix that takes a day               |
+| low      | a gap that matters later, such as a missing notice                           |
 
 - **Owner** each risk gets one: `agent` for a code or text fix, `person` for a
   form or an account, `lawyer` for a judgement call.
@@ -73,7 +73,7 @@ Write `docs/legal-risks.md` in the repo:
 Checked 2026-10-31 for the EU, the US, the UK and Australia. A check by an agent, not legal advice.
 
 | Risk | Severity | Proof | Fix | Owner |
-| --- | --- | --- | --- | --- |
+| ---- | -------- | ----- | --- | ----- |
 ```
 
 - **Order** high first, then medium, then low.

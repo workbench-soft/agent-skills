@@ -63,12 +63,12 @@ A third round MAY follow when fewer than 3 names come back free.
 
 ## 5. Read each verdict
 
-| Verdict | Meaning | What to do |
-| --- | --- | --- |
-| `free` | all domains free, no business or live mark with the words | a pick |
-| `risky` | `.com` or `.au` taken, a business uses the name, or live marks contain the words | open each hit and judge |
-| `taken` | a live mark with the same words, or `.com.au` registered | drop it |
-| `unknown` | a check failed | rerun it |
+| Verdict   | Meaning                                                                          | What to do              |
+| --------- | -------------------------------------------------------------------------------- | ----------------------- |
+| `free`    | all domains free, no business or live mark with the words                        | a pick                  |
+| `risky`   | `.com` or `.au` taken, a business uses the name, or live marks contain the words | open each hit and judge |
+| `taken`   | a live mark with the same words, or `.com.au` registered                         | drop it                 |
+| `unknown` | a check failed                                                                   | rerun it                |
 
 Read `references/naming.md` when judging a `risky` row. The trade mark class
 and the owner's field decide most of them.

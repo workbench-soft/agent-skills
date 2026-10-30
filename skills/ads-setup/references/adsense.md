@@ -11,8 +11,12 @@
    can lack them.
 
 ```html
-<meta name="google-adsense-account" content="ca-pub-XXXXXXXXXXXXXXXX">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+<meta name="google-adsense-account" content="ca-pub-XXXXXXXXXXXXXXXX" />
+<script
+  async
+  src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
+  crossorigin="anonymous"
+></script>
 ```
 
 ```text
@@ -51,8 +55,17 @@ Choose with the user: hand-placed ad units, Auto ads, or both.
   verification script in the head serves them already.
 
 ```html
-<ins class="adsbygoogle" style="display:block;min-height:280px" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<ins
+  class="adsbygoogle"
+  style="display:block;min-height:280px"
+  data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+  data-ad-slot="1234567890"
+  data-ad-format="auto"
+  data-full-width-responsive="true"
+></ins>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
 ```
 
 - **One push per slot** in React or Vue, push once as the slot mounts. A
@@ -63,9 +76,9 @@ Choose with the user: hand-placed ad units, Auto ads, or both.
 
 ## Common rejections
 
-| Reason in the email | Fix |
-| --- | --- |
-| Low value content | add pages of real text, see the `seo-setup` content guide |
-| Site down or unavailable | something blocked the crawler: Cloudflare bot rules, a WAF rule, `robots.txt` |
-| Policy violation | read the policy it names, fix it, wait a week before asking again |
-| Not enough content to verify | the text must be in view-source, so a client-only app needs prerendering |
+| Reason in the email          | Fix                                                                           |
+| ---------------------------- | ----------------------------------------------------------------------------- |
+| Low value content            | add pages of real text, see the `seo-setup` content guide                     |
+| Site down or unavailable     | something blocked the crawler: Cloudflare bot rules, a WAF rule, `robots.txt` |
+| Policy violation             | read the policy it names, fix it, wait a week before asking again             |
+| Not enough content to verify | the text must be in view-source, so a client-only app needs prerendering      |

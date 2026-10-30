@@ -13,10 +13,10 @@ flowchart LR
   ci -->|passes on main| release["Release: tag and notes"]
 ```
 
-| Part | Technology | Job |
-| --- | --- | --- |
-| Skills | Markdown with front matter | Instructions the agent loads on a match |
-| Installer | POSIX shell, PowerShell | Links the skills into each agent |
-| Hook | C# | Speaks a line at the end of a turn |
-| Checks | Python | Checks the skill format and text length |
-| Release | GitHub Actions, shell | Tags each push to main that passes the checks and publishes its notes |
+| Part      | Technology                 | Job                                                                   |
+| --------- | -------------------------- | --------------------------------------------------------------------- |
+| Skills    | Markdown with front matter | Instructions the agent loads on a match                               |
+| Installer | POSIX shell, PowerShell    | Links the skills into each agent                                      |
+| Hook      | C#                         | Speaks a line at the end of a turn                                    |
+| Checks    | Python                     | Checks the skill format and text length                               |
+| Release   | GitHub Actions, shell      | Tags each push to main that passes the checks and publishes its notes |

@@ -52,11 +52,11 @@ it, then report what went and what came back.
 Read `README.md`, `docs/features.md`, `docs/user-flows.md` and the release
 workflow to learn where the app runs.
 
-| The app | The target |
-| --- | --- |
+| The app                  | The target                                                 |
+| ------------------------ | ---------------------------------------------------------- |
 | Android, Expo, Capacitor | the APK of the newest release, on an emulator or the phone |
-| Web, PWA, static site | the live web build under `workbench-soft.github.io` |
-| Tauri, Windows | the installer of the newest release, on this PC |
+| Web, PWA, static site    | the live web build under `workbench-soft.github.io`        |
+| Tauri, Windows           | the installer of the newest release, on this PC            |
 
 - **Emulator first** a running emulator SHOULD win over the person's phone,
   since it holds no real data. Use the phone when no emulator runs, or when
@@ -90,9 +90,14 @@ only for a feature that changed. Otherwise write it from
 `docs/user-flows.md`, `docs/features.md` and the README.
 
 ```json
-[{ "name": "add-task", "platform": "android",
-   "steps": "open the app, tap +, type E2E milk, save",
-   "expect": "E2E milk shows at the top of Today" }]
+[
+  {
+    "name": "add-task",
+    "platform": "android",
+    "steps": "open the app, tap +, type E2E milk, save",
+    "expect": "E2E milk shows at the top of Today"
+  }
+]
 ```
 
 - **Pick** 4 to 10 flows: the first screen, each main action once, the
@@ -127,11 +132,11 @@ Walk the flows in the order of the list. For each step:
 Commit `e2e/flows.json` and ship it by the repo's rules. Screenshots stay in
 the scratch folder.
 
-| Flow | Result | Note |
-| --- | --- | --- |
-| add-task | pass | |
-| share-list | skipped | the share sheet sends to other people |
-| delete-task | skipped | deletes data |
+| Flow        | Result  | Note                                  |
+| ----------- | ------- | ------------------------------------- |
+| add-task    | pass    |                                       |
+| share-list  | skipped | the share sheet sends to other people |
+| delete-task | skipped | deletes data                          |
 
 - **Bugs** each failure goes in `TODO.md` under `## E2E walk <date>`: the
   flow, the version, what it showed and what it should show.

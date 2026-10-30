@@ -15,12 +15,12 @@ Read from the request which voices to play. Ask through the question tool only
 when the request leaves the set open and the person might want more than the
 default.
 
-| Set | Flag | Voices |
-| --- | --- | --- |
-| English, Russian, multilingual | none | about 56 |
-| other languages | `--lang de,fr` | those locales and the multilingual ones |
-| every voice | `--all` | about 320, over an hour |
-| a few by name | `--voice Ava,Svetlana` | names holding a word |
+| Set                            | Flag                   | Voices                                  |
+| ------------------------------ | ---------------------- | --------------------------------------- |
+| English, Russian, multilingual | none                   | about 56                                |
+| other languages                | `--lang de,fr`         | those locales and the multilingual ones |
+| every voice                    | `--all`                | about 320, over an hour                 |
+| a few by name                  | `--voice Ava,Svetlana` | names holding a word                    |
 
 ## 2. Run it
 

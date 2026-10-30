@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Check each skill the way an agent will read it.
 
-    mise x -- python scripts/check-skills.py
+mise x -- python scripts/check-skills.py
 """
+
 import re
 import sys
 from pathlib import Path
@@ -39,9 +40,7 @@ def check_frontmatter(skill: Path) -> list[str]:
     lines = skill.read_text(encoding="utf-8").splitlines()
     if not lines or lines[0] != "---" or "---" not in lines[1:]:
         return [f"{skill}: no frontmatter between --- lines"]
-    fields = dict(
-        line.split(": ", 1) for line in lines[1 : lines.index("---", 1)] if ": " in line
-    )
+    fields = dict(line.split(": ", 1) for line in lines[1 : lines.index("---", 1)] if ": " in line)
     errors = []
     if fields.get("name") != skill.parent.name:
         errors.append(f"{skill}: name is not the folder name {skill.parent.name}")
@@ -66,9 +65,7 @@ def check_links(page: Path) -> list[str]:
     # Other targets, such as path/to/file.ts, are examples for the review.
     own = [t for t in targets if t.endswith(".md") or t.startswith("scripts/")]
     return [
-        f"{page}: missing {target}"
-        for target in own
-        if "://" not in target and not (page.parent / target).exists()
+        f"{page}: missing {target}" for target in own if "://" not in target and not (page.parent / target).exists()
     ]
 
 

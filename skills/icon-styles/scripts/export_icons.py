@@ -45,7 +45,7 @@ class Renderer:
         if scale != 1.0 or background:
             svg = wrap(svg, size, scale, background)
         args = [self.resvg, "-w", str(size), "-h", str(size), "-", "-c"]
-        done = subprocess.run(args, input=svg.encode("utf-8"), capture_output=True)
+        done = subprocess.run(args, check=False, input=svg.encode("utf-8"), capture_output=True)
         if done.returncode != 0:
             sys.exit(f"resvg failed at {size} px: {done.stderr.decode(errors='replace')}")
         return done.stdout

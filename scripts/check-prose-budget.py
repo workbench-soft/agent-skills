@@ -5,6 +5,7 @@ Lines inside fenced blocks and blank lines are free.
 
     python3 scripts/check-prose-budget.py skills/*/SKILL.md
 """
+
 import re
 import sys
 from pathlib import Path

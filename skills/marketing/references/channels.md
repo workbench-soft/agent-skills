@@ -6,14 +6,14 @@ big one notices.
 
 ## By product kind
 
-| Product | First places |
-| --- | --- |
+| Product                         | First places                                                                                                         |
+| ------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
 | Local tool, one country or city | city and country subreddits, the national forum (Whirlpool, OzBargain, Geekzone), local Facebook groups, local press |
-| Developer or self-hosted tool | Show HN, r/selfhosted, r/opensource, the matching `awesome-*` list, F-Droid, XDA |
-| Web toy or something visual | r/InternetIsBeautiful, short videos, Product Hunt |
-| Hobby tool: music, photo, sport | the hobby subreddits, the hobby's big forum, small YouTube creators and teachers |
-| Money calculator | the country's finance subreddit, finance forums, answers in old threads that rank in Google |
-| Built on open data | that data's community: the OpenStreetMap forum, the source's own forum |
+| Developer or self-hosted tool   | Show HN, r/selfhosted, r/opensource, the matching `awesome-*` list, F-Droid, XDA                                     |
+| Web toy or something visual     | r/InternetIsBeautiful, short videos, Product Hunt                                                                    |
+| Hobby tool: music, photo, sport | the hobby subreddits, the hobby's big forum, small YouTube creators and teachers                                     |
+| Money calculator                | the country's finance subreddit, finance forums, answers in old threads that rank in Google                          |
+| Built on open data              | that data's community: the OpenStreetMap forum, the source's own forum                                               |
 
 ## Launch sites, once each
 

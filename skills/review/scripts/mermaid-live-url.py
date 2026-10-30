@@ -3,6 +3,7 @@
 
 The diagram goes in the URL fragment, so the browser doesn't send it anywhere.
 """
+
 import base64
 import json
 import sys

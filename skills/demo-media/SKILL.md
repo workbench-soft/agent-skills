@@ -32,9 +32,15 @@ app:
 Write the list to `demo/shots.json`:
 
 ```json
-[{ "name": "01-home", "platform": "android", "caption": "Today's tasks at a glance",
-   "steps": "open the app, demo data loaded" },
- { "name": "flow-add-task", "platform": "web", "video": true, "steps": "tap +, type, save" }]
+[
+  {
+    "name": "01-home",
+    "platform": "android",
+    "caption": "Today's tasks at a glance",
+    "steps": "open the app, demo data loaded"
+  },
+  { "name": "flow-add-task", "platform": "web", "video": true, "steps": "tap +, type, save" }
+]
 ```
 
 ## 2. Write the demo data
@@ -58,14 +64,14 @@ Read [references/capture.md](references/capture.md) for the commands of each
 platform. Find how the repo runs through `mise tasks ls`, `package.json` and
 the README.
 
-| The repo | Where the shots come from |
-| --- | --- |
-| Expo, React Native | an Android emulator, or a phone over adb, plus the web build |
-| Capacitor, Next.js | the web build in Playwright, plus the Android build over adb |
-| Native Android | an emulator, or a phone over adb |
-| Tauri, desktop | the app window on Windows |
-| Astro, a static site | the built site in Playwright |
-| CLI | a terminal recording with a short demo script |
+| The repo             | Where the shots come from                                    |
+| -------------------- | ------------------------------------------------------------ |
+| Expo, React Native   | an Android emulator, or a phone over adb, plus the web build |
+| Capacitor, Next.js   | the web build in Playwright, plus the Android build over adb |
+| Native Android       | an emulator, or a phone over adb                             |
+| Tauri, desktop       | the app window on Windows                                    |
+| Astro, a static site | the built site in Playwright                                 |
+| CLI                  | a terminal recording with a short demo script                |
 
 - **Emulator first** an emulator SHOULD win over the person's phone. Use the
   phone when the app needs its camera or sensors, or when no emulator image

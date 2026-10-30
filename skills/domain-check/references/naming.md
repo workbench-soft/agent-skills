@@ -4,14 +4,14 @@
 
 Each pattern SHOULD give a few names. Mix them in one batch.
 
-| Pattern | How | Example for a coffee cart |
-| --- | --- | --- |
-| Plain pair | two short words about the product | Bean Cart |
-| Place or local | a local word, plant, animal or landmark | Wattle Brew |
-| Coined | a new word from parts of real ones | Brewlark |
-| Metaphor | a thing that stands for the feeling | Morning Ember |
-| Action | a verb the customer does | Sip Stop |
-| Short and odd | a real word from outside the field | Kettle Fox |
+| Pattern        | How                                     | Example for a coffee cart |
+| -------------- | --------------------------------------- | ------------------------- |
+| Plain pair     | two short words about the product       | Bean Cart                 |
+| Place or local | a local word, plant, animal or landmark | Wattle Brew               |
+| Coined         | a new word from parts of real ones      | Brewlark                  |
+| Metaphor       | a thing that stands for the feeling     | Morning Ember             |
+| Action         | a verb the customer does                | Sip Stop                  |
+| Short and odd  | a real word from outside the field      | Kettle Fox                |
 
 - **Coined names** clear the registers best. Plain pairs clear them least.
 - **Generic words** such as "Coffee Shop" can't get a trade mark. Drop them.
@@ -39,13 +39,13 @@ Each pattern SHOULD give a few names. Mix them in one batch.
 
 ## Trade mark classes people ask about
 
-| Class | Covers |
-| --- | --- |
-| 9 | software, apps |
-| 35 | retail, advertising, business services |
-| 41 | education, events, entertainment |
-| 42 | software as a service, design, tech services |
-| 43 | cafes, restaurants, accommodation |
+| Class | Covers                                       |
+| ----- | -------------------------------------------- |
+| 9     | software, apps                               |
+| 35    | retail, advertising, business services       |
+| 41    | education, events, entertainment             |
+| 42    | software as a service, design, tech services |
+| 43    | cafes, restaurants, accommodation            |
 
 The full list is at
 [IP Australia](https://www.ipaustralia.gov.au/trade-marks/what-are-trade-marks/what-are-classes-of-goods-and-services).

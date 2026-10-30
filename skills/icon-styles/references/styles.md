@@ -50,13 +50,13 @@ make a style read at 32 px, where detail is gone.
 
 ## Match the style to the app
 
-| The app | Styles that fit |
-| --- | --- |
+| The app                                   | Styles that fit                                          |
+| ----------------------------------------- | -------------------------------------------------------- |
 | a developer tool, a CLI, a system utility | terminal, circuit, neon, cyberpunk, blueprint, brutalist |
-| a game | pixel art, isometric, sticker, clay, low poly |
-| notes, a diary, writing | hand drawn, watercolour, line icon, origami |
-| money, health, work | flat, material, gradient mesh, glassmorphism |
-| photos, music, art | gradient mesh, synthwave, stained glass, ukiyo-e |
+| a game                                    | pixel art, isometric, sticker, clay, low poly            |
+| notes, a diary, writing                   | hand drawn, watercolour, line icon, origami              |
+| money, health, work                       | flat, material, gradient mesh, glassmorphism             |
+| photos, music, art                        | gradient mesh, synthwave, stained glass, ukiyo-e         |
 
 - **Spread** take the 10 from at least 3 groups, so the sheet holds real
   choices.

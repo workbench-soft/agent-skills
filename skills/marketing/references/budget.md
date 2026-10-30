@@ -5,27 +5,27 @@ user a price, and flag which figures are guesses.
 
 ## Costs worth it at any budget
 
-| Item | Price | Take it when |
-| --- | --- | --- |
-| Domain at Cloudflare Registrar | ~$10 a year, renewal at cost | in each case. Trust, search and AdSense need an own domain |
-| Hosting on the Cloudflare Workers free plan | $0 | a paid product is allowed on the free plan. The Vercel and GitHub Pages free plans forbid it |
-| Analytics: Cloudflare Web Analytics or GoatCounter | $0 | in each case, and no cookie banner is needed |
-| Google Play developer account | $25 once | an Android app, or a PWA worth wrapping |
-| Apple Developer | $99 a year | an iOS app, with a budget above $300 a year |
-| GitHub Sponsors 0%, Ko-fi 0%, Buy Me a Coffee 5% | $0 | the goal is donations |
+| Item                                               | Price                        | Take it when                                                                                 |
+| -------------------------------------------------- | ---------------------------- | -------------------------------------------------------------------------------------------- |
+| Domain at Cloudflare Registrar                     | ~$10 a year, renewal at cost | in each case. Trust, search and AdSense need an own domain                                   |
+| Hosting on the Cloudflare Workers free plan        | $0                           | a paid product is allowed on the free plan. The Vercel and GitHub Pages free plans forbid it |
+| Analytics: Cloudflare Web Analytics or GoatCounter | $0                           | in each case, and no cookie banner is needed                                                 |
+| Google Play developer account                      | $25 once                     | an Android app, or a PWA worth wrapping                                                      |
+| Apple Developer                                    | $99 a year                   | an iOS app, with a budget above $300 a year                                                  |
+| GitHub Sponsors 0%, Ko-fi 0%, Buy Me a Coffee 5%   | $0                           | the goal is donations                                                                        |
 
 ## Tiers
 
 The expected results are guesses for a niche product whose core is free. Mark
 them as guesses in the chat.
 
-| Budget a year | Adds on top of the tier above | Expect, a guess |
-| --- | --- | --- |
-| $0 | free launch posts, forum answers, search pages, `*.pages.dev` or `*.github.io` | a few hundred visits at launch, then the search traffic |
-| up to $100 | domain, Play account, a single $30 to $50 ad test ahead of the peak season | the same visits, a store listing, and an answer on whether ads work here |
-| up to $500 | a $20 to $50 designer for store screenshots and the feature graphic. A $100 to $200 ad test on the best channel. Apple, when iOS matters | a store page that converts better, the first paid users at a known cost |
-| up to $2000 | 3 to 5 paid spots on small YouTube channels or newsletters, $50 to $300 each. A freelancer to edit short videos | a few thousand visits a month during the spots |
-| more | a writer for search pages, $50 to $150 a page. Ongoing ads on the channel that paid back | search traffic that grows with no new posts |
+| Budget a year | Adds on top of the tier above                                                                                                            | Expect, a guess                                                          |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| $0            | free launch posts, forum answers, search pages, `*.pages.dev` or `*.github.io`                                                           | a few hundred visits at launch, then the search traffic                  |
+| up to $100    | domain, Play account, a single $30 to $50 ad test ahead of the peak season                                                               | the same visits, a store listing, and an answer on whether ads work here |
+| up to $500    | a $20 to $50 designer for store screenshots and the feature graphic. A $100 to $200 ad test on the best channel. Apple, when iOS matters | a store page that converts better, the first paid users at a known cost  |
+| up to $2000   | 3 to 5 paid spots on small YouTube channels or newsletters, $50 to $300 each. A freelancer to edit short videos                          | a few thousand visits a month during the spots                           |
+| more          | a writer for search pages, $50 to $150 a page. Ongoing ads on the channel that paid back                                                 | search traffic that grows with no new posts                              |
 
 ## The next tier line
 

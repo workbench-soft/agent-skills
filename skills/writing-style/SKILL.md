@@ -89,15 +89,15 @@ A comma, brackets or a colon work too.
 **"Never" and "nothing".** These give a machine away faster than any other
 word. A plain verb carries the same meaning:
 
-| Instead of | Write |
-| --- | --- |
+| Instead of                             | Write                                  |
+| -------------------------------------- | -------------------------------------- |
 | never clear it before the call returns | don't clear it before the call returns |
-| this never happens | this doesn't happen |
-| components never do this | no component does this |
-| the worker never reads the JSON | the worker doesn't read the JSON |
-| nothing reads the flag | no code reads the flag |
-| the page shows nothing | the page stays blank |
-| nothing else, nits included | only those, nits included |
+| this never happens                     | this doesn't happen                    |
+| components never do this               | no component does this                 |
+| the worker never reads the JSON        | the worker doesn't read the JSON       |
+| nothing reads the flag                 | no code reads the flag                 |
+| the page shows nothing                 | the page stays blank                   |
+| nothing else, nits included            | only those, nits included              |
 
 The ban reaches the plain factual use as well as emphasis. "The worker never
 reads the JSON" is true and MUST still change: a person says "doesn't read".
@@ -111,34 +111,34 @@ Each language has its own version of this word. That version MUST go as well.
 **"Nobody", "everyone", "everything".** These belong with "never": large words
 with no facts under them. The actual set MUST be named.
 
-| Instead of | Write |
-| --- | --- |
-| nobody outside the repo sees them | they stay inside the repo |
+| Instead of                                 | Write                         |
+| ------------------------------------------ | ----------------------------- |
+| nobody outside the repo sees them          | they stay inside the repo     |
 | everyone reading the JSON guesses the type | both consumers guess the type |
-| everybody knows that | it is in the README |
+| everybody knows that                       | it is in the README           |
 
 **Counting things the reader can see.** A count MUST stay out of headings,
 lead-ins and noun phrases: "four PRs", "11 small functions", "three things are
 lost". The list beneath already shows the total, and the number is wrong as
 soon as a row is added.
 
-| Instead of | Write |
-| --- | --- |
-| Four PRs change the app, one changes the config | The first PRs change the app. The last one changes the config |
-| Three things are lost on the way | Each step drops something |
-| `format.js` has 11 small functions calling `trim()` | The helpers in `format.js` call `trim()` |
-| Three reasons this happens | Why this happens |
+| Instead of                                          | Write                                                         |
+| --------------------------------------------------- | ------------------------------------------------------------- |
+| Four PRs change the app, one changes the config     | The first PRs change the app. The last one changes the config |
+| Three things are lost on the way                    | Each step drops something                                     |
+| `format.js` has 11 small functions calling `trim()` | The helpers in `format.js` call `trim()`                      |
+| Three reasons this happens                          | Why this happens                                              |
 
 The same applies to numbers that measure your effort rather than the reader's
 problem: lines removed from a file, files touched, build time. They look like
 evidence and hold none.
 
-| Instead of | Write |
-| --- | --- |
+| Instead of                         | Write                                           |
+| ---------------------------------- | ----------------------------------------------- |
 | Cut the file from 698 to 543 lines | Moved the PR link rules out into their own file |
-| The build went green in 8 seconds | The build is green |
-| Linked into 3 agent folders | Linked into `.claude`, `.codex` and `.copilot` |
-| Fixed 5 things | (name them) |
+| The build went green in 8 seconds  | The build is green                              |
+| Linked into 3 agent folders        | Linked into `.claude`, `.codex` and `.copilot`  |
+| Fixed 5 things                     | (name them)                                     |
 
 A number MAY stay when it is the finding itself: "274 lines the compiler
 rejects", "the build died after 40 minutes", "2 of 11 tests fail". It MUST go
@@ -149,13 +149,13 @@ go in its place: `api-client`, `web-app`, `orders.json`. A reader who
 arrives mid-page can't tell who "us" means. And when you own both sides of
 the change, "us" and "them" are the same team.
 
-| Instead of | Write |
-| --- | --- |
-| it takes no data from us | it takes no data from `api-client` |
-| the shape of our JSON | the shape of `orders.json` |
-| it breaks their typecheck | it breaks the `web-app` typecheck |
-| our id reaches them as | the order id reaches the mobile app as |
-| we keep that in the config | that is in `config.js` |
+| Instead of                 | Write                                  |
+| -------------------------- | -------------------------------------- |
+| it takes no data from us   | it takes no data from `api-client`     |
+| the shape of our JSON      | the shape of `orders.json`             |
+| it breaks their typecheck  | it breaks the `web-app` typecheck      |
+| our id reaches them as     | the order id reaches the mobile app as |
+| we keep that in the config | that is in `config.js`                 |
 
 "We" MAY stay for people taking an action: "we publish the major", "we decide
 before PR 4". Replace it when it means code.
@@ -179,10 +179,10 @@ changes what someone does. Elsewhere: "a JSON standard", "stable".
 The ban still applies when the halves are split across sentences, and in any
 language.
 
-| Instead of | Write |
-| --- | --- |
-| This isn't a config problem, it's a PATH problem | The PATH is wrong |
-| It's not a bug, it's a feature | It works as designed |
+| Instead of                                       | Write                |
+| ------------------------------------------------ | -------------------- |
+| This isn't a config problem, it's a PATH problem | The PATH is wrong    |
+| It's not a bug, it's a feature                   | It works as designed |
 
 **AI padding.** "Great question", "Absolutely", "Certainly", "I hope this
 helps", "Let's dive in", "Let me break this down", "Here's the thing", "In
@@ -206,20 +206,20 @@ write "gives", "is in", "sits in", "goes with", "lets us".
 and simple", "end of story". They hold no fact and sound generated. The fact
 MUST replace them, or the phrase goes.
 
-| Instead of | Write |
-| --- | --- |
-| the output is the same, byte for byte | `git diff` on the output is empty |
-| this is wrong, full stop | this is wrong |
-| we rewrote the whole thing, end to end | we rewrote all 11 functions |
+| Instead of                             | Write                             |
+| -------------------------------------- | --------------------------------- |
+| the output is the same, byte for byte  | `git diff` on the output is empty |
+| this is wrong, full stop               | this is wrong                     |
+| we rewrote the whole thing, end to end | we rewrote all 11 functions       |
 
 **Pointing at your own text.** "Here is", "Look at", "Notice that", "As you can
 see", "Let's walk through". The reader can already see it. The line MUST open
 with what the thing says or does.
 
-| Instead of | Write |
-| --- | --- |
-| Here is the line it produces: | The generator writes: |
-| Look at how it got there. | It got there by searching the index. |
+| Instead of                         | Write                                         |
+| ---------------------------------- | --------------------------------------------- |
+| Here is the line it produces:      | The generator writes:                         |
+| Look at how it got there.          | It got there by searching the index.          |
 | Let's see what happens to the row. | The row loses its encoding on the first step. |
 
 Talking about the document itself counts too: "This page covers", "as we'll
@@ -325,13 +325,13 @@ you write.
 
 Find the twins once, then look for them on every pass:
 
-| The English tell | What to look for |
-| --- | --- |
-| never, nothing, nobody, everyone | your language's absolute words |
-| it's not X, it's Y | the same flip, however your language builds it |
-| which, thereby allowing, in doing so | the connectors that sound most formal |
-| full stop, end of story | the closers that add emphasis and no fact |
-| Here is, Look at, Notice | the phrases that point at your own text |
+| The English tell                     | What to look for                               |
+| ------------------------------------ | ---------------------------------------------- |
+| never, nothing, nobody, everyone     | your language's absolute words                 |
+| it's not X, it's Y                   | the same flip, however your language builds it |
+| which, thereby allowing, in doing so | the connectors that sound most formal          |
+| full stop, end of story              | the closers that add emphasis and no fact      |
+| Here is, Look at, Notice             | the phrases that point at your own text        |
 
 Russian, as a worked example. Ban «никогда», «ничего», «никто», «все»; write
 «так не делаем», «такого нет ни разу», «код его не читает». Flip «не X, а Y»

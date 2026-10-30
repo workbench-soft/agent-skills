@@ -44,13 +44,13 @@ return.
 
 ## Upload errors
 
-| Play says | Fix |
-| --- | --- |
-| Version code N has already been used | raise `versionCode`, build again |
-| signed in debug mode | sign with the upload key |
-| signed with the wrong key | use the key of the first upload, or reset the upload key |
-| must target API level N or higher | raise `targetSdk`, test, build again |
-| needs a privacy policy | App content, Privacy policy, the site's URL |
+| Play says                            | Fix                                                      |
+| ------------------------------------ | -------------------------------------------------------- |
+| Version code N has already been used | raise `versionCode`, build again                         |
+| signed in debug mode                 | sign with the upload key                                 |
+| signed with the wrong key            | use the key of the first upload, or reset the upload key |
+| must target API level N or higher    | raise `targetSdk`, test, build again                     |
+| needs a privacy policy               | App content, Privacy policy, the site's URL              |
 
 ## Before production
 

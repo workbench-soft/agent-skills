@@ -37,13 +37,13 @@ mise ls --current
 
 ## 3. Run the command
 
-| The job | Command |
-| --- | --- |
-| a mise task does it | `mise run <task> -- <args>` |
-| any other command in the repo | `mise x -- <command>` |
-| several commands in one call | `mise x -c "pnpm lint && pnpm test"` |
-| a tool at a version the repo doesn't pin, once | `mise x node@22 -- node script.js` |
-| a one-off CLI from npm or PyPI | `mise x npm:prettier@3 -- prettier --check .` |
+| The job                                        | Command                                  |
+| ---------------------------------------------- | ---------------------------------------- |
+| a mise task does it                            | `mise run <task> -- <args>`              |
+| any other command in the repo                  | `mise x -- <command>`                    |
+| several commands in one call                   | `mise x -c "pnpm lint && pnpm test"`     |
+| a tool at a version the repo doesn't pin, once | `mise x node@22 -- node script.js`       |
+| a one-off CLI from npm or PyPI                 | `mise x npm:oxfmt@0.75 -- oxfmt --check` |
 
 - **Task first** a mise task SHOULD win over the same script in
   `package.json`, a Makefile or a justfile. The task sets its env and its

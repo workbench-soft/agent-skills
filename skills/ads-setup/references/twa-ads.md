@@ -7,10 +7,10 @@ stay off inside the app.
 
 Let the user choose the route:
 
-| Option | Work | The app earns from ads |
-| --- | --- | --- |
-| Hide AdSense inside the app | a small script on the site | no, the site still does |
-| Swap the TWA for a WebView app with AdMob and the WebView API for Ads | a new native app | yes |
+| Option                                                                | Work                       | The app earns from ads  |
+| --------------------------------------------------------------------- | -------------------------- | ----------------------- |
+| Hide AdSense inside the app                                           | a small script on the site | no, the site still does |
+| Swap the TWA for a WebView app with AdMob and the WebView API for Ads | a new native app           | yes                     |
 
 ## Hide AdSense inside the app
 
@@ -29,16 +29,26 @@ after it in the tab reads the mark.
   release.
 
 ```html
-<meta name="google-adsense-account" content="ca-pub-XXXXXXXXXXXXXXXX">
+<meta name="google-adsense-account" content="ca-pub-XXXXXXXXXXXXXXXX" />
 <script>
-  if (document.referrer.startsWith('android-app://') || /[?&]app=android/.test(location.search)) sessionStorage.setItem('inApp', '1');
-  if (sessionStorage.getItem('inApp')) document.documentElement.classList.add('in-app');
-  else document.head.append(Object.assign(document.createElement('script'), { async: true, crossOrigin: 'anonymous', src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX' }));
+  if (document.referrer.startsWith("android-app://") || /[?&]app=android/.test(location.search))
+    sessionStorage.setItem("inApp", "1");
+  if (sessionStorage.getItem("inApp")) document.documentElement.classList.add("in-app");
+  else
+    document.head.append(
+      Object.assign(document.createElement("script"), {
+        async: true,
+        crossOrigin: "anonymous",
+        src: "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX",
+      }),
+    );
 </script>
 ```
 
 ```css
-.in-app .adsbygoogle { display: none; }
+.in-app .adsbygoogle {
+  display: none;
+}
 ```
 
 Any code that pushes ad slots MUST leave out the push while the `in-app` class

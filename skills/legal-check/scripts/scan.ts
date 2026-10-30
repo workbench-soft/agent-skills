@@ -31,10 +31,14 @@ lines.push("", "## Data the app sends or reads", "");
 const sdks = Object.entries(signals.sdks);
 if (!sdks.length) lines.push("None found.");
 for (const [sdk, files] of sdks)
-  lines.push(`- **${sdk}** ${files.slice(0, 3).join(", ")}${files.length > 3 ? ` and ${files.length - 3} more` : ""}`);
+  lines.push(
+    `- **${sdk}** ${files.slice(0, 3).join(", ")}${files.length > 3 ? ` and ${files.length - 3} more` : ""}`,
+  );
 
 lines.push("", "## Sensitive permissions", "");
-lines.push(signals.permissions.length ? signals.permissions.map((p) => `- ${p}`).join("\n") : "None found.");
+lines.push(
+  signals.permissions.length ? signals.permissions.map((p) => `- ${p}`).join("\n") : "None found.",
+);
 
 lines.push("", "## Legal pages", "");
 for (const { page, files } of signals.pages)

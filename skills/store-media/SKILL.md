@@ -99,13 +99,13 @@ and icon.
 The `icon-styles` export wires the repo files. Then check each place below
 that applies:
 
-| Place | What to change |
-| --- | --- |
-| GitHub repo | Settings, Social preview: a 1280 × 640 PNG |
-| Windows app | `src-tauri/icons` or the `.ico` of the installer, then a release |
-| VS Code extension | the `icon` PNG in `package.json`, then a publish |
-| PWA | `manifest.webmanifest` icons and the maskable icon |
-| Expo | `app.json` icon, adaptive icon and splash |
+| Place             | What to change                                                   |
+| ----------------- | ---------------------------------------------------------------- |
+| GitHub repo       | Settings, Social preview: a 1280 × 640 PNG                       |
+| Windows app       | `src-tauri/icons` or the `.ico` of the installer, then a release |
+| VS Code extension | the `icon` PNG in `package.json`, then a publish                 |
+| PWA               | `manifest.webmanifest` icons and the maskable icon               |
+| Expo              | `app.json` icon, adaptive icon and splash                        |
 
 - **Old icon left** search the repo and the site repo for the old icon file
   names and hashes once all changes are in.
@@ -120,9 +120,9 @@ that carries the new launcher icon.
 
 End with a table, a row per place:
 
-| Place | State | Next step |
-| --- | --- | --- |
-| Play listing | in review | wait for the email |
-| AdMob | linked, old icon | shows the new one after Play approves |
+| Place        | State            | Next step                             |
+| ------------ | ---------------- | ------------------------------------- |
+| Play listing | in review        | wait for the email                    |
+| AdMob        | linked, old icon | shows the new one after Play approves |
 
 Point to the new `TODO.md` lines below the table.

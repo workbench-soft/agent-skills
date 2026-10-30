@@ -29,7 +29,7 @@ queries want the same answer, they share a page.
 Put a table in front of the user and wait for their choice:
 
 | Page | Queries it answers | What it gives that the top results lack |
-| --- | --- | --- |
+| ---- | ------------------ | --------------------------------------- |
 
 ## Write a page
 

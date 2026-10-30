@@ -4,8 +4,18 @@
 type Voice = { number: number; id: string; name: string; group: string; heading: string };
 type Settings = { line: string; groups: string[]; lang: string; off: string[]; pitch: number };
 
-const LINES: [string, string][] = [["All 4", ""], ["English", "en"], ["Russian", "ru"], ["Mixed", "mix"], ["Chunks", "chunks"]];
-const GROUPS: [string, string][] = [["Women", "female"], ["Men", "male"], ["Children", "child"]];
+const LINES: [string, string][] = [
+  ["All 4", ""],
+  ["English", "en"],
+  ["Russian", "ru"],
+  ["Mixed", "mix"],
+  ["Chunks", "chunks"],
+];
+const GROUPS: [string, string][] = [
+  ["Women", "female"],
+  ["Men", "male"],
+  ["Children", "child"],
+];
 const KEY = "voice-test";
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
@@ -16,7 +26,13 @@ let voices: Voice[] = [];
 let playing = false;
 
 function load(): Settings {
-  const fallback: Settings = { line: "chunks", groups: ["female", "male", "child"], lang: "en,ru", off: [], pitch: 0 };
+  const fallback: Settings = {
+    line: "chunks",
+    groups: ["female", "male", "child"],
+    lang: "en,ru",
+    off: [],
+    pitch: 0,
+  };
   try {
     return { ...fallback, ...JSON.parse(localStorage.getItem(KEY) ?? "{}") };
   } catch {
@@ -33,7 +49,12 @@ function save(): void {
   }
 }
 
-function toggles(root: HTMLElement, items: [string, string][], pressed: (value: string) => boolean, onClick: (value: string) => void): void {
+function toggles(
+  root: HTMLElement,
+  items: [string, string][],
+  pressed: (value: string) => boolean,
+  onClick: (value: string) => void,
+): void {
   root.replaceChildren(
     ...items.map(([text, value]) => {
       const button = document.createElement("button");
@@ -46,17 +67,27 @@ function toggles(root: HTMLElement, items: [string, string][], pressed: (value: 
 }
 
 function renderFilters(): void {
-  toggles($("line"), LINES, (v) => settings.line === v, (v) => {
-    settings.line = v;
-    refresh();
-  });
-  toggles($("groups"), GROUPS, (v) => settings.groups.includes(v), (v) => {
-    const has = settings.groups.includes(v);
-    // At least one group stays on, or no voice would match.
-    if (has && settings.groups.length === 1) return;
-    settings.groups = has ? settings.groups.filter((g) => g !== v) : [...settings.groups, v];
-    refresh();
-  });
+  toggles(
+    $("line"),
+    LINES,
+    (v) => settings.line === v,
+    (v) => {
+      settings.line = v;
+      refresh();
+    },
+  );
+  toggles(
+    $("groups"),
+    GROUPS,
+    (v) => settings.groups.includes(v),
+    (v) => {
+      const has = settings.groups.includes(v);
+      // At least one group stays on, or no voice would match.
+      if (has && settings.groups.length === 1) return;
+      settings.groups = has ? settings.groups.filter((g) => g !== v) : [...settings.groups, v];
+      refresh();
+    },
+  );
   $<HTMLSelectElement>("lang").value = settings.lang;
   $<HTMLInputElement>("pitch").value = String(settings.pitch);
   showPitch();
@@ -67,7 +98,11 @@ function showPitch(): void {
 }
 
 async function api<T>(path: string, body?: object): Promise<T> {
-  const res = await fetch(path, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body ?? {}) });
+  const res = await fetch(path, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify(body ?? {}),
+  });
   const data = await res.json();
   if (!res.ok) throw new Error(data.error ?? res.statusText);
   return data as T;
@@ -78,7 +113,11 @@ async function refresh(): Promise<void> {
   save();
   $("voices-summary").textContent = "Loading…";
   try {
-    voices = await api<Voice[]>("/api/voices", { line: settings.line, groups: settings.groups, lang: settings.lang });
+    voices = await api<Voice[]>("/api/voices", {
+      line: settings.line,
+      groups: settings.groups,
+      lang: settings.lang,
+    });
   } catch (e) {
     voices = [];
     note(`Could not list the voices: ${(e as Error).message}`);
@@ -128,7 +167,9 @@ function renderVoices(): void {
     group.querySelector(".group")?.append(count);
   }
   tree.addEventListener("wa-selection-change", () => {
-    for (const item of tree.querySelectorAll<HTMLElement & { selected: boolean }>("wa-tree-item[data-id]")) {
+    for (const item of tree.querySelectorAll<HTMLElement & { selected: boolean }>(
+      "wa-tree-item[data-id]",
+    )) {
       if (item.selected) off.delete(item.dataset.id ?? "");
       else off.add(item.dataset.id ?? "");
     }
@@ -141,7 +182,8 @@ function renderVoices(): void {
 
 function summary(): void {
   const count = picked().length;
-  $("voices-summary").textContent = count === voices.length ? `All ${count} voices` : `${count} of ${voices.length} voices`;
+  $("voices-summary").textContent =
+    count === voices.length ? `All ${count} voices` : `${count} of ${voices.length} voices`;
   $<HTMLButtonElement>("play").disabled = playing || count === 0;
 }
 
@@ -180,7 +222,13 @@ async function play(): Promise<void> {
   $("log").replaceChildren();
   openPanel(false);
   setPlaying(true);
-  await api("/api/play", { line: settings.line, groups: settings.groups, lang: settings.lang, ids: chosen.map((v) => v.id), pitch: settings.pitch });
+  await api("/api/play", {
+    line: settings.line,
+    groups: settings.groups,
+    lang: settings.lang,
+    ids: chosen.map((v) => v.id),
+    pitch: settings.pitch,
+  });
 }
 
 function onLine(text: string): void {

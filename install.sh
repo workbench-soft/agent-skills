@@ -103,15 +103,31 @@ EOF
 
 while [ $# -gt 0 ]; do
   case "$1" in
-    --lang|-l)
-      [ $# -ge 2 ] || { echo "--lang needs a language" >&2; exit 1; }
+    --lang | -l)
+      [ $# -ge 2 ] || {
+        echo "--lang needs a language" >&2
+        exit 1
+      }
       lang=$2
       shift 2
       ;;
-    --uninstall) uninstall=1; shift ;;
-    --yes|-y) yes=1; shift ;;
-    -h|--help) usage; exit 0 ;;
-    *) echo "unknown option: $1" >&2; usage >&2; exit 1 ;;
+    --uninstall)
+      uninstall=1
+      shift
+      ;;
+    --yes | -y)
+      yes=1
+      shift
+      ;;
+    -h | --help)
+      usage
+      exit 0
+      ;;
+    *)
+      echo "unknown option: $1" >&2
+      usage >&2
+      exit 1
+      ;;
   esac
 done
 
@@ -145,9 +161,9 @@ prompt_user() {
     printf '%s' "$1"
     read -r answer || answer=""
   # An agent shell or CI has a /dev/tty that fails to open.
-  elif (: < /dev/tty) 2>/dev/null; then
-    printf '%s' "$1" > /dev/tty
-    read -r answer < /dev/tty || answer=""
+  elif (: </dev/tty) 2>/dev/null; then
+    printf '%s' "$1" >/dev/tty
+    read -r answer </dev/tty || answer=""
   else
     answer=""
   fi
@@ -164,12 +180,12 @@ $HOME/AppData/Roaming/Code/User"
 # the rules file gets a copy that each run refreshes.
 link_kind=symlink
 case $(uname -s) in
-  MINGW*|MSYS*|CYGWIN*)
+  MINGW* | MSYS* | CYGWIN*)
     MSYS=winsymlinks:nativestrict
     CYGWIN=winsymlinks:nativestrict
     export MSYS CYGWIN
     probe=$(mktemp -d)
-    : > "$probe/file"
+    : >"$probe/file"
     ln -s "$probe/file" "$probe/link" 2>/dev/null || link_kind=junction
     rm -rf "$probe"
     ;;
@@ -183,7 +199,7 @@ make_link() {
   rm -f "$2"
   if [ -d "$1" ]; then
     # Stops Git Bash from turning /c and /J into Windows paths.
-    MSYS2_ARG_CONV_EXCL='*' cmd /c mklink /J "$(cygpath -w "$2")" "$(cygpath -w "$1")" > /dev/null
+    MSYS2_ARG_CONV_EXCL='*' cmd /c mklink /J "$(cygpath -w "$2")" "$(cygpath -w "$1")" >/dev/null
   else
     cp "$1" "$2"
   fi
@@ -203,8 +219,8 @@ append_rules_block() {
     return 0
   fi
   # Exactly one blank line before the block, after any number of runs.
-  if [ -s "$file" ] && [ -n "$(tail -n 1 "$file")" ]; then printf '\n' >> "$file"; fi
-  printf '%s\n%s\n%s\n' "$rules_open" "$body" "$rules_close" >> "$file"
+  if [ -s "$file" ] && [ -n "$(tail -n 1 "$file")" ]; then printf '\n' >>"$file"; fi
+  printf '%s\n%s\n%s\n' "$rules_open" "$body" "$rules_close" >>"$file"
   echo "Writing rules wired into $file"
 }
 
@@ -222,9 +238,9 @@ strip_rules_block() {
     $0 == s { skip = 1; next }
     $0 == e { skip = 0; next }
     skip != 1 { print }
-  ' "$file" > "$tmp"
+  ' "$file" >"$tmp"
   # Written through, so a CLAUDE.md that links into dotfiles stays a link.
-  cat "$tmp" > "$file"
+  cat "$tmp" >"$file"
   rm -f "$tmp"
   # Only the block was in the file, so the install made the file. A link
   # points at the person's own file, which stays.
@@ -266,7 +282,7 @@ install_relink_hooks() {
       echo "Left $file alone, it is someone else's. Run the install by hand after a pull."
       continue
     fi
-    cat > "$file" <<EOF
+    cat >"$file" <<EOF
 #!/bin/sh
 $hook_marker
 # Relinks the skills into every agent once git has changed the files.
@@ -293,7 +309,7 @@ if [ "$uninstall" -eq 1 ]; then
       # moved or was deleted. A real folder there is the user's.
       # shellcheck disable=SC3013
       if [ "$target" -ef "$dir" ] || { [ -L "$target" ] && [ ! -e "$target" ] &&
-        case $(readlink "$target") in */skills/"${dir##*/}") true ;; *) false ;; esac; }; then
+        case $(readlink "$target") in */skills/"${dir##*/}") true ;; *) false ;; esac } then
         doomed="$doomed$target
 "
         listing="$listing$parent
@@ -357,8 +373,11 @@ $file (the writing rules block only)"
   if [ "$yes" -ne 1 ]; then
     prompt_user 'Delete these? [y/N]: '
     case "$answer" in
-      y|Y|yes|YES) ;;
-      *) echo "left alone"; exit 0 ;;
+      y | Y | yes | YES) ;;
+      *)
+        echo "left alone"
+        exit 0
+        ;;
     esac
   fi
 
@@ -394,7 +413,7 @@ fi
 
 # Any script works. A slash or a newline would break the file it lands in.
 case "$lang" in
-  */*|*'
+  */* | *'
 '*)
     echo "a language name cannot hold a slash or a line break: $lang" >&2
     exit 1
@@ -402,7 +421,7 @@ case "$lang" in
 esac
 
 for dir in "$root"/skills/*/; do
-  printf '%s\n' "$lang" > "$dir/LANGUAGE.md"
+  printf '%s\n' "$lang" >"$dir/LANGUAGE.md"
 done
 
 linked=""

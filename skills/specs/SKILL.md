@@ -11,14 +11,14 @@ follows the spec, and the spec stays in the repo after the merge.
 
 ## 1. Decide if the change needs a spec
 
-| The change | Spec |
-| --- | --- |
-| a new feature | a new file |
-| a change or an addition to a feature | an entry in that feature's file |
-| another tweak to the same feature, later in the session | the same entry, extended |
-| a refactor, a migration, a rewrite | a file named for the work |
-| a bug fix | none |
-| a big bug fix | an entry in the feature's file |
+| The change                                              | Spec                            |
+| ------------------------------------------------------- | ------------------------------- |
+| a new feature                                           | a new file                      |
+| a change or an addition to a feature                    | an entry in that feature's file |
+| another tweak to the same feature, later in the session | the same entry, extended        |
+| a refactor, a migration, a rewrite                      | a file named for the work       |
+| a bug fix                                               | none                            |
+| a big bug fix                                           | an entry in the feature's file  |
 
 - **Big bug fix** one that changes the design, a data format or a schema,
   touches several modules, or needs a migration. Other fixes SHOULD NOT get a
@@ -56,8 +56,11 @@ change, newest last.
 # <Feature, in the person's words>
 
 ## What it does for the person
+
 ## User flows
+
 ## How it works: modules, files, data
+
 ## Limits
 
 ## Changes

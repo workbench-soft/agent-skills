@@ -11,12 +11,12 @@
 3. Ad units, Add ad unit, a unit for each placement. Settle the formats with
    the user:
 
-| Format | Fits |
-| --- | --- |
-| Anchored adaptive banner | a strip along the bottom of a screen, the least intrusive |
-| Interstitial | a full screen between two tasks, no more than once every few minutes |
-| Rewarded | an extra the person chooses to unlock by watching an ad |
-| App open | the cold start screen of an app people open many times a day |
+| Format                   | Fits                                                                 |
+| ------------------------ | -------------------------------------------------------------------- |
+| Anchored adaptive banner | a strip along the bottom of a screen, the least intrusive            |
+| Interstitial             | a full screen between two tasks, no more than once every few minutes |
+| Rewarded                 | an extra the person chooses to unlock by watching an ad              |
+| App open                 | the cold start screen of an app people open many times a day         |
 
 ## The SDK
 
@@ -48,13 +48,13 @@ Native uses `react-native-google-mobile-ads` with `__DEV__`, Capacitor uses
 
 Google's demo units, for debug builds:
 
-| Format | Demo unit |
-| --- | --- |
+| Format          | Demo unit                                |
+| --------------- | ---------------------------------------- |
 | Adaptive banner | `ca-app-pub-3940256099942544/9214589741` |
-| Interstitial | `ca-app-pub-3940256099942544/1033173712` |
-| Rewarded | `ca-app-pub-3940256099942544/5224354917` |
-| App open | `ca-app-pub-3940256099942544/9257395921` |
-| Native | `ca-app-pub-3940256099942544/2247696110` |
+| Interstitial    | `ca-app-pub-3940256099942544/1033173712` |
+| Rewarded        | `ca-app-pub-3940256099942544/5224354917` |
+| App open        | `ca-app-pub-3940256099942544/9257395921` |
+| Native          | `ca-app-pub-3940256099942544/2247696110` |
 
 ## Consent before the first ad
 

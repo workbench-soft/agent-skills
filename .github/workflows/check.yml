@@ -31,8 +31,8 @@ jobs:
       - name: Install the pinned tools
         uses: jdx/mise-action@6be3c7ed4c21d4f76b208d351d95aac273ebb76d # v5.2.4
 
-      - name: Lint the installer
-        run: mise x -- shellcheck install.sh scripts/install-in-temp-home.sh
+      - name: Lint and format check every language
+        run: mise run lint
 
       # A broken frontmatter or link drops a skill, or a file of it, from the
       # agent with no error. A skill that breaks a writing rule teaches it.

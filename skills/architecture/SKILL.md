@@ -28,11 +28,11 @@ SHOULD land in the doc flagged as guesses, so the person fixes them in review.
 
 ## 2. Pick the shape
 
-| Shape | Pick it when | It costs |
-| --- | --- | --- |
-| One app | One team, one deploy | Folders by feature, a lint rule per boundary |
-| Monorepo with packages | Several apps, or code another repo installs | A workspace tool, package rules, a release flow |
-| Micro frontends | Several teams own parts of one page and deploy apart, or a legacy app moves route by route | A shell, a registry, a host contract, an edge, a deploy per app |
+| Shape                  | Pick it when                                                                               | It costs                                                        |
+| ---------------------- | ------------------------------------------------------------------------------------------ | --------------------------------------------------------------- |
+| One app                | One team, one deploy                                                                       | Folders by feature, a lint rule per boundary                    |
+| Monorepo with packages | Several apps, or code another repo installs                                                | A workspace tool, package rules, a release flow                 |
+| Micro frontends        | Several teams own parts of one page and deploy apart, or a legacy app moves route by route | A shell, a registry, a host contract, an edge, a deploy per app |
 
 - The smallest shape that fits SHOULD be the pick. Every micro frontend (MFE)
   brings a runtime, a contract and a deploy that somebody has to maintain.
@@ -53,7 +53,7 @@ apps            shell, global apps, domain apps
 domain          API hooks, the components backed by them (pickers)
 design system   primitives, composed patterns, the Tailwind preset
 infrastructure  bootstrap, transport, events, registry, storage, i18n
-build config    Vite, Vitest, ESLint, tsconfig, browserslist
+build config    Vite, Vitest, oxlint, tsconfig, browserslist
 repo tooling    generators, structure lint, CI scripts, edge workers
 ```
 
@@ -87,14 +87,14 @@ All MFEs write into one document, and so do all the features of a single app.
 Every shared resource MUST have a single package that owns access to it. Lint
 MUST fail on access that goes around that package.
 
-| Resource | The owning package gives | The guard |
-| --- | --- | --- |
-| CSS classes | A class prefix per app at build time, tokens as CSS variables | The build config |
-| `<html>` attributes | One read hook per value: language, colour scheme, chrome state | Lint bans other reads and writes of the root |
-| Web storage | Keys prefixed with the app name, each value decoded with a fallback | Lint bans direct `localStorage` |
-| Session | One transport, one sign out for the page on a 401 | Apps get the transport from the host |
-| URL and history | One helper to move between apps | App names typed against the registry |
-| Messages | A typed event bus passed in by the host | No globals on `window` |
+| Resource            | The owning package gives                                            | The guard                                    |
+| ------------------- | ------------------------------------------------------------------- | -------------------------------------------- |
+| CSS classes         | A class prefix per app at build time, tokens as CSS variables       | The build config                             |
+| `<html>` attributes | One read hook per value: language, colour scheme, chrome state      | Lint bans other reads and writes of the root |
+| Web storage         | Keys prefixed with the app name, each value decoded with a fallback | Lint bans direct `localStorage`              |
+| Session             | One transport, one sign out for the page on a 401                   | Apps get the transport from the host         |
+| URL and history     | One helper to move between apps                                     | App names typed against the registry         |
+| Messages            | A typed event bus passed in by the host                             | No globals on `window`                       |
 
 - A package touching a shared resource SHOULD have a name prefix such as
   `mfe-`. The prefix tells the reader the package expects neighbours.
@@ -185,21 +185,27 @@ that costs a lot to undo SHOULD get an ADR too.
 # Architecture
 
 ## Shape
+
 <one app | monorepo | micro frontends>, and the reason in two lines.
 
 ## Layers
+
 <mermaid flowchart, top layer first>
 
 ## Packages
+
 | Package | Layer | Owner | Gives |
 
 ## How a page loads
+
 <mermaid sequence: browser, edge, shell, app>
 
 ## Shared page state
+
 | Resource | Owning package | Guard |
 
 ## Decisions
+
 | Decision | Options weighed | Picked | Why | Cost to undo |
 ```
 

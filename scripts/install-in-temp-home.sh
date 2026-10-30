@@ -17,7 +17,7 @@ rules_file=writing-style.instructions.md
 # Windows without Developer Mode gets a copy of the rules file.
 has_rules_file() {
   case $(uname -s) in
-    MINGW*|MSYS*|CYGWIN*) test -f "$1" ;;
+    MINGW* | MSYS* | CYGWIN*) test -f "$1" ;;
     *) test -L "$1" ;;
   esac
 }
@@ -26,13 +26,13 @@ home="$scratch/home1"
 src="$scratch/src1"
 copy_repo "$src"
 mkdir -p "$home/.claude" "$home/.codex" "$home/AppData/Roaming/Code/User"
-printf '# a note of my own\n' > "$home/.claude/CLAUDE.md"
+printf '# a note of my own\n' >"$home/.claude/CLAUDE.md"
 # A real folder with a skill's name belongs to the user, not to the install.
 mkdir -p "$home/.cursor/skills/review"
-printf 'mine\n' > "$home/.cursor/skills/review/notes.md"
+printf 'mine\n' >"$home/.cursor/skills/review/notes.md"
 # An older install left other words in the block.
 printf '# codex note\n\n%s\nFollow the old words.\n%s\n' \
-  '<!-- agent-skills: writing rules -->' '<!-- agent-skills: end -->' > "$home/.codex/AGENTS.md"
+  '<!-- agent-skills: writing rules -->' '<!-- agent-skills: end -->' >"$home/.codex/AGENTS.md"
 HOME="$home" sh "$src/install.sh" --lang Spanish
 test 1 -eq "$(grep -c 'agent-skills: writing rules' "$home/.codex/AGENTS.md")"
 grep -qF "$rules_file" "$home/.codex/AGENTS.md"
@@ -74,13 +74,13 @@ test -f "$src/skills/review/SKILL.md"
 # A block that lost its end line stays, along with the lines after it.
 home="$scratch/home4"
 mkdir -p "$home/.claude"
-printf '%s\n@old\n# my later rule\n' '<!-- agent-skills: writing rules -->' > "$home/.claude/CLAUDE.md"
+printf '%s\n@old\n# my later rule\n' '<!-- agent-skills: writing rules -->' >"$home/.claude/CLAUDE.md"
 # No --lang, no language from a last run and no terminal: English.
 src="$scratch/src4"
 copy_repo "$src"
 # Skipped in a terminal, where the prompt would wait for an answer.
-if ! (: < /dev/tty) 2>/dev/null; then
-  HOME="$home" sh "$src/install.sh" < /dev/null
+if ! (: </dev/tty) 2>/dev/null; then
+  HOME="$home" sh "$src/install.sh" </dev/null
   grep -qx English "$home/.claude/skills/review/LANGUAGE.md"
 else
   HOME="$home" sh "$src/install.sh" --lang English
@@ -92,7 +92,7 @@ grep -qx '# my later rule' "$home/.claude/CLAUDE.md"
 # the uninstall.
 home="$scratch/home5"
 mkdir -p "$home/.claude" "$home/dotfiles"
-printf '%s\n@old/path\n%s\n' '<!-- agent-skills: writing rules -->' '<!-- agent-skills: end -->' > "$home/dotfiles/CLAUDE.md"
+printf '%s\n@old/path\n%s\n' '<!-- agent-skills: writing rules -->' '<!-- agent-skills: end -->' >"$home/dotfiles/CLAUDE.md"
 if MSYS=winsymlinks:nativestrict ln -s "$home/dotfiles/CLAUDE.md" "$home/.claude/CLAUDE.md"; then
   HOME="$home" sh "$src/install.sh" --lang Spanish
   test -L "$home/.claude/CLAUDE.md"
@@ -109,12 +109,12 @@ mkdir -p "$home/.claude"
 copy_repo "$home/.agent-skills"
 # A clone, so install.sh links it rather than cloning over it.
 git -C "$home/.agent-skills" init -q
-HOME="$home" AGENT_SKILLS_DIR="$home/.agent-skills" sh -s -- --lang Spanish < install.sh
+HOME="$home" AGENT_SKILLS_DIR="$home/.agent-skills" sh -s -- --lang Spanish <install.sh
 test -f "$home/.claude/skills/review/SKILL.md"
 # A trailing slash spells the same folder another way.
-HOME="$home" AGENT_SKILLS_DIR="$home/.agent-skills/" sh -s -- --uninstall --yes < install.sh
+HOME="$home" AGENT_SKILLS_DIR="$home/.agent-skills/" sh -s -- --uninstall --yes <install.sh
 test -f "$home/.agent-skills/skills/review/SKILL.md"
-HOME="$home" AGENT_SKILLS_DIR="$home/.agent-skills" sh -s -- --lang Spanish < install.sh
+HOME="$home" AGENT_SKILLS_DIR="$home/.agent-skills" sh -s -- --lang Spanish <install.sh
 test -f "$home/.claude/skills/review/SKILL.md"
 
 # The git hook links a skill merged into the clone, with no rerun. A skill
@@ -135,7 +135,7 @@ printf -- '---
 name: zz-new
 description: test
 ---
-' > "$src/skills/zz-new/SKILL.md"
+' >"$src/skills/zz-new/SKILL.md"
 in_src add skills/zz-new
 in_src commit -q -m new
 in_src checkout -q main
