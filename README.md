@@ -257,6 +257,13 @@ app shows. It uploads the Play listing graphics with you logged in, links the
 promo video, checks AdMob and AdSense, and swaps the icon on the site, the
 GitHub preview and each installer. It asks before any send for review.
 
+**`e2e-walk`** tests the newest release by hand, the way a user would. It
+installs the APK on an emulator or the phone over adb, opens the web build or
+runs the desktop installer, then walks each main flow and checks each screen.
+It reads each label before a tap and skips each control that deletes, resets,
+signs out or sends, in all 9 app languages. Bugs go to `TODO.md`, and the flow
+list stays in `e2e/flows.json` for the next run.
+
 **`voice-test`** plays the Microsoft neural voices of `edge-tts` one after
 another. Each says its number and name, then an English line, a Russian line,
 a line that mixes both, and the same mix joined from chunks the way
