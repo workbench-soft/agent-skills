@@ -3,6 +3,7 @@
 ## Unreleased
 
 - **e2e-walk** walks the build on the phone that the Archon Apps tab names, and knows the release tags that differ from the repo name.
+- **icon-styles shows the icons** the skill sends a picture of all 10 drafts into the session before it asks for a pick, so a picker that fails to render still leaves them visible.
 - **e2e-walk** a new skill installs the newest release on an emulator, the phone over adb, the web or Windows, walks each main flow and reports pass or fail. It skips each control that deletes, resets, signs out or sends, in all 9 app languages, and writes the bugs to `TODO.md`.
 - **voice-test** a pitch for each voice: `--pitch -10` and a Pitch slider on the page. `turn-voice` speaks with that pitch after `install.ps1 -RuPitch -10 -EnPitch 5`, and a reinstall keeps it.
 - **demo-media** a new skill runs the app with made-up demo data, takes screenshots and short videos on the web, the desktop or a phone over adb, checks each frame for real people and private data, and shows them in the README from `docs/screenshots/`.
