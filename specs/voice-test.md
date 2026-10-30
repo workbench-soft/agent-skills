@@ -107,3 +107,13 @@
 - **Docs** `skills/voice-test/SKILL.md`, `CHANGELOG.md`.
 - **Later** `README.md`, `docs/features.md` and `docs/user-flows.md`
   describe the window, the flags and the desktop shortcut.
+- **Later** the tkinter window opened a console for each `edge-tts` call,
+  had an unclear From field, and looked dated. It became a page:
+  - **Server** `ui/server.ts`, Node 24 with no packages, restarts itself
+    hidden, opens the page in an Edge app window, and quits once the page
+    closes. Node joins `mise.toml` for it.
+  - **Page** `ui/index.html` and `ui/app.ts`: the line, the groups and the
+    languages, then a dropdown with a checkbox per voice, search, All and
+    None. The choices stay in `localStorage`.
+  - **Script** `voice_test.py` starts `edge-tts` and `taskkill` with no
+    window, and `--list` prints the voices as JSON for the page.
