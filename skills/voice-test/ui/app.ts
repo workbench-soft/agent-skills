@@ -84,35 +84,52 @@ function picked(): Voice[] {
   return voices.filter((v) => !off.has(v.id));
 }
 
-function renderVoices(): void {
+function matches(voice: Voice): boolean {
   const query = $<HTMLInputElement>("voices-search").value.trim().toLowerCase();
-  const list = $("voices-list");
-  const nodes: HTMLElement[] = [];
-  let heading = "";
-  for (const voice of voices) {
-    if (query && !`${voice.name} ${voice.id}`.toLowerCase().includes(query)) continue;
-    if (voice.heading !== heading) {
-      heading = voice.heading;
-      const h = document.createElement("h3");
-      h.textContent = heading;
-      nodes.push(h);
+  return !query || `${voice.name} ${voice.id}`.toLowerCase().includes(query);
+}
+
+// A wa-tree with a branch per group. Its checkboxes tick a whole group, and a
+// group with part of its voices on shows a half tick.
+function renderVoices(): void {
+  const tree = document.createElement("wa-tree");
+  tree.setAttribute("selection", "multiple");
+  const groups = new Map<string, HTMLElement>();
+  for (const voice of voices.filter(matches)) {
+    let group = groups.get(voice.heading);
+    if (!group) {
+      group = document.createElement("wa-tree-item");
+      group.setAttribute("expanded", "");
+      const title = document.createElement("span");
+      title.className = "group";
+      title.textContent = voice.heading;
+      group.append(title);
+      groups.set(voice.heading, group);
+      tree.append(group);
     }
-    const label = document.createElement("label");
-    const box = document.createElement("input");
-    box.type = "checkbox";
-    box.checked = !off.has(voice.id);
-    box.onchange = () => {
-      if (box.checked) off.delete(voice.id);
-      else off.add(voice.id);
-      save();
-      summary();
-    };
+    const item = document.createElement("wa-tree-item");
+    item.dataset.id = voice.id;
+    if (!off.has(voice.id)) item.setAttribute("selected", "");
     const id = document.createElement("small");
     id.textContent = voice.id;
-    label.append(box, voice.name, id);
-    nodes.push(label);
+    item.append(voice.name, id);
+    group.append(item);
   }
-  list.replaceChildren(...nodes);
+  for (const group of groups.values()) {
+    const count = document.createElement("span");
+    count.className = "count";
+    count.textContent = String(group.querySelectorAll("[data-id]").length);
+    group.querySelector(".group")?.append(count);
+  }
+  tree.addEventListener("wa-selection-change", () => {
+    for (const item of tree.querySelectorAll<HTMLElement & { selected: boolean }>("wa-tree-item[data-id]")) {
+      if (item.selected) off.delete(item.dataset.id ?? "");
+      else off.add(item.dataset.id ?? "");
+    }
+    save();
+    summary();
+  });
+  $("voices-list").replaceChildren(tree);
   summary();
 }
 
@@ -123,9 +140,7 @@ function summary(): void {
 }
 
 function setAll(on: boolean): void {
-  const query = $<HTMLInputElement>("voices-search").value.trim().toLowerCase();
-  for (const v of voices) {
-    if (query && !`${v.name} ${v.id}`.toLowerCase().includes(query)) continue;
+  for (const v of voices.filter(matches)) {
     if (on) off.delete(v.id);
     else off.add(v.id);
   }

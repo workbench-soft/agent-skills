@@ -4,6 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Voice test</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@awesome.me/webawesome@3.14.0/dist-cdn/styles/webawesome.css">
+<script type="module" src="https://cdn.jsdelivr.net/npm/@awesome.me/webawesome@3.14.0/dist-cdn/webawesome.loader.js"></script>
+<script>
+  // Web Awesome follows the system theme through the wa-dark class.
+  if (matchMedia("(prefers-color-scheme: dark)").matches) document.documentElement.classList.add("wa-dark");
+</script>
 <style>
   :root {
     color-scheme: light dark;
@@ -18,7 +24,7 @@
   }
   * { box-sizing: border-box; }
   body {
-    margin: 0; background: var(--bg); color: var(--text);
+    margin: 0; background: var(--bg) !important; color: var(--text) !important;
     font: 14px/1.45 "Segoe UI Variable", "Segoe UI", system-ui, sans-serif;
   }
   main { max-width: 760px; margin: 0 auto; padding: 24px 16px 32px; display: grid; gap: 16px; }
@@ -49,10 +55,10 @@
   .bulk { display: flex; gap: 6px; padding: 8px 14px; border-bottom: 1px solid var(--line); }
   .bulk button { padding: 3px 10px; font-size: 12px; }
   .list { overflow: auto; padding: 6px 0; }
-  .list h3 { margin: 8px 14px 4px; font-size: 12px; color: var(--muted); font-weight: 600; }
-  .list label { display: flex; gap: 10px; align-items: center; padding: 5px 14px; cursor: pointer; }
-  .list label:hover { background: var(--accent-soft); }
-  .list small { color: var(--muted); margin-left: auto; font-family: ui-monospace, Consolas, monospace; font-size: 11px; }
+  .list wa-tree { --indent-guide-width: 1px; font-size: 14px; }
+  .list .group { font-weight: 600; }
+  .list .count { color: var(--muted); font-weight: 400; margin-left: 6px; }
+  .list small { color: var(--muted); margin-left: 12px; font-family: ui-monospace, Consolas, monospace; font-size: 11px; }
   .actions { display: flex; gap: 8px; align-items: center; }
   .actions button { padding: 8px 22px; font-weight: 600; }
   #play { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
