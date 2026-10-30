@@ -139,18 +139,19 @@ repo pins. A mise task runs with `mise run`, any other command with
 `mise x --`. A new tool goes in `mise.toml` with `mise use`, in place of
 `brew`, `winget` or `npm i -g`.
 
-**`app-audit`** checks a whole app in one go, without questions. Reviewers run
-in parallel, one per angle:
+**`app-audit`** checks a whole app in one go, without questions. Agents run in
+parallel, one per angle, each in its own worktree:
 
 - **Code** bugs, simplicity and tests, architecture and data formats.
 - **Safety** security and privacy, dependencies and CI.
 - **The person** speed, UX and accessibility, reliability offline.
 - **Mobile** the platform and its store.
 
-The agent checks each finding against the code and fixes the safe ones in a
-new worktree, one commit each. It runs the checks, a build and the app itself,
-and has a fresh reviewer read its own diff. Then it opens the PR and merges it
-when CI is green. Migrations, product calls and anything touching money or
+Each agent proves its findings and fixes the safe ones, one commit each. The
+main agent checks each commit as soon as its report lands and picks it onto the
+audit branch, so a slow angle holds up no fix. Then it runs the checks, a
+build and the app itself, and has a fresh reviewer read the diff. It opens the
+PR and merges it when CI is green. Migrations, product calls and anything touching money or
 keys go in `TODO.md` with the reason.
 
 **`git-worktrees`** puts each piece of work in its own folder, and your
