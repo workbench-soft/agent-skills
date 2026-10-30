@@ -35,6 +35,13 @@ Skills for a coding agent. Each skill is a folder in `skills/` with a `SKILL.md`
 - **Where** the media sits in `docs/screenshots/` and the shot list in `demo/shots.json`, so a rerun takes the same shots. The `marketing` skill attaches them to Reddit posts.
 - **Limits** a README plays a GIF and links the MP4. Play takes a YouTube link for the video. AdMob and AdSense take no media, so they read it from the Play listing and the site.
 
+## End to end walk of a release
+
+- **What it gives** `e2e-walk` installs the newest release and walks each main flow of the app, then reports pass or fail per flow with a screenshot of each failure. Bugs go to `TODO.md`.
+- **Where** Archon's Repos tab runs it as E2E walk in each ticked repo. The flow list stays in `e2e/flows.json`, so a rerun walks the same flows.
+- **No data lost** the agent skips each control that deletes, clears, resets, signs out, sends or pays, and cancels each confirm dialog. Rows it adds start with `E2E` and stay for the person to remove.
+- **Limits** an unlabelled icon gets skipped, and so does a flow behind a sign in. The stop words are a rule the agent follows, with no lock in the app behind them.
+
 ## Voice at the end of a turn
 
 - **What it gives** the `turn-voice` hook speaks a short line when the agent finishes.
