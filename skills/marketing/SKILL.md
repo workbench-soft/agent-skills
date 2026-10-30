@@ -157,7 +157,10 @@ due today:
 2. **Account** missing? Sign up now. On a site that restricts new accounts,
    the post moves to a later date, with a warm-up before it.
 3. **Post** fit the text to the place: its words, a screenshot of its city or
-   topic.
+   topic. Attach the shots and the GIF from `docs/screenshots/`, picked by
+   their captions in `demo/shots.json`. A Reddit image or video post with
+   the link in the first comment SHOULD win where the sub allows it. No
+   shots yet? Run the `demo-media` skill first.
 4. **Check** view the post logged out. If a filter removed it, send the
    moderators one polite note.
 5. **Replies** reply to each comment during the session.

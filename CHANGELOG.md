@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- **demo-media** a new skill runs the app with made-up demo data, takes screenshots and short videos on the web, the desktop or a phone over adb, checks each frame for real people and private data, and shows them in the README from `docs/screenshots/`.
+- **store-media** a new skill uploads those shots, the promo video and the icon to Google Play, checks AdMob and AdSense, and swaps the icon on the site, the GitHub preview and each installer.
+- **marketing** Reddit posts attach the shots and the GIF from `docs/screenshots/`.
 - **app-audit** each lens agent fixes its own findings in its own worktree, one commit each. The main agent checks and cherry-picks each commit as soon as its report lands, so fixes start before the slowest lens ends.
 - **voice-test** the voice dropdown is a checkbox tree from Web Awesome. A group's box ticks or unticks all its voices.
 - **voice-test** the window is now a page in an Edge app window: pick the line, the groups and the languages, then tick voices in a dropdown. No console windows pop up. The README and the docs describe it and the flags.
