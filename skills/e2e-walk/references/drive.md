@@ -5,7 +5,9 @@ to the scratch folder of the session, outside the repo.
 
 ## Find the newest release
 
-The tag starts with the repo name. `memories` publishes as `memories-mobile`.
+The tag starts with the repo name, apart from a few apps: `memories` publishes
+as `memories-mobile`, `spotthecam` as `speed-camera-map`. The `tag` field of
+`launcher/apps.json` in the workspace repo lists each app.
 
 ```sh
 rel=workbench-soft/workbench-soft.github.io
@@ -13,7 +15,7 @@ GH_PAGER=cat gh release list -R $rel -L 50 --json tagName -q '.[].tagName' | gre
 GH_PAGER=cat gh release download <tag> -R $rel -p '*.apk' -D "$scratch/release"
 ```
 
-The Install button on the Archon CI tab does the same download and install
+The Install button on the Archon Apps tab does the same download and install
 for the phone plugged in.
 
 ## Android over adb
