@@ -50,8 +50,27 @@ function New-Group($matcher, $mode, [bool]$async) {
   return [pscustomobject]$group
 }
 
+# The voices of the hooks already there: <mode> <lang> <ru voice> <en voice> <edge-tts>.
+function Get-OwnVoices($settings) {
+  if (-not $settings.PSObject.Properties["hooks"]) { return $null }
+  foreach ($event in @($settings.hooks.PSObject.Properties)) {
+    foreach ($group in @($event.Value)) {
+      foreach ($hook in @($group.hooks)) {
+        if ($hook.command -like "*turn-voice.exe" -and @($hook.args).Count -ge 4) { return @($hook.args)[2..3] }
+      }
+    }
+  }
+  return $null
+}
+
 if (-not (Test-Path $claude)) { return }
 $settings = Read-Settings
+# The root install.ps1 passes no voice, so a voice picked by hand stays.
+$keptVoices = Get-OwnVoices $settings
+if ($keptVoices) {
+  if (-not $PSBoundParameters.ContainsKey("RuVoice")) { $RuVoice = $keptVoices[0] }
+  if (-not $PSBoundParameters.ContainsKey("EnVoice")) { $EnVoice = $keptVoices[1] }
+}
 Remove-OwnHooks $settings
 
 if ($Uninstall) {
