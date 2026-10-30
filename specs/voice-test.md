@@ -1,0 +1,92 @@
+# Listen to every voice
+
+## What it does for the person
+
+- **Hear before picking** the person hears each neural voice say the same
+  lines, then picks the ones for `turn-voice` or an app.
+- **Same test for each voice** first the voice's number and name, then 3
+  lines numbered 1, 2 and 3: English, Russian and a mix of both. Line 4
+  joins the mix from chunks, as `turn-voice` does.
+- **Groups** women, then men, then children, or one group alone.
+- **Resume** a stopped run picks up at the number the person names.
+
+## User flows
+
+1. The person asks to hear the voices. The agent runs the script.
+2. The script lists the voices: English, Russian and multilingual ones by
+   default, every voice with `--all`.
+3. For each voice it prints the number and the name, then plays the 4 clips
+   with a short pause between them.
+4. The person notes the numbers they liked and stops the run at any point.
+5. A later run starts at the noted number with `--start`.
+
+## How it works: modules, files, data
+
+- **`skills/voice-test/SKILL.md`** when to run the script and its flags.
+- **`skills/voice-test/scripts/voice_test.py`** asks `edge-tts` for the voice
+  list and for each clip, caches the mp3 files, and plays them. Windows
+  plays through `winmm`, macOS through `afplay`, Linux through `ffplay` or
+  `mpg123`.
+- **Cache** the voice list and the clips sit in `%LOCALAPPDATA%oice-test`
+  or `~/.cache/voice-test`. A second run plays from it.
+
+## Limits
+
+- **Online** `edge-tts` needs the Microsoft service.
+- **Long** every voice takes about 15 seconds, so `--all` runs over an hour.
+- **Other languages** a voice for one language returns no audio for a line
+  in another. Only the multilingual voices read all 3 lines.
+- **Broken voices** `ru-RU-DmitryNeural` returns no audio past one word, on
+  the Microsoft side. The script marks such clips and goes on.
+
+## Changes
+
+### 2026-10-30 a script that plays every voice
+
+- **Why** the person wants to hear each voice before choosing one.
+- **Changes** the new skill and its script, a line in `README.md` and
+  `CHANGELOG.md`.
+- **Steps** this spec, then the script, then the skill and the docs.
+- **Docs** `README.md`, `CHANGELOG.md`.
+
+### 2026-10-30 numbered lines, men or women, a lasting cache
+
+- **Why** the full run hung on voice 1. The person also wants each line
+  numbered, men and women apart, and no second download.
+- **Changes** in `skills/voice-test/scripts/voice_test.py`:
+  - **Hang** `edge-tts` writes stderr to a file, and a timeout kills its
+    whole process tree. A pipe left open by its child blocked the wait.
+  - **Lines** 3 lines that start with 1, 2 and 3. The name line starts with
+    the voice's own number.
+  - **Gender** `--gender male` or `--gender female`, read from the voice list.
+  - **Cache** the voice list and the clips sit in `%LOCALAPPDATA%\voice-test`
+    or `~/.cache/voice-test`. A line with no audio gets a `.none` mark, and
+    `--refresh` clears the marks and the list.
+- **Docs** `skills/voice-test/SKILL.md`, `CHANGELOG.md`.
+
+### 2026-10-30 voices by group, and a 4th line joined from chunks
+
+- **Why** women, men and the child voice came out mixed together. The person
+  also wants to hear the phrase the way `turn-voice` builds it.
+- **Changes** in `skills/voice-test/scripts/voice_test.py`:
+  - **Groups** women first, then men, then children. A child voice is one in
+    the `Cartoon` category, such as `en-US-AnaNeural`. The voice list holds
+    no other age. `--group` replaces `--gender` and plays one or more groups.
+  - **Line 4** the mixed phrase splits into Cyrillic and Latin chunks. The
+    voice reads each chunk apart, and a chunk it returns no audio for goes to
+    Svetlana or Ava. The quiet frames at each join are cut, as in
+    `turn-voice`.
+- **Docs** `skills/voice-test/SKILL.md`, `CHANGELOG.md`.
+
+### 2026-10-30 voices that read both languages apart from the rest
+
+- **Why** a voice for one language can't read the other, so 3 of its 4 lines
+  were noise or silence.
+- **Changes** in `skills/voice-test/scripts/voice_test.py`:
+  - **Both languages** the multilingual voices play first and say all 4
+    lines.
+  - **One language** the English only voices come next, then the Russian
+    only ones, then other locales. Each says one line, "1." and the line in
+    its language. Other locales read the English line.
+  - **Inside each** women, then men, then children, each under a heading.
+- **Docs** `skills/voice-test/SKILL.md`, `CHANGELOG.md`.

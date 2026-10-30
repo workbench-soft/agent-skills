@@ -1,0 +1,2 @@
+# sh fails on every line of a script that a Windows checkout gave CRLF ends.
+*.sh text eol=lf

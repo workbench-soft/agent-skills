@@ -1,0 +1,370 @@
+# agent-skills
+
+Skills for a coding agent: write like a person, review code, do a ticket, open
+a pull request and answer the review threads. One skill audits a whole app and
+fixes what it finds. Another set takes a site live with search, ads and Google
+Play, then brings in the first users.
+
+## Install
+
+The skills work in Claude Code, Codex, Cursor, Copilot, Windsurf, Goose and
+about 50 other agents. The installer finds each one on the machine and links
+the skills into it.
+
+Every agent links to one clone. An edit to a rule there reaches them at once.
+
+### macOS and Linux
+
+```sh
+git clone https://github.com/workbench-soft/agent-skills ~/.agent-skills
+~/.agent-skills/install.sh --lang English
+```
+
+It needs `git` and a POSIX shell, and a Mac comes with both.
+
+### Windows
+
+In PowerShell:
+
+```powershell
+git clone https://github.com/workbench-soft/agent-skills "$HOME\.agent-skills"
+powershell -ExecutionPolicy Bypass -File "$HOME\.agent-skills\install.ps1" -Lang English
+```
+
+The script finds the bash that ships with Git for Windows and runs the same
+installer through it. Without Git, it installs Git through `winget` first. The
+macOS lines also work unchanged in Git Bash.
+
+- **Developer Mode** MAY stay off. The agents then get a junction to each
+  skill folder, and a copy of the writing rules file.
+- **While it is off** rerun the install after each edit to
+  `writing-style.instructions.md`, so the copy stays current.
+- **Turning it on** Settings, then System, then For developers. The next
+  install then makes real symlinks.
+
+### Take only one skill
+
+Each skill is a folder with a `SKILL.md`. Copy `skills/<name>` into your
+agent's skills folder, such as `~/.claude/skills/`, and it works alone.
+`review`, `create-pr` and a few more load `writing-style`, so copy that one
+too.
+
+### What it does
+
+The command keeps one folder on disk and links it into each agent installed on
+the machine: Claude Code, Codex, Cursor, Copilot, Crush, Goose, Roo, Windsurf
+and others. The writing rules also land where an agent reads them on every
+turn, unasked: the VS Code prompts folder, `~/.claude/CLAUDE.md`,
+`~/.codex/AGENTS.md`. On Windows `~` means your user folder, and VS Code reads
+`%APPDATA%\Code\User\prompts`. That rules file sets more than writing:
+
+- **Spec per feature** each feature gets one file in `specs/`, written before
+  the code. Later work on it adds to that file, and a small bug fix needs
+  none.
+- **Docs** each change updates the README, the architecture, the user flows
+  and the features list, with mermaid diagrams.
+- **New app** the first plan covers search, ads, Google Play and marketing.
+- **Shipping** each change goes through a worktree and a PR with a changelog
+  entry, and the agent merges it when CI is green.
+- **Leftovers** what is still yours to do goes in `TODO.md` at the repo root,
+  in English.
+- **Session end** the last line says `✅ !!!COMPLETED!!!`,
+  `⏳ !!!RUNNING!!!`, `❓ !!!QUESTION!!!` or `⚠️ !!!NOT COMPLETED!!!`. A
+  finished session plays a
+  sound, and questions go through the agent's question tool.
+- **Spoken turn end** on Windows, `install.ps1` gives Claude hooks that play
+  a cue and say the folder, the outcome and the session title. Done gets
+  tada, not done a falling trombone, a question two rising notes.
+
+New skills reach the agents by themselves. The installer adds git hooks to
+the folder the agents link to. After a `git pull`, `merge`, `checkout` or
+`rebase` there, the hooks link each new skill and drop links to removed ones.
+
+- **Language** the hooks reuse the one you picked.
+- **Your own hook** in that folder is left alone. A pull then needs an install
+  rerun by hand.
+
+Rerun it after installing a new agent, or to switch language.
+
+`--lang`, or `-Lang` in PowerShell, sets the language your code review comes
+back in. Any language works:
+
+```sh
+~/.agent-skills/install.sh --lang Russian
+~/.agent-skills/install.sh --lang 日本語
+```
+
+```powershell
+powershell -ExecutionPolicy Bypass -File "$HOME\.agent-skills\install.ps1" -Lang Russian
+```
+
+Comments for the PR MUST stay in English, since the whole team reads them.
+
+`review`, `create-pr`, `address-comments`, `implement-ticket` and `app-audit`
+also read pull requests through `gh`. `implement-ticket` reads Jira as well,
+through the Atlassian MCP server or `acli`.
+
+## What you get
+
+**`writing-style`** tidies every line a person reads: chat, comments, commits,
+PRs, docs, UI copy. It asks for plain words, the answer first and one idea per
+sentence, with no em dash and no AI filler. It sets the layout too: bullets in
+place of paragraphs, each led by its point in bold, and no block past three
+lines.
+
+**`review`** reads a PR, a branch or a diff. It says what the change solves,
+draws the user flow and what each file does, and gives the order to read the
+files in. Then comes one table of every problem, and each problem in detail:
+the line number, the input that breaks it, the fix. Each one ends with a short
+comment ready to paste on the line. When posted, the comments go up with a
+verdict: approve, request changes for a real blocker, or comments only.
+
+**`create-pr`** writes the PR description and opens the PR with `gh`. The
+description holds the problem, the solution and a diagram of the user flows.
+It adds what to type and expect from any new command, and links to the designs
+and docs the work used. It also lists the code reused, the packages added and
+the commands that generated code.
+
+**`address-comments`** works through the open review threads on a PR. Each
+thread gets the smallest commit that does what the thread agreed on. Then it
+gets a reply with the SHA and one sentence on the fix. The skill pushes and
+replies without asking.
+
+**`implement-ticket`** carries a Jira ticket to review, in a new worktree off
+the latest `main` or `master`. It makes the smallest change that does the job,
+split into modules, with one commit per step carrying the ticket key. Then it
+opens the PR through `create-pr` and moves the ticket to In Review.
+
+**`specs`** keeps one spec per feature in `specs/<feature>.md`, written before
+the code. Work on a feature with a spec adds a dated entry to that file, and a
+further tweak in the same session extends the entry. A bug fix gets no spec,
+unless it changes the design, the data or several modules.
+
+**`mise`** runs each command through mise, so tools come at the versions the
+repo pins. A mise task runs with `mise run`, any other command with
+`mise x --`. A new tool goes in `mise.toml` with `mise use`, in place of
+`brew`, `winget` or `npm i -g`.
+
+**`app-audit`** checks a whole app in one go, without questions. Reviewers run
+in parallel, one per angle:
+
+- **Code** bugs, simplicity and tests, architecture and data formats.
+- **Safety** security and privacy, dependencies and CI.
+- **The person** speed, UX and accessibility, reliability offline.
+- **Mobile** the platform and its store.
+
+The agent checks each finding against the code and fixes the safe ones in a
+new worktree, one commit each. It runs the checks, a build and the app itself,
+and has a fresh reviewer read its own diff. Then it opens the PR and merges it
+when CI is green. Migrations, product calls and anything touching money or
+keys go in `TODO.md` with the reason.
+
+**`git-worktrees`** puts each piece of work in its own folder, and your
+checkout stays as it is. It copies the ignored files the app needs, such as
+`.env` and certificates, installs the dependencies and runs the app on a port
+of its own. When the PR merges it removes the folder and the branch, local and
+remote, and clears other merged worktrees as it goes. `implement-ticket`,
+`app-audit` and `review` rely on it.
+
+**`javascript`** keeps JS and TS code fast and safe. Independent calls run
+together, request data stays out of shared module state, and lookups go
+through a `Map`. Heavy imports load when the user opens the feature. Micro
+rewrites a modern engine already does are left alone. The rules come from
+Vercel's
+[`react-best-practices`](https://github.com/vercel-labs/agent-skills/tree/main/skills/react-best-practices)
+(MIT), minus the React and Next.js parts.
+
+**`architecture`** lays out an app, a monorepo or a web platform. It picks the
+smallest shape the teams need: one app, packages in a monorepo, or micro
+frontends behind a shell and edge workers. Packages sit in layers that import
+downward, and each piece of shared page state has one owning package. Each
+rule turns into a generator, a lint rule or a CI check. The design goes in
+`docs/architecture.md`, with diagrams and the options weighed. The techniques
+come from a production Nx monorepo of micro frontends. The workspace setup
+itself goes to `monorepo`.
+
+**`monorepo`** sets up one repo for the web apps, the mobile apps and the
+backend. It picks the task runner and keeps one native workspace per language:
+pnpm, Gradle, Swift packages, `go.work`, uv. Every tool version gets pinned in
+`mise.toml`, and one API schema gives each platform a generated client. Expo
+or native mobile, Docker images for services and CI with affected runs, a
+remote cache and a deploy per app come with it. Old repos move in with their
+history.
+
+**`reset-history`** wipes a repo's git history and leaves one fresh initial
+commit with the same files. It saves a bundle of the old history outside the
+repo first, then asks once before the push.
+
+- **Same files** the new commit takes the tree of the default branch, and the
+  agent checks the two match.
+- **Safe push** a force push with a lease, so a commit pushed in the meantime
+  stops it. A branch rule lifted for the push goes back right after.
+- **Clean up** old branches, tags and local objects go on your yes.
+- **Leftovers** other clones, forks, secrets to rotate and what GitHub keeps
+  go in `TODO.md`.
+
+**`seo-setup`** gets a site found in search. It finds where the domain lives,
+Cloudflare first. It audits the live site for tags, sitemap, structured data
+and the pages ad review asks for, and fixes the gaps in code. Then it goes
+through Cloudflare Web Analytics, Google Search Console and Bing in the
+browser, and plans the content.
+
+**`ads-setup`** adds AdSense to the site and AdMob to an Android app. Debug
+builds get test ads, the consent message goes live, and the Play Console ads
+and data safety pages get filled in. A Trusted Web Activity app hides
+AdSense, because the policy bans it inside apps.
+
+**`play-release`** brings an Android app to Google Play internal testing. It
+finds or makes the upload key outside the repo and builds a signed bundle.
+Then it creates the app in Play Console, rolls it out to testers and hands
+back the join link. A site with no app MAY turn into one through Bubblewrap.
+
+**`app-update`** lets an app installed outside a store update itself from
+GitHub releases. It checks on each start, and a Check for updates button says
+when it is checking and what it found. The download shows percent, MB, a bar
+and a cancel cross in the header. A notification says when the update is
+ready.
+
+**`launch`** runs `seo-setup`, `ads-setup` and `play-release` in order and asks
+the shared questions once. It ends with one table: each service, its state,
+the next step.
+
+**`marketing`** finds the first users for someone new to marketing. It asks
+for the budget first, then shows what that money buys and what the next tier
+adds. It writes the message and a launch calendar, and readies the site for
+visitors. It registers on Reddit, Hacker News and the forums that fit, posts,
+answers comments and writes to journalists. The plan goes in
+`docs/marketing.md`, where the next run picks up the calendar.
+
+**`domain-check`** finds a free name for a business, an app or a site. It
+suggests names for the topic and checks them in batches with a Python script:
+`.com`, `.com.au` and `.au`, the Australian Business Register and the IP
+Australia trade marks. The answer is a table of free, risky and taken names,
+and the picks with the reason for each. It needs no API keys.
+
+**`voice-test`** plays the Microsoft neural voices of `edge-tts` one after
+another. Each says its number and name, then an English line, a Russian line
+and a line that mixes both. You note the numbers you like and pick a voice for
+`turn-voice` or an app.
+
+These skills open dashboards in the agent's browser and ask you to log in
+there. They don't type passwords or card details. Each leaves `TODO.md` in the
+repo with the tasks still yours and the dates to check back.
+
+`review`, `create-pr`, `address-comments`, `implement-ticket` and `app-audit`
+load `writing-style` first, so their writing matches.
+
+## What a review looks like
+
+The review opens with a table, so the whole verdict fits on one screen:
+
+| # | Severity | Where | What |
+| --- | --- | --- | --- |
+| 1 | Blocker | `SaveName.tsx:42` | the typed name is lost when the save is slow |
+| 2 | Should fix | `profile.ts:88` | the save error is swallowed, so the page stays silent |
+| 3 | Nit | `SaveName.tsx:20` | no code reads the `isLoading` flag |
+
+<details>
+<summary>One finding out of that table</summary>
+
+### 1. Blocker: the typed name is lost when the server is slow
+
+[src/features/profile/SaveName.tsx:42](src/features/profile/SaveName.tsx#L42) · [on GitHub](https://github.com/acme/shop/blob/9f2c1ab/src/features/profile/SaveName.tsx#L42)
+
+**The name field clears before the server answers, so a failed save loses what
+the person typed. Clear it after the answer.**
+
+- **Who hits it** a person opens Settings, types a new name and presses Save.
+  No other path reaches this code.
+- **Now** line 42 empties the field, then waits for the server:
+  `setName(""); await saveName(name);`
+- **Comes out** the server answers two seconds later, or fails. The field is
+  already empty, so the typed name is neither on screen nor on the server, and
+  no message appears. Walked the code with that input.
+- **Costs** the person thinks it saved, leaves the page and loses the data. On a
+  slow network this is every second try.
+
+Fix, clear the field after the confirmation and leave the text alone on error:
+
+```tsx
+const saved = await saveName(name);
+if (saved.ok) setName("");
+```
+
+**Comment on** line 42, added in this PR, the green side of the diff.
+
+```markdown
+this clears the input before saveName comes back - if the save fails the typed
+name is gone. can we clear it after the call resolves ok?
+```
+
+</details>
+
+The part above the table holds three bullets on what the change solves, two
+mermaid diagrams and the reading order. One diagram shows the user flow, the
+other what each file does. Each comes with a mermaid.live link, for chats that
+show it as code. Below the table come the findings, then a comment ready to
+paste on the PR.
+
+## Use it
+
+Ask in plain words:
+
+- "review this" and a PR link
+- "open a PR for this branch"
+- "do PROJ-123"
+- "write a spec for photo upload"
+- "clean up the worktrees"
+- "install jq through mise"
+- "audit the app and fix what you can"
+- "why is this page slow"
+- "rewrite the repo: new names, new folders, new docs"
+- "where does this package go" or "split it into micro frontends"
+- "set up a monorepo for the web app, the mobile app and the API"
+- "reset the history and make a fresh initial commit"
+- "address the comments on this PR"
+- "rewrite this so it sounds human"
+- "set up SEO for this site"
+- "add AdSense and AdMob"
+- "put the app on Google Play internal testing"
+- "launch the site and the app"
+- "do the marketing, I can spend $100 a year"
+- "suggest a name for a dog grooming van and check the domains"
+
+## Change the language later
+
+Rerun the install with another `--lang` or `-Lang`. A rerun without it keeps
+the last language. Each skill keeps a copy in its `LANGUAGE.md`, and the next
+install or pull writes them all again, so an edit by hand goes away.
+
+## Remove them
+
+```sh
+~/.agent-skills/install.sh --uninstall
+```
+
+On Windows, in PowerShell:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File "$HOME\.agent-skills\install.ps1" -Uninstall
+```
+
+It lists the folders it will clear and asks before it deletes. Your own notes
+in `CLAUDE.md` and `AGENTS.md` stay, and only the installer's block goes.
+`--yes` MAY be added to skip the question.
+
+## Editing the skills
+
+[AGENTS.md](AGENTS.md) sets the rules for each `.md` file here: the prose
+budget under `skills/`, when a line earns a `MUST`, and what stays verbatim.
+Check a file against the budget, then every skill's frontmatter, links and
+banned words:
+
+```sh
+mise x -- python scripts/check-prose-budget.py skills/*/SKILL.md skills/*/references/*.md
+mise x -- python scripts/check-skills.py
+```
+
+## Licence
+
+MIT.
