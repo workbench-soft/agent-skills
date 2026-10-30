@@ -174,3 +174,12 @@
 - **Changes** `install.ps1` defaults `-RuVoice` to `ru-RU-SvetlanaNeural`,
   a Russian only voice. English runs keep `en-US-AvaNeural`.
 - **Docs** `CHANGELOG.md`.
+
+### 2026-10-30 the voice speaks Russian by default
+
+- **Why** the person heard every phrase in English and wants Russian. The
+  voice took its language from the review text, which is English.
+- **Changes** `install.ps1` gets `-VoiceLang`, `Russian` by default, and
+  passes it to `hooks/turn-voice/install.ps1`. `LANGUAGE.md` no longer sets
+  the voice.
+- **Docs** `CHANGELOG.md`.

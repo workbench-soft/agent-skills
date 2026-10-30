@@ -4,6 +4,8 @@
 #   git clone https://github.com/workbench-soft/agent-skills; .\agent-skills\install.ps1 -Lang English
 param(
   [string]$Lang = "",
+  # The spoken end of a turn has its own language, apart from the review text.
+  [string]$VoiceLang = "Russian",
   [switch]$Uninstall,
   [switch]$Yes
 )
@@ -63,8 +65,6 @@ if ($PSScriptRoot -and (Test-Path (Join-Path $PSScriptRoot "skills"))) {
 # throw keeps the window open. exit would close the PowerShell it ran in.
 if ($LASTEXITCODE -ne 0) { throw "install.sh failed with exit code $LASTEXITCODE" }
 
-# Claude speaks the end of each turn in the language install.sh just wrote.
+# Claude speaks the end of each turn in -VoiceLang, Russian unless asked otherwise.
 $repoDir = Split-Path $script
-$langFile = Join-Path $repoDir "skills\writing-style\LANGUAGE.md"
-$voiceLang = if (Test-Path $langFile) { "$(Get-Content $langFile -Encoding UTF8 -TotalCount 1)".Trim() } else { "" }
-& (Join-Path $repoDir "hooks\turn-voice\install.ps1") -Lang $voiceLang -Uninstall:$Uninstall
+& (Join-Path $repoDir "hooks\turn-voice\install.ps1") -Lang $VoiceLang -Uninstall:$Uninstall

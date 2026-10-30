@@ -63,6 +63,8 @@ turn, unasked: the VS Code prompts folder, `~/.claude/CLAUDE.md`,
   a cue and say the folder, the outcome and the session title. The outcome
   comes from a marker on the last line, such as `!!!COMPLETED!!!` or
   `!!!QUESTION!!!`, when your own rules ask the agent to write one.
+- **Voice language** Russian by default, apart from the review language.
+  `install.ps1 -VoiceLang English` switches the phrases to English.
 - **What it adds for the voice** hooks in `~/.claude/settings.json`,
   `turn-voice.exe` in `~/.claude/hooks`, and `uv` and `edge-tts` in your
   global mise config when mise is installed.
