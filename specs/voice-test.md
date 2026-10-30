@@ -105,3 +105,5 @@
   Gender and age already had `--group`, and the voice list gives no age
   past the child voices.
 - **Docs** `skills/voice-test/SKILL.md`, `CHANGELOG.md`.
+- **Later** `README.md`, `docs/features.md` and `docs/user-flows.md`
+  describe the window, the flags and the desktop shortcut.
