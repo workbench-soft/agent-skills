@@ -99,4 +99,9 @@
   `en`, `ru`, `mix` or `chunks`, and each voice says its name and that line
   only. `mix` and `chunks` play the multilingual voices only, `ru` adds the
   Russian only ones, `en` the rest.
+- **Window** `scripts/voice_test_ui.py` is a tkinter window over the script:
+  the line, women, men or children, names, locales and the start number,
+  then Play and Stop. `scripts/voice-test.cmd` opens it on a double click.
+  Gender and age already had `--group`, and the voice list gives no age
+  past the child voices.
 - **Docs** `skills/voice-test/SKILL.md`, `CHANGELOG.md`.
