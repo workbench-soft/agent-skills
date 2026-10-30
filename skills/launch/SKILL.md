@@ -43,13 +43,13 @@ already answered.
 
 Post the plan in the chat, then begin with no question:
 
-| # | Skill | Part | Needs before it |
-| --- | --- | --- | --- |
-| 1 | `seo-setup` | audit, fixes, Cloudflare, Search Console, Bing, content | the site live |
-| 2 | `ads-setup` | AdSense on the site, up to the review request | step 1 checks passing |
-| 3 | `play-release` | key, bundle, internal testing | the privacy policy live |
-| 4 | `ads-setup` | AdMob in a native app, or AdSense hidden in a TWA, then Play declarations | step 3 done |
-| 5 | `play-release` | a new internal build with the ad code | step 4 code merged |
+| #   | Skill          | Part                                                                      | Needs before it         |
+| --- | -------------- | ------------------------------------------------------------------------- | ----------------------- |
+| 1   | `seo-setup`    | audit, fixes, Cloudflare, Search Console, Bing, content                   | the site live           |
+| 2   | `ads-setup`    | AdSense on the site, up to the review request                             | step 1 checks passing   |
+| 3   | `play-release` | key, bundle, internal testing                                             | the privacy policy live |
+| 4   | `ads-setup`    | AdMob in a native app, or AdSense hidden in a TWA, then Play declarations | step 3 done             |
+| 5   | `play-release` | a new internal build with the ad code                                     | step 4 code merged      |
 
 - An unticked part is left out.
 - A TWA app leaves out step 5, unless step 4 changed the start URL.
@@ -73,13 +73,13 @@ Load the skills one after another and follow each, using the step 2 answers.
 A few steps complete days later. Record each one in the target repo's README
 record, along with its start date:
 
-| Wait | Usual length | What to do after |
-| --- | --- | --- |
-| Search Console data | 2 to 3 days | read Pages and Performance |
-| AdSense review | a few days to 4 weeks | add ad units, turn on serving |
-| Play developer ID check | a few days | create the app, upload |
-| Closed test for production | 14 days with 12 testers | apply for production access |
-| AdMob app review | after the app is public | real ads start serving |
+| Wait                       | Usual length            | What to do after              |
+| -------------------------- | ----------------------- | ----------------------------- |
+| Search Console data        | 2 to 3 days             | read Pages and Performance    |
+| AdSense review             | a few days to 4 weeks   | add ad units, turn on serving |
+| Play developer ID check    | a few days              | create the app, upload        |
+| Closed test for production | 14 days with 12 testers | apply for production access   |
+| AdMob app review           | after the app is public | real ads start serving        |
 
 ## 6. Write TODO.md
 
@@ -100,11 +100,11 @@ remaining tasks MUST go under `## launch`:
 
 A single table, with a row for each service:
 
-| Service | State | Link | Next step |
-| --- | --- | --- | --- |
-| Cloudflare Web Analytics | counting visits | dashboard link | |
-| Google Search Console | verified, sitemap read | dashboard link | read Pages on <date> |
-| AdSense | under review since <date> | dashboard link | run `ads-setup` on approval |
+| Service                  | State                     | Link           | Next step                   |
+| ------------------------ | ------------------------- | -------------- | --------------------------- |
+| Cloudflare Web Analytics | counting visits           | dashboard link |                             |
+| Google Search Console    | verified, sitemap read    | dashboard link | read Pages on <date>        |
+| AdSense                  | under review since <date> | dashboard link | run `ads-setup` on approval |
 
 After it:
 

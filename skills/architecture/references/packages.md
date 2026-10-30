@@ -26,12 +26,12 @@ prefixed and infrastructure all at once.
 
 ## Types
 
-| Type | Holds | Rule |
-| --- | --- | --- |
-| Infrastructure | Bootstrap, transport, events, registry, storage, i18n | Used by nearly every app |
-| API and domain hooks | Option factories and selectors over the API client | No UI |
-| Design system | Primitives and patterns | No business logic, no API calls |
-| Compound | Domain UI with the data behind it, such as a picker | The team that owns the data owns it |
+| Type                 | Holds                                                 | Rule                                |
+| -------------------- | ----------------------------------------------------- | ----------------------------------- |
+| Infrastructure       | Bootstrap, transport, events, registry, storage, i18n | Used by nearly every app            |
+| API and domain hooks | Option factories and selectors over the API client    | No UI                               |
+| Design system        | Primitives and patterns                               | No business logic, no API calls     |
+| Compound             | Domain UI with the data behind it, such as a picker   | The team that owns the data owns it |
 
 ## The component split rule
 

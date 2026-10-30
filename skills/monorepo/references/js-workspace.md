@@ -6,15 +6,15 @@ repo has no use for.
 
 ## Folders and scopes
 
-| Folder | Holds | Scope | Published |
-| --- | --- | --- | --- |
-| `apps/` | Web and mobile apps, MFEs | `@app/*` | No |
-| `services/` | Backend services in TS | `@service/*` | No |
-| `packages/` | Libraries other repos install | `@scope/*` | Yes |
-| `internal/` | Tooling and libraries for this repo only | `@repo/*` | No |
-| `contracts/` | Generated API clients | `@contract/*` | No |
-| `workers/` | Edge workers | `@worker/*` | No |
-| `e2e/` | Playwright and Maestro suites | `@e2e/*` | No |
+| Folder       | Holds                                    | Scope         | Published |
+| ------------ | ---------------------------------------- | ------------- | --------- |
+| `apps/`      | Web and mobile apps, MFEs                | `@app/*`      | No        |
+| `services/`  | Backend services in TS                   | `@service/*`  | No        |
+| `packages/`  | Libraries other repos install            | `@scope/*`    | Yes       |
+| `internal/`  | Tooling and libraries for this repo only | `@repo/*`     | No        |
+| `contracts/` | Generated API clients                    | `@contract/*` | No        |
+| `workers/`   | Edge workers                             | `@worker/*`   | No        |
+| `e2e/`       | Playwright and Maestro suites            | `@e2e/*`      | No        |
 
 - Every private scope MUST point at `https://0.0.0.0`. Then a typo or a
   missing link breaks the install, and a public package of the same name
@@ -26,18 +26,18 @@ repo has no use for.
 
 ```yaml
 packages: [apps/*, services/*, packages/*, internal/*, contracts/*, workers/*, e2e/*]
-catalog:                      # one version per shared dependency
+catalog: # one version per shared dependency
   "@tanstack/react-query": "5.x.y"
   zod: "^4.0.0"
-hoist: false                  # a package sees only what it declares
+hoist: false # a package sees only what it declares
 strictPeerDependencies: true
-strictDepBuilds: true         # install scripts run only when listed
+strictDepBuilds: true # install scripts run only when listed
 allowBuilds: { esbuild: true, nx: true }
-minimumReleaseAge: 4320       # a new upstream release waits 3 days
+minimumReleaseAge: 4320 # a new upstream release waits 3 days
 minimumReleaseAgeExclude: ["@scope/*"]
-blockExoticSubdeps: true      # a dependency can't pull a git or tarball URL
+blockExoticSubdeps: true # a dependency can't pull a git or tarball URL
 engineStrict: true
-packageExtensions:            # fix a dependency's missing peer here, not in a patch
+packageExtensions: # fix a dependency's missing peer here, not in a patch
   some-lib: { peerDependencies: { react: "*" } }
 ```
 
@@ -114,11 +114,15 @@ step. At publish time, `publishConfig` swaps the built files in.
   "type": "module",
   "sideEffects": false,
   "files": ["dist", "src"],
-  "exports": { ".": { "types": "./dist/index.d.ts", "import": "./src/index.ts" },
-               "./props": { "types": "./dist/props.d.ts", "import": "./src/props.ts" } },
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "import": "./src/index.ts" },
+    "./props": { "types": "./dist/props.d.ts", "import": "./src/props.ts" }
+  },
   "publishConfig": {
-    "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
-                 "./props": { "types": "./dist/props.d.ts", "import": "./dist/props.js" } },
+    "exports": {
+      ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
+      "./props": { "types": "./dist/props.d.ts", "import": "./dist/props.js" }
+    },
     "registry": "https://npm.pkg.github.com"
   }
 }
@@ -132,14 +136,23 @@ step. At publish time, `publishConfig` swaps the built files in.
 
 ```json
 {
-  "plugins": ["@nx/eslint/plugin", "@nx/js/typescript", "@nx/vitest",
-              "@repo/nx-plugin/app", "@repo/nx-plugin/package", "@repo/nx-plugin/worker"],
+  "plugins": [
+    "@nx/eslint/plugin",
+    "@nx/js/typescript",
+    "@nx/vitest",
+    "@repo/nx-plugin/app",
+    "@repo/nx-plugin/package",
+    "@repo/nx-plugin/worker"
+  ],
   "release": { "projects": ["!*"] },
   "targetDefaults": {
     "lint": { "dependsOn": ["^build"], "cache": true },
     "test": { "dependsOn": ["^build"], "cache": true, "outputs": ["{projectRoot}/coverage"] },
-    "typecheck": { "dependsOn": ["^build"], "cache": true,
-                   "outputs": ["{projectRoot}/tsconfig.tsbuildinfo", "{projectRoot}/dist/**/*.d.ts"] }
+    "typecheck": {
+      "dependsOn": ["^build"],
+      "cache": true,
+      "outputs": ["{projectRoot}/tsconfig.tsbuildinfo", "{projectRoot}/dist/**/*.d.ts"]
+    }
   }
 }
 ```
@@ -166,9 +179,11 @@ step. At publish time, `publishConfig` swaps the built files in.
 ```ts
 export default {
   treatConfigHintsAsErrors: Boolean(process.env.CI),
-  ignoreUnresolved: [/routeTree\.gen$/],          // written by the router plugin at build time
+  ignoreUnresolved: [/routeTree\.gen$/], // written by the router plugin at build time
   workspaces: {
-    "apps/*": { entry: ["src/main.ts", "src/routes/**/*.{ts,tsx}", "!src/routes/{**/-*,-**/*}.{ts,tsx}"] },
+    "apps/*": {
+      entry: ["src/main.ts", "src/routes/**/*.{ts,tsx}", "!src/routes/{**/-*,-**/*}.{ts,tsx}"],
+    },
   },
 } satisfies KnipConfig;
 ```

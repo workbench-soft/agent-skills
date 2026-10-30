@@ -27,8 +27,9 @@ pnpm --filter @app/mobile exec expo-doctor
 ```ts
 // app.config.ts
 export default {
-  name: "App", slug: "app",
-  runtimeVersion: { policy: "fingerprint" },   // OTA only reaches builds with the same native code
+  name: "App",
+  slug: "app",
+  runtimeVersion: { policy: "fingerprint" }, // OTA only reaches builds with the same native code
   ios: { bundleIdentifier: "com.example.app" },
   android: { package: "com.example.app" },
   plugins: ["expo-router"],

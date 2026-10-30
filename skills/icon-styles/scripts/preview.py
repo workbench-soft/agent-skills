@@ -139,7 +139,7 @@ def card(svg: Path, picked: str) -> str:
     mark = " picked" if svg.name == picked else ""
     return (
         f'<div class="card{mark}" data-file="{main_src}">'
-        f'<h2>{html.escape(number)}. {html.escape(style.replace("-", " "))}</h2>'
+        f"<h2>{html.escape(number)}. {html.escape(style.replace('-', ' '))}</h2>"
         f"<p>{caption}</p>"
         f'<img class="big" src="{main_src}" alt="">'
         f"{row('light', main_src, small_src)}{row('dark', main_src, small_src)}</div>"

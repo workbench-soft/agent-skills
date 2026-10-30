@@ -38,9 +38,16 @@ The site MUST list the two keys, or an address bar appears in the app:
    integrity, Play app signing. It appears after the first upload.
 
 ```json
-[{ "relation": ["delegate_permission/common.handle_all_urls"],
-   "target": { "namespace": "android_app", "package_name": "com.acme.notes",
-     "sha256_cert_fingerprints": ["<upload key SHA-256>", "<Play app signing SHA-256>"] } }]
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.acme.notes",
+      "sha256_cert_fingerprints": ["<upload key SHA-256>", "<Play app signing SHA-256>"]
+    }
+  }
+]
 ```
 
 Serve the file at `https://$d/.well-known/assetlinks.json`: status 200, JSON,

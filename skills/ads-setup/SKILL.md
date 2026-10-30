@@ -41,12 +41,12 @@ ls android app 2>/dev/null; ls pubspec.yaml capacitor.config.* android/twa-manif
 
 ## 2. Pick the ad product per surface
 
-| Surface | Ads from | Read |
-| --- | --- | --- |
-| A website in a browser | AdSense | [references/adsense.md](references/adsense.md) |
-| A native app: Kotlin, Java, Flutter, React Native | AdMob | [references/admob.md](references/admob.md) |
-| A Capacitor or WebView app | AdMob, plus the WebView API for Ads when the web page shows AdSense | [references/admob.md](references/admob.md) |
-| A TWA showing the site | AdSense off inside the app | [references/twa-ads.md](references/twa-ads.md) |
+| Surface                                           | Ads from                                                            | Read                                           |
+| ------------------------------------------------- | ------------------------------------------------------------------- | ---------------------------------------------- |
+| A website in a browser                            | AdSense                                                             | [references/adsense.md](references/adsense.md) |
+| A native app: Kotlin, Java, Flutter, React Native | AdMob                                                               | [references/admob.md](references/admob.md)     |
+| A Capacitor or WebView app                        | AdMob, plus the WebView API for Ads when the web page shows AdSense | [references/admob.md](references/admob.md)     |
+| A TWA showing the site                            | AdSense off inside the app                                          | [references/twa-ads.md](references/twa-ads.md) |
 
 AdSense code MAY run on web pages and approved WebView setups, and only there.
 A TWA counts as neither, so the site MUST hide AdSense when the app opens it.

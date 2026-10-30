@@ -3,16 +3,16 @@
 Open the zone at `https://dash.cloudflare.com` and go down the rows. Any row
 that changes the traffic path MUST get the user's agreement before the change.
 
-| Where | Setting | Why |
-| --- | --- | --- |
-| SSL/TLS, Overview | Full (strict) | on some hosts Flexible mode sends redirects round in a loop |
-| SSL/TLS, Edge Certificates | Always Use HTTPS on | each page gets a single https address |
-| Rules, Redirect Rules | `www` to the bare domain, 301, keep the path and query | a page lives on one host, and its links stay together |
-| DNS, Records | a proxied record for `www`, `AAAA 100::` works | a redirect rule fires on proxied names only |
-| Caching, Configuration | Crawler Hints on | IndexNow passes changed URLs to Bing and Yandex |
-| Analytics & Logs, Web Analytics | the site added, automatic setup | visits get counted and no cookie banner is needed |
-| Security, Bots | Bot Fight Mode off, or verified bots allowed | Googlebot, Bingbot and the AdSense crawler MUST get through |
-| AI Crawl Control or Bots, managed robots.txt | read what it adds to `robots.txt` | an AI bot rule is fine, a `Googlebot` or `Mediapartners-Google` rule breaks indexing and ads |
+| Where                                        | Setting                                                | Why                                                                                          |
+| -------------------------------------------- | ------------------------------------------------------ | -------------------------------------------------------------------------------------------- |
+| SSL/TLS, Overview                            | Full (strict)                                          | on some hosts Flexible mode sends redirects round in a loop                                  |
+| SSL/TLS, Edge Certificates                   | Always Use HTTPS on                                    | each page gets a single https address                                                        |
+| Rules, Redirect Rules                        | `www` to the bare domain, 301, keep the path and query | a page lives on one host, and its links stay together                                        |
+| DNS, Records                                 | a proxied record for `www`, `AAAA 100::` works         | a redirect rule fires on proxied names only                                                  |
+| Caching, Configuration                       | Crawler Hints on                                       | IndexNow passes changed URLs to Bing and Yandex                                              |
+| Analytics & Logs, Web Analytics              | the site added, automatic setup                        | visits get counted and no cookie banner is needed                                            |
+| Security, Bots                               | Bot Fight Mode off, or verified bots allowed           | Googlebot, Bingbot and the AdSense crawler MUST get through                                  |
+| AI Crawl Control or Bots, managed robots.txt | read what it adds to `robots.txt`                      | an AI bot rule is fine, a `Googlebot` or `Mediapartners-Google` rule breaks indexing and ads |
 
 The redirect MAY run the other way instead, bare domain to `www`. Choose the
 host the canonical links point at already.

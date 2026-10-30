@@ -51,12 +51,12 @@ whois "$d" | grep -iE 'registrar:|name server' | sort -u
 curl -sI "https://$d" | grep -iE '^(server|cf-ray):'  # server: cloudflare: proxied
 ```
 
-| What the checks show | Path |
-| --- | --- |
-| Cloudflare DNS, proxied | the Cloudflare path below, every step |
-| Cloudflare DNS, grey cloud | ask before turning the proxy on, it moves traffic through Cloudflare |
-| DNS at another host | offer moving DNS to Cloudflare, free plan. The user decides, the nameservers change at the registrar |
-| The user keeps DNS elsewhere | the same steps, with the TXT records added at that host and the analytics snippet in the page |
+| What the checks show         | Path                                                                                                 |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------- |
+| Cloudflare DNS, proxied      | the Cloudflare path below, every step                                                                |
+| Cloudflare DNS, grey cloud   | ask before turning the proxy on, it moves traffic through Cloudflare                                 |
+| DNS at another host          | offer moving DNS to Cloudflare, free plan. The user decides, the nameservers change at the registrar |
+| The user keeps DNS elsewhere | the same steps, with the TXT records added at that host and the analytics snippet in the page        |
 
 The Cloudflare settings are in
 [references/cloudflare.md](references/cloudflare.md). Read it.

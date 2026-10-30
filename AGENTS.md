@@ -21,10 +21,10 @@ only. The other rules apply to `README.md` and the instructions file as well.
 The cap counts prose lines. Fenced blocks and blank lines don't count, since
 those examples are the templates the agent copies.
 
-| File | Prose lines |
-| --- | --- |
-| `SKILL.md` | 300 |
-| a reference file | 60 |
+| File             | Prose lines |
+| ---------------- | ----------- |
+| `SKILL.md`       | 300         |
+| a reference file | 60          |
 
 ```sh
 mise x -- python scripts/check-prose-budget.py skills/*/SKILL.md skills/*/references/*.md

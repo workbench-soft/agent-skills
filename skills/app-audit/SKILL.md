@@ -47,17 +47,17 @@ within 15 lines:
 
 ## 2. Pick the lenses
 
-| Lens | Runs when |
-| --- | --- |
-| Bugs and edge cases | always |
-| Security, privacy and licences | always |
-| Architecture and data formats | always |
-| Simplicity, duplication and tests | always |
-| Dependencies, tooling and CI | always |
-| Performance and cost | the repo has code that runs |
-| UX, accessibility and copy | a person uses a screen of it |
+| Lens                                | Runs when                                               |
+| ----------------------------------- | ------------------------------------------------------- |
+| Bugs and edge cases                 | always                                                  |
+| Security, privacy and licences      | always                                                  |
+| Architecture and data formats       | always                                                  |
+| Simplicity, duplication and tests   | always                                                  |
+| Dependencies, tooling and CI        | always                                                  |
+| Performance and cost                | the repo has code that runs                             |
+| UX, accessibility and copy          | a person uses a screen of it                            |
 | Reliability, offline and monitoring | network calls, background work, jobs or a data pipeline |
-| Platform and store | a mobile or desktop app, native code, a store listing |
+| Platform and store                  | a mobile or desktop app, native code, a store listing   |
 
 - **User picked a focus** the lenses or focus the user named run, with Bugs
   added.
@@ -129,11 +129,11 @@ For each commit on the report's Fixed list:
 - **Leave lines** read each reason. One you judge a Fix goes to the redo list.
 - **Table** post the report's rows in the chat, then go on with no question:
 
-| # | Lens | Finding | Where | Decision |
-| --- | --- | --- | --- | --- |
-| 1 | Bugs | road names lose their last letter | `build-data.ts:38` | Fix |
-| 2 | Architecture | `cameras.json` has no format number | `camera.ts:28` | Fix |
-| 3 | Dependencies | move from Leaflet to MapLibre | | Leave: migration, 6x the JS |
+| #   | Lens         | Finding                             | Where              | Decision                    |
+| --- | ------------ | ----------------------------------- | ------------------ | --------------------------- |
+| 1   | Bugs         | road names lose their last letter   | `build-data.ts:38` | Fix                         |
+| 2   | Architecture | `cameras.json` has no format number | `camera.ts:28`     | Fix                         |
+| 3   | Dependencies | move from Leaflet to MapLibre       |                    | Leave: migration, 6x the JS |
 
 Once each commit of a lens is picked or dropped, remove its worktree with
 `git worktree remove` and its local branch with `git branch -D`. Its
@@ -221,11 +221,11 @@ replace the existing one. Commit it before the PR opens, and again each time ste
 Open the answer with the PR link and its merge state, then the table. Each SHA
 is the commit on the audit branch:
 
-| # | Lens | Finding | Result |
-| --- | --- | --- | --- |
-| 1 | Bugs | road names lose their last letter | fixed, `2b28ffa` |
-| 2 | Architecture | `cameras.json` has no format number | fixed, `9be68c6` |
-| 3 | Dependencies | Leaflet to MapLibre | left: 6x the JS for a heading-up view |
+| #   | Lens         | Finding                             | Result                                |
+| --- | ------------ | ----------------------------------- | ------------------------------------- |
+| 1   | Bugs         | road names lose their last letter   | fixed, `2b28ffa`                      |
+| 2   | Architecture | `cameras.json` has no format number | fixed, `9be68c6`                      |
+| 3   | Dependencies | Leaflet to MapLibre                 | left: 6x the JS for a heading-up view |
 
 After the table:
 

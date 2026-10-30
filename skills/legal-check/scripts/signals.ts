@@ -27,14 +27,20 @@ const PAGES: [string, RegExp, boolean?][] = [
   ["License", /^(LICEN[CS]E|COPYING)(\.\w+)?$/i, true],
   ["Privacy policy", /privacy/i],
   ["Terms", /terms|\btos\b|eula/i],
-  ["Third party notices", /^NOTICE|third.?party|attribution|open.?source|licenses\.(json|md|html|tsx?)/i],
+  [
+    "Third party notices",
+    /^NOTICE|third.?party|attribution|open.?source|licenses\.(json|md|html|tsx?)/i,
+  ],
   ["ads.txt", /^(app-)?ads\.txt$/],
 ];
 
-const TEXT = /\.(tsx?|jsx?|mjs|json|kts?|gradle|xml|swift|plist|rs|toml|html|astro|vue|py|properties)$/;
+const TEXT =
+  /\.(tsx?|jsx?|mjs|json|kts?|gradle|xml|swift|plist|rs|toml|html|astro|vue|py|properties)$/;
 
 export function trackedFiles(dir: string): string[] {
-  return execFileSync("git", ["ls-files"], { cwd: dir, encoding: "utf8" }).split("\n").filter(Boolean);
+  return execFileSync("git", ["ls-files"], { cwd: dir, encoding: "utf8" })
+    .split("\n")
+    .filter(Boolean);
 }
 
 export function scanSignals(dir: string) {
@@ -42,12 +48,12 @@ export function scanSignals(dir: string) {
   const sdks: Record<string, string[]> = {};
   const permissions = new Set<string>();
   for (const file of files) {
-    if (!TEXT.test(file) || /(^|\/)(node_modules|dist|build|vendor)\/|lock|\.min\./.test(file)) continue;
+    if (!TEXT.test(file) || /(^|\/)(node_modules|dist|build|vendor)\/|lock|\.min\./.test(file))
+      continue;
     const path = join(dir, file);
     if ((statSync(path, { throwIfNoEntry: false })?.size ?? Infinity) > 1e6) continue;
     const text = readFileSync(path, "utf8");
-    for (const [name, pattern] of SDKS)
-      if (pattern.test(text)) (sdks[name] ??= []).push(file);
+    for (const [name, pattern] of SDKS) if (pattern.test(text)) (sdks[name] ??= []).push(file);
     for (const match of text.matchAll(/android\.permission\.(\w+)|"(\w+_\w+)"/g)) {
       const permission = match[1] ?? match[2];
       if (SENSITIVE.test(permission) && (match[1] || /app\.(json|config)/.test(file)))

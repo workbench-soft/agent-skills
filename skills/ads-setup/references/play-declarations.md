@@ -27,12 +27,12 @@ Before filling it in, read Google's list for the SDK version the app ships:
 
 The AdMob SDK usually comes out as:
 
-| Data type | Collected | Shared | Why |
-| --- | --- | --- | --- |
-| Approximate location, from the IP | yes | yes | advertising, fraud prevention |
-| Device or other IDs | yes | yes | advertising, analytics, fraud prevention |
-| App interactions | yes | yes | advertising, analytics |
-| Crash logs, diagnostics | yes | yes | analytics |
+| Data type                         | Collected | Shared | Why                                      |
+| --------------------------------- | --------- | ------ | ---------------------------------------- |
+| Approximate location, from the IP | yes       | yes    | advertising, fraud prevention            |
+| Device or other IDs               | yes       | yes    | advertising, analytics, fraud prevention |
+| App interactions                  | yes       | yes    | advertising, analytics                   |
+| Crash logs, diagnostics           | yes       | yes    | analytics                                |
 
 Encrypted in transit: yes. Then add the data the app collects on its own.
 

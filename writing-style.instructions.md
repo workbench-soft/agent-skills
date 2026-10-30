@@ -1,6 +1,6 @@
 ---
-description: 'Global writing style, a spec per feature in specs/ before the code, docs with every change, launch planning for a new app, how every change ships, and where to list work left undone. Applies to every response, in every workspace.'
-applyTo: '**'
+description: "Global writing style, a spec per feature in specs/ before the code, docs with every change, launch planning for a new app, how every change ships, and where to list work left undone. Applies to every response, in every workspace."
+applyTo: "**"
 ---
 
 # How to write

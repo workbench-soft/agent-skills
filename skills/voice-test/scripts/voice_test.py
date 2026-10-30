@@ -67,8 +67,14 @@ def list_voices(tts: str, out: Path, refresh: bool) -> list[tuple[str, str]]:
     """Each voice id with its group. The list is kept in voices.txt until --refresh."""
     cached = out / "voices.txt"
     if refresh or not cached.exists():
-        text = subprocess.run([tts, "--list-voices"], capture_output=True, text=True, encoding="utf-8", check=True,
-                              creationflags=NO_WINDOW).stdout
+        text = subprocess.run(
+            [tts, "--list-voices"],
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            check=True,
+            creationflags=NO_WINDOW,
+        ).stdout
         cached.write_text(text, encoding="utf-8")
     voices = []
     for line in cached.read_text(encoding="utf-8").splitlines():
@@ -90,9 +96,16 @@ def pick(voices: list[tuple[str, str]], args: argparse.Namespace) -> list[tuple[
         voices = [(v, g) for v, g in voices if v.startswith(langs) or "Multilingual" in v]
     if args.line:
         # mix and chunks need both languages. Other locales read the English line.
-        voices = [(v, g) for v, g in voices if reads(v) == "both"
-                  or (args.line == "ru") == (reads(v) == "ru") and args.line in ("en", "ru")]
-    order = lambda vg: (READS.index(reads(vg[0])) if reads(vg[0]) in READS else len(READS), reads(vg[0]), GROUPS.index(vg[1]))
+        voices = [
+            (v, g)
+            for v, g in voices
+            if reads(v) == "both" or (args.line == "ru") == (reads(v) == "ru") and args.line in ("en", "ru")
+        ]
+    order = lambda vg: (
+        READS.index(reads(vg[0])) if reads(vg[0]) in READS else len(READS),
+        reads(vg[0]),
+        GROUPS.index(vg[1]),
+    )
     return sorted(voices, key=order)
 
 
@@ -128,9 +141,13 @@ def fetch(tts: str, voice: str, text: str, out: Path) -> Path | None:
         for _ in range(2):
             # stderr goes to a file: a pipe stays open in the child edge-tts starts, and the wait hangs on it.
             with open(log, "w+b") as err:
-                proc = subprocess.Popen([tts, "--voice", voice, f"--pitch={PITCH:+d}Hz", "--text", text, "--write-media", str(part)],
-                                        stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=err,
-                                        creationflags=NO_WINDOW)
+                proc = subprocess.Popen(
+                    [tts, "--voice", voice, f"--pitch={PITCH:+d}Hz", "--text", text, "--write-media", str(part)],
+                    stdin=subprocess.DEVNULL,
+                    stdout=subprocess.DEVNULL,
+                    stderr=err,
+                    creationflags=NO_WINDOW,
+                )
                 try:
                     code = proc.wait(timeout=TIMEOUT)
                 except subprocess.TimeoutExpired:
@@ -156,7 +173,9 @@ def fetch(tts: str, voice: str, text: str, out: Path) -> Path | None:
 def kill_tree(proc: subprocess.Popen) -> None:
     # On Windows edge-tts.exe is a launcher, and its Python child keeps running after a plain kill.
     if sys.platform == "win32":
-        subprocess.run(["taskkill", "/T", "/F", "/PID", str(proc.pid)], capture_output=True, check=False, creationflags=NO_WINDOW)
+        subprocess.run(
+            ["taskkill", "/T", "/F", "/PID", str(proc.pid)], capture_output=True, check=False, creationflags=NO_WINDOW
+        )
     else:
         proc.kill()
     proc.wait()
@@ -210,7 +229,7 @@ def trim(mp3: bytes, cut_start: bool, cut_end: bool) -> bytes:
         return mp3
     first = max(0, loud[0] - 2) if cut_start else 0
     last = min(len(frames) - 1, loud[-1] + 3) if cut_end else len(frames) - 1
-    return mp3[frames[first][0]:frames[last][0] + frames[last][1]]
+    return mp3[frames[first][0] : frames[last][0] + frames[last][1]]
 
 
 def fetch_chunked(tts: str, voice: str, text: str, out: Path) -> Path | None:
@@ -221,7 +240,9 @@ def fetch_chunked(tts: str, voice: str, text: str, out: Path) -> Path | None:
         return file
     parts = []
     for run in chunks(text):
-        clip = fetch(tts, voice, run, out) or fetch(tts, RU_PARTNER if re.search("[А-Яа-яЁё]", run) else EN_PARTNER, run, out)
+        clip = fetch(tts, voice, run, out) or fetch(
+            tts, RU_PARTNER if re.search("[А-Яа-яЁё]", run) else EN_PARTNER, run, out
+        )
         if not clip:
             return None
         parts.append(clip.read_bytes())
@@ -230,14 +251,21 @@ def fetch_chunked(tts: str, voice: str, text: str, out: Path) -> Path | None:
     return file
 
 
-def fetch_voice(pool: ThreadPoolExecutor, tts: str, voice: str, number: int, args: argparse.Namespace) -> tuple[tuple, list[Future]]:
+def fetch_voice(
+    pool: ThreadPoolExecutor, tts: str, voice: str, number: int, args: argparse.Namespace
+) -> tuple[tuple, list[Future]]:
     name = pool.submit(fetch, tts, voice, f"{number}. {spoken_name(voice)}.", args.out)
     language = reads(voice)
     if language != "both":
         # A voice for one language says only its own line. Other locales try the English one.
         line, label = (args.ru, "1 Russian") if language == "ru" else (args.en, "1 English")
         return ("name", label), [name, pool.submit(fetch, tts, voice, f"1. {line}", args.out)]
-    lines = [(fetch, f"1. {args.en}"), (fetch, f"2. {args.ru}"), (fetch, f"3. {args.mix}"), (fetch_chunked, f"4. {args.mix}")]
+    lines = [
+        (fetch, f"1. {args.en}"),
+        (fetch, f"2. {args.ru}"),
+        (fetch, f"3. {args.mix}"),
+        (fetch_chunked, f"4. {args.mix}"),
+    ]
     keep = [LINES.index(args.line)] if args.line else range(len(lines))
     labels = ("name",) + tuple(BOTH_LABELS[k + 1] for k in keep)
     return labels, [name] + [pool.submit(lines[k][0], tts, voice, lines[k][1], args.out) for k in keep]
@@ -246,14 +274,19 @@ def fetch_voice(pool: ThreadPoolExecutor, tts: str, voice: str, number: int, arg
 def play(file: Path) -> None:
     if sys.platform == "win32":
         import ctypes
+
         mci = ctypes.windll.winmm.mciSendStringW
         mci(f'open "{file}" type mpegvideo alias vt', None, 0, None)
         mci("play vt wait", None, 0, None)
         mci("close vt", None, 0, None)
         return
-    player = (["afplay"] if sys.platform == "darwin" else
-              ["ffplay", "-nodisp", "-autoexit", "-loglevel", "quiet"] if shutil.which("ffplay") else
-              ["mpg123", "-q"])
+    player = (
+        ["afplay"]
+        if sys.platform == "darwin"
+        else ["ffplay", "-nodisp", "-autoexit", "-loglevel", "quiet"]
+        if shutil.which("ffplay")
+        else ["mpg123", "-q"]
+    )
     subprocess.run(player + [str(file)], check=False)
 
 
@@ -288,14 +321,21 @@ def main() -> int:
             none.unlink()
     voices = pick(list_voices(tts, args.out, args.refresh), args)
     if args.list:
-        print(json.dumps([{"number": n, "id": v, "name": spoken_name(v), "group": g, "heading": heading(v, g)}
-                          for n, (v, g) in enumerate(voices, 1)], ensure_ascii=False))
+        print(
+            json.dumps(
+                [
+                    {"number": n, "id": v, "name": spoken_name(v), "group": g, "heading": heading(v, g)}
+                    for n, (v, g) in enumerate(voices, 1)
+                ],
+                ensure_ascii=False,
+            )
+        )
         return 0
     if not voices:
         sys.exit("No voice matches.")
-    numbered = list(enumerate(voices, 1))[args.start - 1:]
+    numbered = list(enumerate(voices, 1))[args.start - 1 :]
     if args.count:
-        numbered = numbered[:args.count]
+        numbered = numbered[: args.count]
     print(f"{len(voices)} voices, playing {len(numbered)} from number {args.start}. Clips in {args.out}", flush=True)
 
     group = None

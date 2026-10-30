@@ -69,7 +69,9 @@ function voices(pick: Pick, res: ServerResponse): void {
   proc.stdout?.setEncoding("utf8").on("data", (chunk: string) => (out += chunk));
   proc.stderr?.setEncoding("utf8").on("data", (chunk: string) => (err += chunk));
   proc.on("error", (e) => json(res, 500, { error: `${python}: ${e.message}` }));
-  proc.on("close", (code) => (code === 0 ? json(res, 200, JSON.parse(out)) : json(res, 500, { error: err.trim() })));
+  proc.on("close", (code) =>
+    code === 0 ? json(res, 200, JSON.parse(out)) : json(res, 500, { error: err.trim() }),
+  );
 }
 
 function play(pick: Pick): void {
@@ -121,8 +123,10 @@ const server = createServer(async (req, res) => {
   try {
     if (url.pathname === "/") return file(res, "index.html", "text/html");
     if (url.pathname === "/app.js") return file(res, "app.ts", "text/javascript");
-    if (url.pathname === "/api/voices" && req.method === "POST") return voices(await body(req), res);
-    if (url.pathname === "/api/play" && req.method === "POST") return (play(await body(req)), json(res, 200, {}));
+    if (url.pathname === "/api/voices" && req.method === "POST")
+      return voices(await body(req), res);
+    if (url.pathname === "/api/play" && req.method === "POST")
+      return (play(await body(req)), json(res, 200, {}));
     if (url.pathname === "/api/stop" && req.method === "POST") return (stop(), json(res, 200, {}));
     if (url.pathname === "/api/events") {
       res.writeHead(200, { "content-type": "text/event-stream", "cache-control": "no-store" });
@@ -145,10 +149,14 @@ server.listen(0, "127.0.0.1", () => {
   if (process.argv.includes("--no-open")) return console.log(url);
   // Edge opens the page as an app window, with no tabs or address bar.
   if (win) {
-    spawn("cmd.exe", ["/d", "/s", "/c", `start "" msedge --app=${url} --window-size=820,900 || start "" ${url}`], {
-      windowsHide: true,
-      windowsVerbatimArguments: true,
-    });
+    spawn(
+      "cmd.exe",
+      ["/d", "/s", "/c", `start "" msedge --app=${url} --window-size=820,900 || start "" ${url}`],
+      {
+        windowsHide: true,
+        windowsVerbatimArguments: true,
+      },
+    );
   } else {
     spawn(process.platform === "darwin" ? "open" : "xdg-open", [url], { stdio: "ignore" });
   }

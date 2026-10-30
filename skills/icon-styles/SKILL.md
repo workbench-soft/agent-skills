@@ -159,14 +159,14 @@ run the export with only those targets:
 mise x python@3.13 github:linebender/resvg@0.49.0 -- python <skill-dir>/scripts/export_icons.py design/icons/<date>/07-blueprint.svg --out <folder> --targets windows,png
 ```
 
-| Target | Files |
-| --- | --- |
-| `png` | `icon-16.png` to `icon-1024.png` |
-| `windows` | `icon.ico` with 16 to 256 px inside |
-| `web` | `favicon.ico`, `favicon.svg`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`, `icon-maskable-512.png` |
-| `android` | `mipmap-*/ic_launcher.png`, `mipmap-*/ic_launcher_foreground.png`, `play-store-512.png` |
-| `ios` | `AppIcon-1024.png`, opaque |
-| `expo` | `icon.png`, `adaptive-icon.png`, `favicon.png` |
+| Target    | Files                                                                                                         |
+| --------- | ------------------------------------------------------------------------------------------------------------- |
+| `png`     | `icon-16.png` to `icon-1024.png`                                                                              |
+| `windows` | `icon.ico` with 16 to 256 px inside                                                                           |
+| `web`     | `favicon.ico`, `favicon.svg`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`, `icon-maskable-512.png` |
+| `android` | `mipmap-*/ic_launcher.png`, `mipmap-*/ic_launcher_foreground.png`, `play-store-512.png`                       |
+| `ios`     | `AppIcon-1024.png`, opaque                                                                                    |
+| `expo`    | `icon.png`, `adaptive-icon.png`, `favicon.png`                                                                |
 
 - **Small file** `--small design/icons/<date>/07-blueprint-small.svg` when
   the pick has one.

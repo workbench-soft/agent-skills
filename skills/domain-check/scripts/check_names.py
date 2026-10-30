@@ -40,15 +40,29 @@ TM_URL = "https://search.ipaustralia.gov.au/trademarks/search/quick/result?q={}&
 TM_VIEW = "https://search.ipaustralia.gov.au/trademarks/search/view/{}"
 
 # A mark in one of these states no longer blocks the name.
-TM_DEAD = ("lapsed", "removed", "refused", "withdrawn", "cancelled", "revoked",
-           "expired", "never registered", "rejected")
+TM_DEAD = (
+    "lapsed",
+    "removed",
+    "refused",
+    "withdrawn",
+    "cancelled",
+    "revoked",
+    "expired",
+    "never registered",
+    "rejected",
+)
 COMPANY_SUFFIX = re.compile(
     r"\b(pty\.?|proprietary|ltd\.?|limited|inc\.?|incorporated|co\.?|"
-    r"company|corp\.?|corporation|holdings|group|the|trust|trustee for)\b")
+    r"company|corp\.?|corporation|holdings|group|the|trust|trustee for)\b"
+)
 
 # Each host gets its own limit, so one slow register doesn't hold up the rest.
-LIMITS = {"verisign": threading.Semaphore(4), "dns": threading.Semaphore(8),
-          "abr": threading.Semaphore(2), "tm": threading.Semaphore(2)}
+LIMITS = {
+    "verisign": threading.Semaphore(4),
+    "dns": threading.Semaphore(8),
+    "abr": threading.Semaphore(2),
+    "tm": threading.Semaphore(2),
+}
 
 
 def fetch(url, host):
@@ -64,7 +78,7 @@ def fetch(url, host):
                     return error.code, ""
             except (urllib.error.URLError, TimeoutError):
                 pass
-        time.sleep(2 ** attempt)
+        time.sleep(2**attempt)
     raise RuntimeError(f"no answer from {url}")
 
 
@@ -153,19 +167,24 @@ def check_abr(name):
         return {"exact": [], "similar": 0}
     if "Matching names" not in body:
         raise RuntimeError("ABN Lookup page has no results table")
-    table = body[body.find("Matching names"):]
+    table = body[body.find("Matching names") :]
     target = squash(name)
     exact, similar = [], 0
-    for row in re.findall(r"<tr>(.*?)</tr>", table, re.S):
-        cells = re.findall(r"<td[^>]*>(.*?)</td>", row, re.S)
+    for row in re.findall(r"<tr>(.*?)</tr>", table, re.DOTALL):
+        cells = re.findall(r"<td[^>]*>(.*?)</td>", row, re.DOTALL)
         if len(cells) < 4:
             continue
         entity = text_of(cells[1])
         core = squash(COMPANY_SUFFIX.sub(" ", entity.lower()))
         if core == target:
-            exact.append({"name": entity, "type": text_of(cells[2]),
-                          "abn": text_of(re.sub(r"<span.*", "", cells[0], flags=re.S)),
-                          "where": text_of(cells[3])})
+            exact.append(
+                {
+                    "name": entity,
+                    "type": text_of(cells[2]),
+                    "abn": text_of(re.sub(r"<span.*", "", cells[0], flags=re.DOTALL)),
+                    "where": text_of(cells[3]),
+                }
+            )
         elif target in core:
             similar += 1
     return {"exact": exact, "similar": similar}
@@ -181,21 +200,26 @@ def check_trade_marks(name):
         if not found:
             raise RuntimeError("trade mark search page has no result count")
         total = int(found.group(1).replace(",", ""))
-        for number, record in re.findall(r'<tbody id="TM(\d+)"(.*?)</tbody>', body, re.S):
-            words = re.search(r'class="trademark words"[^>]*>(.*?)</td>', record, re.S)
-            status = re.search(r'class="status"[^>]*>(.*?)</td>', record, re.S)
-            classes = re.search(r'class="classes[^"]*"[^>]*>(.*?)</td>', record, re.S)
-            owner = re.search(r"<dt>Owners:</dt>\s*<dd>(.*?)</dd>", record, re.S)
+        for number, record in re.findall(r'<tbody id="TM(\d+)"(.*?)</tbody>', body, re.DOTALL):
+            words = re.search(r'class="trademark words"[^>]*>(.*?)</td>', record, re.DOTALL)
+            status = re.search(r'class="status"[^>]*>(.*?)</td>', record, re.DOTALL)
+            classes = re.search(r'class="classes[^"]*"[^>]*>(.*?)</td>', record, re.DOTALL)
+            owner = re.search(r"<dt>Owners:</dt>\s*<dd>(.*?)</dd>", record, re.DOTALL)
             # The status cell opens with a coloured dot, "● Lapsed".
             state = text_of(status.group(1)).lstrip("● ") if status else ""
             mark = squash(text_of(words.group(1))) if words else ""
             if not mark or state.lower().startswith(TM_DEAD):
                 continue
             if mark == target:
-                exact.append({"number": number, "status": state.split(":")[0],
-                              "classes": text_of(classes.group(1)) if classes else "",
-                              "owner": text_of(owner.group(1)) if owner else "",
-                              "url": TM_VIEW.format(number)})
+                exact.append(
+                    {
+                        "number": number,
+                        "status": state.split(":")[0],
+                        "classes": text_of(classes.group(1)) if classes else "",
+                        "owner": text_of(owner.group(1)) if owner else "",
+                        "url": TM_VIEW.format(number),
+                    }
+                )
             elif target in mark:
                 similar += 1
         if total <= 100 * (page + 1):
@@ -209,8 +233,7 @@ def verdict(row):
         return "taken", "live trade mark with these words"
     if domains["com.au"] == "taken":
         return "taken", ".com.au is registered"
-    reasons = [f".{zone} is registered" for zone, state in domains.items()
-               if state == "taken"]
+    reasons = [f".{zone} is registered" for zone, state in domains.items() if state == "taken"]
     if isinstance(abr, dict) and abr["exact"]:
         reasons.append("an active business uses the name")
     if isinstance(tm, dict) and tm["similar"]:
@@ -233,7 +256,7 @@ def check(name):
     def guard(job, *args):
         try:
             return job(*args)
-        except Exception as error:  # A failed check marks the row, the batch goes on.
+        except Exception as error:  # noqa: BLE001 A failed check marks the row, the batch goes on.
             return f"error: {error}"
 
     with ThreadPoolExecutor(max_workers=5) as pool:
@@ -261,24 +284,25 @@ def confirm(rows, budget):
             asked += 1
             answer = whois_au(f"{row['label']}.{zone}")
             if answer is None:
-                print("auDA whois stopped answering, try --confirm later",
-                      file=sys.stderr)
+                print("auDA whois stopped answering, try --confirm later", file=sys.stderr)
                 return
             row["domains"][zone] = answer
         row["verdict"], row["why"] = verdict(row)
 
 
 def table(rows):
-    lines = ["| Name | .com | .com.au | .au | ABN | Trade marks | Verdict | Why |",
-             "| --- | --- | --- | --- | --- | --- | --- | --- |"]
+    lines = [
+        "| Name | .com | .com.au | .au | ABN | Trade marks | Verdict | Why |",
+        "| --- | --- | --- | --- | --- | --- | --- | --- |",
+    ]
     for row in rows:
         abr, tm, d = row["abr"], row["trade_marks"], row["domains"]
-        abr_cell = abr if isinstance(abr, str) else (
-            f"{len(abr['exact'])} same, {abr['similar']} similar")
-        tm_cell = tm if isinstance(tm, str) else (
-            f"{len(tm['exact'])} same, {tm['similar']} similar")
-        lines.append(f"| {row['name']} | {d['com']} | {d['com.au']} | {d['au']} "
-                     f"| {abr_cell} | {tm_cell} | {row['verdict']} | {row['why']} |")
+        abr_cell = abr if isinstance(abr, str) else (f"{len(abr['exact'])} same, {abr['similar']} similar")
+        tm_cell = tm if isinstance(tm, str) else (f"{len(tm['exact'])} same, {tm['similar']} similar")
+        lines.append(
+            f"| {row['name']} | {d['com']} | {d['com.au']} | {d['au']} "
+            f"| {abr_cell} | {tm_cell} | {row['verdict']} | {row['why']} |"
+        )
     return "\n".join(lines)
 
 
@@ -288,8 +312,7 @@ def main():
     parser.add_argument("--file", help="one name per line")
     parser.add_argument("--json", action="store_true", help="print JSON, not a table")
     parser.add_argument("--workers", type=int, default=6, help="names checked at once")
-    parser.add_argument("--confirm", type=int, default=10,
-                        help="whois lookups to confirm free .au names, 0 for none")
+    parser.add_argument("--confirm", type=int, default=10, help="whois lookups to confirm free .au names, 0 for none")
     args = parser.parse_args()
 
     names = list(args.names)

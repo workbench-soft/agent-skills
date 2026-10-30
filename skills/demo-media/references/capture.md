@@ -43,10 +43,15 @@ each shot of `demo/shots.json` and saves it:
 
 ```ts
 const browser = await chromium.launch();
-const context = await browser.newContext({ viewport: { width: 1280, height: 800 },
-  locale: "en-US", colorScheme: "light", recordVideo: { dir: "raw", size: { width: 1280, height: 800 } } });
+const context = await browser.newContext({
+  viewport: { width: 1280, height: 800 },
+  locale: "en-US",
+  colorScheme: "light",
+  recordVideo: { dir: "raw", size: { width: 1280, height: 800 } },
+});
 const page = await context.newPage();
-await page.goto(url); await page.screenshot({ path: "docs/screenshots/01-home.png" });
+await page.goto(url);
+await page.screenshot({ path: "docs/screenshots/01-home.png" });
 ```
 
 - **Video** Playwright saves the video when `context.close()` runs. Rename

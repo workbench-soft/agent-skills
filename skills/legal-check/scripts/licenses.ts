@@ -11,7 +11,10 @@ export type Flag = Dependency & { risk: string };
 const RISKS: [RegExp, string][] = [
   [/\b(AGPL|SSPL|GPL|EUPL|OSL|CC-BY-SA)/i, "copyleft"],
   [/\b(LGPL|MPL|EPL|CDDL)/i, "weak copyleft"],
-  [/\bNC\b|non-?commercial|Hippocratic|BUSL|Elastic|PolyForm|Commons-Clause|\bJSON\b/i, "use limits"],
+  [
+    /\bNC\b|non-?commercial|Hippocratic|BUSL|Elastic|PolyForm|Commons-Clause|\bJSON\b/i,
+    "use limits",
+  ],
   [/^(UNKNOWN|UNLICENSED|NONE|)$|SEE LICENSE|custom/i, "no clear license"],
 ];
 
@@ -19,12 +22,19 @@ export function riskOf(license: string): string | undefined {
   // An OR leaves the choice to the app, so the easiest branch counts.
   // Old Cargo manifests write "MIT/Apache-2.0" for the same choice.
   const branches = license.replace(/[()]/g, "").split(/\s+OR\s+|\//i);
-  const risks = branches.map((branch) => RISKS.find(([pattern]) => pattern.test(branch.trim()))?.[1]);
+  const risks = branches.map(
+    (branch) => RISKS.find(([pattern]) => pattern.test(branch.trim()))?.[1],
+  );
   return risks.includes(undefined) ? undefined : risks[0];
 }
 
 const run = (command: string, cwd: string) =>
-  execSync(command, { cwd, encoding: "utf8", maxBuffer: 1 << 28, stdio: ["ignore", "pipe", "ignore"] });
+  execSync(command, {
+    cwd,
+    encoding: "utf8",
+    maxBuffer: 1 << 28,
+    stdio: ["ignore", "pipe", "ignore"],
+  });
 
 function npm(dir: string): Dependency[] {
   if (!existsSync(join(dir, "node_modules"))) throw new Error("no node_modules, run pnpm install");
@@ -32,7 +42,12 @@ function npm(dir: string): Dependency[] {
     run("pnpm licenses list --json --prod", dir),
   );
   return Object.entries(byLicense).flatMap(([license, packages]) =>
-    packages.map((p) => ({ name: p.name, version: p.versions.join(", "), license, from: "npm" as const })),
+    packages.map((p) => ({
+      name: p.name,
+      version: p.versions.join(", "),
+      license,
+      from: "npm" as const,
+    })),
   );
 }
 

@@ -131,11 +131,7 @@ def widget(folder: Path) -> str:
             symbols.append(symbol(small_file, small))
         cards.append(card(number, style, idea, big, small))
     # A display:none sprite drops its gradients in Chrome, so it hides by size.
-    sprite = (
-        '<svg width="0" height="0" style="position: absolute;" aria-hidden="true">'
-        + "".join(symbols)
-        + "</svg>"
-    )
+    sprite = '<svg width="0" height="0" style="position: absolute;" aria-hidden="true">' + "".join(symbols) + "</svg>"
     return "\n".join(
         [
             STYLE,
@@ -145,8 +141,7 @@ def widget(folder: Path) -> str:
             *cards,
             "</div>",
             '<div style="padding: 1rem 0;">',
-            '<textarea id="ip-note" rows="2" style="width: 100%; box-sizing: border-box;" '
-            'placeholder="Bolder outline, warmer colours"></textarea>',
+            '<textarea id="ip-note" rows="2" style="width: 100%; box-sizing: border-box;" placeholder="Bolder outline, warmer colours"></textarea>',
             '<p id="ip-error" role="alert" style="font-size: 13px; color: var(--text-danger); margin: 4px 0 0; min-height: 18px;"></p>',
             '<div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px;">',
             '<button type="button" id="ip-use">Use this icon ↗</button>',

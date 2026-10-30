@@ -130,7 +130,6 @@
   page already needs the network, since `edge-tts` does.
 - **Docs** `README.md`, `docs/features.md`, `CHANGELOG.md`.
 
-
 ### 2026-10-31 pitch for a voice, and a pitched voice for the agents
 
 - **Why** the person wants a voice higher or lower than its default, and the

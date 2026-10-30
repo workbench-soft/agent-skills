@@ -3,13 +3,13 @@
 People share the free part, so it MUST be useful by itself. The paid parts
 sit above it.
 
-| Way | Fits when | Rough income |
-| --- | --- | --- |
-| Donations: GitHub Sponsors, Ko-fi, Buy Me a Coffee | open source, an audience that values trust | a few dollars a month for most projects |
-| One-time Pro, $4 to $5 | about 1000 users, extras on top of a free core | a small share of users buy |
-| Subscription | the product has a running cost or new content each month | tools people try once rarely sell this way |
-| Ads: AdSense on pages, AdMob in apps | content pages with search traffic | $1 to $5 per 1000 views |
-| Affiliate links, Commission Factory and the like | money or gear topics, from 500 visits a month | per sale or lead |
+| Way                                                | Fits when                                                | Rough income                               |
+| -------------------------------------------------- | -------------------------------------------------------- | ------------------------------------------ |
+| Donations: GitHub Sponsors, Ko-fi, Buy Me a Coffee | open source, an audience that values trust               | a few dollars a month for most projects    |
+| One-time Pro, $4 to $5                             | about 1000 users, extras on top of a free core           | a small share of users buy                 |
+| Subscription                                       | the product has a running cost or new content each month | tools people try once rarely sell this way |
+| Ads: AdSense on pages, AdMob in apps               | content pages with search traffic                        | $1 to $5 per 1000 views                    |
+| Affiliate links, Commission Factory and the like   | money or gear topics, from 500 visits a month            | per sale or lead                           |
 
 - **Ads that break the promise** are left out. An app that says "your photos
   stay home" and carries ad trackers loses the reason people chose it. Ads

@@ -68,6 +68,8 @@ to `setTimeout`.
 
 ```ts
 const whenIdle = (task: () => void) =>
-  "requestIdleCallback" in window ? requestIdleCallback(task, { timeout: 2000 }) : setTimeout(task, 1);
+  "requestIdleCallback" in window
+    ? requestIdleCallback(task, { timeout: 2000 })
+    : setTimeout(task, 1);
 whenIdle(() => track("search", { query }));
 ```

@@ -39,12 +39,12 @@ with a TXT record or a meta tag.
 
 ## Test tools
 
-| Tool | URL | Pass |
-| --- | --- | --- |
-| Rich Results Test | `https://search.google.com/test/rich-results?url=https://$d/` | each type found, 0 errors |
-| Schema validator | `https://validator.schema.org/#url=https://$d/` | 0 errors |
-| PageSpeed Insights | `https://pagespeed.web.dev/analysis?url=https://$d/` | green on mobile |
-| Open Graph preview | `https://www.opengraph.xyz/url/https%3A%2F%2F$d` | title, text and picture show |
+| Tool               | URL                                                           | Pass                         |
+| ------------------ | ------------------------------------------------------------- | ---------------------------- |
+| Rich Results Test  | `https://search.google.com/test/rich-results?url=https://$d/` | each type found, 0 errors    |
+| Schema validator   | `https://validator.schema.org/#url=https://$d/`               | 0 errors                     |
+| PageSpeed Insights | `https://pagespeed.web.dev/analysis?url=https://$d/`          | green on mobile              |
+| Open Graph preview | `https://www.opengraph.xyz/url/https%3A%2F%2F$d`              | title, text and picture show |
 
 Test the home page and one page of each type with every tool. A warning on an
 optional field MAY be left. An error MUST be fixed, deployed and tested once

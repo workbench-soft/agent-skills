@@ -89,16 +89,16 @@ ls .github/workflows; grep -rn 'apk\|release' .github/workflows | head -20
 
 Each file does one job and stays small. A typical split:
 
-| File | Job |
-| --- | --- |
-| `update/latest-release` | asks GitHub, returns the newer release or null |
-| `update/is-newer` | compares two versions, with a unit test |
+| File                    | Job                                                     |
+| ----------------------- | ------------------------------------------------------- |
+| `update/latest-release` | asks GitHub, returns the newer release or null          |
+| `update/is-newer`       | compares two versions, with a unit test                 |
 | `update/install-update` | downloads with progress and cancel, opens the installer |
-| `update/apk-file` | the cached APK name, the size check, deleting old ones |
-| `update/notify-update` | the ready and up-to-date notifications, the tap handler |
-| `update/offer-update` | the check on start and on return to the front |
-| `ui/UpdateButton` | the Settings button and its result line |
-| `ui/UpdateProgress` | the header line, bar and cross |
+| `update/apk-file`       | the cached APK name, the size check, deleting old ones  |
+| `update/notify-update`  | the ready and up-to-date notifications, the tap handler |
+| `update/offer-update`   | the check on start and on return to the front           |
+| `ui/UpdateButton`       | the Settings button and its result line                 |
+| `ui/UpdateProgress`     | the header line, bar and cross                          |
 
 - **One progress store** Settings and the header MUST read a single store, so
   their numbers match and a cancel from either one stops the one download.
