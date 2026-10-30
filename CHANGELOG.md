@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **legal-check** a new skill lists the legal risks of an app: copyleft and unclear licenses, data SDKs with no privacy policy, sensitive permissions, trade marks and store policy. It writes `docs/legal-risks.md`, fixes the safe items in a PR and puts the rest in `TODO.md`.
 - **e2e-walk** walks the build on the phone that the Archon Apps tab names, and knows the release tags that differ from the repo name.
 - **icon-styles shows the icons** the skill sends a picture of all 10 drafts into the session before it asks for a pick, so a picker that fails to render still leaves them visible.
 - **e2e-walk** a new skill installs the newest release on an emulator, the phone over adb, the web or Windows, walks each main flow and reports pass or fail. It skips each control that deletes, resets, signs out or sends, in all 9 app languages, and writes the bugs to `TODO.md`.

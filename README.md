@@ -237,6 +237,13 @@ suggests names for the topic and checks them in batches with a Python script:
 Australia trade marks. The answer is a table of free, risky and taken names,
 and the picks with the reason for each. It needs no API keys.
 
+**`legal-check`** lists the legal risks of an app before it ships. A Node
+script reads the dependency licenses, the SDKs that send data, the sensitive
+Android permissions and the legal pages the repo lacks. The agent then checks
+the name, the store and ad policies and whether the feature is lawful in each
+market. Each risk lands in `docs/legal-risks.md` with its proof, severity and
+fix. The safe fixes ship in a PR, and the rest go to `TODO.md`.
+
 **`icon-styles`** draws 10 icons for the app in the repo, each in its own
 style. It reads the repo first and picks the styles that fit, such as neon for
 a hacker tool. A picker in the chat shows all 10 at 16 to 96 px. You click
