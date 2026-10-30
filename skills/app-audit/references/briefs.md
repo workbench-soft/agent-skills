@@ -1,15 +1,16 @@
 # Briefs for the subagents
 
-Reviewers begin with zero context. Each brief MUST contain the frame below, the
-step 1 project card and its lens checklist. Paste them unchanged and fill in the
-angle brackets.
+Lens agents begin with zero context. Each brief MUST contain the frame below,
+the step 1 project card and its lens checklist. Paste them unchanged and fill
+in the angle brackets.
 
-## The frame every lens reviewer gets
+## The frame every lens agent gets
 
 ```text
-You review the repo at <path> for <LENS> only.
-Read-only: don't edit, create or delete files in the repo, don't commit, don't install packages.
-Scratch files go in the system temp folder. You may run the repo's lint, type check, test and build commands.
+You audit the repo at <lens worktree path> for <LENS> only, and fix what you find.
+Work in this worktree only, on its branch <lens branch>. Other agents fix other lenses in their own worktrees at the same time.
+First install the existing dependencies with <install command>. Don't add packages, don't push, don't touch files outside the worktree.
+Scratch files go in the system temp folder. A server you start takes a free port and stops before you report.
 
 The project:
 <project card>
@@ -19,18 +20,29 @@ Already decided, skip these:
 
 <lens checklist>
 
-Rules:
+Find:
 - Prove each finding: the file and line, plus the input, command output or measurement that shows it. Mark a guess as a guess.
 - Measure where you can: bytes, milliseconds, counts, before and after.
 - Name what is fine and needs no work, one line each, so the next pass doesn't check it again.
 - At most 15 findings, the most valuable first. No style nits.
 
-For each finding:
-- Where: file:line
-- Problem: what a person, or the next developer, runs into
-- Evidence: the input, output or numbers
-- Fix: the change, with a short code sketch
-- Value HIGH / MEDIUM / LOW, effort S / M / L, risk LOW / MEDIUM / HIGH
+Sort each finding into Fix or Leave with the rules in <absolute path of references/triage.md>.
+
+Fix, one finding per commit, in the order triage.md gives:
+1. Edit only the files of this finding.
+2. A bug fix gets a test that fails without the fix, in the style of its neighbours.
+3. Run the checks over those files: <the module's test, lint and type check commands>.
+4. Commit with `git add <files>`, then `git commit`. No `git add -A`, `git add .` or `--amend`.
+- Commit messages: <the repo's commit style in one line>. The body gives the reason first.
+- A fix that grows past its plan, adds a package or changes a public format goes to Leave instead.
+- A format both sides read, such as the app and its data job, changes on both sides in the same commit.
+- No toolchain for a part? Compile and test what you can, and say how.
+- Hands off: secrets, signing keys, DNS, payment settings, store listings, production data.
+
+Report, one line per finding:
+- Fixed: <sha> | file:line | problem | evidence | the check that ran
+- Leave: file:line | problem | the reason in a few words
+- Fine: what you checked and found fine
 ```
 
 ## The lens checklists
@@ -116,23 +128,6 @@ Check battery and data use; the system back button, notifications and deep links
 Check how an old install meets new data or a new server, and how it updates.
 Check the store listing, data safety and privacy answers against what the code does.
 Check signing and release steps that only one machine can run.
-```
-
-## A subagent that fixes a separate part
-
-```text
-Make these changes in <folder> of <path>, on the branch that is checked out. Touch only <folder>.
-Don't commit, and don't run git commands that change state. Another agent edits other folders at the same time.
-
-What both sides share: <field names, units, defaults for old files, the function the other side calls>
-
-Changes:
-1. <change, with the file>
-2. <change, with the file>
-
-Add or extend unit tests for <the logic changed>.
-Verify with <command>. No toolchain here? Compile and test what you can, and say how.
-Report: each changed file with one line on what changed, then the test result.
 ```
 
 ## The fresh reviewer of the branch

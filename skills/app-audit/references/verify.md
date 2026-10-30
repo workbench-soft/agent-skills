@@ -51,4 +51,4 @@ GH_PAGER=cat gh pr checks <number> --watch --interval 20
 ```
 
 A new commit fixes a red check, and the wait begins again. When it turns green,
-step 9 merges the PR.
+step 8 merges the PR.
