@@ -236,6 +236,12 @@ suggests names for the topic and checks them in batches with a Python script:
 Australia trade marks. The answer is a table of free, risky and taken names,
 and the picks with the reason for each. It needs no API keys.
 
+**`icon-styles`** draws 10 icons for the app in the repo, each in its own
+style. It reads the repo first and picks the styles that fit, such as neon for
+a hacker tool. A sheet shows all 10 at 16 to 256 px, and you pick a number.
+A Python script then writes the PNG sizes, the Windows `.ico` and the
+Android, iOS and PWA sets through `resvg`.
+
 **`voice-test`** plays the Microsoft neural voices of `edge-tts` one after
 another. Each says its number and name, then an English line, a Russian line
 and a line that mixes both. You note the numbers you like and pick a voice for
