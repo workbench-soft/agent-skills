@@ -3,6 +3,7 @@
 ## Unreleased
 
 - **app-audit** each lens agent fixes its own findings in its own worktree, one commit each. The main agent checks and cherry-picks each commit as soon as its report lands, so fixes start before the slowest lens ends.
+- **voice-test** the voice dropdown is a checkbox tree from Web Awesome. A group's box ticks or unticks all its voices.
 - **voice-test** the window is now a page in an Edge app window: pick the line, the groups and the languages, then tick voices in a dropdown. No console windows pop up. The README and the docs describe it and the flags.
 - **Windows paths** the skills name Windows paths such as `%USERPROFILE%\.android-keys`, `Ctrl+F` before `Cmd+F`, and `winget` before `brew`. The README lists the Windows install first, and `voice-test` shows its cache folder again.
 - **icon-styles** a new skill draws 10 icons for the repo's app in 10 styles it picks for the theme. You click one on a small local page, and a script exports it to PNG, `.ico`, Android, iOS, Expo and PWA sets. All 10 drafts get committed to `design/icons/<date>/`.

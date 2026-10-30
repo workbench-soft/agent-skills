@@ -253,14 +253,17 @@ a line that mixes both, and the same mix joined from chunks the way
 On Windows, double click `skills/voice-test/scripts/voice-test.cmd`. A page
 opens in its own Edge window, with no tabs and no console windows. Pick the
 line, women, men or children and the languages, then tick the voices in the
-dropdown, which has a search box and All and None. Play starts them, the page
+dropdown. It holds a checkbox tree: a group's box ticks or unticks all its
+voices, and a group with part of them on shows a half tick. A search box and
+All and None sit on top. Play starts them, the page
 shows the voice that speaks, and Stop ends it. The page keeps your choices
 for the next time. A desktop shortcut can point to the copy in
 `~/.agents/skills/voice-test/scripts`.
 
 Elsewhere, run `mise x -- node server.ts` in `skills/voice-test/ui`. It opens
 the page in the default browser. `server.ts` is a Node 24 server with no
-packages. It serves `index.html` and `app.ts`, runs `voice_test.py` for the
+packages. It serves `index.html` and `app.ts`, which loads the Web Awesome
+tree from jsDelivr, runs `voice_test.py` for the
 list and the playback, and quits a few seconds after the page closes.
 
 The same choices work from the terminal:

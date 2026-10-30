@@ -117,3 +117,16 @@
     None. The choices stay in `localStorage`.
   - **Script** `voice_test.py` starts `edge-tts` and `taskkill` with no
     window, and `--list` prints the voices as JSON for the page.
+
+### 2026-10-31 the voice dropdown is a checkbox tree
+
+- **Why** the person wants to tick or untick a whole group, such as all
+  Russian women, in one click.
+- **Changes** the dropdown in `ui/app.ts` becomes a `wa-tree` from Web
+  Awesome 3.14.0, loaded from jsDelivr. Each group is a branch with its own
+  checkbox, half ticked when part of it is on. The search hides voices, and
+  All and None act on the ones in view.
+- **Off the list** Web Awesome is a ready component with no build step. The
+  page already needs the network, since `edge-tts` does.
+- **Docs** `README.md`, `docs/features.md`, `CHANGELOG.md`.
+
