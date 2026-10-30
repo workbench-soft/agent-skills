@@ -63,8 +63,9 @@ workflow to learn where the app runs.
   the person asks for it.
 - **Both** an app with a web build and an APK gets walked on Android. Add
   the web when the person asks or a flow is web only.
-- **Already installed** the person installed a release from the Archon CI
-  tab? Walk that one, and note its version.
+- **Named device** the arguments name a package and an adb serial, as the
+  E2E walk button of the Archon Apps tab sends? Walk the build installed
+  there, and skip the install step.
 
 ## 3. Install the newest release
 
