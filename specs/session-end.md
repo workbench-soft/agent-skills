@@ -183,3 +183,13 @@
   passes it to `hooks/turn-voice/install.ps1`. `LANGUAGE.md` no longer sets
   the voice.
 - **Docs** `CHANGELOG.md`.
+
+### 2026-10-31 English by default, read by Maisie
+
+- **Why** Ava and Svetlana sounded like two different women. The person wants
+  English for most of the phrase, in Maisie's voice.
+- **Changes** `install.ps1` defaults `-VoiceLang` to `English`, and
+  `hooks/turn-voice/install.ps1` defaults `-EnVoice` to
+  `en-GB-MaisieNeural`. Cyrillic runs, such as a Russian task title, keep
+  `ru-RU-SvetlanaNeural`.
+- **Docs** `README.md`, `CHANGELOG.md`.

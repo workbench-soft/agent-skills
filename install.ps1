@@ -5,7 +5,7 @@
 param(
   [string]$Lang = "",
   # The spoken end of a turn has its own language, apart from the review text.
-  [string]$VoiceLang = "Russian",
+  [string]$VoiceLang = "English",
   [switch]$Uninstall,
   [switch]$Yes
 )
@@ -65,6 +65,6 @@ if ($PSScriptRoot -and (Test-Path (Join-Path $PSScriptRoot "skills"))) {
 # throw keeps the window open. exit would close the PowerShell it ran in.
 if ($LASTEXITCODE -ne 0) { throw "install.sh failed with exit code $LASTEXITCODE" }
 
-# Claude speaks the end of each turn in -VoiceLang, Russian unless asked otherwise.
+# Claude speaks the end of each turn in -VoiceLang, English unless asked otherwise.
 $repoDir = Split-Path $script
 & (Join-Path $repoDir "hooks\turn-voice\install.ps1") -Lang $VoiceLang -Uninstall:$Uninstall

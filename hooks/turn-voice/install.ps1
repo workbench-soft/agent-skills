@@ -5,7 +5,7 @@ param(
   # The Russian and English parts of a phrase are fetched apart, each with its own voice.
   # Each run gets a voice with one language, so no run is read with a foreign accent.
   [string]$RuVoice = "ru-RU-SvetlanaNeural",
-  [string]$EnVoice = "en-US-AvaNeural",
+  [string]$EnVoice = "en-GB-MaisieNeural",
   [switch]$Uninstall
 )
 $ErrorActionPreference = "Stop"
