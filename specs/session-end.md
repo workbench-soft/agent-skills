@@ -193,3 +193,16 @@
   `en-GB-MaisieNeural`. Cyrillic runs, such as a Russian task title, keep
   `ru-RU-SvetlanaNeural`.
 - **Docs** `README.md`, `CHANGELOG.md`.
+
+### 2026-10-31 one multilingual woman reads it all, in Russian first
+
+- **Why** the person hears too much English and wants one woman for both
+  languages, with Russian first in every phrase.
+- **Changes**
+  - **Voice** `hooks/turn-voice/install.ps1` defaults `-RuVoice` and
+    `-EnVoice` to `en-US-AvaMultilingualNeural`.
+  - **One fetch** when both voices and pitches match, `turn-voice.cs` sends
+    the whole phrase to `edge-tts` at once. Ava then reads a Latin name inside
+    a Russian sentence, with no short run to take for French.
+  - **Language** `install.ps1` defaults `-VoiceLang` to `Russian`.
+- **Docs** `README.md`, `docs/architecture.md`, `CHANGELOG.md`.
