@@ -1,9 +1,9 @@
 # Writing the Markdown in this repo
 
-These rules cover every file under `skills/`. An agent loads those files on
-each run, so each line costs tokens each time. The size caps apply to skills
-only. The other rules apply to `README.md` and the instructions file as well.
-`install.sh` is out of scope.
+These rules MUST hold for every file under `skills/`. An agent loads those
+files on each run, so each line costs tokens each time. The size caps MUST
+hold for skills only. The other rules MUST also hold for `README.md` and the
+instructions file. `install.sh` MAY ignore them.
 
 ## Structure
 
@@ -18,45 +18,56 @@ only. The other rules apply to `README.md` and the instructions file as well.
 
 ## Size
 
-The cap counts prose lines. Fenced blocks and blank lines don't count, since
-those examples are the templates the agent copies.
+The cap MUST count prose lines. Fenced blocks and blank lines MUST NOT count,
+since those examples are the templates the agent copies. Each file MUST stay
+within the cap in its row.
 
 | File             | Prose lines |
 | ---------------- | ----------- |
 | `SKILL.md`       | 300         |
 | a reference file | 60          |
 
+The prose budget script MUST exit 0:
+
 ```sh
 mise x -- python scripts/check-prose-budget.py skills/*/SKILL.md skills/*/references/*.md
 ```
 
 A file over its cap SHOULD move a section to a reference file or drop it.
-Tighter wording is the second resort.
+Tighter wording SHOULD be the second resort.
 
-## RFC 2119 words
+## Key words
 
-Each rule MUST have its own modal. A file MUST NOT spend a line on what the
-RFC 2119 words mean, since the reader knows.
+Each paragraph and list item MUST hold MUST, MUST NOT, SHOULD, SHOULD NOT or
+MAY, steps and descriptions included. A file MUST NOT spend a line on what the
+words mean, since the reader knows.
 
-- `MUST`, `MUST NOT`: breaking it ruins the output or the repo.
-- `SHOULD`, `SHOULD NOT`: the default, broken only with a reason given in the
-  answer.
-- `MAY`: a real choice where either branch is fine.
-- Steps, descriptions and examples get no modal: "Write three bullets",
-  "Sort by severity".
-- One modal per sentence, and none in an example block. An example shows, it
-  doesn't set a rule.
+- **MUST, MUST NOT** breaking it ruins the output or the repo.
+- **SHOULD, SHOULD NOT** the default, which the agent MAY break only with a
+  reason given in the answer.
+- **MAY** a real choice where either branch is fine.
+- **Steps** a step MUST name who acts and carry the key word: "The agent MUST
+  sort by severity", not "Sort by severity".
+- **Lowercase** "must", "should" and "may" MUST NOT appear outside code and
+  quotes. A softer rule MUST use SHOULD or MAY.
+- **Examples** a fenced block, a quote and table rows MAY hold no key word.
+  The line above them MUST hold the key word that covers them.
+
+`scripts/keyword-check.ts` MUST pass on each file in scope. `mise run lint`
+runs it.
 
 ## Prose
 
-- A rule SHOULD take one line. Add the reason only where the agent goes wrong
-  without it.
+- A rule SHOULD take one line. The reason SHOULD appear only where the agent
+  goes wrong without it.
 - Three rules or more MUST be a list.
-- A section SHOULD end at five bullets. Beyond that, split it under a heading.
-- A rule MAY have one example, and a Bad and Good pair works better than an
+- A section SHOULD end at five bullets. Beyond that, it SHOULD split under a
+  heading.
+- A rule MAY have one example, and a Bad and Good pair SHOULD replace an
   explanation.
-- Articles and filler SHOULD go wherever the line still reads: "Read the repo
-  rules first" beats "You should make sure to read the repo rules first".
+- Articles and filler SHOULD go wherever the line still reads: "The agent
+  MUST read the repo rules first" beats "You should make sure to read the
+  repo rules first".
 
 ## Verbatim regions
 
@@ -69,31 +80,36 @@ are unless the edit is about them.
 - `name` MUST equal the folder name.
 - `description` MUST be one paragraph: when the skill applies, the words that
   trigger it, and what it produces. An agent sees only this before it loads
-  the file, so the trigger words count more than the prose.
+  the file, so the trigger words SHOULD count more than the prose.
 
 ## Language
 
 - The skills MUST be in English.
-- `LANGUAGE.md` beside a SKILL.md names the language the skill answers in.
-  The installer writes that file. A SKILL.md MUST NOT name a language of its
-  own.
+- `LANGUAGE.md` beside a SKILL.md MUST name the language the skill answers
+  in, and the installer MUST write that file. A SKILL.md MUST NOT name a
+  language of its own.
 
 ## Skills
 
-Repo skills sit in `.agents/skills/`, a folder each, and Codex reads them there. `.claude/skills` links to that folder for Claude Code and Copilot.
-On Windows, run `git config --global core.symlinks true` before the clone. Otherwise the link checks out as a text file.
+Repo skills MUST sit in `.agents/skills/`, a folder each, where Codex reads
+them. `.claude/skills` MUST link to that folder for Claude Code and Copilot.
+On Windows, `git config --global core.symlinks true` MUST run before the
+clone, or the link checks out as a text file.
 
-- **`add-skill`** add or change a shared skill in `skills/` and run its checks.
+- **`add-skill`** the agent MUST load it to add or change a shared skill in
+  `skills/` and run its checks.
 
 ## Before you commit
 
-1. `scripts/check-prose-budget.py` and `scripts/check-skills.py` exit 0.
-2. Each rule has a modal, and no line explains the modals.
-3. Each `MUST` holds up as "breaking this ruins the output". Others drop to
-   `SHOULD` or lose the modal.
-4. No rule repeated from `writing-style`.
-5. Fenced blocks unchanged unless the edit is about them.
-6. The `writing-style` final checklist passes over the prose.
+1. `scripts/check-prose-budget.py`, `scripts/check-skills.py` and
+   `scripts/keyword-check.ts` MUST exit 0.
+2. Each paragraph and list item MUST hold a key word, and no line MAY explain
+   the key words.
+3. Each MUST SHOULD hold up as "breaking this ruins the output". Others
+   SHOULD drop to SHOULD or MAY.
+4. A rule from `writing-style` MUST NOT be repeated.
+5. Fenced blocks MUST stay unchanged unless the edit is about them.
+6. The `writing-style` final checklist MUST pass over the prose.
 
 ## Commit and push
 

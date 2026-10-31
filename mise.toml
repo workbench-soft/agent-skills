@@ -21,6 +21,7 @@ run = [
   "ruff format --check",
   "oxlint --deny-warnings",
   "oxfmt --check",
+  "node scripts/keyword-check.mts AGENTS.md writing-style.instructions.md skills/*/SKILL.md skills/*/references/*.md .agents/skills/*/SKILL.md",
 ]
 
 [tasks.format]
