@@ -7,8 +7,8 @@
   reading the rest.
 - **Not done marker** a turn that stops with work left, an open question
   included, ends with `⚠️ !!!NOT COMPLETED!!!` and what is left.
-- **Archive** a finished session may archive itself once every question got
-  its answer.
+- **Archive** the person archives each session once they see the work is
+  done. The agent doesn't archive it.
 - **Sound** the agent plays a sound and sends a notification once the work is
   done, so the person hears it from another window.
 - **Running marker** a turn that ends while background work still runs says
@@ -22,8 +22,9 @@
 1. The person asks for a task. The agent works, then checks that no
    background task, subagent or CI watch still runs.
 2. All work is done. The agent writes what is left to `TODO.md`, plays the
-   sound, sends the notification and ends with `✅ !!!COMPLETED!!!`. It may
-   archive the session.
+   sound, sends the notification and ends with `✅ !!!COMPLETED!!!`. The
+   session stays in the list until the person checks the work and archives
+   it.
 3. Some work still runs. The agent waits for it inside the turn. When the
    turn has to end first, its last line is `⏳ !!!RUNNING!!!` with what runs,
    and the agent picks the work up on its own when it finishes.
@@ -206,3 +207,12 @@
     a Russian sentence, with no short run to take for French.
   - **Language** `install.ps1` defaults `-VoiceLang` to `Russian`.
 - **Docs** `README.md`, `docs/architecture.md`, `CHANGELOG.md`.
+
+### 2026-11-01 the person archives each session
+
+- **Why** sessions archived themselves after `✅`. The person wants to check
+  the work first, then archive the session by hand.
+- **Changes** the archive rule in `workflow.instructions.md` of
+  `agent-skills-private` now bans the agent from archiving. The turn-voice
+  archive cue stays, in case an agent archives anyway.
+- **Docs** `CHANGELOG.md` of both repos.
