@@ -1,3 +1,5 @@
+# oxfmt checks for LF, and windows-latest checks files out with CRLF.
+* text=auto eol=lf
 # sh fails on every line of a script that a Windows checkout gave CRLF ends.
 *.sh text eol=lf
 # cmd.exe misreads a batch file with LF ends.
