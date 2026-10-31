@@ -58,3 +58,11 @@ version numbers that go stale.
 
 - `README.md`: the new skill and a prompt for it.
 - This repo holds skills, no app, so it has no architecture or user flow docs.
+
+## Updates
+
+### 2026-10-31 decisions with trade-offs and rejected rivals
+
+- **Why** the person wants every architecture doc to say why each choice won, what it costs, and why each alternative lost. A table row had no room for that.
+- **Changes** the `## Decisions` template in `skills/architecture/SKILL.md` becomes a heading per decision with Picked, Why, Trade-off, a Rejected bullet per rival, and Cost to undo. The rules under it ask for a rival, its reason, a trade-off and the sort by cost to undo.
+- **Docs** `docs/architecture.md` of this repo gets its own Decisions section. `README.md` and `CHANGELOG.md`.
