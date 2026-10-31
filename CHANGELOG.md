@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **CI** every text file checks out with LF, so `oxfmt --check` passes on the Windows runner.
+
 - **Lint and format** ruff checks the Python, oxlint the TypeScript, oxfmt formats every file, shellcheck and shfmt the scripts. CI runs `mise run lint`. The `mise` and `architecture` skills name oxlint and oxfmt in place of ESLint and Prettier.
 
 - **legal-check** a new skill lists the legal risks of an app: copyleft and unclear licenses, data SDKs with no privacy policy, sensitive permissions, trade marks and store policy. It writes `docs/legal-risks.md`, fixes the safe items in a PR and puts the rest in `TODO.md`.
