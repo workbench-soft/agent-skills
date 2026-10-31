@@ -28,9 +28,9 @@ mise tasks ls
 mise ls --current
 ```
 
-- **Not trusted** run `mise trust` in a repo the person works in. A config
-  from a repo they just downloaded MUST wait for their yes, since trust lets
-  its env and hooks run.
+- **Not trusted** run `mise trust` in a repo the person works in, and in each
+  new worktree of it. A config from a repo they just downloaded MUST wait for
+  their yes, since trust lets its env and hooks run.
 - **Not installed** `mise install` brings the pinned versions.
 - **Other pin files** mise reads `.tool-versions`. A repo pinned with `.nvmrc`
   or `.python-version` SHOULD get a `mise.toml` with the same versions.

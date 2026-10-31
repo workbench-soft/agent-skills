@@ -125,7 +125,9 @@ git worktree prune
   check above failed to catch.
 - **Folder left over** still on disk after `git worktree remove`? Then it held
   only ignored files, such as `node_modules`. Once `ls "$dir"` shows no source
-  files, delete it with `rm -rf "$dir"`.
+  files, delete it by its full path written out, such as
+  `rm -rf -- "C:/code/app-fix-login"`. The safety check blocks a removal on a
+  variable.
 
 ## 7. Report back
 
