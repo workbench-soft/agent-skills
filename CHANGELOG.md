@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **demo-media** lessons from the first run on tickalot: the capture tools sit in the `demo` task, ffmpeg comes from the Gyan build on Windows, one browser context records the whole run, and the frame check also looks for wrong emoji and for web content with people.
 - **CI** mise installs oxfmt with npm, so `oxfmt --check` finds its own dependencies on the Windows runner again.
 - **git-worktrees** a leftover worktree folder gets removed by its full path, since the safety check blocks `rm -rf` on a variable.
 - **mise** each new worktree of a repo gets `mise trust`, so its first command doesn't stop on an untrusted config.

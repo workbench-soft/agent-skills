@@ -120,6 +120,12 @@ Then judge it as a stranger: does the shot say what the app does, and would
 it make someone install it? Retake a dull shot with better data or a better
 moment.
 
+- **Wrong pictures** an icon or emoji the app picks for a demo word, such as
+  cherries for cherry tomatoes. Swap the word, and note the app bug in
+  `TODO.md`.
+- **Outside content** places, photos or articles the app pulls from the web
+  can show real people. Leave such a screen out, or pick a query with none.
+
 ## 6. Put it in the README
 
 Add or update a `## Screenshots` section after the first paragraph of the
@@ -140,8 +146,8 @@ README:
 
 ## 7. Ship it
 
-- **Mise** `ffmpeg` and the tools the capture needed go in `mise.toml`
-  through `mise use`.
+- **Mise** `ffmpeg` and the other capture tools go in the `tools` of the
+  `demo` task, as `references/capture.md` shows. CI then skips them.
 - **Task** add a `demo` task to `mise.toml` when the capture runs from a
   script, so the next run is one command.
 - **Docs** the README section, plus a line in `docs/features.md` when the
