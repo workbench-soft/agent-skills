@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **Session end** the agent doesn't archive its session. The person archives it once they see the work is done.
 - **turn-voice** one multilingual woman, `en-US-AvaMultilingualNeural`, reads the whole phrase in one fetch, and the phrases are in Russian by default. `install.ps1 -VoiceLang English` switches them back.
 - **architecture** the Decisions section of `docs/architecture.md` gives each choice a heading: what was picked, why, the trade-off, each rejected rival with the reason it lost, and the cost to undo. The repo's own `docs/architecture.md` follows it.
 - **CI** every text file checks out with LF, so `oxfmt --check` passes on the Windows runner.
