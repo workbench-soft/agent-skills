@@ -1,7 +1,22 @@
 # Capture commands per platform
 
 Run these in Git Bash. PowerShell 5.1 `>` rewrites binary output and breaks
-a PNG. Each tool comes through mise: `mise use ffmpeg@9 oxipng@10`.
+a PNG.
+
+## Tools through mise
+
+Pin the media tools in the `demo` task, so CI doesn't download them:
+
+```toml
+[tasks.demo]
+tools = { oxipng = "10.2.1", "github:GyanD/codexffmpeg" = { version = "9.0.2", asset_pattern = "ffmpeg-*-essentials_build.zip" } }
+run = "node --no-warnings demo/run.ts"
+```
+
+- **ffmpeg on Windows** the `ffmpeg` of the mise registry comes from conda
+  and fails to start there. The Gyan build above runs.
+- **403 on install** GitHub limits the API. Set `GITHUB_TOKEN` from
+  `gh auth token` for that one command.
 
 ## Android over adb
 
@@ -54,8 +69,15 @@ await page.goto(url);
 await page.screenshot({ path: "docs/screenshots/01-home.png" });
 ```
 
+- **One context** the app data sits in that context's storage, OPFS and
+  IndexedDB included. A second context starts empty, so record the whole
+  run and cut the flow out with `-ss` at the time the flow began.
 - **Video** Playwright saves the video when `context.close()` runs. Rename
   it to the shot name.
+- **Settle** wait about a second before each shot, so ticks and moves finish.
+- **Hosting headers** a site on SQLite in the browser needs the COOP and
+  COEP headers of its hosting. Serve the build with them, such as
+  `serve` with a `serve.json`, and stop the server tree after.
 - **Phone size** a second context at `devices["iPhone 15"]` for the
   390 × 844 shots.
 
