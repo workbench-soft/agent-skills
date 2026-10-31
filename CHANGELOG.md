@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **architecture** the Decisions section of `docs/architecture.md` gives each choice a heading: what was picked, why, the trade-off, each rejected rival with the reason it lost, and the cost to undo. The repo's own `docs/architecture.md` follows it.
 - **CI** every text file checks out with LF, so `oxfmt --check` passes on the Windows runner.
 
 - **Lint and format** ruff checks the Python, oxlint the TypeScript, oxfmt formats every file, shellcheck and shfmt the scripts. CI runs `mise run lint`. The `mise` and `architecture` skills name oxlint and oxfmt in place of ESLint and Prettier.

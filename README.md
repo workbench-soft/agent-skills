@@ -174,7 +174,8 @@ smallest shape the teams need: one app, packages in a monorepo, or micro
 frontends behind a shell and edge workers. Packages sit in layers that import
 downward, and each piece of shared page state has one owning package. Each
 rule turns into a generator, a lint rule or a CI check. The design goes in
-`docs/architecture.md`, with diagrams and the options weighed. The techniques
+`docs/architecture.md`, with diagrams and a decision for each choice: the
+pick, the trade-off and why each rival lost. The techniques
 come from a production Nx monorepo of micro frontends. The workspace setup
 itself goes to `monorepo`.
 

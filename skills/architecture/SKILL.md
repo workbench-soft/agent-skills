@@ -206,13 +206,25 @@ that costs a lot to undo SHOULD get an ADR too.
 
 ## Decisions
 
-| Decision | Options weighed | Picked | Why | Cost to undo |
+### <the choice, as a short noun phrase, e.g. "Local storage: SQLite">
+
+- **Picked** what the repo uses.
+- **Why** the reason it won, with the fact behind it (a number, a limit, a platform rule).
+- **Trade-off** what this pick costs or gives up.
+- **Rejected** one bullet per alternative: its name, then why it lost.
+- **Cost to undo** low, medium or high, and what a switch would touch.
 ```
 
-- Every decision MUST name the options weighed. A pick without a rival looks
-  like habit.
-- The decisions SHOULD be sorted by cost to undo. Make a cheap one now, and
-  hold an expensive one until the cheapest test that could change it.
+- Every decision MUST name at least one real rival, each in its own
+  `Rejected` bullet with the reason it lost. A pick without a rival looks like
+  habit.
+- Every decision MUST state its trade-off: what the pick costs or gives up.
+- The decisions SHOULD be sorted by cost to undo, most expensive first. Make a
+  cheap one now, and hold an expensive one until the cheapest test that could
+  change it.
+- Each reason SHOULD come from the repo: specs, changelog, PR bodies, code
+  comments, an org rule. With no record, give the reason the code supports and
+  say no record states it.
 - Diagrams SHOULD use mermaid, so they diff and render on GitHub.
 
 ## 11. Build the skeleton
