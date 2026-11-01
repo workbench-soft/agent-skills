@@ -24,6 +24,8 @@ const settings: Settings = load();
 const off = new Set(settings.off);
 let voices: Voice[] = [];
 let playing = false;
+// Each filter click lists the voices again. Only the latest list may land.
+let listing = 0;
 
 function load(): Settings {
   const fallback: Settings = {
@@ -112,16 +114,20 @@ async function refresh(): Promise<void> {
   renderFilters();
   save();
   $("voices-summary").textContent = "Loading…";
+  const ticket = ++listing;
+  let list: Voice[] = [];
   try {
-    voices = await api<Voice[]>("/api/voices", {
+    list = await api<Voice[]>("/api/voices", {
       line: settings.line,
       groups: settings.groups,
       lang: settings.lang,
     });
   } catch (e) {
-    voices = [];
-    note(`Could not list the voices: ${(e as Error).message}`);
+    if (ticket === listing) note(`Could not list the voices: ${(e as Error).message}`);
   }
+  // Two quick clicks start two lists, and the older one can finish last.
+  if (ticket !== listing) return;
+  voices = list;
   renderVoices();
 }
 
