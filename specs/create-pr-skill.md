@@ -1,17 +1,38 @@
-# create-pr draws the flows and links its sources, review comments sound less sure
+# create-pr skill
 
-Done from 2025-10-08 to 2025-10-14, before the history was reset to one commit. The old commits sit under `refs/backup/main` in the local backup mirror of `agent-skills`.
+## What it does for the person
 
-## Why
+Writes a PR body with the flows, sources and commands, then opens the PR.
 
-PR bodies missed how to try the change and what it built on. Review comments read as orders.
-
-## User flows it touches
+## User flows
 
 - **Open a PR** the body shows user flows, new commands, database changes, related PRs and the commands that generated code.
 - **Review** comments use hedges and the skill searches them for "never".
 
+## How it works: modules, files, data
+
+Each entry below names the files it changed.
+
+## Limits
+
+None written down yet.
+
 ## Changes
+
+### 2025-10-08 create-pr draws the flows and links its sources, review comments sound less sure
+
+Done from 2025-10-08 to 2025-10-14, before the history was reset to one commit. The old commits sit under `refs/backup/main` in the local backup mirror of `agent-skills`.
+
+#### Why
+
+PR bodies missed how to try the change and what it built on. Review comments read as orders.
+
+#### User flows it touches
+
+- **Open a PR** the body shows user flows, new commands, database changes, related PRs and the commands that generated code.
+- **Review** comments use hedges and the skill searches them for "never".
+
+#### Changes
 
 - **`skills/create-pr/SKILL.md`** changed.
 - **`skills/review/references/comment-style.md`** changed.
@@ -20,7 +41,7 @@ PR bodies missed how to try the change and what it built on. Review comments rea
 - **`skills/review/references/finding-shape.md`** changed.
 - **`skills/review/references/posting-comments.md`** changed.
 
-## Steps, in commit order
+#### Steps, in commit order
 
 1. create-pr: draw the user flows, show how to try a new command, list reused code (c23ead2, 2025-10-08)
 2. create-pr: list the commands that generated or rewrote code (8aab3c4, 2025-10-09)
@@ -30,6 +51,6 @@ PR bodies missed how to try the change and what it built on. Review comments rea
 6. create-pr: show table changes, relations and data flow when the database changes (0797afd, 2025-10-13)
 7. create-pr: link the related PRs the change builds on or ships with (7be7c88, 2025-10-14)
 
-## Docs to update
+#### Docs to update
 
 - `README.md`
