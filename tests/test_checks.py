@@ -4,6 +4,7 @@ mise x -- python -m unittest discover -s tests
 """
 
 import importlib.util
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -19,6 +20,7 @@ def load(name: str):
 
 
 budget = load("check-prose-budget")
+skills = load("check-skills")
 
 
 class ProseBudget(unittest.TestCase):
@@ -27,6 +29,18 @@ class ProseBudget(unittest.TestCase):
 
     def test_fence_inside_a_list_item_is_free(self):
         self.assertEqual(budget.count_prose_lines("- a\n  ```markdown\n  x\n  ```\n"), 1)
+
+
+class RepoSkillCopies(unittest.TestCase):
+    def test_a_stale_copy_fails(self):
+        with tempfile.TemporaryDirectory() as root:
+            source, copy = Path(root, "agents"), Path(root, "claude")
+            for folder, text in ((source, "new"), (copy, "old")):
+                (folder / "add-skill").mkdir(parents=True)
+                (folder / "add-skill" / "SKILL.md").write_text(text)
+            self.assertEqual(len(skills.check_repo_skill_copies(source, copy)), 1)
+            (copy / "add-skill" / "SKILL.md").write_text("new")
+            self.assertEqual(skills.check_repo_skill_copies(source, copy), [])
 
 
 if __name__ == "__main__":

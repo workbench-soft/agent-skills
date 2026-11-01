@@ -92,9 +92,9 @@ are unless the edit is about them.
 ## Skills
 
 Repo skills MUST sit in `.agents/skills/`, a folder each, where Codex reads
-them. `.claude/skills` MUST link to that folder for Claude Code and Copilot.
-On Windows, `git config --global core.symlinks true` MUST run before the
-clone, or the link checks out as a text file.
+them. `.claude/skills` MUST hold a copy of each for Claude Code and Copilot,
+since a Windows clone without `core.symlinks` turns a link into a text file.
+`scripts/check-skills.py` fails when a copy differs.
 
 - **`add-skill`** the agent MUST load it to add or change a shared skill in
   `skills/` and run its checks.
