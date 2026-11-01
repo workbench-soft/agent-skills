@@ -60,11 +60,11 @@ flowchart LR
 
 ### Voice: one multilingual edge-tts voice for the whole phrase
 
-- **Picked** the free Microsoft neural voices through `edge-tts`, which mise installs. `en-US-AvaMultilingualNeural` reads the whole phrase, Russian by default, in one fetch. Two different voices passed to the installer split it into Cyrillic and Latin runs, each read by its own voice. Each clip is cached in `%LOCALAPPDATA%\turn-voice`.
-- **Why** the person wants one woman for both languages. A whole sentence gives the voice its language, so a Latin name inside reads as part of it.
+- **Picked** the free Microsoft neural voices through `edge-tts`, which mise installs. `de-DE-SeraphinaMultilingualNeural` reads the phrase, Russian by default. The phrase always splits into Cyrillic and Latin runs, each fetched apart, and the voices passed to the installer may differ. Each clip is cached in `%LOCALAPPDATA%\turn-voice`.
+- **Why** the person wants one woman for both languages. The person wants the phrase cut by language every time.
 - **Trade-off** a new phrase needs the network. A failed fetch leaves only the cue.
 - **Rejected** the Windows voice in `System.Speech`: robotic, and it read a phrase a second time after an `edge-tts` timeout.
-- **Rejected** a multilingual voice fed run by run: it guessed a short Latin run as French.
+- **Reversed 2026-11-01** a multilingual voice fed run by run once guessed a short Latin run as French. The person asked for the split anyway, so it is back.
 - **Rejected** `ru-RU-SvetlanaNeural` with `en-GB-MaisieNeural`: two different women in one phrase.
 - **Rejected** one British voice for the whole phrase: `edge-tts` has no British voice that reads Russian.
 - **Cost to undo** low: the defaults in `hooks/turn-voice/install.ps1`.

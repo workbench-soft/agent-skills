@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **turn-voice** the phrase always splits into Russian and English runs, even with one voice, and the default voice is `de-DE-SeraphinaMultilingualNeural`.
+
 - **Markdown** markdownlint-cli2 lints the docs in `mise run lint` and CI.
 
 - **Key words** each paragraph and list item of every skill, reference, `AGENTS.md` and the instructions file states its rule with MUST, SHOULD or MAY. `scripts/keyword-check.mts` fails lint on a rule without one.
