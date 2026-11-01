@@ -231,7 +231,7 @@ def check_trade_marks(name):
                 similar += 1
         if total <= 100 * (page + 1):
             break
-    # The results come oldest first, so a newer live mark can sit on a page left unread.
+    # The pages follow the register number, not the date, so a live mark can sit on a page left unread.
     return {"exact": exact, "similar": similar, "results": total, "unread": max(0, total - seen)}
 
 
