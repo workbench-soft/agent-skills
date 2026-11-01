@@ -30,7 +30,7 @@ run = [
   "python scripts/check-skills.py",
   "python scripts/check-prose-budget.py",
   "python -m unittest discover -s tests",
-  "node --test tests/*.test.ts",
+  "node --test tests/*.test.ts skills/voice-test/ui/server.test.ts",
   "sh scripts/install-in-temp-home.sh",
 ]
 
