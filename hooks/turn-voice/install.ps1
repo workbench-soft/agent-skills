@@ -2,10 +2,10 @@
 # install.ps1 at the repo root runs it. -Uninstall takes the hooks and the exe out.
 param(
   [string]$Lang = "",
-  # One multilingual voice reads the whole phrase. Two different voices split it into
-  # Russian and English runs, each fetched apart with its own voice.
-  [string]$RuVoice = "en-US-AvaMultilingualNeural",
-  [string]$EnVoice = "en-US-AvaMultilingualNeural",
+  # The phrase splits into Russian and English runs, each fetched apart. One multilingual
+  # voice may read both, or two voices may share them.
+  [string]$RuVoice = "de-DE-SeraphinaMultilingualNeural",
+  [string]$EnVoice = "de-DE-SeraphinaMultilingualNeural",
   # Hz above or below each voice's own pitch, such as -10.
   [ValidateRange(-100, 100)][int]$RuPitch = 0,
   [ValidateRange(-100, 100)][int]$EnPitch = 0,

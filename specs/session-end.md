@@ -231,3 +231,18 @@
   steps wait on <title>".
 - **Steps** this entry, then the player and the docs.
 - **Docs** `README.md`, `docs/features.md`, `CHANGELOG.md`.
+
+### 2026-11-01 the phrase always splits, read by Seraphina
+
+- **Why** the person hears the phrase read whole by one voice and wants it
+  cut into Russian and English runs every time, with another multilingual
+  voice in place of Ava.
+- **Changes**
+  - **Always split** `hooks/turn-voice/turn-voice.cs` drops the case that
+    sent the whole phrase to `edge-tts` when both voices matched. `Runs`
+    cuts the phrase and each run is fetched apart.
+  - **Voice** `hooks/turn-voice/install.ps1` defaults `-RuVoice` and
+    `-EnVoice` to `de-DE-SeraphinaMultilingualNeural`.
+- **Risk** a short Latin run read alone may be guessed as another language,
+  as Emma was on 2026-10-30. The voice stays a default the person can swap.
+- **Docs** `README.md`, `docs/architecture.md`, `CHANGELOG.md`.

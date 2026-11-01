@@ -173,14 +173,13 @@ static class TurnVoice {
 
     // ruVoice reads the Cyrillic runs and enVoice the Latin ones, each run fetched apart.
     // The runs go into one mp3 with their silence cut, so no pause opens between voices.
-    // One multilingual voice for both gets the whole phrase, so it reads a Latin name inside the sentence.
+    // The phrase splits the same way when one multilingual voice reads both languages.
     static bool SayNeural(string text, string ruVoice, string enVoice, string tts, string ruPitch, string enPitch) {
         if (string.IsNullOrEmpty(ruVoice) || string.IsNullOrEmpty(enVoice) || string.IsNullOrEmpty(tts) || !File.Exists(tts)) {
             Log("no edge-tts at " + tts); return false;
         }
         try {
-            var runs = ruVoice == enVoice && ruPitch == enPitch
-                ? new System.Collections.Generic.List<string> { text.Trim() } : Runs(text);
+            var runs = Runs(text);
             if (runs.Count == 0) return false;
             var files = new System.Collections.Generic.List<string>();
             foreach (var run in runs) {
