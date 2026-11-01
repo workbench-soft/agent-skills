@@ -33,7 +33,7 @@ ignore it. So the agent MUST pick the level this way:
   claiming what the code doesn't do, a swallowed error, a value hardcoded in
   two places, a third party's token where the project has one of its own.
 - Stuck between two levels, the higher one MUST win, and the repo's own scale
-  MUST win over both where it exists. The `blocker: ` prefix on the comment
+  MUST win over both where it exists. The `blocker:` prefix on the comment
   MUST wait until the agent is certain.
 
 ## Carry one real case through the whole finding

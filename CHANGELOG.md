@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **Markdown** markdownlint-cli2 lints the docs in `mise run lint` and CI.
+
 - **Key words** each paragraph and list item of every skill, reference, `AGENTS.md` and the instructions file states its rule with MUST, SHOULD or MAY. `scripts/keyword-check.mts` fails lint on a rule without one.
 - Specs: one file per feature under `specs/`, with each dated spec moved in as an entry under `## Changes`.
 - **turn-voice** a turn that ends `👤 !!!USER STEPS!!!` rings a doorbell and says "did its part, your steps wait on" the task, apart from a finished one.

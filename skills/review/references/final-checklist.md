@@ -44,8 +44,8 @@ goes out:
 - Each finding MUST name one real case and keep it through to the end, quote the
   value it gives, and explain every code name in plain words on first use.
 - Each comment MUST be one doubt and one ask, under 40 words, without headings,
-  lists, fenced code, run tallies or damage. It opens with `nit: ` where it is
-  one, and with `blocker: ` only on a sure blocker. Outside `Assertive:` it
+  lists, fenced code, run tallies or damage. It opens with `nit:` where it is
+  one, and with `blocker:` only on a sure blocker. Outside `Assertive:` it
   opens unsure or as a question. No hedge phrase MAY appear in two findings.
 - Each finding MUST have a shorter comment under `Shorter:` and the short one
   minus the hedge under `Assertive:`, all making the same ask.
