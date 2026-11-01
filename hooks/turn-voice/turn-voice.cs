@@ -287,8 +287,11 @@ static class TurnVoice {
         string file = Path.Combine(dir, Hash(voice + "|" + (pitch == null ? "" : pitch + "|") + text) + ".mp3");
         if (File.Exists(file)) { Touch(file); return file; }
         string part = file + ".part";
+        // Backslashes before the closing quote get doubled, or a title such as C:\temp\
+        // escapes the quote and swallows --write-media.
+        string quoted = Regex.Replace(text.Replace("\"", ""), @"(\\+)$", "$1$1");
         var p = Process.Start(new ProcessStartInfo(tts,
-            "--voice " + voice + (pitch == null ? "" : " --pitch=" + pitch) + " --text \"" + text.Replace("\"", "") + "\" --write-media \"" + part + "\"") {
+            "--voice " + voice + (pitch == null ? "" : " --pitch=" + pitch) + " --text \"" + quoted + "\" --write-media \"" + part + "\"") {
             UseShellExecute = false, CreateNoWindow = true });
         if (!p.WaitForExit(30000)) { try { p.Kill(); } catch { } Log("edge-tts timed out"); return null; }
         if (p.ExitCode != 0 || !File.Exists(part) || new FileInfo(part).Length == 0) { Log("edge-tts exit " + p.ExitCode); return null; }
