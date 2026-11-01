@@ -75,7 +75,17 @@ static class TurnVoice {
 
     // The desktop app can run one hook twice for one event. The first run
     // claims a marker file, and a twin within 30 seconds stays quiet.
+    // Twins start together, and both found an older marker stale and spoke,
+    // so the check and the claim run one process at a time.
     static bool SeenRecently(string key) {
+        using (var gate = new Mutex(false, @"Local\turn-voice-seen")) {
+            bool owned = false;
+            try { owned = gate.WaitOne(5000); } catch (AbandonedMutexException) { owned = true; }
+            try { return ClaimMarker(key); } finally { if (owned) gate.ReleaseMutex(); }
+        }
+    }
+
+    static bool ClaimMarker(string key) {
         try {
             string marker = MarkerPath(key);
             string dir = Path.GetDirectoryName(marker);
