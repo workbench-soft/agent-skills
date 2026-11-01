@@ -70,6 +70,10 @@ turn, unasked: the VS Code prompts folder, `~/.claude/CLAUDE.md`,
 - **What it adds for the voice** hooks in `~/.claude/settings.json`,
   `turn-voice.exe` in `~/.claude/hooks`, and `uv` and `edge-tts` in your
   global mise config when mise is installed.
+- **What leaves the PC** `edge-tts` sends each phrase, with the folder name
+  and the session title, to Microsoft's online read aloud service. Each clip
+  is then cached in `%LOCALAPPDATA%\turn-voice`. Without `edge-tts` only the
+  cue plays.
 
 New skills reach the agents by themselves. The installer adds git hooks to
 the folder the agents link to. After a `git pull`, `merge`, `checkout` or
