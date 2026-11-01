@@ -86,6 +86,8 @@ function play(pick: Pick): void {
   };
   proc.stdout?.setEncoding("utf8").on("data", lines);
   proc.stderr?.setEncoding("utf8").on("data", lines);
+  // A missing python fails the spawn. Unhandled, the error would take the server down.
+  proc.on("error", (e) => send({ type: "line", text: `${python}: ${e.message}` }));
   proc.on("close", () => {
     if (player === proc) player = undefined;
     send({ type: "done" });

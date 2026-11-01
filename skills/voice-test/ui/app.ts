@@ -222,13 +222,19 @@ async function play(): Promise<void> {
   $("log").replaceChildren();
   openPanel(false);
   setPlaying(true);
-  await api("/api/play", {
-    line: settings.line,
-    groups: settings.groups,
-    lang: settings.lang,
-    ids: chosen.map((v) => v.id),
-    pitch: settings.pitch,
-  });
+  try {
+    await api("/api/play", {
+      line: settings.line,
+      groups: settings.groups,
+      lang: settings.lang,
+      ids: chosen.map((v) => v.id),
+      pitch: settings.pitch,
+    });
+  } catch (e) {
+    // No done event follows a failed start, so the page would say Playing for good.
+    setPlaying(false);
+    note(`Could not play: ${(e as Error).message}`);
+  }
 }
 
 function onLine(text: string): void {
@@ -272,7 +278,11 @@ $<HTMLInputElement>("pitch").oninput = (e) => {
   save();
 };
 $("play").onclick = () => void play();
-$("stop").onclick = () => void api("/api/stop").then(() => note("Stopped."));
+$("stop").onclick = () =>
+  void api("/api/stop").then(
+    () => note("Stopped."),
+    (e: Error) => note(`Could not stop: ${e.message}`),
+  );
 
 listen();
 void refresh();
