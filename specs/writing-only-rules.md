@@ -1,6 +1,26 @@
 # The rules file holds only the writing rules
 
-## 2026-10-30
+## What it does for the person
+
+None written down yet.
+
+## User flows
+
+None written down yet.
+
+## How it works: modules, files, data
+
+Each entry below names the files it changed.
+
+## Limits
+
+None written down yet.
+
+## Changes
+
+### 2026-10-30 The rules file holds only the writing rules
+
+#### 2026-10-30
 
 - **Why** the install wires `writing-style.instructions.md` into every agent
   on each turn. Its spec, ship, TODO and session end rules made a new user's

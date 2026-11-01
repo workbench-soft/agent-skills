@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Specs: one file per feature under `specs/`, with each dated spec moved in as an entry under `## Changes`.
 - **turn-voice** a turn that ends `👤 !!!USER STEPS!!!` rings a doorbell and says "did its part, your steps wait on" the task, apart from a finished one.
 - **demo-media** lessons from the first run on tickalot: the capture tools sit in the `demo` task, ffmpeg comes from the Gyan build on Windows, one browser context records the whole run, and the frame check also looks for wrong emoji and for web content with people.
 - **CI** mise installs oxfmt with npm, so `oxfmt --check` finds its own dependencies on the Windows runner again.
