@@ -10,6 +10,7 @@ letters, digits and hyphens ("kiwinest"), after accents fold ("Café" to
 
 import argparse
 import html
+import http.client
 import json
 import random
 import re
@@ -76,7 +77,8 @@ def fetch(url, host):
             except urllib.error.HTTPError as error:
                 if error.code not in (429, 500, 502, 503, 504):
                     return error.code, ""
-            except (urllib.error.URLError, TimeoutError):
+            # A reply cut off mid body raises IncompleteRead or a reset, and gets the retry too.
+            except (OSError, http.client.HTTPException):
                 pass
         time.sleep(2**attempt)
     raise RuntimeError(f"no answer from {url}")
