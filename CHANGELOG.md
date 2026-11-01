@@ -4,6 +4,14 @@
 
 - **Key words** each paragraph and list item of every skill, reference, `AGENTS.md` and the instructions file states its rule with MUST, SHOULD or MAY. `scripts/keyword-check.mts` fails lint on a rule without one.
 - Specs: one file per feature under `specs/`, with each dated spec moved in as an entry under `## Changes`.
+- **Security** the voice-test and icon-styles local pages answer only their own page. Another site open in the browser could play voices, or post a fake icon pick that the agent read as the person's answer.
+- **install** a failed temp write leaves `CLAUDE.md` as it was, where before it emptied and deleted the file.
+- **turn-voice** `settings.json` gets written through a temp file, so Claude Code never reads half of it. Two hooks at once speak once, a title ending in `\` still speaks, and a long transcript gets read line by line.
+- **domain-check** a name with trade mark results past the pages read shows as risky, and a reply cut off mid body gets a retry.
+- **voice-test** a failed Play shows its error on the page, and only the latest filter click fills the voice list.
+- **reddit-comments** a thread whose page failed to load stays "error" after Enter, so a later run doesn't skip it as posted.
+- **legal-check** a "SEE LICENSE IN <url>" license gets flagged again.
+- **CI** `mise run test` runs the skill checks, the new unit tests and the install test. actionlint lints the workflows, Dependabot updates the pinned actions, and the compiled `.pyc` left git.
 - **turn-voice** a turn that ends `👤 !!!USER STEPS!!!` rings a doorbell and says "did its part, your steps wait on" the task, apart from a finished one.
 - **demo-media** lessons from the first run on tickalot: the capture tools sit in the `demo` task, ffmpeg comes from the Gyan build on Windows, one browser context records the whole run, and the frame check also looks for wrong emoji and for web content with people.
 - **CI** mise installs oxfmt with npm, so `oxfmt --check` finds its own dependencies on the Windows runner again.
