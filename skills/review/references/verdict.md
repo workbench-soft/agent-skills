@@ -9,7 +9,7 @@ The agent MUST decide the verdict. It MUST go up with the comments once the
 user agrees to posting, without a second question.
 
 - **Request changes** MUST be for a sure blocker only, the finding whose comment
-  starts with `blocker: `. A blocker the agent has doubts about MUST stay a
+  starts with `blocker:`. A blocker the agent has doubts about MUST stay a
   comment.
 - **Approve** MUST be the pick when the agent would merge the PR as it is: no
   blocker, and every other finding can wait for a later PR. Zero findings MUST

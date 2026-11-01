@@ -72,8 +72,8 @@ The rest MUST go up as they are.
 ## Before the call
 
 - Each body MUST be in English, with no report language left in it.
-- Each finding MUST get one body, holding only the chosen version, with `nit: `
-  or `blocker: ` in front where it fits.
+- Each finding MUST get one body, holding only the chosen version, with `nit:`
+  or `blocker:` in front where it fits.
 - Fenced code, evidence markers, counts and the impact paragraph MUST stay out.
   They belong in the finding.
 - `path` and `line` MUST be taken from the finding's "Comment on" line, the path
