@@ -7,6 +7,9 @@
   reading the rest.
 - **Not done marker** a turn that stops with work left, an open question
   included, ends with `⚠️ !!!NOT COMPLETED!!!` and what is left.
+- **User steps marker** a turn whose agent work is done while steps wait on
+  the person, such as a DNS record, a login or a secret to copy, ends with
+  `👤 !!!USER STEPS!!!` and the steps.
 - **Archive** the person archives each session once they see the work is
   done. The agent doesn't archive it.
 - **Sound** the agent plays a sound and sends a notification once the work is
@@ -216,3 +219,15 @@
   `agent-skills-private` now bans the agent from archiving. The turn-voice
   archive cue stays, in case an agent archives anyway.
 - **Docs** `CHANGELOG.md` of both repos.
+
+### 2026-11-01 a marker for steps that wait on the person
+
+- **Why** sessions that left a DNS record, a login or a secret for the person
+  ended `✅ !!!COMPLETED!!!`, so they looked finished.
+- **Changes** the new marker `👤 !!!USER STEPS!!!` in
+  `workflow.instructions.md` of `agent-skills-private`. In
+  `hooks/turn-voice/turn-voice.cs` `FromMarker` maps it to a new outcome,
+  `UserSteps`: a doorbell cue, two falling notes, then "did its part, your
+  steps wait on <title>".
+- **Steps** this entry, then the player and the docs.
+- **Docs** `README.md`, `docs/features.md`, `CHANGELOG.md`.
