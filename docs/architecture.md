@@ -80,15 +80,15 @@ flowchart LR
 
 ### Checks: Python scripts with no packages
 
-- **Picked** `scripts/check-skills.py` and `scripts/check-prose-budget.py`, standard library only, run through `mise x -- python`.
+- **Picked** `scripts/check-skills.py` and `scripts/check-prose-budget.py`, standard library only. `mise run test` runs them with the unit tests in `tests/` (`unittest` and `node --test`, no packages) and the temp home install.
 - **Why** they check what a Markdown linter can't see: the `name` equals the folder, the description fits the 1024 characters of the Agent Skills format, links resolve, banned words stay out, and the prose stays under its cap. No record says why Python won over TypeScript.
 - **Trade-off** the org stack puts scripts in TypeScript and keeps Python for libraries Node lacks, so these scripts are an exception.
 - **Rejected** markdownlint alone: it checks Markdown syntax and none of the skill rules.
 - **Cost to undo** low: two scripts and their CI steps.
 
-### Lint and format: oxfmt, ruff, shellcheck and shfmt
+### Lint and format: oxfmt, ruff, shellcheck, shfmt and actionlint
 
-- **Picked** `mise run lint`: ruff for Python, oxlint for TypeScript, oxfmt for Markdown and config, shellcheck and shfmt for shell.
+- **Picked** `mise run lint`: ruff for Python, oxlint for TypeScript, oxfmt for Markdown and config, shellcheck and shfmt for shell, actionlint for the workflows.
 - **Why** the org stack wants a linter and a formatter for each language, with one tool per job.
 - **Trade-off** oxfmt pads the tables in each skill, so a small edit can rewrite a whole table.
 - **Rejected** ESLint and Prettier: the org stack bans them, and the `mise` and `architecture` skills now teach oxlint and oxfmt.

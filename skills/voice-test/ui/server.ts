@@ -86,6 +86,8 @@ function play(pick: Pick): void {
   };
   proc.stdout?.setEncoding("utf8").on("data", lines);
   proc.stderr?.setEncoding("utf8").on("data", lines);
+  // A missing python fails the spawn. Unhandled, the error would take the server down.
+  proc.on("error", (e) => send({ type: "line", text: `${python}: ${e.message}` }));
   proc.on("close", () => {
     if (player === proc) player = undefined;
     send({ type: "done" });
@@ -118,8 +120,18 @@ function watchIdle(): void {
   if (clients.size === 0) idle = setTimeout(() => (stop(), process.exit(0)), 8000);
 }
 
+// Only the page this server sent may call it. Another site in the browser could POST a
+// text/plain body with no preflight, and a DNS name rebound to 127.0.0.1 brings its own Host.
+function ownPage(req: IncomingMessage): boolean {
+  const address = server.address();
+  const host = `127.0.0.1:${typeof address === "object" && address ? address.port : 0}`;
+  const origin = req.headers.origin;
+  return req.headers.host === host && (!origin || origin === `http://${host}`);
+}
+
 const server = createServer(async (req, res) => {
   const url = new URL(req.url ?? "/", "http://localhost");
+  if (!ownPage(req)) return json(res, 403, { error: "only the voice-test page may call this" });
   try {
     if (url.pathname === "/") return file(res, "index.html", "text/html");
     if (url.pathname === "/app.js") return file(res, "app.ts", "text/javascript");

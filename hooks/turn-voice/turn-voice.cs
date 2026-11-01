@@ -75,7 +75,17 @@ static class TurnVoice {
 
     // The desktop app can run one hook twice for one event. The first run
     // claims a marker file, and a twin within 30 seconds stays quiet.
+    // Twins start together, and both found an older marker stale and spoke,
+    // so the check and the claim run one process at a time.
     static bool SeenRecently(string key) {
+        using (var gate = new Mutex(false, @"Local\turn-voice-seen")) {
+            bool owned = false;
+            try { owned = gate.WaitOne(5000); } catch (AbandonedMutexException) { owned = true; }
+            try { return ClaimMarker(key); } finally { if (owned) gate.ReleaseMutex(); }
+        }
+    }
+
+    static bool ClaimMarker(string key) {
         try {
             string marker = MarkerPath(key);
             string dir = Path.GetDirectoryName(marker);
@@ -147,16 +157,17 @@ static class TurnVoice {
     }
 
     // Claude Code writes the session title into the transcript as customTitle, again on each rename.
+    // The transcript is read line by line, since a long session's file runs to tens of MB.
     static string TaskTitle(string input) {
         string path = Field(input, "transcript_path");
         if (string.IsNullOrEmpty(path)) return null;
         try {
-            string text;
+            string title = null, line;
             using (var f = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-            using (var r = new StreamReader(f, Encoding.UTF8)) text = r.ReadToEnd();
-            var all = Regex.Matches(text, "\"customTitle\"\\s*:\\s*\"((?:[^\"\\\\]|\\\\.)*)\"");
-            if (all.Count == 0) return null;
-            return Regex.Unescape(all[all.Count - 1].Groups[1].Value).Replace("\"", "").Trim();
+            using (var r = new StreamReader(f, Encoding.UTF8))
+                while ((line = r.ReadLine()) != null)
+                    if (line.IndexOf("\"customTitle\"", StringComparison.Ordinal) >= 0) title = Field(line, "customTitle") ?? title;
+            return title == null ? null : title.Replace("\"", "").Trim();
         } catch { return null; }
     }
 
@@ -277,8 +288,11 @@ static class TurnVoice {
         string file = Path.Combine(dir, Hash(voice + "|" + (pitch == null ? "" : pitch + "|") + text) + ".mp3");
         if (File.Exists(file)) { Touch(file); return file; }
         string part = file + ".part";
+        // Backslashes before the closing quote get doubled, or a title such as C:\temp\
+        // escapes the quote and swallows --write-media.
+        string quoted = Regex.Replace(text.Replace("\"", ""), @"(\\+)$", "$1$1");
         var p = Process.Start(new ProcessStartInfo(tts,
-            "--voice " + voice + (pitch == null ? "" : " --pitch=" + pitch) + " --text \"" + text.Replace("\"", "") + "\" --write-media \"" + part + "\"") {
+            "--voice " + voice + (pitch == null ? "" : " --pitch=" + pitch) + " --text \"" + quoted + "\" --write-media \"" + part + "\"") {
             UseShellExecute = false, CreateNoWindow = true });
         if (!p.WaitForExit(30000)) { try { p.Kill(); } catch { } Log("edge-tts timed out"); return null; }
         if (p.ExitCode != 0 || !File.Exists(part) || new FileInfo(part).Length == 0) { Log("edge-tts exit " + p.ExitCode); return null; }

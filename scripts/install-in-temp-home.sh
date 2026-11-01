@@ -102,6 +102,16 @@ if MSYS=winsymlinks:nativestrict ln -s "$home/dotfiles/CLAUDE.md" "$home/.claude
   test -f "$home/dotfiles/CLAUDE.md"
 fi
 
+# A temp file that can't be written leaves CLAUDE.md as it was. A folder in
+# its place makes the write fail on every system.
+home="$scratch/home6"
+mkdir -p "$home/.claude/CLAUDE.md.agent-skills.tmp"
+printf '# keep me\n\n%s\n@old\n%s\n' '<!-- agent-skills: writing rules -->' '<!-- agent-skills: end -->' >"$home/.claude/CLAUDE.md"
+HOME="$home" sh "$src/install.sh" --lang Spanish
+grep -qx '# keep me' "$home/.claude/CLAUDE.md"
+HOME="$home" sh "$src/install.sh" --uninstall --yes
+grep -qx '# keep me' "$home/.claude/CLAUDE.md"
+
 # An old bug: the uninstall emptied the folder the agents link to, and the
 # next install found no skills to link.
 home="$scratch/home2"

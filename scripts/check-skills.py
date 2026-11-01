@@ -31,6 +31,7 @@ def main() -> int:
     # AGENTS.md puts these under the same rules, and every agent turn loads the rules file.
     for page in (Path("README.md"), Path("writing-style.instructions.md")):
         errors += check_words(page)
+    errors += check_repo_skill_copies(Path(".agents/skills"), Path(".claude/skills"))
     for error in errors:
         print(error)
     return 1 if errors else 0
@@ -52,6 +53,17 @@ def check_frontmatter(skill: Path) -> list[str]:
         errors.append(f'{skill}: description has ": ", quote it')
     elif len(description.strip("'\"")) > DESCRIPTION_LIMIT:
         errors.append(f"{skill}: description over {DESCRIPTION_LIMIT} characters")
+    return errors
+
+
+def check_repo_skill_copies(source: Path, copy: Path) -> list[str]:
+    # Claude Code reads .claude/skills, Codex .agents/skills. A Windows clone
+    # without core.symlinks turns a link into a text file, so each holds a copy.
+    errors = []
+    for skill in sorted(source.glob("*/SKILL.md")):
+        twin = copy / skill.relative_to(source)
+        if not twin.is_file() or twin.read_bytes() != skill.read_bytes():
+            errors.append(f"{twin}: differs from {skill}, copy it over")
     return errors
 
 

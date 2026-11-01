@@ -20,8 +20,9 @@ const RISKS: [RegExp, string][] = [
 
 export function riskOf(license: string): string | undefined {
   // An OR leaves the choice to the app, so the easiest branch counts.
-  // Old Cargo manifests write "MIT/Apache-2.0" for the same choice.
-  const branches = license.replace(/[()]/g, "").split(/\s+OR\s+|\//i);
+  // Old Cargo manifests write "MIT/Apache-2.0" for the same choice. A URL keeps its slashes.
+  const or = license.includes("://") ? /\s+OR\s+/i : /\s+OR\s+|\//i;
+  const branches = license.replace(/[()]/g, "").split(or);
   const risks = branches.map(
     (branch) => RISKS.find(([pattern]) => pattern.test(branch.trim()))?.[1],
   );

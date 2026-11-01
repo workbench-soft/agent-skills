@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """Check each markdown file against its prose line budget.
 
-Lines inside fenced blocks and blank lines are free.
+Lines inside fenced blocks and blank lines are free. With no file named, it
+checks every SKILL.md and reference file, since cmd, where mise runs a task on
+Windows, leaves a glob unexpanded.
 
-    python3 scripts/check-prose-budget.py skills/*/SKILL.md
+    mise x -- python scripts/check-prose-budget.py [file.md ...]
 """
 
 import re
@@ -11,10 +13,13 @@ import sys
 from pathlib import Path
 
 PROSE_LIMITS = {"SKILL.md": 300, "reference": 60}
-FENCE = re.compile(r"^(`{3,})")
+# A fence may sit indented inside a list item.
+FENCE = re.compile(r"^[ \t]*(`{3,})")
 
 
 def main(names: list[str]) -> int:
+    skills = Path("skills")
+    names = names or sorted(map(str, [*skills.glob("*/SKILL.md"), *skills.glob("*/references/*.md")]))
     over_any = False
     for name in names:
         path = Path(name)

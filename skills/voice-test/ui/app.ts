@@ -24,6 +24,8 @@ const settings: Settings = load();
 const off = new Set(settings.off);
 let voices: Voice[] = [];
 let playing = false;
+// Each filter click lists the voices again. Only the latest list may land.
+let listing = 0;
 
 function load(): Settings {
   const fallback: Settings = {
@@ -112,16 +114,20 @@ async function refresh(): Promise<void> {
   renderFilters();
   save();
   $("voices-summary").textContent = "Loading…";
+  const ticket = ++listing;
+  let list: Voice[] = [];
   try {
-    voices = await api<Voice[]>("/api/voices", {
+    list = await api<Voice[]>("/api/voices", {
       line: settings.line,
       groups: settings.groups,
       lang: settings.lang,
     });
   } catch (e) {
-    voices = [];
-    note(`Could not list the voices: ${(e as Error).message}`);
+    if (ticket === listing) note(`Could not list the voices: ${(e as Error).message}`);
   }
+  // Two quick clicks start two lists, and the older one can finish last.
+  if (ticket !== listing) return;
+  voices = list;
   renderVoices();
 }
 
@@ -222,13 +228,19 @@ async function play(): Promise<void> {
   $("log").replaceChildren();
   openPanel(false);
   setPlaying(true);
-  await api("/api/play", {
-    line: settings.line,
-    groups: settings.groups,
-    lang: settings.lang,
-    ids: chosen.map((v) => v.id),
-    pitch: settings.pitch,
-  });
+  try {
+    await api("/api/play", {
+      line: settings.line,
+      groups: settings.groups,
+      lang: settings.lang,
+      ids: chosen.map((v) => v.id),
+      pitch: settings.pitch,
+    });
+  } catch (e) {
+    // No done event follows a failed start, so the page would say Playing for good.
+    setPlaying(false);
+    note(`Could not play: ${(e as Error).message}`);
+  }
 }
 
 function onLine(text: string): void {
@@ -272,7 +284,11 @@ $<HTMLInputElement>("pitch").oninput = (e) => {
   save();
 };
 $("play").onclick = () => void play();
-$("stop").onclick = () => void api("/api/stop").then(() => note("Stopped."));
+$("stop").onclick = () =>
+  void api("/api/stop").then(
+    () => note("Stopped."),
+    (e: Error) => note(`Could not stop: ${e.message}`),
+  );
 
 listen();
 void refresh();

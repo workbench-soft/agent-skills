@@ -234,13 +234,22 @@ strip_rules_block() {
     return 1
   fi
   tmp="$file.agent-skills.tmp"
-  awk -v s="$rules_open" -v e="$rules_close" '
+  # The callers run this under || where set -e is off, so each step checks its
+  # own failure. A failed temp write would otherwise empty the file below.
+  if ! awk -v s="$rules_open" -v e="$rules_close" '
     $0 == s { skip = 1; next }
     $0 == e { skip = 0; next }
     skip != 1 { print }
-  ' "$file" >"$tmp"
+  ' "$file" >"$tmp"; then
+    rm -f "$tmp" 2>/dev/null
+    echo "Left $file alone, could not write $tmp." >&2
+    return 1
+  fi
   # Written through, so a CLAUDE.md that links into dotfiles stays a link.
-  cat "$tmp" >"$file"
+  if ! cat "$tmp" >"$file"; then
+    echo "Could not rewrite $file. Its text without the block is in $tmp." >&2
+    return 1
+  fi
   rm -f "$tmp"
   # Only the block was in the file, so the install made the file. A link
   # points at the person's own file, which stays.

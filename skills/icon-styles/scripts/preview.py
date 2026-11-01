@@ -165,7 +165,22 @@ def build(folder: Path, title: str) -> Path:
 class PickHandler(SimpleHTTPRequestHandler):
     """Serves the drafts folder, and takes the answer as POST /answer."""
 
+    # Only the page this server sent may call it. Another site in the browser could POST a
+    # text/plain body with no preflight, and its comment would reach the agent as the answer.
+    # A DNS name rebound to 127.0.0.1 brings its own Host.
+    def own_page(self) -> bool:
+        host = f"127.0.0.1:{self.server.server_address[1]}"
+        origin = self.headers.get("Origin")
+        return self.headers.get("Host") == host and origin in (None, f"http://{host}")
+
+    def do_GET(self) -> None:
+        if not self.own_page():
+            return self.send_error(403, "only the preview page may call this")
+        super().do_GET()
+
     def do_POST(self) -> None:
+        if not self.own_page():
+            return self.send_error(403, "only the preview page may call this")
         folder = Path(self.directory)
         try:
             length = int(self.headers.get("Content-Length", 0))

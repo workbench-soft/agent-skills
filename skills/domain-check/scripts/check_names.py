@@ -10,6 +10,7 @@ letters, digits and hyphens ("kiwinest"), after accents fold ("Café" to
 
 import argparse
 import html
+import http.client
 import json
 import random
 import re
@@ -76,7 +77,8 @@ def fetch(url, host):
             except urllib.error.HTTPError as error:
                 if error.code not in (429, 500, 502, 503, 504):
                     return error.code, ""
-            except (urllib.error.URLError, TimeoutError):
+            # A reply cut off mid body raises IncompleteRead or a reset, and gets the retry too.
+            except (OSError, http.client.HTTPException):
                 pass
         time.sleep(2**attempt)
     raise RuntimeError(f"no answer from {url}")
@@ -193,14 +195,19 @@ def check_abr(name):
 def check_trade_marks(name):
     """Live marks with the same words, and live marks that contain them."""
     target = squash(name)
-    exact, similar, total = [], 0, 0
+    exact, similar, total, seen = [], 0, 0, 0
     for page in range(2):
         _, body = fetch(TM_URL.format(urllib.parse.quote(name), page), "tm")
         found = re.search(r'qa-count">([\d,]+)<', body)
         if not found:
             raise RuntimeError("trade mark search page has no result count")
         total = int(found.group(1).replace(",", ""))
-        for number, record in re.findall(r'<tbody id="TM(\d+)"(.*?)</tbody>', body, re.DOTALL):
+        records = re.findall(r'<tbody id="TM(\d+)"(.*?)</tbody>', body, re.DOTALL)
+        # A count with no rows means the page changed, and the name would read free.
+        if total and not records:
+            raise RuntimeError("trade mark search page has a count but no rows")
+        seen += len(records)
+        for number, record in records:
             words = re.search(r'class="trademark words"[^>]*>(.*?)</td>', record, re.DOTALL)
             status = re.search(r'class="status"[^>]*>(.*?)</td>', record, re.DOTALL)
             classes = re.search(r'class="classes[^"]*"[^>]*>(.*?)</td>', record, re.DOTALL)
@@ -224,7 +231,8 @@ def check_trade_marks(name):
                 similar += 1
         if total <= 100 * (page + 1):
             break
-    return {"exact": exact, "similar": similar, "results": total}
+    # The pages follow the register number, not the date, so a live mark can sit on a page left unread.
+    return {"exact": exact, "similar": similar, "results": total, "unread": max(0, total - seen)}
 
 
 def verdict(row):
@@ -238,6 +246,8 @@ def verdict(row):
         reasons.append("an active business uses the name")
     if isinstance(tm, dict) and tm["similar"]:
         reasons.append(f"{tm['similar']} live marks contain the words")
+    if isinstance(tm, dict) and tm.get("unread"):
+        reasons.append(f"{tm['unread']} newer trade mark results unread")
     if reasons:
         return "risky", "; ".join(reasons)
     errors = [zone for zone, state in domains.items() if state.startswith("error")]

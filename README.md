@@ -70,6 +70,10 @@ turn, unasked: the VS Code prompts folder, `~/.claude/CLAUDE.md`,
 - **What it adds for the voice** hooks in `~/.claude/settings.json`,
   `turn-voice.exe` in `~/.claude/hooks`, and `uv` and `edge-tts` in your
   global mise config when mise is installed.
+- **What leaves the PC** `edge-tts` sends each phrase, with the folder name
+  and the session title, to Microsoft's online read aloud service. Each clip
+  is then cached in `%LOCALAPPDATA%\turn-voice`. Without `edge-tts` only the
+  cue plays.
 
 New skills reach the agents by themselves. The installer adds git hooks to
 the folder the agents link to. After a `git pull`, `merge`, `checkout` or
@@ -431,12 +435,12 @@ in `CLAUDE.md` and `AGENTS.md` stay, and only the installer's block goes.
 
 [AGENTS.md](AGENTS.md) sets the rules for each `.md` file here: the prose
 budget under `skills/`, when a line earns a `MUST`, and what stays verbatim.
-Check a file against the budget, then every skill's frontmatter, links and
-banned words:
+Run the checks CI runs. `test` covers the budget, every skill's frontmatter,
+links and banned words, the unit tests and an install in a temporary home:
 
 ```sh
-mise x -- python scripts/check-prose-budget.py skills/*/SKILL.md skills/*/references/*.md
-mise x -- python scripts/check-skills.py
+mise run lint
+mise run test
 ```
 
 ## Releases
