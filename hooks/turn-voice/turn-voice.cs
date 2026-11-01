@@ -157,16 +157,17 @@ static class TurnVoice {
     }
 
     // Claude Code writes the session title into the transcript as customTitle, again on each rename.
+    // The transcript is read line by line, since a long session's file runs to tens of MB.
     static string TaskTitle(string input) {
         string path = Field(input, "transcript_path");
         if (string.IsNullOrEmpty(path)) return null;
         try {
-            string text;
+            string title = null, line;
             using (var f = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-            using (var r = new StreamReader(f, Encoding.UTF8)) text = r.ReadToEnd();
-            var all = Regex.Matches(text, "\"customTitle\"\\s*:\\s*\"((?:[^\"\\\\]|\\\\.)*)\"");
-            if (all.Count == 0) return null;
-            return Regex.Unescape(all[all.Count - 1].Groups[1].Value).Replace("\"", "").Trim();
+            using (var r = new StreamReader(f, Encoding.UTF8))
+                while ((line = r.ReadLine()) != null)
+                    if (line.IndexOf("\"customTitle\"", StringComparison.Ordinal) >= 0) title = Field(line, "customTitle") ?? title;
+            return title == null ? null : title.Replace("\"", "").Trim();
         } catch { return null; }
     }
 
