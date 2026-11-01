@@ -127,6 +127,7 @@ def main() -> int:
                 print(f"\nStopping after {args.max} items. Rerun later with --start {number}.")
                 break
             print(f"\n[{number}/{len(items)}] {item['url']}")
+            failed = False
             try:
                 page.goto(item["url"], wait_until="domcontentloaded")
                 page.wait_for_timeout(2500)
@@ -137,12 +138,19 @@ def main() -> int:
                 where = fill_comment(page, item["text"])
                 print(f"Typed into the {where}. Read it, press Comment in Chrome.")
             except Exception as error:  # noqa: BLE001 - a failure on one thread moves on to the next
+                failed = True
                 item["status"] = "error"
                 item["error"] = str(error).splitlines()[0]
                 save_queue(args.queue, items)
                 print(f"Error: {item['error']}")
             handled += 1
-            answer = input("Enter = posted, s = skipped, q = quit: ").strip().lower()
+            if failed:
+                # Nothing got typed, so Enter keeps the error rather than mark the thread posted.
+                answer = input("Enter = keep the error, p = posted by hand, s = skipped, q = quit: ").strip().lower()
+                if answer not in ("p", "s", "q"):
+                    continue
+            else:
+                answer = input("Enter = posted, s = skipped, q = quit: ").strip().lower()
             if answer == "q":
                 break
             item["status"] = "skipped" if answer == "s" else "posted"
