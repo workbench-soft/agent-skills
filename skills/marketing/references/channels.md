@@ -1,10 +1,11 @@
 # Where to post
 
-Post where the audience already asks for what the product does. Launch in
-order from quiet to loud: a small friendly place catches the bugs before the
-big one notices.
+The agent SHOULD post where the audience already asks for what the product
+does, from quiet to loud: a small friendly place catches the bugs first.
 
 ## By product kind
+
+The agent SHOULD start from these places:
 
 | Product                         | First places                                                                                                         |
 | ------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
@@ -17,56 +18,59 @@ big one notices.
 
 ## Launch sites, once each
 
-- **Show HN** on a weekday, 8 to 10 am US Eastern. Title `Show HN: <what it
-  does>`. In the first comment, the maker explains why and how it is built.
-- **Product Hunt** at 12:01 am Pacific, Tuesday to Thursday. A gif of the main
-  feature working, 3 to 5 screenshots, the maker comment prepared.
-- **Builder subs** r/SideProject on any day, r/webdev on Showoff Saturday
-  alone. Few users, but good feedback and GitHub stars.
-- **alternativeto.net** a listing as an alternative to the known paid
+- **Show HN** SHOULD go out on a weekday, 8 to 10 am US Eastern. Title
+  `Show HN: <what it does>`. The first comment MUST explain why and how it is
+  built.
+- **Product Hunt** SHOULD go out at 12:01 am Pacific, Tuesday to Thursday,
+  with a gif of the main feature, 3 to 5 screenshots and the maker comment.
+- **Builder subs** MAY take r/SideProject on any day, and r/webdev on
+  Showoff Saturday alone. Few users, but good feedback and GitHub stars.
+- **alternativeto.net** SHOULD list it as an alternative to the known paid
   product. Visitors there already want to switch.
-- **Lists and stores for open source** the `awesome-*` list through a PR,
-  F-Droid. Each accepts open source alone.
+- **Lists and stores for open source** the `awesome-*` list through a PR and
+  F-Droid MAY take open source alone.
 
 ## Reddit
 
-- **Find subs** search Reddit for the problem, phrased the audience's way.
-  Choose active subs with posts from this week.
+- **Find subs** the agent SHOULD search Reddit for the problem, phrased the
+  audience's way, and pick subs with posts from this week.
 - **Rules** lots of subs allow self-promotion only in a weekly thread or with
-  an "I made this" flair. Read the sidebar and the wiki before posting.
-- **Local beats general** for a local tool, a city sub brings more people
-  than the country sub, which often removes self-promotion.
-- **Shape** a post on what the user built and the reason. A screenshot or a
-  video does better than a bare link.
+  an "I made this" flair. The agent MUST read the sidebar and the wiki first.
+- **Local beats general** a local tool SHOULD go to a city sub, which brings
+  more people than the country sub and removes less.
+- **Shape** a post SHOULD tell what the user built and the reason. A
+  screenshot or a video does better than a bare link.
 
 ## Forums and groups
 
-- **Answer old threads** search `site:<forum> "<problem words>"`. A genuine
-  answer with the link keeps ranking in Google for years.
-- **Say who you are** OzBargain and forums like it make the maker mark the
+- **Answer old threads** the agent SHOULD search
+  `site:<forum> "<problem words>"`. A genuine answer with the link keeps
+  ranking in Google for years.
+- **Say who you are** on OzBargain and forums like it, the maker MUST mark the
   link as their own.
-- **Facebook groups** check with the admin before posting the first time.
+- **Facebook groups** the agent MUST check with the admin before the first
+  post.
 
 ## Short video
 
-Suits a product that looks good in motion. A screen recording of 15 to 30
-seconds, a single idea, the product working from the first second. One clip
-goes to YouTube Shorts, TikTok and Instagram Reels alike. Below 1 clip a week,
-the channel dies out within a month.
+A product that looks good in motion MAY get a 15 to 30 second screen
+recording: one idea, the product working from the first second. One clip
+SHOULD go to YouTube Shorts, TikTok and Instagram Reels alike, at 1 a week.
 
 ## Press and creators
 
-- **Press** pitch 2 to 4 weeks ahead of the topic's peak: holidays for road
-  topics, the new financial year for money tools, back to school for learning.
-- **Who** journalists who covered the topic last year, local papers first.
-  National outlets pick up a story after local ones run it.
-- **Creators** channels of 1k to 50k subscribers, plus teachers in the niche.
-  Give the paid tier free for good in exchange for an honest review.
-- **Paid spots** from the $2000 tier up, once a free review proved the
-  audience clicks.
+- **Press** the pitch SHOULD go 2 to 4 weeks ahead of the topic's peak:
+  holidays for road topics, the new financial year for money tools, back to
+  school for learning.
+- **Who** the agent SHOULD pick journalists who covered the topic last year,
+  local papers first. National outlets pick up a story after local ones.
+- **Creators** the agent SHOULD pick channels of 1k to 50k subscribers, plus
+  teachers in the niche, and MAY give the paid tier free for an honest review.
+- **Paid spots** MAY start from the $2000 tier up, once a free review proved
+  the audience clicks.
 
 ## The store listing is a channel
 
-- **Title** carries the phrase people type in the store: "speed camera".
-- **Screenshots** 4 to 8, each captioned with a one-line benefit.
-- **Reviews** reply to each within a week. Google reads the replies.
+- **Title** MUST carry the phrase people type in the store: "speed camera".
+- **Screenshots** SHOULD number 4 to 8, each captioned with a one-line benefit.
+- **Reviews** each SHOULD get a reply within a week. Google reads the replies.

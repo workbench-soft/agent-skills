@@ -2,13 +2,15 @@
 
 ## Before the first account
 
-1. Check that the handle is free on each site in the plan. Choose one that is
-   free on all of them.
-2. Use a single email for the marketing accounts, one the user reads.
-3. Sign up on each site during the first run. Approval and warm-up last days,
-   and the posts follow later.
+1. The agent MUST check that the handle is free on each site in the plan, and
+   SHOULD choose one that is free on all of them.
+2. The accounts SHOULD share a single email, one the user reads.
+3. The agent SHOULD sign up on each site during the first run. Approval and
+   warm-up last days, and the posts follow later.
 
 ## Limits on new accounts
+
+A new account MUST respect these limits:
 
 | Site                                       | Sign-up                                | What a new account hits                                                                                                                |
 | ------------------------------------------ | -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
@@ -19,38 +21,40 @@
 | Classic forums: Whirlpool, XDA             | email, sometimes a moderator approves  | approval can take days. Some cap links in the first posts                                                                              |
 | Facebook groups                            | the user's own profile, join questions | the admin approves the join, then the post                                                                                             |
 
-For a site missing from the table, read its FAQ or rules page on new-account
-limits before the first post.
+For a site missing from the table, the agent MUST read its FAQ or rules page
+on new-account limits before the first post.
 
 ## Posting
 
-1. Adapt the calendar text to this place: its words, its rules, a screenshot
-   of its city or topic.
-2. Title: what the product does for this audience. No caps lock, no emoji, no
-   "best".
-3. Place the link where the rules ask: in the post or in the first comment.
-4. Tag the link for the channel, `?ref=reddit-sydney`, so the counter can
-   tell posts apart.
-5. Write "I built this" in the post.
-6. Open the post in a logged-out window. Reddit filters remove posts silently,
-   and the logged-out view alone reveals it.
-7. Removed? Send the moderators one polite note: what the post is, that the
-   user built it, and a question about where it belongs. Skip the repost.
+1. The agent MUST adapt the calendar text to this place: its words, its
+   rules, a screenshot of its city or topic.
+2. The title MUST say what the product does for this audience. It MUST NOT
+   use caps lock, emoji or "best".
+3. The link MUST go where the rules ask: in the post or in the first comment.
+4. The link MUST carry a tag for the channel, `?ref=reddit-sydney`, so the
+   counter can tell posts apart.
+5. The post MUST say "I built this".
+6. The agent MUST open the post in a logged-out window. Reddit filters remove
+   posts silently, and the logged-out view alone reveals it.
+7. When it was removed, the agent SHOULD send the moderators one polite note:
+   what the post is, that the user built it, and where it belongs. It MUST
+   NOT repost.
 
 ## Replies
 
-- **First 2 hours** settle whether a Reddit or HN post rises. Reply to each
-  comment in that window, briefly and kindly.
-- **Criticism** agree with the part that is true and say what will change.
-  Skip the argument.
-- **Bug reports** thank the person, open an issue, reply with its link. The
-  fix becomes the reason for the next post.
-- **Session end** tell the user when to check back that day. The next run
-  replies to the rest.
+- **First 2 hours** settle whether a Reddit or HN post rises. The agent SHOULD
+  reply to each comment in that window, briefly and kindly.
+- **Criticism** the agent SHOULD agree with the part that is true and say what
+  will change. It MUST NOT argue.
+- **Bug reports** the agent SHOULD thank the person, open an issue, and reply
+  with its link. The fix becomes the reason for the next post.
+- **Session end** the agent MUST tell the user when to check back that day.
+  The next run SHOULD reply to the rest.
 
 ## Pace
 
-- **One community a day** with the text reworded for each.
-- **Same sub again** after 6 months, and only with news.
-- **A ban or a removal** halts posting on that site. Ask the moderators the
-  reason before posting there again.
+- **One community a day** the agent SHOULD post in one a day, with the text
+  reworded for each.
+- **Same sub again** MAY come after 6 months, and only with news.
+- **A ban or a removal** MUST halt posting on that site. The agent MUST ask
+  the moderators the reason before posting there again.

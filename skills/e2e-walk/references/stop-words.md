@@ -1,10 +1,12 @@
 # Stop words
 
 A control whose label, hint or `content-desc` holds one of these words, or a
-word built on one, gets skipped. Match the start of the word and ignore case:
-`Delete all`, `Deleted`, `Удалить` and `удаление` all match.
+word built on one, MUST be skipped. The agent MUST match the start of the word
+and ignore case: `Delete all`, `Deleted`, `Удалить` and `удаление` all match.
 
 ## Lose data
+
+The agent MUST treat each of these as a stop word:
 
 | Language | Words                                                                                                                                        |
 | -------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -20,6 +22,8 @@ word built on one, gets skipped. Match the start of the word and ignore case:
 
 ## Leave or reach other people
 
+The agent MUST treat each of these as a stop word too:
+
 | Language | Words                                                                                                         |
 | -------- | ------------------------------------------------------------------------------------------------------------- |
 | en       | sign out, log out, disconnect, unlink, revoke, leave, send, share, invite, post, publish, pay, buy, subscribe |
@@ -34,18 +38,21 @@ word built on one, gets skipped. Match the start of the word and ignore case:
 
 ## Icons with no word
 
-- **Bin** a trash can, a bin or a cross on a list row.
-- **Eraser** an eraser, a broom or a circular arrow next to data.
-- **Exit** a door with an arrow, a power symbol.
-- **Send** a paper plane, a share arrow, a card or a coin.
+- **Bin** a trash can, a bin or a cross on a list row MUST count as a stop
+  word.
+- **Eraser** an eraser, a broom or a circular arrow next to data MUST count
+  as one.
+- **Exit** a door with an arrow or a power symbol MUST count as one.
+- **Send** a paper plane, a share arrow, a card or a coin MUST count as one.
 
 ## Words that stay safe
 
 - **Cancel** `Cancel`, `Отмена`, `Abbrechen`, `Annuler`, `Cancelar`, `取消`,
-  `キャンセル`, `취소`, `Avbryt` close a dialog. Tap them to leave one.
+  `キャンセル`, `취소`, `Avbryt` close a dialog. The agent SHOULD tap them to
+  leave one.
 - **Clear search** an `X` inside a search field clears only the typed query.
   It MAY be tapped.
 - **Both** a label with a safe word and a stop word, such as `Cancel
-  subscription`, counts as a stop word.
-- **Own rows** a stop word control on a row named `E2E` stays skipped. The
-  person removes those rows.
+  subscription`, MUST count as a stop word.
+- **Own rows** a stop word control on a row named `E2E` MUST stay skipped.
+  The person removes those rows.

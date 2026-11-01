@@ -5,26 +5,30 @@ description: 'Use when the request covers a whole app, site or repo to audit, re
 
 # Audit an app and fix what is worth fixing
 
-Several agents read the whole repo in parallel, each through its own lens, and
-fix the safe findings in a worktree of their own. The main agent checks each
-commit as its report lands, picks it onto one branch and merges a single PR. It
-asks the user no question between the request and the merge.
+Several agents MUST read the whole repo in parallel, each through its own
+lens, and fix the safe findings in a worktree of their own. The main agent MUST
+check each commit as its report lands, pick it onto one branch and merge a
+single PR. It MUST NOT ask the user a question between the request and the
+merge.
 
-Unless the `writing-style` skill is already in context, load it before writing
-the first line a person reads.
+Unless the `writing-style` skill is already in context, the agent MUST load it
+before writing the first line a person reads.
 
 ## 1. Read the project
 
 The repo rules MUST beat this skill everywhere but the branch rule of step 3.
-Read:
+The agent MUST read these first:
 
 - The README, `AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md` and
-  `.github/copilot-instructions.md`.
-- The `## app-audit` section of `TODO.md`, which holds what the previous run
-  left and the reason. Those items MUST NOT return as findings.
-- `git log --oneline -20`, to learn how commits look. Some repos want them
-  written as release notes.
-- The manifests, the CI workflows and the commands that run the checks.
+  `.github/copilot-instructions.md` MUST be read.
+- The `## app-audit` section of `TODO.md` holds what the previous run left and
+  the reason. Those items MUST NOT return as findings.
+- `git log --oneline -20` MUST be read to learn how commits look. Some repos
+  want them written as release notes.
+- The manifests, the CI workflows and the commands that run the checks MUST be
+  read.
+
+The agent SHOULD map the repo with these commands:
 
 ```bash
 git ls-files | sed 's|/.*||' | sort | uniq -c | sort -rn | head -20
@@ -32,8 +36,8 @@ git ls-files -z | grep -zvE '\.(lock|json|svg|png)$|lock\.yaml$' | xargs -0 wc -
 ls .github/workflows AGENTS.md CLAUDE.md TODO.md 2>/dev/null
 ```
 
-Post the project card in the chat. Each reviewer receives it, so it SHOULD stay
-within 15 lines:
+The agent MUST post the project card in the chat. Each reviewer receives it, so
+it SHOULD stay within 15 lines:
 
 ```markdown
 **What it does** <one sentence, for whom>
@@ -47,6 +51,8 @@ within 15 lines:
 
 ## 2. Pick the lenses
 
+Each lens MUST run when its row says so:
+
 | Lens                                | Runs when                                               |
 | ----------------------------------- | ------------------------------------------------------- |
 | Bugs and edge cases                 | always                                                  |
@@ -59,12 +65,12 @@ within 15 lines:
 | Reliability, offline and monitoring | network calls, background work, jobs or a data pipeline |
 | Platform and store                  | a mobile or desktop app, native code, a store listing   |
 
-- **User picked a focus** the lenses or focus the user named run, with Bugs
-  added.
+- **User picked a focus** only the lenses or focus the user named MUST run,
+  with Bugs added.
 - **Small repo** below 2,000 lines of code, lenses MAY run in pairs, two to a
   reviewer.
-- **Skipped lens** it gets a single line in the chat with the reason.
-- **Out of scope** search, ads and marketing belong to the `seo-setup`,
+- **Skipped lens** it MUST get a single line in the chat with the reason.
+- **Out of scope** search, ads and marketing MUST be left to the `seo-setup`,
   `ads-setup` and `marketing` skills. The report MAY name one of them.
 
 ## 3. Make the worktrees
@@ -73,17 +79,19 @@ The work MUST happen on a new branch and finish as a PR, also in a repo that
 commits straight to its default branch. A batch of fixes gets one review before
 users see it.
 
-With the `git-worktrees` skill, create these off the latest default branch:
+With the `git-worktrees` skill, the agent MUST create these off the latest
+default branch:
 
-- **Audit** branch `audit-<date>`, such as `audit-2025-10-26`. The PR comes
+- **Audit** branch `audit-<date>`, such as `audit-2025-10-26`. The PR MUST come
   from it.
 - **One per lens** branch `audit-<date>-<lens>`, such as
-  `audit-2025-10-26-bugs`. It stays local, and its agent commits there.
-- **One at a time** create them in a loop yourself, since git locks its config
-  for each one. Copy the ignored local files into each one.
-- **Name taken** add a suffix: `audit-2025-10-26-2`.
-- **User's checkout** it MUST stay untouched. A permission or a tool blocks the
-  worktree? Stop and tell the user.
+  `audit-2025-10-26-bugs`. It MUST stay local, and its agent commits there.
+- **One at a time** the main agent MUST create them in a loop itself, since git
+  locks its config for each one. It MUST copy the ignored local files into each
+  one.
+- **Name taken** the agent MUST add a suffix: `audit-2025-10-26-2`.
+- **User's checkout** it MUST stay untouched. When a permission or a tool
+  blocks the worktree, the agent MUST stop and tell the user.
 
 A heavy build cache MAY be shared across the worktrees through its env var,
 such as `CARGO_TARGET_DIR`. Each `gh` call MUST start with `GH_PAGER=cat`,
@@ -94,40 +102,45 @@ since a pager would hang it.
 Before the first brief is written, [references/briefs.md](references/briefs.md)
 MUST be read.
 
-- **One subagent per lens** start them all together, in the background, each in
-  its own worktree. It reviews its lens, sorts the findings and commits each
-  fix.
+- **One subagent per lens** the agent MUST start them all together, in the
+  background, each in its own worktree. Each one reviews its lens, sorts the
+  findings and commits each fix.
 - **Model** when the user named a model, every lens agent MUST run on it.
-  Without a name, the agent's default model runs.
+  Without a name, the agent's default model MUST run.
 - **Security lens** it SHOULD run on a security review agent if the agent
   offers one that can edit files.
-- **No subagent tool** run the lenses yourself in turn, in the audit worktree,
-  each one a fresh pass with its own brief. The commits land on the audit
-  branch, and step 5 skips the cherry-pick.
+- **No subagent tool** the agent MUST run the lenses itself in turn, in the
+  audit worktree, each one a fresh pass with its own brief. The commits land on
+  the audit branch, and step 5 skips the cherry-pick.
 
-Meanwhile, read the code yourself: the entry points, the five largest files and
-the path data takes from its source to the screen. Step 5 relies on that.
+Meanwhile, the main agent MUST read the code itself: the entry points, the five
+largest files and the path data takes from its source to the screen. Step 5
+relies on that.
 
 ## 5. Take each report as it lands
 
 Before the first report, [references/triage.md](references/triage.md) MUST be
-read. A report is handled the moment it arrives, while the other agents keep
-working.
+read. A report MUST be handled the moment it arrives, while the other agents
+keep working.
 
-For each commit on the report's Fixed list:
+Each commit on the report's Fixed list MUST go through these steps:
 
-1. Read it with `git -C <lens worktree> show <sha>`.
-2. Check it against the code and the Fix rules. Lens agents misread code, so a
-   commit the code fails to back is dropped, and its finding goes to Leave.
-3. Run `git cherry-pick <sha>` in the audit worktree.
-4. Run the checks over the files it touched.
+1. The agent MUST read it with `git -C <lens worktree> show <sha>`.
+2. The agent MUST check it against the code and the Fix rules. Lens agents
+   misread code, so a commit the code fails to back MUST be dropped, and its
+   finding goes to Leave.
+3. The agent MUST run `git cherry-pick <sha>` in the audit worktree.
+4. The agent MUST run the checks over the files it touched.
 
-- **Conflict** a few lines get resolved by hand, then `git cherry-pick
-  --continue`. A bigger one gets `git cherry-pick --abort` and goes to the redo
-  list.
-- **Same fix twice** a pick that comes out empty gets `git cherry-pick --skip`.
-- **Leave lines** read each reason. One you judge a Fix goes to the redo list.
-- **Table** post the report's rows in the chat, then go on with no question:
+- **Conflict** a few lines SHOULD be resolved by hand, then `git cherry-pick
+  --continue`. A bigger one MUST get `git cherry-pick --abort` and go to the
+  redo list.
+- **Same fix twice** a pick that comes out empty MUST get
+  `git cherry-pick --skip`.
+- **Leave lines** the agent MUST read each reason. One it judges a Fix goes to
+  the redo list.
+- **Table** the agent MUST post the report's rows in the chat, then go on with
+  no question:
 
 | #   | Lens         | Finding                             | Where              | Decision                    |
 | --- | ------------ | ----------------------------------- | ------------------ | --------------------------- |
@@ -135,27 +148,28 @@ For each commit on the report's Fixed list:
 | 2   | Architecture | `cameras.json` has no format number | `camera.ts:28`     | Fix                         |
 | 3   | Dependencies | move from Leaflet to MapLibre       |                    | Leave: migration, 6x the JS |
 
-Once each commit of a lens is picked or dropped, remove its worktree with
-`git worktree remove` and its local branch with `git branch -D`. Its
-`git status --short` MUST print empty first.
+Once each commit of a lens is picked or dropped, the agent MUST remove its
+worktree with `git worktree remove` and its local branch with `git branch -D`.
+Its `git status --short` MUST print empty first.
 
 ### The redo list
 
-After the last report, fix each redo item yourself on the audit branch, with
-the fix loop of the lens brief: one finding, its files, its checks, one commit.
-A bug fix SHOULD come with a test that fails without it. No tests in the area?
-The report says so.
+After the last report, the agent MUST fix each redo item itself on the audit
+branch, with the fix loop of the lens brief: one finding, its files, its
+checks, one commit. A bug fix SHOULD come with a test that fails without it.
+When the area has no tests, the report MUST say so.
 
 ### Commit messages
 
-Every commit follows these, the lens agents' included. The brief gives them in
-one line.
+Every commit MUST follow these, the lens agents' included. The brief gives them
+in one line.
 
 - **Repo rules** the message MUST match them. Where release notes come from
   commits, the subject speaks to a user: "Show cameras at once in the app",
   rather than "Refactor loader".
-- **Body** the reason first, then one line per visible change.
-- **Internal work** the subject names it: `CI: pin each action to a commit`.
+- **Body** it SHOULD give the reason first, then one line per visible change.
+- **Internal work** the subject SHOULD name it:
+  `CI: pin each action to a commit`.
 - **Banned** `git add -A`, `git add .` and `--amend` MUST NOT be used.
 
 ## 6. Verify
@@ -163,50 +177,55 @@ one line.
 Once the last fix is in, [references/verify.md](references/verify.md) MUST be
 read.
 
-Verifying takes the checks, a production build, and a click through every
-changed flow in the running app. A part that can't run here goes in TODO.md as
-a line.
+Verifying MUST take the checks, a production build, and a click through every
+changed flow in the running app. A part that can't run here MUST go in TODO.md
+as a line.
 
 ## 7. Have a fresh reviewer read the branch
 
 Before the PR opens, a new reviewer with no context from this session MUST read
 `git diff <base>...HEAD`. The brief for it sits in
-[references/briefs.md](references/briefs.md). Point it at the likeliest breaks:
-new async code, caches, format changes, CI conditions.
+[references/briefs.md](references/briefs.md). The agent SHOULD point it at the
+likeliest breaks: new async code, caches, format changes, CI conditions.
 
-- **Real findings** each one is fixed and checked like the rest, in a new
+- **Real findings** each one MUST be fixed and checked like the rest, in a new
   commit.
-- **Wording** the commit names the fix in user words: "Build the Android app on
-  pull requests again".
+- **Wording** the commit SHOULD name the fix in user words: "Build the Android
+  app on pull requests again".
 
 ## 8. Open the PR and merge it
 
-Load the `create-pr` skill and run it in create mode.
+The agent MUST load the `create-pr` skill and run it in create mode.
 
 - **Changelog** the PR MUST carry an entry in the repo's own way. Commits read
   by the release notes already count.
-- **CI** watch it with `GH_PAGER=cat gh pr checks --watch`. A new commit fixes
-  each failing check.
+- **CI** the agent MUST watch it with `GH_PAGER=cat gh pr checks --watch`. A
+  new commit MUST fix each failing check.
 - **Stuck check** one that fails on the default branch as well, or after three
-  fixes, goes in `TODO.md` with its reason, and the PR stays open.
-- **Merge** when CI is green, use the repo's merge method. A required review
-  that blocks it is waited for, and the PR link goes in `TODO.md`.
-- **Main only CI** a workflow with no `pull_request` trigger runs on main
-  only. Run the tests and linter locally, then merge right after the PR opens.
-- **Clean up** after the merge, the `git-worktrees` skill removes the worktree,
-  its folder and its branch, local and remote.
+  fixes, MUST go in `TODO.md` with its reason, and the PR stays open.
+- **Merge** when CI is green, the agent MUST use the repo's merge method. A
+  required review that blocks it MUST be waited for, and the PR link goes in
+  `TODO.md`.
+- **Main only CI** a workflow with no `pull_request` trigger runs on main only.
+  The agent MUST then run the tests and linter locally, and merge right after
+  the PR opens.
+- **Clean up** after the merge, the `git-worktrees` skill MUST remove the
+  worktree, its folder and its branch, local and remote.
 
 ## 9. Write TODO.md
 
-At the root of the branch, add an `## app-audit` section to `TODO.md`, or
-replace the existing one. Commit it before the PR opens, and again each time step
-8 adds lines. The section holds:
+At the root of the branch, the agent MUST add an `## app-audit` section to
+`TODO.md`, or replace the existing one. It MUST commit it before the PR opens,
+and again each time step 8 adds lines. The section MUST hold:
 
-- **Left** every Leave finding and its reason, so the next run skips it.
-- **Yours** the tasks only a person can do: test on a device, settle a product
-  question, set a secret.
-- **Check** whatever only CI verified, such as a native build without an SDK
-  here.
+- **Left** every Leave finding and its reason MUST be there, so the next run
+  skips it.
+- **Yours** the tasks only a person can do MUST be there: test on a device,
+  settle a product question, set a secret.
+- **Check** whatever only CI verified MUST be there, such as a native build
+  without an SDK here.
+
+The section SHOULD read like this:
 
 ```markdown
 ## app-audit
@@ -218,8 +237,8 @@ replace the existing one. Commit it before the PR opens, and again each time ste
 
 ## 10. Report back
 
-Open the answer with the PR link and its merge state, then the table. Each SHA
-is the commit on the audit branch:
+The answer MUST open with the PR link and its merge state, then the table. Each
+SHA MUST be the commit on the audit branch:
 
 | #   | Lens         | Finding                             | Result                                |
 | --- | ------------ | ----------------------------------- | ------------------------------------- |
@@ -227,11 +246,13 @@ is the commit on the audit branch:
 | 2   | Architecture | `cameras.json` has no format number | fixed, `9be68c6`                      |
 | 3   | Dependencies | Leaflet to MapLibre                 | left: 6x the JS for a heading-up view |
 
-After the table:
+After the table, the answer MUST list:
 
-1. Each catch the fresh reviewer made in this run's own changes, a line apiece.
-2. What went unverified here and the reason: no SDK, no device, no account.
-3. The lines added to `TODO.md`.
+1. Each catch the fresh reviewer made in this run's own changes MUST get a line
+   apiece.
+2. What went unverified here and the reason MUST be named: no SDK, no device,
+   no account.
+3. The lines added to `TODO.md` MUST be listed.
 
 ## Guardrails
 

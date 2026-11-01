@@ -1,7 +1,7 @@
 # What mise replaces
 
-Read this when a command would install a tool, set a version or load env vars
-without mise. Run the mise command in the right column.
+The agent MUST read this when a command would install a tool, set a version or
+load env vars without mise. It MUST run the mise command in the right column:
 
 | Instead of                                            | Run                                                              |
 | ----------------------------------------------------- | ---------------------------------------------------------------- |
@@ -20,16 +20,16 @@ without mise. Run the mise command in the right column.
 | `python -m venv .venv`                                | `[env]` with `_.python.venv = { path = ".venv", create = true }` |
 | nodemon, entr                                         | `mise watch <task>`                                              |
 
-- **Repo deps** a CLI the repo lists as a dependency runs through its package
-  manager inside mise: `mise x -- pnpm exec oxlint`.
-- **direnv** a repo that keeps `.envrc` SHOULD keep it. `mise.toml` takes new
-  env vars only.
+- **Repo deps** a CLI the repo lists as a dependency MUST run through its
+  package manager inside mise: `mise x -- pnpm exec oxlint`.
+- **direnv** a repo that keeps `.envrc` SHOULD keep it. `mise.toml` SHOULD
+  take new env vars only.
 
 ## CI
 
 A workflow SHOULD install the tools from `mise.toml` with `jdx/mise-action`,
 in place of `actions/setup-node`, `setup-python`, `setup-go` and
-`setup-java`. Pin the action to a commit SHA:
+`setup-java`. The action MUST be pinned to a commit SHA:
 
 ```yaml
 - uses: jdx/mise-action@<sha>

@@ -1,10 +1,12 @@
 # JS workspace
 
-pnpm 11 handles installs, Nx runs the tasks, and TypeScript project references
-check the types. Treat the templates below as a start, and cut whatever the
-repo has no use for.
+pnpm 11 SHOULD handle installs, Nx SHOULD run the tasks, and TypeScript
+project references SHOULD check the types. The templates below are a start,
+and the agent SHOULD cut whatever the repo has no use for.
 
 ## Folders and scopes
+
+Each folder SHOULD hold its kind of project under its scope:
 
 | Folder       | Holds                                    | Scope         | Published |
 | ------------ | ---------------------------------------- | ------------- | --------- |
@@ -19,10 +21,12 @@ repo has no use for.
 - Every private scope MUST point at `https://0.0.0.0`. Then a typo or a
   missing link breaks the install, and a public package of the same name
   can't sneak in.
-- The package name MUST equal the folder name, and a structure check fails
-  any mismatch.
+- The package name MUST equal the folder name, and a structure check MUST
+  fail any mismatch.
 
 ## pnpm
+
+The workspace, `.npmrc` and `devEngines` SHOULD start from these:
 
 ```yaml
 packages: [apps/*, services/*, packages/*, internal/*, contracts/*, workers/*, e2e/*]
@@ -64,8 +68,8 @@ packageExtensions: # fix a dependency's missing peer here, not in a patch
 
 ## TypeScript
 
-One package, `internal/typescript`, holds the tsconfig layers. A project
-extends the layers it needs.
+One package, `internal/typescript`, SHOULD hold the tsconfig layers. A
+project SHOULD extend the layers it needs:
 
 ```jsonc
 // base: every project
@@ -106,8 +110,8 @@ extends the layers it needs.
 
 ## Package exports
 
-In the repo, a package points to its source, so apps use it without a build
-step. At publish time, `publishConfig` swaps the built files in.
+In the repo, a package SHOULD point to its source, so apps use it without a
+build step. At publish time, `publishConfig` MUST swap the built files in:
 
 ```json
 {
@@ -133,6 +137,8 @@ step. At publish time, `publishConfig` swaps the built files in.
 - Each published package SHOULD go through `publint`.
 
 ## Nx
+
+`nx.json` SHOULD start from this template:
 
 ```json
 {
@@ -164,6 +170,8 @@ step. At publish time, `publishConfig` swaps the built files in.
 - In CI, `nx affected` SHOULD run with a remote cache.
 - Changesets MAY handle releases, with Nx release switched off as shown above.
 
+Layers SHOULD be enforced through tags, as in this lint rule:
+
 ```js
 // eslint: layers through tags. A project's tags sit in its package.json under "nx".
 "@nx/enforce-module-boundaries": ["error", { depConstraints: [
@@ -175,6 +183,8 @@ step. At publish time, `publishConfig` swaps the built files in.
 ```
 
 ## knip
+
+The knip config SHOULD start from this template:
 
 ```ts
 export default {
@@ -188,6 +198,6 @@ export default {
 } satisfies KnipConfig;
 ```
 
-- A shared package SHOULD hold the config, and the root re-exports it.
+- A shared package SHOULD hold the config, and the root SHOULD re-export it.
 - Every ignore MUST have a comment giving the reason. Without one, the ignore
   stays long after its cause is gone.

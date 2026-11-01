@@ -1,13 +1,13 @@
 # Guardrails
 
-These checks keep the architecture in place after people and agents have
+These checks MUST keep the architecture in place after people and agents have
 stopped reading the doc.
 
 ## Structure lint
 
-A small CLI reads each `package.json` under the workspace folders straight from
-disk. It ignores the workspace tool's project list, because a broken package
-can fall out of that list.
+A small CLI MUST read each `package.json` under the workspace folders straight
+from disk, since a broken package can fall out of the workspace tool's list. It
+SHOULD run these checks:
 
 | Check                            | Fails when                                                                            |
 | -------------------------------- | ------------------------------------------------------------------------------------- |
@@ -28,13 +28,15 @@ workflows using `actionlint` and `zizmor`.
 ## Lint bans
 
 - **Root access** any read or write of `<html>` outside the shell context
-  package fails, including through aliases and destructuring.
+  package MUST fail, including through aliases and destructuring.
 - **Web storage** using `localStorage` or `sessionStorage` outside the storage
-  package fails.
-- **File routes** a route that breaks the router's file convention fails.
-- **Strings** text a user sees that skips the i18n macros fails.
+  package MUST fail.
+- **File routes** a route that breaks the router's file convention MUST fail.
+- **Strings** text a user sees that skips the i18n macros MUST fail.
 
 ## CI on every PR
+
+Each PR MUST pass these checks:
 
 ```text
 lint, format, typecheck, nx sync:check, knip, publint, changesets status,
@@ -50,6 +52,8 @@ codegen drift, each generator run and its output checked, bundle sizes
   tested on a preview.
 
 ## Tests by file name
+
+Test files SHOULD be named by where they run:
 
 | File                 | Runs in                          | For                             |
 | -------------------- | -------------------------------- | ------------------------------- |
@@ -69,7 +73,7 @@ codegen drift, each generator run and its output checked, bundle sizes
 ## Generators
 
 - Every project kind SHOULD have its own generator: app, package, worker.
-- The app generator produces the lifecycle, the provider stack, the route
+- The app generator MUST produce the lifecycle, the provider stack, the route
   tree, i18n catalogs, a browser test, plus the registry, CODEOWNERS and knip
   entries.
 - CI SHOULD run every generator and confirm its output passes lint, typecheck,

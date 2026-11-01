@@ -1,13 +1,13 @@
 # Bundle rules
 
-These apply to code shipped to a browser. Every rule trims what the first screen
-must download and parse.
+Code shipped to a browser MUST follow these rules. Each one trims what the
+first screen has to download and parse.
 
 ## Import from the file, not the index
 
-The index file of a big library re-exports all of its modules. A single icon
-imported that way can drag in thousands of modules, which slows both the dev
-server and the build.
+The index file of a big library re-exports all of its modules. Code SHOULD NOT
+import from it, since a single icon can drag in thousands of modules and slow
+both the dev server and the build.
 
 - **Name the file** imports from a big icon or component library SHOULD point
   at the file.
@@ -26,13 +26,13 @@ import { Button } from "@mui/material";
 import Button from "@mui/material/Button";
 ```
 
-Packages with this problem: `lucide-react`, `@mui/material`,
+These packages MUST get file imports: `lucide-react`, `@mui/material`,
 `@mui/icons-material`, `react-icons`, `lodash`, `date-fns`, `rxjs`.
 
 ## Keep import paths literal
 
-When the bundler can't read a path at build time, it pulls in each file the
-path might match.
+An import path MUST stay literal. When the bundler can't read a path at build
+time, it pulls in each file the path might match.
 
 ```ts
 // Bad: the bundler can't tell which file loads
@@ -55,7 +55,7 @@ Server code that Next.js bundles SHOULD spell out `fs` paths the same way.
 - **Head start** loading SHOULD begin on hover or focus of the button that
   opens it, so the click waits less.
 - **Failure** a failed `import()` SHOULD show an error and a retry, since a
-  chunk from the last deploy may be gone from the server.
+  chunk from the last deploy might be gone from the server.
 
 ```ts
 const loadEditor = () => import("./editor");
@@ -67,4 +67,4 @@ button.addEventListener("click", async () => (await loadEditor()).open());
 
 - **Late** analytics and chat widgets SHOULD load once the page is interactive:
   a `defer` script, or `import()` after the `load` event.
-- **Early** error tracking MAY load first, since it must catch errors at start.
+- **Early** error tracking MAY load first, so it catches errors at start.

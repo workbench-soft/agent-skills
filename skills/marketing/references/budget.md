@@ -1,9 +1,11 @@
 # What the money buys
 
-The prices are rough and in USD. Look up the vendor page before giving the
-user a price, and flag which figures are guesses.
+The prices are rough and in USD. The agent MUST look up the vendor page before
+giving the user a price, and flag which figures are guesses.
 
 ## Costs worth it at any budget
+
+The agent SHOULD offer these whatever the budget:
 
 | Item                                               | Price                        | Take it when                                                                                 |
 | -------------------------------------------------- | ---------------------------- | -------------------------------------------------------------------------------------------- |
@@ -16,8 +18,8 @@ user a price, and flag which figures are guesses.
 
 ## Tiers
 
-The expected results are guesses for a niche product whose core is free. Mark
-them as guesses in the chat.
+The expected results are guesses for a niche product whose core is free. The
+chat MUST mark them as guesses.
 
 | Budget a year | Adds on top of the tier above                                                                                                            | Expect, a guess                                                          |
 | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
@@ -29,7 +31,8 @@ them as guesses in the chat.
 
 ## The next tier line
 
-Name the specific purchases and their result. "More ads" is too vague.
+The line MUST name the specific purchases and their result. "More ads" is too
+vague:
 
 ```text
 With $500 a year instead of $100: 3 small guitar channels review the app
@@ -37,35 +40,38 @@ With $500 a year instead of $100: 3 small guitar channels review the app
 the visitors of the free launch.
 ```
 
-- **Doesn't pay yet** state when it will. Ads pay off once a visitor is worth
-  more than a click costs: $0.5 to $2 a click, against $1 to $5 per 1000 ad
-  views.
-- **Time for money** for a niche product, 2 hours a week of forum answers
-  does better than $100 of ads. Point this out when the user offers money and
-  no time.
-- **Total, not yearly** spread a total across the first year: launch costs
-  come first, and the remainder waits for a test on the channel that worked.
+- **Doesn't pay yet** the agent MUST state when it will. Ads pay off once a
+  visitor is worth more than a click costs: $0.5 to $2 a click, against $1 to
+  $5 per 1000 ad views.
+- **Time for money** for a niche product, 2 hours a week of forum answers does
+  better than $100 of ads. The agent SHOULD say so when the user offers money
+  and no time.
+- **Total, not yearly** the agent SHOULD spread a total across the first year:
+  launch costs first, the remainder kept for a test on the channel that worked.
 
 ## Skip at every budget
 
-- **SEO agencies, link packages, paid directories** Google ignores them or
-  penalises them.
-- **Bought upvotes, reviews, followers** Reddit and the stores ban the domain.
-- **Paid analytics** Plausible or Fathom, from $9 a month, tell what the free
-  counter tells.
-- **Ads before a free post worked** the money is spent and the lesson is
-  missing.
-- **Google Ads under $500 for a free niche app** that buys a few dozen clicks.
+- **SEO agencies, link packages, paid directories** MUST NOT be bought.
+  Google ignores them or penalises them.
+- **Bought upvotes, reviews, followers** MUST NOT be bought. Reddit and the
+  stores ban the domain.
+- **Paid analytics** SHOULD NOT be bought. Plausible or Fathom, from $9 a
+  month, tell what the free counter tells.
+- **Ads before a free post worked** SHOULD NOT run, or the money goes and no
+  lesson comes back.
+- **Google Ads under $500 for a free niche app** SHOULD NOT run, since that
+  buys a few dozen clicks.
 
 ## Running a paid test
 
-1. Choose the channel where a free post performed best: Reddit Ads for a
-   subreddit audience, Meta for local groups, Google Ads for a phrase people
-   search.
-2. The user types in the card. Set a daily cap and a total cap before the ad
-   starts.
-3. Run a single ad to a single audience for 7 days, with the link tagged
-   `?ref=ad-<channel>`.
-4. Cost per user equals the spend divided by the new visitors from that link.
-5. Stop rule: the test ends when cost per user goes above what a user is
-   worth, or above the user's stated limit.
+1. The agent SHOULD choose the channel where a free post did best: Reddit Ads
+   for a subreddit audience, Meta for local groups, Google Ads for a phrase
+   people search.
+2. The user MUST type in the card. The agent MUST set a daily cap and a total
+   cap before the ad starts.
+3. The agent SHOULD run a single ad to a single audience for 7 days, with the
+   link tagged `?ref=ad-<channel>`.
+4. The agent MUST count cost per user as the spend divided by the new visitors
+   from that link.
+5. The test MUST stop when cost per user goes above what a user is worth, or
+   above the user's stated limit.

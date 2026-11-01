@@ -1,12 +1,12 @@
 # MFE runtime
 
-The document is composed at the edge and the page is composed by the shell.
-Both learn from the registry which MFE owns which route.
+The edge MUST compose the document and the shell MUST compose the page. Both
+MUST learn from the registry which MFE owns which route.
 
 ## The lifecycle
 
-All MFEs export one set of three functions from their entry. A bootstrap
-package generates them, so MFEs don't hand write their own.
+All MFEs MUST export one set of three functions from their entry. A bootstrap
+package SHOULD generate them, so MFEs don't hand write their own:
 
 ```ts
 export const { bootstrap, mount, unmount, rootClassList } = createMfeLifecycles({
@@ -16,21 +16,23 @@ export const { bootstrap, mount, unmount, rootClassList } = createMfeLifecycles(
 });
 ```
 
-To mount an MFE, the shell goes through these steps:
+To mount an MFE, the shell MUST go through these steps:
 
-1. Look up its module and stylesheet URLs in the import map.
-2. Attach the stylesheet, and set `rootClassList` on the container.
-3. Await `bootstrap()`.
-4. Call `mount(props)`, passing a stable name and the container node.
-5. Call `unmount(props)` ahead of the next MFE's mount, and remove its
-   stylesheet.
+1. The shell MUST look up its module and stylesheet URLs in the import map.
+2. It MUST attach the stylesheet and set `rootClassList` on the container.
+3. It MUST await `bootstrap()`.
+4. It MUST call `mount(props)` with a stable name and the container node.
+5. It MUST call `unmount(props)` and remove the stylesheet before the next
+   MFE's mount.
 
 - The container SHOULD be looked up again on every mount, since some MFEs mount
   into nodes that show up later.
 - The shell MAY run this protocol on its own, without an orchestrator library.
-  The lifecycle remains the contract.
+  The lifecycle MUST remain the contract.
 
 ## The host contract
+
+The host MUST pass these props to every MFE:
 
 ```ts
 interface HostProvidedProps {
@@ -47,7 +49,7 @@ interface HostProvidedProps {
   exactly. Sentry is such a library.
 - A lint check SHOULD fail once the lockfile gets ahead of `HOST_CONTRACT`.
 
-The bootstrap package gives every MFE's tree the same set of providers:
+The bootstrap package MUST give every MFE's tree the same set of providers:
 
 ```text
 StrictMode > transport provider (host query client, sign out on 401) > event bus
@@ -57,8 +59,8 @@ error boundary sits under i18n, so the fallback is translated
 
 ## The registry
 
-Each MFE has one entry, frozen, typed and written as data. The shell, the edge
-and the legacy fallback all read that one file.
+Each MFE MUST have one entry, frozen, typed and written as data. The shell,
+the edge and the legacy fallback MUST all read that one file:
 
 ```ts
 { name: "supply", repository: "org/web", owner: "team-supply", port: 3004,
@@ -67,6 +69,8 @@ and the legacy fallback all read that one file.
   content: { routes: [{ path: "/supply", subtree: true }], auth: "session",
              audience: [{ flag: "supply-mfe" }], pendingReservation: [{ flag: "supply-mfe" }] } }
 ```
+
+The status of a route MUST decide who renders it:
 
 | Status      | The MFE                           | The legacy app                  |
 | ----------- | --------------------------------- | ------------------------------- |
@@ -77,30 +81,29 @@ and the legacy fallback all read that one file.
 - Claims MUST be plain data. A worker reads JSON, and a predicate function
   can't make it across that boundary.
 - The parser MUST refuse two claims on the same path.
-- `repository` prevents a repo from promoting an MFE that belongs to another
-  repo.
+- `repository` MUST stop a repo from promoting another repo's MFE.
 
 ## The shell owns page-wide UI
 
-- **Fixed slots** header, navigation and content mount into fixed DOM ids,
-  the same ids older apps mount into.
-- **One writer** chrome state sits on `<html data-chrome>`. MFEs request
-  changes through bus events, the shell decides and writes, and any MFE can
-  read.
-- **Toasts** an MFE puts `show`, `update`, `close` on the bus. A toast lives on
-  after the MFE that raised it, and its action button is removed on unmount.
-- **Banners** appear one at a time, by priority. Dismissals are stored per id.
+- **Fixed slots** header, navigation and content MUST mount into fixed DOM
+  ids, the same ids older apps mount into.
+- **One writer** chrome state MUST sit on `<html data-chrome>`. MFEs MUST
+  request changes through bus events, and only the shell writes.
+- **Toasts** an MFE SHOULD put `show`, `update`, `close` on the bus. A toast
+  MUST outlive its MFE, and its action button MUST go on unmount.
+- **Banners** MUST appear one at a time, by priority, with dismissals stored
+  per id.
 
 ## Shared dependencies
 
-Module Federation lets MFEs share heavy libraries such as React.
+MFEs SHOULD share heavy libraries such as React through Module Federation.
 
-- Ranges that are compatible share a single copy, and a pin that isn't falls
+- Compatible ranges SHOULD share a single copy, and a pin that isn't MAY fall
   back to a copy of its own.
 - Remote URLs MUST be supplied at runtime from the source the import map uses
   (`registerRemotes`). URLs fixed at build time break previews and local
   overrides.
-- Federation shares only code. Instances keep arriving through props.
+- Federation shares only code. Instances MUST keep arriving through props.
 - With one or two shared libraries, import maps alone MAY be enough. Each such
-  library then needs a hosted build, a map entry and a build set to exclude
+  library then MUST get a hosted build, a map entry and a build set to exclude
   it.

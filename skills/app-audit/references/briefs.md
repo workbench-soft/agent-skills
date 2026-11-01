@@ -1,10 +1,12 @@
 # Briefs for the subagents
 
 Lens agents begin with zero context. Each brief MUST contain the frame below,
-the step 1 project card and its lens checklist. Paste them unchanged and fill
-in the angle brackets.
+the step 1 project card and its lens checklist. The main agent MUST paste them
+unchanged and fill in the angle brackets.
 
 ## The frame every lens agent gets
+
+Every lens brief MUST open with this frame:
 
 ```text
 You audit the repo at <lens worktree path> for <LENS> only, and fix what you find.
@@ -46,6 +48,8 @@ Report, one line per finding:
 ```
 
 ## The lens checklists
+
+Each brief MUST carry the one checklist below that fits its lens:
 
 ```text
 BUGS AND EDGE CASES
@@ -131,6 +135,8 @@ Check signing and release steps that only one machine can run.
 ```
 
 ## The fresh reviewer of the branch
+
+The reviewer of step 7 MUST get this brief:
 
 ```text
 Review `git diff <base>...<branch>` in <path>. Read-only: don't edit or commit.

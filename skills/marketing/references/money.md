@@ -1,7 +1,7 @@
 # Making money from it
 
 People share the free part, so it MUST be useful by itself. The paid parts
-sit above it.
+SHOULD sit above it, picked from these:
 
 | Way                                                | Fits when                                                | Rough income                               |
 | -------------------------------------------------- | -------------------------------------------------------- | ------------------------------------------ |
@@ -11,22 +11,22 @@ sit above it.
 | Ads: AdSense on pages, AdMob in apps               | content pages with search traffic                        | $1 to $5 per 1000 views                    |
 | Affiliate links, Commission Factory and the like   | money or gear topics, from 500 visits a month            | per sale or lead                           |
 
-- **Ads that break the promise** are left out. An app that says "your photos
-  stay home" and carries ad trackers loses the reason people chose it. Ads
-  belong on content pages, away from the main tool screen. `ads-setup` adds
-  them.
+- **Ads that break the promise** MUST be left out. An app that says "your
+  photos stay home" and carries ad trackers loses the reason people chose it.
+  Ads SHOULD sit on content pages, away from the main tool screen.
+  `ads-setup` adds them.
 - **Open source** is the strongest trust signal for a technical audience. It
-  also unlocks F-Droid, the `awesome-*` lists and GitHub stars. The choice is
-  the user's.
+  also unlocks F-Droid, the `awesome-*` lists and GitHub stars. The user MUST
+  make that choice.
 - **Store payments** Google Play keeps 15% of the first $1M each year. On the
-  site, a web payment through Ko-fi or Stripe avoids that cut.
+  site, a web payment through Ko-fi or Stripe SHOULD take the payment instead.
 - **Content rights** songs, tabs, maps or photos used without a licence lead
-  to takedowns once the product makes money. Remove them ahead of the paid
+  to takedowns once the product makes money. They MUST go ahead of the paid
   launch and ahead of a store review.
 - **The Play account** an inactive account with no published app gets closed
-  by Google, and the $25 is lost. Verify the phone and email in Play Console,
-  publish, and upload a build every 5 months or sooner.
+  by Google, and the $25 is lost. The user MUST verify the phone and email in
+  Play Console, publish, and upload a build every 5 months or sooner.
 
-Give the honest figure: in its first year, a niche side project makes $0 to
-$30 a month. Search traffic grows it slowly, and a launch brings a single
-spike.
+The agent MUST give the honest figure: in its first year, a niche side project
+makes $0 to $30 a month. Search traffic grows it slowly, and a launch brings a
+single spike.

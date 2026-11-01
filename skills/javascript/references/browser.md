@@ -1,7 +1,7 @@
 # Browser rules
 
-These apply to code running on the page. Every rule leaves the main thread open
-for taps, scrolls and typing.
+Code running on the page MUST follow these rules. Each one keeps the main
+thread open for taps, scrolls and typing.
 
 ## Event listeners
 
@@ -21,7 +21,7 @@ controller.abort();
 ## Layout
 
 A size read straight after a style write forces the browser to lay out the page
-at once. In a loop, that costs a layout for every item.
+at once. A loop SHOULD NOT do that, since it costs a layout for every item.
 
 - **Batch** layout reads SHOULD happen as a group, followed by the writes as a
   group.

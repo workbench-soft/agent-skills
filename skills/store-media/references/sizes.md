@@ -1,9 +1,11 @@
 # Sizes each place takes
 
-Check the Play Console help page when an upload fails. Google changes these
-limits now and then.
+The agent MUST check the Play Console help page when an upload fails. Google
+changes these limits now and then.
 
 ## Google Play
+
+Each Play asset MUST fit these limits:
 
 | Asset             | Size                                                 | Format                         | Count   |
 | ----------------- | ---------------------------------------------------- | ------------------------------ | ------- |
@@ -15,15 +17,18 @@ limits now and then.
 | Promo video       | YouTube link                                         | public or unlisted, ads off    | 1       |
 
 - **Featured** Play shows the app in more lists with 4 or more phone shots
-  at 9:16, at least 1080 px on the short side, such as 1080 × 1920.
-- **Tall phones** a 1080 × 2400 shot is over 2:1 and fails. Pad or crop it
-  to 1080 × 1920 on the app background.
+  at 9:16, at least 1080 px on the short side, such as 1080 × 1920. The agent
+  SHOULD upload that many.
+- **Tall phones** a 1080 × 2400 shot is over 2:1 and fails. The agent MUST
+  pad or crop it to 1080 × 1920 on the app background.
 - **Alpha** a PNG with a transparent layer fails the feature graphic and the
-  shots. Flatten it on the app background.
+  shots. The agent MUST flatten it on the app background.
 - **Text** the feature graphic MAY carry the app name. Play shows it under a
-  play button when a video is linked, so keep the middle clear.
+  play button when a video is linked, so the middle SHOULD stay clear.
 
 ## The site and link previews
+
+The site assets MUST come in these sizes:
 
 | Asset            | Size                                     |
 | ---------------- | ---------------------------------------- |
@@ -33,6 +38,8 @@ limits now and then.
 | PWA icons        | 192 and 512 PNG, plus a 512 maskable one |
 
 ## Other places
+
+The other places MUST get these sizes:
 
 | Place                 | Size                                   |
 | --------------------- | -------------------------------------- |

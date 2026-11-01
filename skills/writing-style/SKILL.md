@@ -8,8 +8,8 @@ description: 'Use in any repository before writing or editing any text a human w
 Read this file before the first line leaves. The checklist at the end MUST run
 before you send anything.
 
-Picture a tired reader with half their mind elsewhere. They read each line one
-time, and they don't scroll back or search. A line that needs a second pass has
+The writer SHOULD picture a tired reader with half their mind elsewhere. They
+read each line one time, and they don't scroll back or search. A line that needs a second pass has
 failed.
 
 The text MUST land on the first read, whatever the reader knows. It MUST also
@@ -25,7 +25,7 @@ be as short as clarity allows.
 - A sentence MUST hold one comma at most. A second comma means a second
   sentence.
 - A paragraph MUST end after three sentences, followed by a blank line.
-- The plainest word that does the job MUST win. A 12 year old should know it.
+- The plainest word that does the job MUST win. A 12 year old SHOULD know it.
 - A name taken from the code MUST get one plain explanation where it first
   appears. Otherwise, leave it out of the text.
 - What a thing does MUST come ahead of its name.
@@ -49,7 +49,8 @@ be as short as clarity allows.
 
 ## Shape on the page
 
-People scan a page before they read it. Hand them something to scan.
+People scan a page before they read it, so the text MUST hand them something
+to scan.
 
 - The first line MUST be the answer or the next action. Any background follows
   it, if it is needed.
@@ -68,12 +69,12 @@ People scan a page before they read it. Hand them something to scan.
 - Is something still open? It MAY take one final line: a single action, small
   enough to begin right away.
 
-Bad, three facts buried in a paragraph:
+A paragraph MUST NOT bury three facts like this:
 
 > The upload fails over 5 MB, the button stays enabled while a file is in
 > flight so people submit twice, and the error text doesn't mention size.
 
-Good:
+The facts SHOULD be a list instead:
 
 > - **Cap** the upload fails over 5 MB.
 > - **Double submit** the button stays enabled while a file is in flight.
@@ -87,7 +88,7 @@ them MAY sit between words. A hyphen MUST only join the parts of one word:
 A comma, brackets or a colon work too.
 
 **"Never" and "nothing".** These give a machine away faster than any other
-word. A plain verb carries the same meaning:
+word. A plain verb MUST carry the same meaning:
 
 | Instead of                             | Write                                  |
 | -------------------------------------- | -------------------------------------- |
@@ -129,8 +130,8 @@ soon as a row is added.
 | `format.js` has 11 small functions calling `trim()` | The helpers in `format.js` call `trim()`                      |
 | Three reasons this happens                          | Why this happens                                              |
 
-The same applies to numbers that measure your effort rather than the reader's
-problem: lines removed from a file, files touched, build time. They look like
+The same MUST apply to numbers that measure your effort rather than the
+reader's problem: lines removed from a file, files touched, build time. They look like
 evidence and hold none.
 
 | Instead of                         | Write                                           |
@@ -198,7 +199,7 @@ its own set, often the most formal sounding one. Cut it the same way.
 verb, "thread through", "semantics", "contract", "non-trivial", "leverage",
 "robust", "seamless", "comprehensive", "delve", "utilize", "in order to".
 
-The same goes for verbs. For "hands us", "buys us", "unlocks", "powers",
+Verbs MUST follow the same rule. For "hands us", "buys us", "unlocks", "powers",
 "drives", "rides in", "carries", "travels with", "speaks to", "lives in",
 write "gives", "is in", "sits in", "goes with", "lets us".
 
@@ -227,8 +228,8 @@ see", "in this section we". A single scope line at the top MAY stay, and the
 rest goes.
 
 **Documents and tools that think.** "the ADR doesn't know about", "the file
-believes". Files hold text. Write "the ADR predates it", "the spec has no rule
-for it".
+believes". Files hold text, so the line MUST say "the ADR predates it", "the spec has no
+rule for it".
 
 **Three of a kind.** "fast, clean and reliable" sounds generated. The one thing
 that matters MUST be named alone, or the real items listed with real numbers.
@@ -237,31 +238,33 @@ writing.
 
 ## Before and after
 
-Bad: "Great question! This isn't just a styling issue, it's a deeper
-architectural concern. Let me break it down for you."
+Each Bad line below MUST become its Good twin:
 
-Good: "The button breaks because the parent sets `overflow: hidden`."
+> Bad: "Great question! This isn't just a styling issue, it's a deeper
+> architectural concern. Let me break it down for you."
+>
+> Good: "The button breaks because the parent sets `overflow: hidden`."
+>
+> Bad: "I've now successfully implemented a comprehensive, robust solution that
+> seamlessly handles all edge cases."
+>
+> Good: "Done. `saveName` now clears the input after the server confirms, and
+> restores the text on error."
+>
+> Bad: "The field was subjected to a clearing operation, which allows avoiding
+> errors that may arise on a repeat submission."
+>
+> Good: "The field clears after the server answers. A second submit no longer
+> wipes the text."
 
-Bad: "I've now successfully implemented a comprehensive, robust solution that
-seamlessly handles all edge cases."
+One line MUST NOT hold a long sentence, a dash and a heap of names. It reads
+like a machine wrote it:
 
-Good: "Done. `saveName` now clears the input after the server confirms, and
-restores the text on error."
-
-Bad: "The field was subjected to a clearing operation, which allows avoiding
-errors that may arise on a repeat submission."
-
-Good: "The field clears after the server answers. A second submit no longer
-wipes the text."
-
-One line holding a long sentence, a dash and a heap of names reads like a
-machine wrote it:
-
-Bad: "drops the id one level down - `OrderRow`, `InvoiceRow` and `RefundRow` all
-come back as errors with nowhere to put the id"
-
-Good: "The id sits one level down, so the parser reports an error. There is
-nowhere to put it. 3 rows in the export hit this, `OrderRow` among them."
+> Bad: "drops the id one level down - `OrderRow`, `InvoiceRow` and `RefundRow` all
+> come back as errors with nowhere to put the id"
+>
+> Good: "The id sits one level down, so the parser reports an error. There is
+> nowhere to put it. 3 rows in the export hit this, `OrderRow` among them."
 
 ## Code comments
 
@@ -269,13 +272,13 @@ A comment MUST give what the code can't show, in one short line. It MUST NOT
 repeat the next line, justify your change to a reviewer, or swell into a
 paragraph.
 
-Bad: `// Loop over the users and add each to the map`
-
-Good: `// The API returns duplicates when a user sits in two teams.`
+> Bad: `// Loop over the users and add each to the map`
+>
+> Good: `// The API returns duplicates when a user sits in two teams.`
 
 ## Longer text: README, docs, Confluence, tickets
 
-Most of it comes from "Shape on the page" above. In addition:
+The rules of "Shape on the page" above MUST apply here too. In addition:
 
 - A heading MUST name what the section gives the reader, in the reader's words.
 - What the reader came for MUST be on the first screen.
@@ -285,37 +288,41 @@ Most of it comes from "Shape on the page" above. In addition:
 
 ## Final pass, before you send
 
-Read each sentence once, at the reader's pace. If you had to reread one, split
-it. Then every word the reader can do without MUST go. Check:
+The writer MUST read each sentence once, at the reader's pace. A sentence that
+needed a reread MUST be split. Then every word the reader can do without MUST
+go, and each check below MUST pass:
 
-1. Does the first sentence answer the question?
-2. Any `—`, `–`, `--`, or a hyphen standing alone between words? Rewrite.
-3. Any "never" or "nothing" at all, in any sense? Any "always" as emphasis?
-   Rewrite with a plain verb.
-4. Any "not X, it's Y"? Flip it to the positive.
-5. Any sentence with two or more commas? Split it.
-6. Any padding phrase or emoji from the banned list? Delete it.
-7. Any word a junior would look up? Swap it, or explain it once.
-8. Any sentence ending in "byte for byte" or "full stop"? Cut it.
-9. Any "Here is", "Look at" or "Notice"? Start with the fact.
-10. Any "nobody", "everyone"? Name the real set.
-11. Any count in front of a list or a noun? Drop it unless it is the point.
-    Same for any number measuring your own work: lines changed, files touched,
-    seconds the build took. Name what changed instead.
-12. Any "us", "our", "them" that means a repo or a package? Write the name.
-13. Any name explained with itself? Say what it replaces instead.
-14. Any "X's own way of" or "this is how you"? Say what it does.
-15. Any paragraph over three lines, or three items strung through prose? Turn
-    it into a list, each line opening with its point in bold.
-16. Any list over five items? Group them, or cut the weak ones.
-17. Any closing paragraph that recaps what the reader just read? Delete it.
-18. Right language for the reader? Writing something other than English? Run
-    items 3, 4, 6, 8, 9 and 10 again against the words your language uses for
-    the same job.
+1. The first sentence MUST answer the question.
+2. A `—`, `–`, `--`, or a hyphen standing alone between words MUST be
+   rewritten.
+3. Any "never" or "nothing", in any sense, and any "always" as emphasis MUST
+   be rewritten with a plain verb.
+4. A "not X, it's Y" MUST flip to the positive.
+5. A sentence with two or more commas MUST be split.
+6. A padding phrase or emoji from the banned list MUST be deleted.
+7. A word a junior would look up MUST be swapped, or explained once.
+8. A sentence ending in "byte for byte" or "full stop" MUST be cut.
+9. A line opening with "Here is", "Look at" or "Notice" MUST start with the
+   fact instead.
+10. A "nobody" or "everyone" MUST give way to the real set.
+11. A count in front of a list or a noun MUST go unless it is the point. So
+    MUST any number measuring your own work: lines changed, files touched,
+    seconds the build took. The text SHOULD name what changed instead.
+12. An "us", "our" or "them" that means a repo or a package MUST become the
+    name.
+13. A name explained with itself MUST say what it replaces instead.
+14. An "X's own way of" or "this is how you" MUST say what it does.
+15. A paragraph over three lines, or three items strung through prose, MUST
+    become a list, each line opening with its point in bold.
+16. A list over five items MUST be grouped, or lose its weak ones.
+17. A closing paragraph that recaps what the reader just read MUST be deleted.
+18. The language MUST fit the reader. Text in a language other than English
+    MUST pass items 3, 4, 6, 8, 9 and 10 again against the words that language
+    uses for the same job.
 
-To audit a long document in depth,
-[`avoid-ai-writing`](https://github.com/conorbronsdon/avoid-ai-writing) offers a
-detector that gives the text a score.
+To audit a long document in depth, the writer MAY run the detector of
+[`avoid-ai-writing`](https://github.com/conorbronsdon/avoid-ai-writing), which
+gives the text a score.
 
 ## Writing in another language
 
@@ -323,7 +330,7 @@ Each rule above MUST apply word for word. The banned phrases appear in English
 only because this file is in English, and every one has a twin in the language
 you write.
 
-Find the twins once, then look for them on every pass:
+The writer MUST find the twins once, then look for them on every pass:
 
 | The English tell                     | What to look for                               |
 | ------------------------------------ | ---------------------------------------------- |
@@ -333,8 +340,8 @@ Find the twins once, then look for them on every pass:
 | full stop, end of story              | the closers that add emphasis and no fact      |
 | Here is, Look at, Notice             | the phrases that point at your own text        |
 
-Russian, as a worked example. Ban «никогда», «ничего», «никто», «все»; write
-«так не делаем», «такого нет ни разу», «код его не читает». Flip «не X, а Y»
-into «так задумано». Cut
+In Russian, as a worked example, the writer MUST ban «никогда», «ничего»,
+«никто», «все»; write «так не делаем», «такого нет ни разу», «код его не
+читает». Flip «не X, а Y» into «так задумано». Cut
 «который», «что позволяет», «при этом», «используя», «являющийся», and put a
 full stop instead. Drop «и точка», «от и до», «как видно», «рассмотрим».

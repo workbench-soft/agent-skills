@@ -1,53 +1,57 @@
 # Part 2: how the change works and the reading order
 
-Two mermaid diagrams show what the change does, and a numbered list then gives
-the order to open the files in. GitHub sorts files by name, so this part spares
-the reader that order.
+Two mermaid diagrams MUST show what the change does, and a numbered list MUST
+then give the order to open the files in. GitHub sorts files by name, so this
+part spares the reader that order.
 
 ## The user flow
 
-What a person does and sees, step by step, drawn as a `flowchart LR`.
+The diagram MUST show what a person does and sees, step by step, drawn as a
+`flowchart LR`.
 
 - Every path the change adds or alters MUST be drawn. Paths it leaves alone
-  stay out.
-- A node is an action or a screen in plain words: "Picks a CSV file". File and
-  function names MUST stay out.
-- A branch (error, cancel, retry) gets an arrow with its own label:
+  MUST stay out.
+- A node MUST be an action or a screen in plain words: "Picks a CSV file". File
+  and function names MUST stay out.
+- A branch (error, cancel, retry) MUST get an arrow with its own label:
   `-->|some rows broken|`.
-- The step that now behaves differently gets the `changed` class.
+- The step that now behaves differently MUST get the `changed` class.
 
-No person involved, as with a CI job or a migration? Draw what triggers it and
-what it produces.
+With no person involved, as with a CI job or a migration, the diagram MUST show
+what triggers it and what it produces.
 
 ## What happens inside
 
-The code path under that flow, drawn as a `flowchart TD`, a node per step.
+The code path under that flow MUST be drawn as a `flowchart TD`, a node per
+step.
 
 - After its name, a node MUST say what the file does in this change. Bad:
   `parse-row.ts`. Good: `parse-row.ts (new)<br/>splits a line, a bad cell
   becomes a warning`.
 - Each node SHOULD carry `(new)`, `(changed)` or `(unchanged)`, and the new and
-  changed ones get their class.
-- An arrow label names what is passed on or what it alters: `-->|record|`,
-  `-->|writes uploads|`. A file without a caller so far connects with a dotted `-.->`.
+  changed ones MUST get their class.
+- An arrow label MUST name what is passed on or what it alters: `-->|record|`,
+  `-->|writes uploads|`. A file without a caller so far MUST connect with a
+  dotted `-.->`.
 - The final node MUST be the effect a person or another system sees.
-- Tests and config stay off it, they belong in the reading order.
+- Tests and config MUST stay off it, they belong in the reading order.
 
-Only one file and a test? Skip this diagram and say in one line that it isn't
-needed.
+When the change is only one file and a test, the agent SHOULD skip this
+diagram and say in one line that it isn't needed.
 
 ## Rules for both diagrams
 
 - A label holding brackets, quotes, a colon or a slash MUST be wrapped in
   double quotes, or the block won't render. Backticks MUST stay out of labels.
-- A diagram SHOULD stay within twelve nodes. A larger change gets one per flow.
+- A diagram SHOULD stay within twelve nodes. A larger change SHOULD get one per
+  flow.
 
 ## A link under each diagram
 
 VS Code chat renders a `mermaid` block. Claude and the terminal show it as code,
-so a link that opens the picture MUST go under each diagram. Make it with
-`scripts/mermaid-live-url.py` from this skill's folder, passing in the block's
-text:
+so a link that opens the picture MUST go under each diagram. The agent MUST
+make it with `scripts/mermaid-live-url.py` from this skill's folder, passing in
+the block's text:
 
 ```sh
 mise x python@3 -- python <skill folder>/scripts/mermaid-live-url.py <<'EOF'
@@ -57,13 +61,14 @@ EOF
 ```
 
 The diagram sits after the `#` in the link, a part the browser keeps from
-mermaid.live.
+mermaid.live, so the link MUST keep it there.
 
 ## The reading order
 
-Numbered, one line per file, giving the reason it comes at that point. Begin
-where the data begins or with the simplest piece, and finish where it all
-connects. Each changed file MUST be listed, tests and config at the end.
+The list MUST be numbered, one line per file, giving the reason it comes at
+that point. It SHOULD begin where the data begins or with the simplest piece,
+and finish where it all connects. Each changed file MUST be listed, tests and
+config at the end. The whole part SHOULD read like this:
 
 ````markdown
 ## How the change works
