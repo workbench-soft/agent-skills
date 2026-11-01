@@ -61,8 +61,9 @@ turn, unasked: the VS Code prompts folder, `~/.claude/CLAUDE.md`,
 
 - **Spoken turn end** on Windows, `install.ps1` gives Claude hooks that play
   a cue and say the folder, the outcome and the session title. The outcome
-  comes from a marker on the last line, such as `!!!COMPLETED!!!` or
-  `!!!QUESTION!!!`, when your own rules ask the agent to write one.
+  comes from a marker on the last line, such as `!!!COMPLETED!!!`,
+  `!!!USER STEPS!!!` or `!!!QUESTION!!!`, when your own rules ask the agent
+  to write one.
 - **Voice language** Russian by default, apart from the review language,
   read by the multilingual `en-US-AvaMultilingualNeural`. `install.ps1
   -VoiceLang English` switches the phrases to English.

@@ -1,18 +1,40 @@
 # Launch skills: search, ads, Google Play, marketing
 
-Done on 2025-10-27, before the history was reset to one commit. The old commits sit under `refs/backup/main` in the local backup mirror of `agent-skills`.
-
-## Why
+## What it does for the person
 
 Taking each app live repeated the same steps in Search Console, AdSense, AdMob and Play Console.
 
-## User flows it touches
+## User flows
 
 - **Launch** one skill runs seo-setup, ads-setup and play-release in order.
 - **Marketing** a plan for the first users on a set budget.
 - **Left for the person** each skill writes `TODO.md`.
 
+## How it works: modules, files, data
+
+Each entry below names the files it changed.
+
+## Limits
+
+None written down yet.
+
 ## Changes
+
+### 2025-10-27 Launch skills: search, ads, Google Play, marketing
+
+Done on 2025-10-27, before the history was reset to one commit. The old commits sit under `refs/backup/main` in the local backup mirror of `agent-skills`.
+
+#### Why
+
+Taking each app live repeated the same steps in Search Console, AdSense, AdMob and Play Console.
+
+#### User flows it touches
+
+- **Launch** one skill runs seo-setup, ads-setup and play-release in order.
+- **Marketing** a plan for the first users on a set budget.
+- **Left for the person** each skill writes `TODO.md`.
+
+#### Changes
 
 - **`skills/seo-setup/SKILL.md`** new.
 - **`skills/ads-setup/SKILL.md`** new.
@@ -26,7 +48,7 @@ Taking each app live repeated the same steps in Search Console, AdSense, AdMob a
 - **`skills/ads-setup/references/admob.md`** new.
 - **Other files** 13 more.
 
-## Steps, in commit order
+#### Steps, in commit order
 
 1. seo-setup: add a skill that gets a site found in search (93b28ba, 2025-10-27)
 2. ads-setup: add a skill that sets up AdSense and AdMob (325a685, 2025-10-27)
@@ -43,6 +65,6 @@ Taking each app live repeated the same steps in Search Console, AdSense, AdMob a
 13. launch: write TODO.md with the tasks left for the user (d9f9e53, 2025-10-27)
 14. README: say the launch skills leave TODO.md (3eeacb5, 2025-10-27)
 
-## Docs to update
+#### Docs to update
 
 - `README.md`

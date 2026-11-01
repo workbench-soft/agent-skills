@@ -65,3 +65,13 @@
 - **Steps** this spec, then `demo-media`, then `store-media`, then the
   `marketing` link and the docs.
 - **Docs** `README.md`, `docs/features.md`, `CHANGELOG.md`.
+
+### 2026-11-01 Lessons from the first run on tickalot
+
+- **Why** the first run of `mise run demo` on tickalot hit tool and browser
+  problems the skill didn't warn about.
+- **Changes** `references/capture.md` pins the media tools in the `demo`
+  task, names the Gyan ffmpeg build for Windows, records the run in one
+  browser context and serves a build with its hosting headers. Step 5 of
+  `SKILL.md` adds wrong emoji and web content with people to the check.
+- **Docs** `CHANGELOG.md`.

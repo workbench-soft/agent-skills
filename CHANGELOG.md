@@ -3,7 +3,9 @@
 ## Unreleased
 
 - **Key words** each paragraph and list item of every skill, reference, `AGENTS.md` and the instructions file states its rule with MUST, SHOULD or MAY. `scripts/keyword-check.mts` fails lint on a rule without one.
-
+- Specs: one file per feature under `specs/`, with each dated spec moved in as an entry under `## Changes`.
+- **turn-voice** a turn that ends `👤 !!!USER STEPS!!!` rings a doorbell and says "did its part, your steps wait on" the task, apart from a finished one.
+- **demo-media** lessons from the first run on tickalot: the capture tools sit in the `demo` task, ffmpeg comes from the Gyan build on Windows, one browser context records the whole run, and the frame check also looks for wrong emoji and for web content with people.
 - **CI** mise installs oxfmt with npm, so `oxfmt --check` finds its own dependencies on the Windows runner again.
 - **git-worktrees** a leftover worktree folder gets removed by its full path, since the safety check blocks `rm -rf` on a variable.
 - **mise** each new worktree of a repo gets `mise trust`, so its first command doesn't stop on an untrusted config.
