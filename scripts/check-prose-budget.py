@@ -11,7 +11,8 @@ import sys
 from pathlib import Path
 
 PROSE_LIMITS = {"SKILL.md": 300, "reference": 60}
-FENCE = re.compile(r"^(`{3,})")
+# A fence may sit indented inside a list item.
+FENCE = re.compile(r"^[ \t]*(`{3,})")
 
 
 def main(names: list[str]) -> int:
