@@ -9,7 +9,7 @@ using System.Threading;
 
 // Claude Code hook: plays a sound and says how the turn ended.
 //   turn-voice.exe <mode> <lang> [<Russian voice> <English voice> <edge-tts.exe> [<Russian pitch> <English pitch>]]
-//   stop     Stop: done, not done or running, by the end-of-turn marker
+//   stop     Stop: done, user steps, not done or running, by the end-of-turn marker
 //   fail     StopFailure: the turn died on an API error
 //   ask      a question or a permission prompt waits for the person
 //   archive  the agent is about to archive its session
@@ -19,7 +19,7 @@ using System.Threading;
 static class TurnVoice {
     const string Tada = @"C:\Windows\Media\tada.wav";
 
-    enum Outcome { Done, NotDone, Running, Error, Ask, Replied, Archived }
+    enum Outcome { Done, UserSteps, NotDone, Running, Error, Ask, Replied, Archived }
 
     [DllImport("winmm.dll", CharSet = CharSet.Unicode)]
     static extern bool PlaySound(string sound, IntPtr mod, uint flags);
@@ -98,6 +98,8 @@ static class TurnVoice {
                 PlayTones(new[] { 392.0, 370.0, 349.2, 329.6 }, new[] { 0.3, 0.3, 0.3, 0.6 }, true); break;
             // Two notes going up, like a question.
             case Outcome.Ask: PlayTones(new[] { 659.3, 987.8 }, new[] { 0.16, 0.38 }, false); break;
+            // A doorbell: two notes going down, the person's turn.
+            case Outcome.UserSteps: PlayTones(new[] { 659.3, 523.3 }, new[] { 0.3, 0.5 }, false); break;
             default: PlayTones(new[] { 880.0 }, new[] { 0.12 }, false); break;
         }
     }
@@ -133,6 +135,7 @@ static class TurnVoice {
         string a = (ru ? "Агент " : "Agent ") + agent + " ";
         switch (o) {
             case Outcome.Done: return a + (ru ? "сделал задачу" : "finished the task");
+            case Outcome.UserSteps: return a + (ru ? "сделал свою часть, ждёт твоих шагов по задаче" : "did its part, your steps wait on");
             case Outcome.NotDone: return a + (ru ? "не закончил задачу" : "did not finish the task");
             case Outcome.Running: return a + (ru ? "работает в фоне над задачей" : "is working in the background on");
             case Outcome.Error: return a + (ru ? "упал с ошибкой на задаче" : "stopped on an error in");
@@ -341,10 +344,12 @@ static class TurnVoice {
         int done = text.LastIndexOf("!!!COMPLETED!!!");
         int running = text.LastIndexOf("!!!RUNNING!!!");
         int question = text.LastIndexOf("!!!QUESTION!!!");
-        int last = Math.Max(Math.Max(notDone, question), Math.Max(done, running));
+        int userSteps = text.LastIndexOf("!!!USER STEPS!!!");
+        int last = Math.Max(Math.Max(Math.Max(notDone, question), Math.Max(done, running)), userSteps);
         if (last < 0) return Outcome.Replied;
         if (last == running) return Outcome.Running;
         if (last == question) return Outcome.Ask;
+        if (last == userSteps) return Outcome.UserSteps;
         return last == notDone ? Outcome.NotDone : Outcome.Done;
     }
 

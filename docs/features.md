@@ -47,6 +47,7 @@ Skills for a coding agent. Each skill is a folder in `skills/` with a `SKILL.md`
 
 - **What it gives** the `turn-voice` hook speaks a short line when the agent finishes.
 - **Where** `hooks/turn-voice`, Windows only.
+- **Outcomes** the last marker of the turn picks the cue and the phrase: done, user steps, question, running or not done. `!!!USER STEPS!!!` rings a doorbell and says the person's steps wait.
 - **Pick a voice** `voice-test` plays each `edge-tts` voice by number, so the person can choose one for the hook.
 - **Pitch** `install.ps1 -RuPitch -10 -EnPitch 5` moves each voice up or down in Hz. A reinstall keeps the pitch.
 
