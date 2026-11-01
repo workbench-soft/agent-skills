@@ -29,7 +29,18 @@ function Read-Settings {
 function Write-Settings($settings) {
   $json = $settings | ConvertTo-Json -Depth 32
   # Windows PowerShell writes a BOM with -Encoding UTF8, and some JSON readers choke on it.
-  [IO.File]::WriteAllText($settingsPath, $json, (New-Object Text.UTF8Encoding $false))
+  $utf8 = New-Object Text.UTF8Encoding $false
+  # A settings.json that links into dotfiles is written through, so it stays a link.
+  if ((Test-Path $settingsPath) -and ((Get-Item $settingsPath -Force).Attributes -band [IO.FileAttributes]::ReparsePoint)) {
+    [IO.File]::WriteAllText($settingsPath, $json, $utf8)
+    return
+  }
+  # Claude Code rereads settings.json on each change. A full temp file moved in
+  # place means it, or a crash mid write, never sees half the JSON.
+  $tmp = "$settingsPath.turn-voice.tmp"
+  [IO.File]::WriteAllText($tmp, $json, $utf8)
+  if (Test-Path $settingsPath) { [IO.File]::Replace($tmp, $settingsPath, [NullString]::Value) }
+  else { [IO.File]::Move($tmp, $settingsPath) }
 }
 
 # Takes out every hook group that runs turn-voice.exe, and leaves the rest.
