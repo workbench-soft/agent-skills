@@ -86,9 +86,9 @@ flowchart LR
 - **Rejected** markdownlint alone: it checks Markdown syntax and none of the skill rules.
 - **Cost to undo** low: two scripts and their CI steps.
 
-### Lint and format: oxfmt, ruff, shellcheck and shfmt
+### Lint and format: oxfmt, ruff, shellcheck, shfmt and actionlint
 
-- **Picked** `mise run lint`: ruff for Python, oxlint for TypeScript, oxfmt for Markdown and config, shellcheck and shfmt for shell.
+- **Picked** `mise run lint`: ruff for Python, oxlint for TypeScript, oxfmt for Markdown and config, shellcheck and shfmt for shell, actionlint for the workflows.
 - **Why** the org stack wants a linter and a formatter for each language, with one tool per job.
 - **Trade-off** oxfmt pads the tables in each skill, so a small edit can rewrite a whole table.
 - **Rejected** ESLint and Prettier: the org stack bans them, and the `mise` and `architecture` skills now teach oxlint and oxfmt.
