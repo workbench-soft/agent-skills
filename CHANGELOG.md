@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **Key words** each paragraph and list item of every skill, reference, `AGENTS.md` and the instructions file states its rule with MUST, SHOULD or MAY. `scripts/keyword-check.mts` fails lint on a rule without one.
+
 - **CI** mise installs oxfmt with npm, so `oxfmt --check` finds its own dependencies on the Windows runner again.
 - **git-worktrees** a leftover worktree folder gets removed by its full path, since the safety check blocks `rm -rf` on a variable.
 - **mise** each new worktree of a repo gets `mise trust`, so its first command doesn't stop on an untrusted config.

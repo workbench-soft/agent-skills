@@ -5,7 +5,7 @@ allowed on web pages and approved WebView setups alone, and Google's answers
 in the AdSense community place a TWA in neither group. AdSense MUST therefore
 stay off inside the app.
 
-Let the user choose the route:
+The user MAY choose either route, and the agent MUST ask:
 
 | Option                                                                | Work                       | The app earns from ads  |
 | --------------------------------------------------------------------- | -------------------------- | ----------------------- |
@@ -15,18 +15,20 @@ Let the user choose the route:
 ## Hide AdSense inside the app
 
 On the first page the app opens, `document.referrer` reads
-`android-app://<package>/`. Set a mark on the tab at that point, and each page
-after it in the tab reads the mark.
+`android-app://<package>/`. The site MUST set a mark on the tab at that point,
+and each page after it in the tab MUST read the mark.
 
-- **sessionStorage** keeps the mark. It is scoped to the tab, so the site in a
-  normal Chrome tab carries no mark.
+- **sessionStorage** MUST keep the mark. It is scoped to the tab, so the
+  site in a normal Chrome tab carries no mark.
 - **localStorage** MUST NOT keep it. For a given site, Chrome shares it
   between the app and the browser.
 - **The meta tag** handles the AdSense site check, so the script MAY load from
   code.
 - **A query** on the start URL, such as `/?app=android` in
-  `twa-manifest.json`, makes the check harder to fool. It takes a new app
+  `twa-manifest.json`, MAY make the check harder to fool. It takes a new app
   release.
+
+The head of each page MUST carry this script and style:
 
 ```html
 <meta name="google-adsense-account" content="ca-pub-XXXXXXXXXXXXXXXX" />
@@ -56,11 +58,14 @@ is on.
 
 ## Check it
 
-1. Put the internal test build on a phone connected by USB with USB debugging
-   on.
-2. On the computer, open `chrome://inspect` and inspect the app's tab.
-3. Filter network requests on `googlesyndication`. The list MUST stay empty
-   across a few pages.
-4. On the same phone, open the site in Chrome. Ads MUST still load there.
+1. The agent MUST put the internal test build on a phone connected by USB
+   with USB debugging on.
+2. On the computer, it MUST open `chrome://inspect` and inspect the app's
+   tab.
+3. It MUST filter network requests on `googlesyndication`. The list MUST stay
+   empty across a few pages.
+4. On the same phone, it MUST open the site in Chrome. Ads MUST still load
+   there.
 
-The app then counts as ad free in Play Console: answer No on the Ads page.
+The app then counts as ad free in Play Console, so the agent MUST answer No
+on the Ads page.

@@ -6,21 +6,25 @@ description: 'Use before running any shell command in a repository, in any langu
 # Commands through mise
 
 mise pins the tools, the env vars and the tasks of a repo. Each command it can
-run goes through it, so the agent gets the versions the repo pins.
+run MUST go through it, so the agent gets the versions the repo pins.
 
 ## 1. Check mise
+
+The agent MUST check that mise runs:
 
 ```bash
 mise --version
 ```
 
-- **Missing** install mise itself, the one install outside mise:
-  `winget install jdx.mise` on Windows, `brew install mise` on a Mac, or
-  `curl https://mise.run | sh` on Linux. Say so in the answer.
-- **Old** a warning that a newer mise exists MAY be ignored. Run
-  `mise self-update` when a command fails on a setting the old one lacks.
+- **Missing** the agent MUST install mise itself, the one install outside
+  mise: `winget install jdx.mise` on Windows, `brew install mise` on a Mac, or
+  `curl https://mise.run | sh` on Linux. The answer MUST say so.
+- **Old** a warning that a newer mise exists MAY be ignored. The agent SHOULD
+  run `mise self-update` when a command fails on a setting the old one lacks.
 
 ## 2. Read the repo's setup
+
+The agent MUST read the repo's config, tasks and versions first:
 
 ```bash
 mise config ls
@@ -28,14 +32,17 @@ mise tasks ls
 mise ls --current
 ```
 
-- **Not trusted** run `mise trust` in a repo the person works in, and in each
-  new worktree of it. A config from a repo they just downloaded MUST wait for
-  their yes, since trust lets its env and hooks run.
-- **Not installed** `mise install` brings the pinned versions.
+- **Not trusted** the agent SHOULD run `mise trust` in a repo the person works
+  in, and in each new worktree of it. A config from a repo they just
+  downloaded MUST wait for their yes, since trust lets its env and hooks run.
+- **Not installed** the agent MUST run `mise install` to bring the pinned
+  versions.
 - **Other pin files** mise reads `.tool-versions`. A repo pinned with `.nvmrc`
   or `.python-version` SHOULD get a `mise.toml` with the same versions.
 
 ## 3. Run the command
+
+The agent MUST pick the command form by the job:
 
 | The job                                        | Command                                  |
 | ---------------------------------------------- | ---------------------------------------- |
@@ -51,48 +58,53 @@ mise ls --current
 - **Each call** an agent shell loses `mise activate` between calls. In a repo
   with a mise config, each command MUST start with `mise x --`, so a bare
   `node` can't pick the machine's version.
-- **Out of scope** `git` and `mise` itself run as they are.
-- **No config** the repo pins no tools. Commands run as they are, and a tool
-  they need still comes through step 4.
-- **Rerun on change** `mise watch <task>` in place of nodemon or entr.
+- **Out of scope** `git` and `mise` itself MAY run as they are.
+- **No config** when the repo pins no tools, commands MAY run as they are. A
+  tool they need MUST still come through step 4.
+- **Rerun on change** the agent SHOULD use `mise watch <task>` in place of
+  nodemon or entr.
 
-The same lines work in PowerShell and in bash.
+The same lines MAY run in PowerShell and in bash alike.
 
 ## 4. Add or change a tool
 
-- **Add** `mise use <tool>@<version>` installs the tool and pins it in the
-  repo's `mise.toml`. A tool for the machine, outside any repo, takes `-g`.
-- **Find the name** `mise search <word>`. A tool outside the registry comes
-  through a backend: `npm:`, `pipx:`, `cargo:`, `go:`, `github:`.
+- **Add** the agent MUST run `mise use <tool>@<version>`, which installs the
+  tool and pins it in the repo's `mise.toml`. A tool for the machine, outside
+  any repo, MUST take `-g`.
+- **Find the name** the agent SHOULD run `mise search <word>`. A tool outside
+  the registry MAY come through a backend: `npm:`, `pipx:`, `cargo:`, `go:`,
+  `github:`.
 - **Replaced** `brew`, `winget`, `npm i -g`, `pipx install`, nvm, pyenv and
-  asdf MUST NOT install a dev tool that mise can install. Read
-  [references/commands.md](references/commands.md) for the mise command that
-  replaces each.
-- **Pin style** match how `mise.toml` already pins: `"22"` or `"22.11.0"`.
-- **Upgrade** `mise outdated`, then `mise use <tool>@<version>` for each bump
-  the task needs.
+  asdf MUST NOT install a dev tool that mise can install. The agent SHOULD
+  read [references/commands.md](references/commands.md) for the mise command
+  that replaces each.
+- **Pin style** the pin MUST match how `mise.toml` already pins: `"22"` or
+  `"22.11.0"`.
+- **Upgrade** the agent SHOULD run `mise outdated`, then
+  `mise use <tool>@<version>` for each bump the task needs.
 
-A library the OS links, such as `libpq` or `openssl`, stays with the OS
+A library the OS links, such as `libpq` or `openssl`, SHOULD stay with the OS
 package manager.
 
 ## 5. Env vars
 
-- **Repo values** `mise set KEY=value` writes them to the `[env]` table of
-  `mise.toml`.
-- **Secrets** a secret MUST NOT go in `mise.toml`, since git tracks it. Keep it
-  in a git-ignored `.env` and load the file with `_.file = ".env"` under
+- **Repo values** the agent SHOULD run `mise set KEY=value`, which writes them
+  to the `[env]` table of `mise.toml`.
+- **Secrets** a secret MUST NOT go in `mise.toml`, since git tracks it. It
+  MUST stay in a git-ignored `.env`, loaded with `_.file = ".env"` under
   `[env]`.
-- **Read** `mise env` prints what a command run through mise sees.
+- **Read** the agent MAY run `mise env` to print what a command run through
+  mise sees.
 
 ## 6. When it fails
 
-- **Setup problem** `mise doctor` names it.
-- **Wrong binary** `mise which <bin>` shows the path mise picks, and
-  `mise ls` the versions.
-- **Unknown tool** `mise search` finds no match and no backend fits. Install
-  it the old way and give the reason in the answer.
+- **Setup problem** the agent SHOULD run `mise doctor`, which names it.
+- **Wrong binary** the agent SHOULD run `mise which <bin>` for the path mise
+  picks, and `mise ls` for the versions.
+- **Unknown tool** when `mise search` finds no match and no backend fits, the
+  agent MAY install it the old way. The answer MUST give the reason.
 
 ## 7. Report back
 
-The answer names each tool added or bumped in `mise.toml`, and each command
-that ran outside mise with the reason.
+The answer MUST name each tool added or bumped in `mise.toml`, and each
+command that ran outside mise with the reason.

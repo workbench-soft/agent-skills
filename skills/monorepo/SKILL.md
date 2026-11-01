@@ -5,33 +5,36 @@ description: 'Use when creating, setting up, merging into, restructuring or revi
 
 # Monorepo
 
-How to set up one repo that holds the web apps, the mobile apps, the backend
-and the code they share, so each part builds, tests and ships on its own.
+The agent MUST set up one repo that holds the web apps, the mobile apps, the
+backend and the code they share, so each part builds, tests and ships on its
+own.
 
 The repo's own docs, ADRs and configs MUST win over this file. The shape of the
 code (one app, packages, micro frontends), its layers and shared page state
-belong to the `architecture` skill. Load it when the task decides those.
+belong to the `architecture` skill. The agent MUST load it when the task
+decides those.
 
 ## 1. Read what is there
 
-- **Repos** each repo to move in, its stack, package manager, build tool, CI,
-  and who owns it.
-- **Platforms** web, Expo or React Native, native Android or iOS, backend
-  languages, edge workers, desktop.
-- **Ship paths** where each part deploys: a static host, a container, a store,
-  an over the air update.
-- **Consumers** another repo that installs a package from here, or a client
-  that calls the API.
-- **Machines** the CI runners and the OS each developer uses. iOS builds need
-  macOS.
+- **Repos** the agent MUST list each repo to move in, its stack, package
+  manager, build tool, CI, and who owns it.
+- **Platforms** it MUST list web, Expo or React Native, native Android or
+  iOS, backend languages, edge workers, desktop.
+- **Ship paths** it MUST note where each part deploys: a static host, a
+  container, a store, an over the air update.
+- **Consumers** it MUST find each repo that installs a package from here,
+  and each client that calls the API.
+- **Machines** it MUST note the CI runners and the OS each developer uses.
+  iOS builds need macOS.
 
-Ask once what the code can't answer, all in one form. Guesses SHOULD go in the
-doc marked as guesses.
+The agent SHOULD ask once what the code can't answer, all in one form.
+Guesses SHOULD go in the doc marked as guesses.
 
 ## 2. Pick the tools
 
-One task runner sits on top. Each language keeps its own workspace below it,
-so its own tools and IDE work as usual.
+One task runner MUST sit on top. Each language SHOULD keep its own workspace
+below it, so its own tools and IDE work as usual. The agent SHOULD pick from
+these tables:
 
 | Repo holds                             | Task runner     | Why                                                               |
 | -------------------------------------- | --------------- | ----------------------------------------------------------------- |
@@ -53,10 +56,12 @@ so its own tools and IDE work as usual.
 - Every tool version MUST be pinned in the repo, so CI and each laptop run the
   same: `mise.toml` for Node, pnpm, Java, Go, Python, and `devEngines` in the
   root `package.json`. Node 25 ships without Corepack, so it can't pin pnpm.
-- Lockfiles MUST be committed for every workspace, and CI installs with the
-  frozen flag.
+- Lockfiles MUST be committed for every workspace, and CI MUST install with
+  the frozen flag.
 
 ## 3. Lay out the folders
+
+The folders SHOULD follow this layout:
 
 ```text
 apps/web          web apps and sites
@@ -70,8 +75,8 @@ tools/            generators, structure lint, CI scripts
 ```
 
 - A folder name MUST match its package or module name. A structure check
-  fails a mismatch.
-- An app or a service MUST NOT import another app or service. They share
+  MUST fail a mismatch.
+- An app or a service MUST NOT import another app or service. They MUST share
   through a package, or talk over the API.
 - Each app and service SHOULD carry its own `README.md` and `AGENTS.md`: how to
   run it, its risks, its deploy.
@@ -80,16 +85,16 @@ tools/            generators, structure lint, CI scripts
 
 ## 4. Share one contract
 
-The API schema is the one thing every platform reads. Types cross languages
-only through it.
+The API schema is the one thing every platform reads. Types MUST cross
+languages only through it.
 
-1. The backend owns the schema: OpenAPI written from the code or by hand,
+1. The backend MUST own the schema: OpenAPI written from the code or by hand,
    TypeSpec, or protobuf for gRPC.
-2. Codegen writes a client per platform: TS for web and Expo, Kotlin for
+2. Codegen MUST write a client per platform: TS for web and Expo, Kotlin for
    Android, Swift for iOS.
-3. CI regenerates and fails when the committed output differs.
-4. A breaking change to the schema fails CI unless the PR marks it, through
-   `oasdiff` or `buf breaking`.
+3. CI MUST regenerate and fail when the committed output differs.
+4. A breaking change to the schema MUST fail CI unless the PR marks it,
+   through `oasdiff` or `buf breaking`.
 
 - A TS only repo MAY share Zod schemas or a typed router such as tRPC or oRPC.
   A native client in the plan makes OpenAPI the safer start.
@@ -102,54 +107,57 @@ only through it.
 
 ## 5. Set up the JS workspace
 
-Read [references/js-workspace.md](references/js-workspace.md) for the pnpm,
-TypeScript, package exports, Nx and knip templates.
+The agent MUST read [references/js-workspace.md](references/js-workspace.md)
+for the pnpm, TypeScript, package exports, Nx and knip templates.
 
-- **Isolated installs** each package sees only what it declares. Hoisting SHOULD
-  stay off, and Expo SDK 54 and later work with it.
+- **Isolated installs** each package SHOULD see only what it declares.
+  Hoisting SHOULD stay off, and Expo SDK 54 and later work with it.
 - **Catalogs** a dependency two projects share SHOULD get one version in the
   catalog, so web and mobile run the same React.
 - **Supply chain** a new upstream release SHOULD wait before install, and
   install scripts SHOULD run only for the packages listed.
-- **Source exports** internal packages point at their TS source, so apps,
-  Metro and the backend run them with no build step.
+- **Source exports** internal packages SHOULD point at their TS source, so
+  apps, Metro and the backend run them with no build step.
 - **Project references** typecheck SHOULD run through TS project references,
   kept by the task runner.
 
 ## 6. Set up mobile
 
-Read [references/mobile.md](references/mobile.md) before you add a mobile app.
+The agent MUST read [references/mobile.md](references/mobile.md) before it
+adds a mobile app.
 
 - **Expo** SHOULD be the default for a new React Native app. Its Metro config
   finds the workspace on its own.
 - **Native folders generated** an Expo app SHOULD keep `android/` and `ios/`
-  out of git and generate them with prebuild. Config plugins hold the native
-  changes.
-- **Native apps** a Kotlin or Swift app keeps its own build and joins the
-  graph through the runner's plugin or a thin target.
+  out of git and generate them with prebuild. Config plugins SHOULD hold the
+  native changes.
+- **Native apps** a Kotlin or Swift app SHOULD keep its own build and join
+  the graph through the runner's plugin or a thin target.
 - **OTA or store** a change that leaves the native fingerprint the same MAY go
-  out as an over the air update. A new fingerprint needs a store build.
+  out as an over the air update. A new fingerprint MUST get a store build.
 - **Signing** keys and store credentials MUST stay out of the repo, in CI
   secrets or the build service.
 
 ## 7. Set up the backend
 
-Read [references/backend.md](references/backend.md) before you add a service.
+The agent MUST read [references/backend.md](references/backend.md) before it
+adds a service.
 
-- **One folder per service** with its own Dockerfile, env schema, migrations
-  and deploy.
+- **One folder per service** each service SHOULD get its own Dockerfile, env
+  schema, migrations and deploy.
 - **Small images** a Node service SHOULD ship a pruned copy of its workspace
   deps: `pnpm deploy --filter <service> --prod`.
 - **Env checked on start** each service SHOULD parse its env with a schema and
   stop with the missing key named.
 - **Local dev** one command SHOULD start the database through Docker Compose,
   then the API and the web app against it.
-- **Contract first** the service writes the schema in step 4, and its tests
-  check the handlers against it.
+- **Contract first** the service MUST write the schema in step 4, and its
+  tests MUST check the handlers against it.
 
 ## 8. CI and release
 
-Read [references/ci.md](references/ci.md) for the workflow templates.
+The agent MUST read [references/ci.md](references/ci.md) for the workflow
+templates.
 
 - **Affected only** CI SHOULD run lint, types, tests and build for the projects
   a PR touches, with a remote cache.
@@ -159,11 +167,12 @@ Read [references/ci.md](references/ci.md) for the workflow templates.
   native change, since each one costs minutes on macOS.
 - **Releases** published packages SHOULD version through Changesets. Apps and
   services MAY deploy on merge with no version.
-- **Merge queue** SHOULD rerun the checks on the merged result before `main`.
+- **Merge queue** a merge queue SHOULD rerun the checks on the merged result
+  before `main`.
 
 ## 9. Merge existing repos
 
-Each repo moves in with its history, one repo per PR.
+Each repo MUST move in with its history, one repo per PR, this way:
 
 ```bash
 git clone <old-repo> /tmp/old && cd /tmp/old
@@ -181,31 +190,32 @@ git merge --allow-unrelated-histories old/main
 
 ## 10. Build it
 
-Asked to build, work in a worktree through `git-worktrees`. Open the PR through
-`create-pr`.
+Asked to build, the agent MUST work in a worktree through `git-worktrees`. It
+MUST open the PR through `create-pr`.
 
-1. Pin the tools in `mise.toml` and `devEngines`, and add the workspace files.
-2. Scaffold each part with its own generator: `create-expo-app`, the web
-   framework's, the backend's. Then move it into its folder.
-3. Add the contract, the codegen and the drift check.
-4. Add CI from [references/ci.md](references/ci.md), and in-repo generators for
-   each kind of project.
-5. Generate one app, one service and one package with the new generators.
-   Each MUST pass lint, typecheck, tests and build as generated.
-6. Write `docs/architecture.md` and the root `AGENTS.md`.
+1. The agent MUST pin the tools in `mise.toml` and `devEngines`, and add the
+   workspace files.
+2. It SHOULD scaffold each part with its own generator: `create-expo-app`,
+   the web framework's, the backend's. Then it MUST move each into its folder.
+3. It MUST add the contract, the codegen and the drift check.
+4. It MUST add CI from [references/ci.md](references/ci.md), and SHOULD add
+   in-repo generators for each kind of project.
+5. It MUST generate one app, one service and one package with the new
+   generators. Each MUST pass lint, typecheck, tests and build as generated.
+6. It MUST write `docs/architecture.md` and the root `AGENTS.md`.
 
 Each step SHOULD be its own commit.
 
-The setup goes in `docs/architecture.md`: the folders, the tools with their
+The setup MUST go in `docs/architecture.md`: the folders, the tools with their
 versions pinned where, a mermaid graph of apps, services and packages, how the
 contract flows, and a decision table with the options weighed.
 
 ## 11. In a review
 
-- Each finding names the file and what breaks: "`apps/mobile` imports
+- Each finding MUST name the file and what breaks: "`apps/mobile` imports
   `services/api/src/db`, so the app bundles the database driver".
 - An app importing another app, an unpinned tool, a missing lockfile or a
-  committed signing key is a blocker.
-- A generated client out of date with the schema is a blocker.
+  committed signing key MUST count as a blocker.
+- A generated client out of date with the schema MUST count as a blocker.
 - A missing generator or check SHOULD come with the rule it would hold, and go
   as a suggestion.

@@ -1,6 +1,6 @@
 # Asking the user to pick from a list
 
-You MUST read this before giving the user a choice of comment versions.
+The agent MUST read this before giving the user a choice of comment versions.
 
 A markdown checkbox, `- [ ]`, MUST NOT appear in any part of the answer. VS Code
 renders it as a box that can't be clicked, and pushes the text after the box
@@ -8,11 +8,11 @@ onto a line of its own.
 
 ## The host has a picker tool
 
-Is there a tool that asks the user to choose from a list, like `AskUserQuestion`
-or the VS Code question tool? You MUST call it, and the written list below MUST
+When a tool asks the user to choose from a list, like `AskUserQuestion` or the
+VS Code question tool, the agent MUST call it, and the written list below MUST
 stay out of the answer.
 
-- The question fits on one line: what the choice gets them.
+- The question SHOULD fit on one line: what the choice gets them.
 - The question MUST take a single answer.
 - Each choice MUST be plain text of roughly 60 characters or fewer, starting
   with its number where the list carries numbers elsewhere.
@@ -21,7 +21,7 @@ stay out of the answer.
 
 ## No such tool
 
-List the choices with numbers, and say how to reply:
+The agent MUST list the choices with numbers, and say how to reply:
 
 ```markdown
 Which comment version should I post?
@@ -36,18 +36,18 @@ Which comment version should I post?
 
 ## One question per comment
 
-On "Let me pick per comment", every question names its comment, and the
-versions are the choices.
+On "Let me pick per comment", every question MUST name its comment, and the
+versions MUST be the choices.
 
 - The question SHOULD be the tag and heading of the comment: `C1. Blocker: the typed
   name is lost`.
-- The choices are `Full`, `Shorter` and `Assertive`, each with the comment text
-  in its description field.
-- No description field? The three texts go in the message field of the
-  question, and the choices stay bare.
+- The choices MUST be `Full`, `Shorter` and `Assertive`, each with the comment
+  text in its description field.
+- With no description field, the three texts MUST go in the message field of
+  the question, and the choices MUST stay bare.
 
-No picker tool? Write out each comment with its numbered versions, then one
-line on how to reply:
+With no picker tool, the agent MUST write out each comment with its numbered
+versions, then one line on how to reply:
 
 ```markdown
 C1. Blocker: the typed name is lost when the server is slow

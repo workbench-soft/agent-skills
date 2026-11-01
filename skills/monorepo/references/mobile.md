@@ -1,9 +1,11 @@
 # Mobile in the monorepo
 
-An Expo app sits in the JS workspace. A native Kotlin or Swift app keeps its
-own build, and the task runner calls it.
+An Expo app SHOULD sit in the JS workspace. A native Kotlin or Swift app
+SHOULD keep its own build, and the task runner calls it.
 
 ## Expo
+
+The agent SHOULD create and check the app with:
 
 ```bash
 pnpm create expo-app apps/mobile --template default
@@ -16,13 +18,15 @@ pnpm --filter @app/mobile exec expo-doctor
 - Isolated installs work from SDK 54. A native module that breaks under them
   MAY get `nodeLinker: hoisted` for the whole workspace, recorded as a decision.
 - `expo install --check` SHOULD run in CI, so each Expo package matches the
-  SDK. A catalog pins React to the version the SDK wants.
+  SDK. A catalog SHOULD pin React to the version the SDK wants.
 - `android/` and `ios/` SHOULD go in `.gitignore`. `expo prebuild` writes them
   from `app.config.ts` and the config plugins.
 - Native code of the app's own SHOULD go in a local Expo module under
   `apps/mobile/modules/`, so prebuild keeps it.
 - Only values named `EXPO_PUBLIC_*` reach the bundle. A secret MUST stay on the
   backend, since every user can read the bundle.
+
+The app config SHOULD start from this template:
 
 ```ts
 // app.config.ts
@@ -36,15 +40,17 @@ export default {
 };
 ```
 
-- **Routing** `expo-router`, with routes in `app/` the way the web app keeps
-  them.
-- **Builds** EAS Build with `development`, `preview` and `production` profiles
-  in `eas.json`.
-- **Updates** EAS Update, one channel per profile.
-- **Tests** Jest with the `jest-expo` preset for units, Maestro flows in `e2e/`
-  for journeys on a device.
+- **Routing** the app SHOULD use `expo-router`, with routes in `app/` the way
+  the web app keeps them.
+- **Builds** EAS Build SHOULD run with `development`, `preview` and
+  `production` profiles in `eas.json`.
+- **Updates** EAS Update SHOULD use one channel per profile.
+- **Tests** Jest with the `jest-expo` preset SHOULD cover units, and Maestro
+  flows in `e2e/` SHOULD cover journeys on a device.
 
 ## Native Android
+
+A native Android app SHOULD follow this layout:
 
 ```text
 apps/android/
@@ -58,8 +64,8 @@ build-logic/               convention plugins shared by every Gradle build
   convention plugins. A `subprojects {}` block hides it from each module.
 - The Gradle wrapper MUST be committed, so CI runs the same Gradle.
 - `org.gradle.configuration-cache=true` SHOULD be on in `gradle.properties`.
-- Nx joins the build through `@nx/gradle`, which reads the tasks and their
-  inputs from Gradle.
+- Nx SHOULD join the build through `@nx/gradle`, which reads the tasks and
+  their inputs from Gradle.
 
 ## Native iOS
 
@@ -67,8 +73,8 @@ build-logic/               convention plugins shared by every Gradle build
   git. A committed `.pbxproj` conflicts on every merge.
 - Features SHOULD sit in local Swift packages under `apps/ios/Packages/`, so
   each builds and tests alone.
-- The runner calls `xcodebuild` or `tuist test` through a thin target with its
-  inputs declared, so the cache works.
+- The runner SHOULD call `xcodebuild` or `tuist test` through a thin target
+  with its inputs declared, so the cache works.
 
 ## Logic shared by two native apps
 

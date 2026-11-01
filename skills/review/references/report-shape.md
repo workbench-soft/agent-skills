@@ -1,14 +1,14 @@
 # The shape of the whole report
 
 The four parts MUST follow this order: the summary, the map, the findings table,
-the findings. After them come the second round, the focused rounds, and the
-single offer to post the comments. No summary at the end.
+the findings. After them MUST come the second round, the focused rounds, and
+the single offer to post the comments. A summary at the end MUST NOT appear.
 
 All four MUST be in the report language, whatever language the user or the code
-used. Each comment block inside part 4 is in English.
+used. Each comment block inside part 4 MUST be in English.
 
 The review is made for scanning, so "Shape on the page" in `writing-style`
-shapes each part. A reader who takes in only the bold text MUST still learn
+MUST shape each part. A reader who takes in only the bold text MUST still learn
 what is broken.
 
 The fixed labels are the one exception the review makes. **Before**, **Now**,

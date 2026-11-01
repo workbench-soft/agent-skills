@@ -1,17 +1,21 @@
 # Backend in the monorepo
 
-Each service sits in `services/<name>/` with its code, Dockerfile, env schema,
-migrations and tests.
+Each service MUST sit in `services/<name>/` with its code, Dockerfile, env
+schema, migrations and tests.
 
 ## A Node service
 
-- **Framework** Hono or Fastify, with the routes typed from the schema.
-- **Run TS as is** Node 24 strips types, so `node --watch src/main.ts` runs it
-  in dev. `erasableSyntaxOnly` in the tsconfig keeps the code strippable.
+- **Framework** the service SHOULD use Hono or Fastify, with the routes typed
+  from the schema.
+- **Run TS as is** Node 24 strips types, so `node --watch src/main.ts` MAY run
+  it in dev. `erasableSyntaxOnly` in the tsconfig MUST keep the code
+  strippable.
 - **Bundle for prod** `tsdown` SHOULD bundle the service, so the image holds
   one file and the prod deps.
-- **Env** a Zod schema parses `process.env` on start. `.env.example` lists each
-  key, and the real `.env` stays out of git.
+- **Env** a Zod schema MUST parse `process.env` on start. `.env.example` MUST
+  list each key, and the real `.env` MUST stay out of git.
+
+The Dockerfile SHOULD follow this template:
 
 ```dockerfile
 FROM node:24-slim AS build
@@ -31,8 +35,8 @@ USER nonroot
 CMD ["dist/main.js"]
 ```
 
-- `pnpm fetch` before the copy keeps the deps in their own layer. A code change
-  then skips the download.
+- `pnpm fetch` SHOULD run before the copy, to keep the deps in their own
+  layer. A code change then skips the download.
 - `pnpm deploy` SHOULD have `injectWorkspacePackages: true` in the workspace,
   so the copy holds the built workspace packages.
 - The image MUST run as a user other than root.
@@ -44,9 +48,11 @@ CMD ["dist/main.js"]
   replicas starting at once then can't race on them.
 - Integration tests SHOULD start the database through Testcontainers, so each
   run gets a clean one.
-- `infra/compose.yaml` starts the database and the queues for local dev.
+- `infra/compose.yaml` SHOULD start the database and the queues for local dev.
 
 ## The schema and the clients
+
+The service SHOULD write OpenAPI and generate the clients with these tools:
 
 | Server  | Writes OpenAPI with |
 | ------- | ------------------- |
@@ -67,21 +73,24 @@ CMD ["dist/main.js"]
 
 ## Services in other languages
 
-- **Go** each service is a module, and `go.work` at the root lists them.
-- **Python** a uv workspace with `[tool.uv.workspace]` in the root
-  `pyproject.toml`, one lockfile for all.
-- **Kotlin and Java** a Gradle build with `includeBuild("build-logic")`, read
-  by `@nx/gradle` or `@nx/maven`.
-- **.NET** a solution file read by `@nx/dotnet`.
-- A language with no runner plugin gets a thin `project.json` that calls its
-  tool, with `inputs` and `outputs` set, so the cache stays correct.
+- **Go** each service SHOULD be a module, and `go.work` at the root MUST list
+  them.
+- **Python** the services SHOULD form a uv workspace with
+  `[tool.uv.workspace]` in the root `pyproject.toml`, one lockfile for all.
+- **Kotlin and Java** they SHOULD share a Gradle build with
+  `includeBuild("build-logic")`, read by `@nx/gradle` or `@nx/maven`.
+- **.NET** a solution file SHOULD be read by `@nx/dotnet`.
+- A language with no runner plugin MUST get a thin `project.json` that calls
+  its tool, with `inputs` and `outputs` set, so the cache stays correct.
 
 ## Local dev
+
+Local dev SHOULD start with:
 
 ```bash
 docker compose -f infra/compose.yaml up -d
 pnpm nx run-many -t dev -p @service/api @app/web
 ```
 
-- The Android emulator reaches the host at `10.0.2.2`. A phone on Wi-Fi needs
-  the host's LAN address, read by the app from `EXPO_PUBLIC_API_URL`.
+- The Android emulator reaches the host at `10.0.2.2`. A phone on Wi-Fi MUST
+  use the host's LAN address, read by the app from `EXPO_PUBLIC_API_URL`.

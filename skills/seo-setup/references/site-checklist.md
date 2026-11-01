@@ -1,7 +1,7 @@
 # The site checklist
 
-Run the commands below on the live site, then read each page the build
-outputs.
+The agent MUST run the commands below on the live site, then read each page
+the build outputs.
 
 ```bash
 d=example.com
@@ -12,6 +12,8 @@ curl -s -o /dev/null -w '%{http_code}\n' "https://$d/no-such-page-$RANDOM"
 ```
 
 ## Every page
+
+Every page MUST pass each row:
 
 | Check                            | Right                                                                                     |
 | -------------------------------- | ----------------------------------------------------------------------------------------- |
@@ -28,9 +30,11 @@ curl -s -o /dev/null -w '%{http_code}\n' "https://$d/no-such-page-$RANDOM"
 
 ## Structured data
 
-JSON-LD goes in a `<script type="application/ld+json">` block. It MUST agree
-with what the page shows: Search Console flags a date, question or price that
-the page leaves off.
+JSON-LD MUST go in a `<script type="application/ld+json">` block. It MUST
+agree with what the page shows: Search Console flags a date, question or price
+that the page leaves off.
+
+Each page MUST carry the types of its row:
 
 | Page                  | Types                                                                         |
 | --------------------- | ----------------------------------------------------------------------------- |
@@ -42,6 +46,8 @@ the page leaves off.
 
 ## Site files
 
+Each file MUST match its row:
+
 | File          | Right                                                                                       |
 | ------------- | ------------------------------------------------------------------------------------------- |
 | `robots.txt`  | `Sitemap: https://$d/sitemap.xml`, CSS and scripts allowed, no search or ad crawler blocked |
@@ -51,16 +57,19 @@ the page leaves off.
 
 ## Trust pages
 
-Both AdSense review and Google Play read these pages.
+Both AdSense review and Google Play read these pages, so each one MUST exist.
 
-- **About** who runs the site, a person or a company name, and the reason.
-- **Contact** a working email, or a form.
-- **Privacy policy** what the site stores, the analytics, and once ads run,
-  Google cookies with a link to
+- **About** it MUST say who runs the site, a person or a company name, and the
+  reason.
+- **Contact** it MUST give a working email, or a form.
+- **Privacy policy** it MUST name what the site stores, the analytics, and
+  once ads run, Google cookies with a link to
   `https://policies.google.com/technologies/partner-sites`.
-- **Footer** links to the three pages, on each page.
+- **Footer** it MUST link to the three pages, on each page.
 
 ## Speed
+
+The agent MUST measure the live home page:
 
 ```bash
 curl -s "https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=https://$d/&strategy=mobile&category=performance&category=seo" \

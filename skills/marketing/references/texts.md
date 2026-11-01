@@ -1,10 +1,12 @@
 # Texts to adapt
 
-Every text is the user's story: what they built and the reason. Fill in the
-brackets, then reword it in the language of the place it is for. Strip any ad
-tone.
+Every text MUST tell the user's story: what they built and the reason. The
+agent MUST fill in the brackets, then reword it in the language of the place it
+is for. Any ad tone MUST go.
 
 ## Reddit post
+
+A Reddit post SHOULD start from this:
 
 ```text
 Title: I made a free [what it does] for [audience or city], [one hook]
@@ -20,6 +22,8 @@ I [built / pulled together] [what]. It [main benefit, one line].
 
 ## Show HN
 
+A Show HN post SHOULD start from this:
+
 ```text
 Title: Show HN: [what it does, plain words]
 
@@ -30,6 +34,8 @@ It's free and [open source / no sign-up]. I'd love feedback on [one specific thi
 
 ## Product Hunt
 
+A Product Hunt launch SHOULD start from this:
+
 ```text
 Tagline (60 chars): [what it does for whom]
 Maker comment:
@@ -39,12 +45,16 @@ It's free to [core]. [What the paid part adds, if any.] What should it do next?
 
 ## Forum answer in an old thread
 
+The answer MUST come first and the disclosure MUST stay:
+
 ```text
 [Answer the question first, with the numbers or the steps.]
 I ran into the same thing and built a free [tool] that does this: [link?ref=forum-<site>] (disclosure: it's mine).
 ```
 
 ## Email to a journalist
+
+A pitch to a journalist SHOULD start from this:
 
 ```text
 Subject: [Local hook]: free [what] ahead of [date or event]
@@ -57,6 +67,8 @@ Happy to send a screenshot for [their area] or answer questions.
 
 ## Email to a creator or teacher
 
+An email to a creator SHOULD start from this:
+
 ```text
 Subject: Free [paid tier] for [channel name]
 
@@ -68,11 +80,15 @@ If it's useful to your viewers, an honest review would mean a lot. No pressure e
 
 ## Follow-up, once, a week later
 
+The follow-up MUST bring one new fact:
+
 ```text
 Hi [name], a quick follow-up on [product]. [One new fact: a feature, a number of users, a date that is close.] Happy to help if it fits.
 ```
 
 ## Store short description
+
+The store short description SHOULD follow this:
 
 ```text
 [What it does] for [who]. [Key benefit]. [Free / no sign-up / works offline].

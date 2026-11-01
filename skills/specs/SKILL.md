@@ -5,11 +5,13 @@ description: 'Use before the first edit of any change to a repo, in any reposito
 
 # Specs, one per feature
 
-A spec is a Markdown file under `specs/` at the repo root that describes one
-feature: what it does, how it works and each change made to it. The work
-follows the spec, and the spec stays in the repo after the merge.
+A spec is a Markdown file under `specs/` at the repo root that MUST describe
+one feature: what it does, how it works and each change made to it. The work
+MUST follow the spec, and the spec MUST stay in the repo after the merge.
 
 ## 1. Decide if the change needs a spec
+
+The agent MUST pick the spec the change gets from this table:
 
 | The change                                              | Spec                            |
 | ------------------------------------------------------- | ------------------------------- |
@@ -25,32 +27,32 @@ follows the spec, and the spec stays in the repo after the merge.
   spec.
 - **Fix against the spec** a fix that makes a line in the spec untrue MUST
   correct that line in the same commit.
-- **Docs, config, version bumps** need no spec.
+- **Docs, config, version bumps** SHOULD NOT get a spec.
 
 ## 2. Find the feature's spec
 
-Read the list before writing, since an older spec can cover the feature under
-another name:
+The agent MUST read the list before writing, since an older spec can cover the
+feature under another name:
 
 ```bash
 ls specs/ 2>/dev/null
 grep -il "<feature words>" specs/*.md
 ```
 
-- **Found** the work goes into that file, whatever its name, dated ones too.
-- **Several match** pick the one whose feature the person would name. The
-  others stay as they are.
-- **None** a new feature gets `specs/<feature>.md`.
-- **Name** the feature in the person's words, in kebab case: `photo-upload`,
-  `offline-sync`. A date, a ticket key or a branch MUST NOT go in the name,
-  since later work on the feature reuses the file.
-- **Repo rules** a repo that sets its own spec place or name wins over this
+- **Found** the work MUST go into that file, whatever its name, dated ones too.
+- **Several match** the agent SHOULD pick the one whose feature the person
+  would name. The others MUST stay as they are.
+- **None** a new feature MUST get `specs/<feature>.md`.
+- **Name** SHOULD be the feature in the person's words, in kebab case:
+  `photo-upload`, `offline-sync`. A date, a ticket key or a branch MUST NOT go
+  in the name, since later work on the feature reuses the file.
+- **Repo rules** a repo that sets its own spec place or name MUST win over this
   skill.
 
 ## 3. Write a new spec
 
-The top describes the feature as it stands. The entries below record each
-change, newest last.
+The top MUST describe the feature as it stands. The entries below MUST record
+each change, newest last, in this shape:
 
 ```markdown
 # <Feature, in the person's words>
@@ -73,28 +75,31 @@ change, newest last.
 - **Docs** the docs this change updates.
 ```
 
-- **Ticket** its key goes in the entry heading when one exists.
-- **A new app** its first spec plans the launch as the instructions file
+- **Ticket** its key MUST go in the entry heading when one exists.
+- **A new app** its first spec MUST plan the launch as the instructions file
   says: search, ads, Google Play, marketing.
 
 ## 4. Extend an existing spec
 
-1. Add an entry under `## Changes`, with today's date and the ask.
-2. Update the top sections the change makes stale, so the top always reads as
-   the feature works after the merge.
-3. Leave older entries as they are. They record why the code looks as it does.
+1. The agent MUST add an entry under `## Changes`, with today's date and the
+   ask.
+2. The agent MUST update the top sections the change makes stale, so the top
+   always reads as the feature works after the merge.
+3. The agent MUST leave older entries as they are. They record why the code
+   looks as it does.
 
 - **Same session** a further request on the same feature, before the PR
-  merges, extends the entry this session added. A new entry starts only on a
-  new branch.
+  merges, MUST extend the entry this session added. A new entry MUST start
+  only on a new branch.
 - **Course change** a commit that departs from the entry SHOULD update the
   entry in that same commit.
 
 ## 5. Commit
 
-- **First** a new spec or a new entry lands in the first commit, before any
-  code. Go on without asking for approval.
-- **Message** in the repo's style. Without one, write `<feature>: plan <the
+- **First** a new spec or a new entry MUST land in the first commit, before any
+  code. The agent MUST go on without asking for approval.
+- **Message** SHOULD follow the repo's style. Without one, the agent SHOULD
+  write `<feature>: plan <the
   change>`.
 - **Kept** a spec MUST stay in the repo after the merge.
-- **PR** the description links the spec as `create-pr` says.
+- **PR** the description MUST link the spec as `create-pr` says.

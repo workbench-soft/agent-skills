@@ -1,9 +1,11 @@
 # CI and release
 
-One workflow checks the PR, then a job per app or service deploys what
-changed.
+One workflow SHOULD check the PR, then a job per app or service SHOULD deploy
+what changed.
 
 ## Checks on each PR
+
+The check workflow SHOULD follow this template:
 
 ```yaml
 jobs:
@@ -30,12 +32,15 @@ jobs:
 - Actions MUST be pinned by commit SHA. `zizmor` and `actionlint` SHOULD lint
   the workflows.
 - A remote cache SHOULD back `nx affected`: Nx Cloud or a self hosted cache.
-  Turborepo repos run `turbo run --affected` with its remote cache.
+  Turborepo repos SHOULD run `turbo run --affected` with its remote cache.
 - A Gradle build SHOULD use `gradle/actions/setup-gradle`, which caches the
   Gradle home between runs.
-- The codegen drift check and `oasdiff` from the backend reference run here.
+- The codegen drift check and `oasdiff` from the backend reference MUST run
+  here.
 
 ## Deploy per app
+
+The deploy jobs SHOULD follow this template:
 
 ```yaml
 plan:
@@ -58,19 +63,19 @@ deploy:
 ## Mobile
 
 - An Expo change with the same fingerprint SHOULD ship as `eas update`. A new
-  fingerprint starts `eas build` for the store.
-- `expo/expo-github-action` gives the fingerprint step. A build on every PR
-  SHOULD wait for a label, since each one takes minutes on macOS.
+  fingerprint MUST start `eas build` for the store.
+- `expo/expo-github-action` SHOULD give the fingerprint step. A build on every
+  PR SHOULD wait for a label, since each one takes minutes on macOS.
 - iOS builds MUST run on macOS: EAS or a hosted macOS runner.
 - Store versions SHOULD come from `autoIncrement` in `eas.json`, or Gradle and
   Xcode build numbers set by CI.
 
 ## Releases
 
-- **Packages** another repo installs version through Changesets. A PR that
-  changes one carries a changeset, and `changeset status` checks it.
-- **Apps and services** deploy on merge with no version. The commit SHA tags
-  the image.
+- **Packages** another repo installs SHOULD version through Changesets. A PR
+  that changes one MUST carry a changeset, and `changeset status` checks it.
+- **Apps and services** MAY deploy on merge with no version. The commit SHA
+  SHOULD tag the image.
 - **Dependency updates** Renovate SHOULD group them by catalog entry, so web
   and mobile move to a new React in one PR.
 

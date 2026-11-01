@@ -5,26 +5,28 @@ description: 'Use when JavaScript or TypeScript code is being written, sped up o
 
 # JavaScript
 
-Rules for JS and TS in the places where a mistake costs real time or real data:
-an extra round trip, a slow first screen, a response that holds another user's
-data.
+The agent MUST apply these rules to JS and TS where a mistake costs real time
+or real data: an extra round trip, a slow first screen, a response that holds
+another user's data.
 
 The repo's lint rules and skills MUST beat this file. Rules for React and other
 frameworks belong to that framework's skill.
 
 ## 1. Find where the code runs
 
-- **Server** Node, Bun, Deno, a serverless function, server rendering.
-- **Browser** whatever ships in a bundle.
-- **Both** a shared module, a server rendered component.
+- **Server** the agent MUST treat Node, Bun, Deno, a serverless function and
+  server rendering as server code.
+- **Browser** the agent MUST treat whatever ships in a bundle as browser code.
+- **Both** a shared module or a server rendered component MUST follow both
+  sets of rules.
 
-The async, server and data rules below apply to all of them. Code shipped to a
-browser gets these as well:
+The async, server and data rules below MUST apply to all of them. Code shipped
+to a browser MUST follow these as well:
 
-- **Bundle** imports, lazy loading, third party scripts: read
-  [references/bundle.md](references/bundle.md).
-- **Browser** listeners, layout, `localStorage`, idle work: read
-  [references/browser.md](references/browser.md).
+- **Bundle** for imports, lazy loading and third party scripts, the agent MUST
+  read [references/bundle.md](references/bundle.md).
+- **Browser** for listeners, layout, `localStorage` and idle work, the agent
+  MUST read [references/browser.md](references/browser.md).
 
 ## 2. Async
 
@@ -88,8 +90,8 @@ const perms = await getPerms(userId);
 - **Many items** hundreds of them, or an API with a rate limit, SHOULD run
   under a concurrency cap such as `p-limit`.
 - **Failures** `Promise.all` rejects at the first failure and loses the other
-  results. If each result matters by itself, use `Promise.allSettled` and deal
-  with every `rejected` entry.
+  results. If each result matters by itself, the code SHOULD use
+  `Promise.allSettled` and MUST deal with every `rejected` entry.
 
 ## 3. Server
 
@@ -134,14 +136,15 @@ orders.map((order) => ({ ...order, user: userById.get(order.userId) }));
 Unless a profile shows the line is hot, readable code SHOULD NOT be rewritten
 for a gain the engine makes by itself:
 
-- caching `items.length` or a property read inside a loop
-- merging `.filter().map()` into one loop
-- a `for` loop in place of `forEach`
+- **Length** the agent SHOULD NOT cache `items.length` or a property read
+  inside a loop.
+- **Chains** the agent SHOULD NOT merge `.filter().map()` into one loop.
+- **Loops** the agent SHOULD NOT swap `forEach` for a `for` loop.
 
 ## 6. In a review
 
-- **Each finding** gives the rule, the line and the cost: "3 calls in a row, 1
-  round trip with `Promise.all`".
+- **Each finding** MUST give the rule, the line and the cost: "3 calls in a
+  row, 1 round trip with `Promise.all`".
 - **Speed claims** they SHOULD come with a number: round trips saved, KB off
   the bundle, the length of the list.
 - **No real cost** a finding like a `find` over 10 items SHOULD shrink to a nit

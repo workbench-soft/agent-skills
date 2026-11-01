@@ -2,13 +2,13 @@
 
 ## Account and verification
 
-1. Go to `https://adsense.google.com`, have the user log in, and sign up with
-   the site URL and the payee's country.
-2. Take the publisher ID from Account, Settings, Account information:
-   `ca-pub-` followed by 16 digits.
-3. The verification code goes in the head of each page, and `ads.txt` at the
-   site root. Build both from a single constant at build time, so no page
-   can lack them.
+1. The agent MUST open `https://adsense.google.com`, have the user log in,
+   and sign up with the site URL and the payee's country.
+2. It MUST take the publisher ID from Account, Settings, Account
+   information: `ca-pub-` followed by 16 digits.
+3. The verification code MUST go in the head of each page, and `ads.txt` at
+   the site root. Both SHOULD come from a single constant at build time, so
+   no page can lack them:
 
 ```html
 <meta name="google-adsense-account" content="ca-pub-XXXXXXXXXXXXXXXX" />
@@ -23,36 +23,42 @@
 google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0
 ```
 
-The final field in `ads.txt` is Google's ID on the IAB list. Each publisher
-uses the same value.
+The final field in `ads.txt` MUST stay as shown: it is Google's ID on the
+IAB list, the same for each publisher.
 
-4. Commit and deploy, then check the live site:
+4. The agent MUST commit and deploy, then check the live site:
 
 ```bash
 curl -s "https://$d/ads.txt"
 curl -s "https://$d/" | grep -o 'ca-pub-[0-9]*' | sort -u
 ```
 
-5. In AdSense, Sites, choose the site, tick that the code is in place, press
-   Verify, then Request review.
+5. In AdSense, Sites, the agent MUST choose the site, tick that the code is
+   in place, press Verify, then Request review.
 
 ## While the review runs
 
-- **Payments** the user completes Payments, Payments info: name, address, tax
-  form. Once earnings reach the threshold, Google posts a PIN to that address.
-- **Consent** Privacy & messaging, European regulations, make a message for
-  the site and publish it. Repeat for US state regulations.
+- **Payments** the user MUST complete Payments, Payments info: name,
+  address, tax form. Once earnings reach the threshold, Google posts a PIN to
+  that address.
+- **Consent** the agent MUST make a message for the site under Privacy &
+  messaging, European regulations, and publish it. It SHOULD repeat that for
+  US state regulations.
 - **Empty slots** empty ad boxes MUST NOT show on the page before approval.
-  Keep a slot hidden until it has a unit ID.
+  A slot MUST stay hidden until it has a unit ID.
 
 ## After approval
 
-Choose with the user: hand-placed ad units, Auto ads, or both.
+The user MAY choose hand-placed ad units, Auto ads, or both, and the agent
+MUST ask.
 
-- **By ad unit** Ads, By ad unit, Display ads, responsive. Put the
-  `data-ad-slot` number in the code.
-- **Auto ads** Ads, By site, switch on, and start with a low ad load. The
-  verification script in the head serves them already.
+- **By ad unit** the agent MUST make a responsive unit under Ads, By ad
+  unit, Display ads, and put its `data-ad-slot` number in the code.
+- **Auto ads** the agent MUST switch them on under Ads, By site, and SHOULD
+  start with a low ad load. The verification script in the head serves them
+  already.
+
+A hand-placed slot MUST look like this:
 
 ```html
 <ins
@@ -68,13 +74,16 @@ Choose with the user: hand-placed ad units, Auto ads, or both.
 </script>
 ```
 
-- **One push per slot** in React or Vue, push once as the slot mounts. A
-  second push on the same `<ins>` throws.
-- **Placement** below the main result, between sections, at an article's end.
-  Keep it out of forms and away from buttons.
-- **Sites** marks `ads.txt` Authorized a few days after the first crawl.
+- **One push per slot** in React or Vue, the code MUST push once as the slot
+  mounts. A second push on the same `<ins>` throws.
+- **Placement** a slot SHOULD sit below the main result, between sections,
+  at an article's end. It MUST stay out of forms and away from buttons.
+- **Sites** the agent SHOULD expect `ads.txt` marked Authorized a few days
+  after the first crawl.
 
 ## Common rejections
+
+A rejection MUST get the fix in its row:
 
 | Reason in the email          | Fix                                                                           |
 | ---------------------------- | ----------------------------------------------------------------------------- |
