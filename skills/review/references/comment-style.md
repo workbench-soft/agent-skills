@@ -67,9 +67,9 @@ Each comment MUST follow the parts of that style:
   looked at the resolver". A decision that is the author's goes back as a
   question, and no line teaches them the area they work in each day.
 - **A file and line, a link or a screenshot SHOULD stand in for the argument.**
-- **`nit: ` MUST lead anything that only tidies the code**: formatting, a name,
+- **`nit:` MUST lead anything that only tidies the code**: formatting, a name,
   a shorter way to say the same thing. The replacement goes bare.
-- **`blocker: ` MUST lead a sure blocker and only that**, the rest get no prefix.
+- **`blocker:` MUST lead a sure blocker and only that**, the rest get no prefix.
 - **The impact paragraph and the evidence MUST stay out.** "so the user loses
   data", counts, tool output and "I ran X over Y" go in the finding.
 - **The case MUST be named, the theory left out.** One input or snippet, inline,

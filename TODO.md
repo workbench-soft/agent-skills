@@ -10,7 +10,6 @@
 - Left: the git hooks don't rebuild `turn-voice.exe` after a pull. Rebuilding there puts csc and mise on every checkout, a design call
 - Left: the mp3 split and trim code sits in `turn-voice.cs` and `voice_test.py` with no shared test. A test needs a C# harness the repo lacks
 - Left: `writing-style.instructions.md` is 8.4 KB and loads on every agent turn. Trimming it is a product call
-- Left: markdownlint-cli2 finds 724 issues, 525 under `skills/`. Too big for one audit
 - Left: no pre-push hook, no `tsc --noEmit` and no typeAware oxlint. Each needs new packages and a package.json
 - Left: Dependabot auto merge workflow. It needs write permissions, a loosening
 - Left: check.yml runs on push and pull_request, twice per PR. Dropping one loosens fork PR checks

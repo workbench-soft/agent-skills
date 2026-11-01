@@ -6,6 +6,7 @@ npm.package_manager = "npm"
 [tools]
 actionlint = "1.7.12"
 node = "24.22.2"
+"npm:markdownlint-cli2" = "0.24.0"
 "npm:oxfmt" = "0.75.0"
 "npm:oxlint" = "1.90.0"
 python = "3.15"
@@ -17,6 +18,7 @@ shfmt = "3.14.1"
 description = "Lint and format check the scripts, the skills and the docs"
 run = [
   "actionlint",
+  "markdownlint-cli2",
   "shellcheck .github/scripts/next-version.sh .github/scripts/release-notes.sh install.sh scripts/install-in-temp-home.sh",
   "shfmt -i 2 -ci -d .github/scripts/next-version.sh .github/scripts/release-notes.sh install.sh scripts/install-in-temp-home.sh",
   "ruff check",

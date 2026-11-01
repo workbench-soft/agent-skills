@@ -26,14 +26,14 @@ google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0
 The final field in `ads.txt` MUST stay as shown: it is Google's ID on the
 IAB list, the same for each publisher.
 
-4. The agent MUST commit and deploy, then check the live site:
+1. The agent MUST commit and deploy, then check the live site:
 
 ```bash
 curl -s "https://$d/ads.txt"
 curl -s "https://$d/" | grep -o 'ca-pub-[0-9]*' | sort -u
 ```
 
-5. In AdSense, Sites, the agent MUST choose the site, tick that the code is
+1. In AdSense, Sites, the agent MUST choose the site, tick that the code is
    in place, press Verify, then Request review.
 
 ## While the review runs

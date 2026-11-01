@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **Markdown** markdownlint-cli2 lints the docs in `mise run lint` and CI.
+
 - **Key words** each paragraph and list item of every skill, reference, `AGENTS.md` and the instructions file states its rule with MUST, SHOULD or MAY. `scripts/keyword-check.mts` fails lint on a rule without one.
 - Specs: one file per feature under `specs/`, with each dated spec moved in as an entry under `## Changes`.
 - **Security** the voice-test and icon-styles local pages answer only their own page. Another site open in the browser could play voices, or post a fake icon pick that the agent read as the person's answer.
