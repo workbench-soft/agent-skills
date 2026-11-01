@@ -24,6 +24,16 @@ run = [
   "node scripts/keyword-check.mts AGENTS.md writing-style.instructions.md skills/*/SKILL.md skills/*/references/*.md .agents/skills/*/SKILL.md",
 ]
 
+[tasks.test]
+description = "Check the skills, run the unit tests, install and uninstall in a temp home"
+run = [
+  "python scripts/check-skills.py",
+  "python scripts/check-prose-budget.py",
+  "python -m unittest discover -s tests",
+  "node --test tests/*.test.ts",
+  "sh scripts/install-in-temp-home.sh",
+]
+
 [tasks.format]
 description = "Format the scripts, the skills and the docs"
 run = [

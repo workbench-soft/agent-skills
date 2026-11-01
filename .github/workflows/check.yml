@@ -36,14 +36,10 @@ jobs:
 
       # A broken frontmatter or link drops a skill, or a file of it, from the
       # agent with no error. A skill that breaks a writing rule teaches it.
-      - name: Every skill reads the way an agent needs
-        run: mise x -- python scripts/check-skills.py
-
-      - name: Skills stay under their prose budget
-        run: mise x -- python scripts/check-prose-budget.py skills/*/SKILL.md skills/*/references/*.md
-
-      - name: Install and uninstall in a clean home
-        run: sh scripts/install-in-temp-home.sh
+      # The task also runs the prose budget, the unit tests and the install
+      # in a clean home.
+      - name: Skills, unit tests and the install
+        run: mise run test
 
       # install.ps1 runs install.sh, so this checks the flags get through.
       - name: Install and uninstall from PowerShell

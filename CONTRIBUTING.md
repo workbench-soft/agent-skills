@@ -10,10 +10,8 @@ the installer misses.
 - **Checks** run them before you push:
 
 ```sh
-mise x -- shellcheck install.sh scripts/install-in-temp-home.sh
-mise x -- python scripts/check-skills.py
-mise x -- python scripts/check-prose-budget.py skills/*/SKILL.md skills/*/references/*.md
-sh scripts/install-in-temp-home.sh
+mise run lint
+mise run test
 ```
 
 CI runs the same checks on every PR.

@@ -431,12 +431,12 @@ in `CLAUDE.md` and `AGENTS.md` stay, and only the installer's block goes.
 
 [AGENTS.md](AGENTS.md) sets the rules for each `.md` file here: the prose
 budget under `skills/`, when a line earns a `MUST`, and what stays verbatim.
-Check a file against the budget, then every skill's frontmatter, links and
-banned words:
+Run the checks CI runs. `test` covers the budget, every skill's frontmatter,
+links and banned words, the unit tests and an install in a temporary home:
 
 ```sh
-mise x -- python scripts/check-prose-budget.py skills/*/SKILL.md skills/*/references/*.md
-mise x -- python scripts/check-skills.py
+mise run lint
+mise run test
 ```
 
 ## Releases
