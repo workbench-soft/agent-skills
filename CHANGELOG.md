@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **git-worktrees** a finished worktree moves to a `.trash` folder beside the repos in under a second, and the delete runs in the background. `git worktree remove` held the agent for minutes on the `node_modules` of a Windows worktree.
 - **ads-setup** an app with ads hides them on the developer's own device, with a Show test ads switch in Settings that only that device sees.
 - **CI** Release waits while a PR of an agent session is open, so the last merge of a batch releases them all.
 - **Docs** each heading of `docs/features.md` links its spec, and each feature that had no spec got one.
