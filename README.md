@@ -144,6 +144,11 @@ repo pins. A mise task runs with `mise run`, any other command with
 `mise x --`. A new tool goes in `mise.toml` with `mise use`, in place of
 `brew`, `winget` or `npm i -g`.
 
+**`translations`** keeps each string a person sees in every language the app
+ships, in the same change. It picks the i18n tool for the stack, matches the
+tone of each catalog and maps English errors from native code to translated
+keys. A test keeps the catalogs on the same keys.
+
 **`app-audit`** checks a whole app in one go, without questions. Agents run in
 parallel, one per angle, each in its own worktree:
 
