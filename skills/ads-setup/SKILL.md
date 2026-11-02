@@ -79,6 +79,35 @@ applying, each of these MUST be true:
 When something is missing, the agent MUST load the `seo-setup` skill, fix the
 gap, deploy, then return here.
 
+### Design an app site so the reviewer sees text
+
+The reviewer opens the home page and judges the site by what it shows. A map,
+a fretboard or a landing with a button and 2 lines gets "insufficient
+content", and the whole account is refused. The rules below MUST hold on each
+site before it goes into AdSense:
+
+- **Home page is a text page** the home page MUST show at least 300 words
+  of visible text: what the tool does, who it is for, how to use it, and
+  links to the content pages. An app screen MAY sit above the text, and the
+  text MUST follow it on the same page, in plain view. An `sr-only` or
+  `noscript` block does not count.
+- **Text in view-source** the text MUST be in the HTML the server sends, so
+  a client-only app MUST prerender or statically render its home and content
+  pages.
+- **Content pages** the site MUST hold at least 5 pages of original text of
+  300 words or more: guides, explainers, the data behind the tool. The
+  `seo-setup` content guide sets the bar for each page.
+- **One site per application** the account MUST apply with its strongest
+  site alone. The other sites go in one at a time after the first approval,
+  and each one passes the checks above first. 4 sites at once got one refusal
+  for all of them on 2026-11-03.
+- **Check before the request** the agent MUST run the check below on each
+  page the menu links to. A page under 300 words MUST get its text first.
+
+```bash
+curl -sL "https://$d/" | sed 's/<script[^>]*>.*<\/script>//g; s/<style[^>]*>.*<\/style>//g; s/<[^>]*>/ /g' | wc -w
+```
+
 ## 4. Set up the site
 
 The agent MUST work through [references/adsense.md](references/adsense.md):

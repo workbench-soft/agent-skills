@@ -85,9 +85,15 @@ A hand-placed slot MUST look like this:
 
 A rejection MUST get the fix in its row:
 
-| Reason in the email          | Fix                                                                           |
-| ---------------------------- | ----------------------------------------------------------------------------- |
-| Low value content            | add pages of real text, see the `seo-setup` content guide                     |
-| Site down or unavailable     | something blocked the crawler: Cloudflare bot rules, a WAF rule, `robots.txt` |
-| Policy violation             | read the policy it names, fix it, wait a week before asking again             |
-| Not enough content to verify | the text must be in view-source, so a client-only app needs prerendering      |
+| Reason in the email          | Fix                                                                                                                                                                     |
+| ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Low value content            | add pages of real text, see the `seo-setup` content guide                                                                                                               |
+| Site down or unavailable     | something blocked the crawler: Cloudflare bot rules, a WAF rule, `robots.txt`                                                                                           |
+| Policy violation             | read the policy it names, fix it, wait a week before asking again                                                                                                       |
+| Not enough content to verify | the text must be in view-source, so a client-only app needs prerendering                                                                                                |
+| Your account wasn't approved | the email names only "content quality": each site goes through "Design an app site so the reviewer sees text" in the skill, then Resubmit with the strongest site alone |
+
+An account refusal hides the Sites page and the Policy center, and the
+`sites.list` API answers with an empty list. The agent MUST judge each site
+from its live pages. Once the fixes are deployed, it MUST tick "I confirm"
+and press Resubmit on the Home page.
