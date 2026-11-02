@@ -54,13 +54,16 @@ static class TurnVoice {
             FromMarker(input);
         string lead = Lead(outcome, ru, AgentName(input));
         string task = TaskTitle(input);
+        // The clip downloads before the cue. Fetched after it, the sound device fell asleep
+        // in the gap and cut the first word.
+        string clip = BuildNeural(string.IsNullOrEmpty(task) ? lead : lead + ": " + task, ruVoice, enVoice, tts, ruPitch, enPitch);
         // Sessions that end together speak one after another, not over each other.
         using (var turn = new Mutex(false, @"Local\turn-voice")) {
             bool owned = false;
             try { owned = turn.WaitOne(90000); } catch (AbandonedMutexException) { owned = true; }
             try {
                 PlayCue(outcome);
-                SayNeural(string.IsNullOrEmpty(task) ? lead : lead + ": " + task, ruVoice, enVoice, tts, ruPitch, enPitch);
+                if (clip != null) PlayMp3(clip);
             } finally { if (owned) turn.ReleaseMutex(); }
         }
     }
@@ -174,21 +177,22 @@ static class TurnVoice {
     // ruVoice reads the Cyrillic runs and enVoice the Latin ones, each run fetched apart.
     // The runs go into one mp3 with their silence cut, so no pause opens between voices.
     // The phrase splits the same way when one multilingual voice reads both languages.
-    static bool SayNeural(string text, string ruVoice, string enVoice, string tts, string ruPitch, string enPitch) {
+    // Returns the joined mp3, or null when only the cue plays.
+    static string BuildNeural(string text, string ruVoice, string enVoice, string tts, string ruPitch, string enPitch) {
         if (string.IsNullOrEmpty(ruVoice) || string.IsNullOrEmpty(enVoice) || string.IsNullOrEmpty(tts) || !File.Exists(tts)) {
-            Log("no edge-tts at " + tts); return false;
+            Log("no edge-tts at " + tts); return null;
         }
         try {
             var runs = Runs(text);
-            if (runs.Count == 0) return false;
+            if (runs.Count == 0) return null;
             var files = new System.Collections.Generic.List<string>();
             foreach (var run in runs) {
                 bool cyrillic = Regex.IsMatch(run, @"\p{IsCyrillic}");
                 string file = Fetch(run, cyrillic ? ruVoice : enVoice, cyrillic ? ruPitch : enPitch, tts);
-                if (file == null) return false;
+                if (file == null) return null;
                 files.Add(file);
             }
-            string joined = Path.Combine(Path.GetDirectoryName(files[0]), Hash("lead-in|" + string.Join("|", files)) + "-joined.mp3");
+            string joined = Path.Combine(Path.GetDirectoryName(files[0]), Hash("lead-in-" + LeadFrames + "|" + string.Join("|", files)) + "-joined.mp3");
             if (File.Exists(joined)) Touch(joined);
             else {
                 var all = new MemoryStream();
@@ -200,19 +204,21 @@ static class TurnVoice {
                 }
                 File.WriteAllBytes(joined, all.ToArray());
             }
-            return PlayMp3(joined);
-        } catch (Exception e) { Log(e.ToString()); return false; }
+            return joined;
+        } catch (Exception e) { Log(e.ToString()); return null; }
     }
 
-    // A sound device that slept while the clip downloaded wakes up on the first frames and drops them,
-    // so "Агент" came out as "...ент". The first frame of a clip is silent and stands alone, so 16 of
-    // them give 0.4 seconds of silence for the device to wake on.
+    // A sound device that slept wakes up on the first frames and drops them, so "Агент" came out
+    // as "...ент". An HDMI monitor or TV wakes slower than 0.4 seconds. The first frame of a clip
+    // is silent and stands alone, so 32 of them give 0.77 seconds of silence to wake on.
+    const int LeadFrames = 32;
+
     static byte[] LeadIn(byte[] mp3) {
         int gain;
         int size = mp3.Length >= 8 ? FrameSize(mp3, 0, out gain) : 0;
         if (size <= 0 || size > mp3.Length || mp3[4 + ((mp3[1] & 1) == 0 ? 2 : 0)] != 0) return new byte[0];
-        var lead = new byte[size * 16];
-        for (int i = 0; i < 16; i++) Buffer.BlockCopy(mp3, 0, lead, i * size, size);
+        var lead = new byte[size * LeadFrames];
+        for (int i = 0; i < LeadFrames; i++) Buffer.BlockCopy(mp3, 0, lead, i * size, size);
         return lead;
     }
 
