@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **ads-setup** an app with ads hides them on the developer's own device, with a Show test ads switch in Settings that only that device sees.
 - **CI** Release waits while a PR of an agent session is open, so the last merge of a batch releases them all.
 - **Docs** each heading of `docs/features.md` links its spec, and each feature that had no spec got one.
 - **specs** a repo with `docs/features.md` ends each feature section with a link to its spec, and `docs/features.md` here does the same.
