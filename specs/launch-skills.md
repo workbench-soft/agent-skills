@@ -68,3 +68,15 @@ Taking each app live repeated the same steps in Search Console, AdSense, AdMob a
 #### Docs to update
 
 - `README.md`
+
+### 2026-11-02 ads-setup: hide ads on the developer's device, with a switch in the app
+
+- **Why** the developer wants each app with ads to hide them on their own
+  phone, in every build, and to show or hide them right in the app.
+- **Changes**
+  - `skills/ads-setup/SKILL.md` step 5 asks for the developer's device mode.
+  - `skills/ads-setup/references/dev-device.md` new: the unlock link with a
+    hashed key, test units there, and the switch in Settings shown only on
+    that device.
+- **Steps** this entry, then the skill, then the changelog.
+- **Docs** `CHANGELOG.md`.
