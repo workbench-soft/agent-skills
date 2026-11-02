@@ -74,3 +74,9 @@ None written down yet.
 
 - `README.md`: the skill under What you get, and the Plan first bullet.
 - This repo holds skills, no app, so it has no architecture or user flow docs.
+
+### 2026-11-02 The features doc links each spec
+
+- **Why** features shipped with a spec that no doc pointed to, so a reader of `docs/features.md` could not find the plan behind a feature.
+- **Changes** `skills/specs/SKILL.md` asks for a `Spec:` link at the end of the feature's section in `docs/features.md`.
+- **Docs** `docs/features.md` of this repo links each spec the same way.
