@@ -13,6 +13,13 @@ phones through the internal testing track.
 - **Browser** the agent MUST drive whatever browser tool it has: the VS Code
   browser tools, or the `agent-browser` skill. Without one, it MUST hand the
   user the link and the clicks as numbered steps, one per line, and wait.
+- **API first** when a Google Play MCP server or the Play Developer API with a
+  service account is at hand, the agent MUST upload bundles, set listings and
+  move tracks through it. The browser SHOULD serve only the app creation and
+  the declarations.
+- **Service account rights** each new app MUST get the service account under
+  Users and permissions in Play Console. Without it the API doesn't list the
+  app.
 - **Login screen** the user MUST log in inside that window, and the agent MUST
   wait for "done". A password, a 2FA code or card details MUST NOT be typed by
   the agent.

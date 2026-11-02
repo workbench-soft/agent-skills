@@ -120,7 +120,7 @@ when it shows any of these:
   location of the person MUST NOT appear.
 - **Secrets** a token, an API key, a password or a session id in a URL bar
   MUST NOT appear.
-- **The machine** the person's file paths, user name, other apps, the
+- **The machine** the person's file paths, user name, host name, other apps, the
   notification shade and other browser tabs MUST NOT appear.
 - **Rough edges** an error toast, a debug banner, lorem ipsum, "test" rows or
   an empty state where data was planned MUST NOT appear.
