@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **Docs** each heading of `docs/features.md` links its spec, and each feature that had no spec got one.
 - **specs** a repo with `docs/features.md` ends each feature section with a link to its spec, and `docs/features.md` here does the same.
 - **turn-voice** the phrase always splits into Russian and English runs, even with one voice, and the default voice is `de-DE-SeraphinaMultilingualNeural`.
 
