@@ -102,4 +102,7 @@ each change, newest last, in this shape:
   write `<feature>: plan <the
   change>`.
 - **Kept** a spec MUST stay in the repo after the merge.
+- **Linked** in a repo with `docs/features.md`, the feature's heading there MUST
+  end with `Spec: [<feature>](../specs/<feature>.md)`, and the same PR MUST
+  update that section.
 - **PR** the description MUST link the spec as `create-pr` says.
