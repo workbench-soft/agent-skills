@@ -13,6 +13,11 @@ with each ad policy kept on the way.
 - **Browser** the agent SHOULD drive whatever browser tool it has: the VS
   Code browser tools, or the `agent-browser` skill. Without one, it MUST hand
   the user the link and the clicks as numbered steps, one per line, and wait.
+- **API first** when an AdMob, AdSense or Google Play MCP server is connected,
+  the agent MUST read the accounts, apps, units and sites through it. The
+  browser SHOULD serve only the pages the API lacks, such as a new app, a
+  consent message or payments. Browser tools hang on the Google consoles when
+  the machine is busy.
 - **Login screen** the user MUST log in inside that window, and the agent
   MUST wait for "done". A password, a 2FA code, a bank account or a tax ID
   MUST NOT be typed by the agent.

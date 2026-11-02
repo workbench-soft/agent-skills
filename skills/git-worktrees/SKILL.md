@@ -50,6 +50,9 @@ git worktree add --no-track -b <branch> "$dir" "$remote/$default"
 - **Location** the folder MUST sit beside the main repo folder, named
   `<repo>-<branch>`. The path is built from the main repo, so starting in a
   subfolder ends in the same spot.
+- **Short for Android** an Android build on Windows fails once a path passes
+  260 characters. A worktree for such a build SHOULD take a short name, such
+  as `m-sq`.
 - **Upstream** `--no-track` MUST stop the branch from tracking the default
   branch. The first push MUST give it one: `git push -u "$remote" HEAD`.
 - **Already there** when the branch or the folder exists, the agent MUST stop
@@ -130,7 +133,8 @@ git ls-remote --exit-code --heads "$remote" <branch> >/dev/null && git push "$re
   waits, and the `node_modules` of a worktree hold the agent for minutes on
   Windows. A rename on the same disk SHOULD take under a second.
 - **Locked** a `mv` that fails with "Permission denied" or `EBUSY` means a
-  process holds a file. The agent MUST stop it as the hung process rules say,
+  process holds a file. The usual holders are a Gradle daemon, which
+  `./gradlew --stop` in `$dir` ends, and a shell still inside `$dir`. The agent MUST stop it as the hung process rules say,
   then move once more.
 
 The agent MUST then empty the trash in the background and MUST NOT wait for it.

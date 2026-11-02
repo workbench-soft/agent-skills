@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- **ads-setup** and **play-release** read and write AdMob, AdSense and Play through their MCP server or API first, and keep the browser for the pages the API lacks. play-release adds the service account to each new app.
+- **git-worktrees** gives a worktree for an Android build a short name, since Windows fails past 260 characters, and names the Gradle daemon as the usual holder of a locked folder.
+- **demo-media** retakes a frame that shows the host name of the machine.
 - **git-worktrees** a finished worktree moves to a `.trash` folder beside the repos in under a second, and the delete runs in the background. `git worktree remove` held the agent for minutes on the `node_modules` of a Windows worktree.
 - **ads-setup** an app with ads hides them on the developer's own device, with a Show test ads switch in Settings that only that device sees.
 - **CI** Release waits while a PR of an agent session is open, so the last merge of a batch releases them all.
