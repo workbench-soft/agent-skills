@@ -49,3 +49,11 @@ Worktrees, folders and branches piled up after their PRs merged.
 
 - `CHANGELOG.md`
 - `README.md`
+
+### 2026-11-02 Remove a worktree without waiting for the delete
+
+- **Why** the owner saw agents stall at the cleanup after a merge. `git worktree remove` on a `memories` worktree ran past 2 minutes and left 50,933 files in `node_modules`. `rd /s /q` then took 5 min 16 s on them, and a rename of the folder took 0.8 s.
+- **Changes** `skills/git-worktrees/SKILL.md` step 6 moves the folder to `.trash` beside the repos, runs `git worktree prune`, and deletes the trash in a detached process. Step 2 empties the trash a stopped run left.
+- **Limits** a locked file stops the move, as it stopped `git worktree remove`. The disk space comes back only once the background delete ends.
+- **Steps** spec, the skill, docs.
+- **Docs** `README.md`, `CHANGELOG.md`.
