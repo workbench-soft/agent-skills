@@ -103,9 +103,11 @@ site before it goes into AdSense:
   for all of them on 2026-11-03.
 - **Check before the request** the agent MUST run the check below on each
   page the menu links to. A page under 300 words MUST get its text first.
+  The check MUST go through `perl`, since a one-line HTML page makes `sed`
+  strip from the first `<script>` to the last one.
 
 ```bash
-curl -sL "https://$d/" | sed 's/<script[^>]*>.*<\/script>//g; s/<style[^>]*>.*<\/style>//g; s/<[^>]*>/ /g' | wc -w
+curl -sL "https://$d/" | perl -0pe 's/<script.*?<\/script>//gs; s/<style.*?<\/style>//gs; s/<[^>]+>/ /g' | wc -w
 ```
 
 ## 4. Set up the site
