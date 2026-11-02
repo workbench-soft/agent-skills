@@ -162,8 +162,8 @@ keys go in `TODO.md` with the reason.
 **`git-worktrees`** puts each piece of work in its own folder, and your
 checkout stays as it is. It copies the ignored files the app needs, such as
 `.env` and certificates, installs the dependencies and runs the app on a port
-of its own. When the PR merges it removes the folder and the branch, local and
-remote, and clears other merged worktrees as it goes. `implement-ticket`,
+of its own. When the PR merges it moves the folder to the trash in a second, deletes
+it in the background and removes the branch, local and remote, and clears other merged worktrees as it goes. `implement-ticket`,
 `app-audit` and `review` rely on it.
 
 **`javascript`** keeps JS and TS code fast and safe. Independent calls run

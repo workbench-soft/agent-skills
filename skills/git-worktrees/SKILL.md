@@ -25,7 +25,9 @@ grep -il worktree AGENTS.md CLAUDE.md CONTRIBUTING.md README.md 2>/dev/null
 
 The agent SHOULD run step 6 for every other worktree of this repo whose
 branch has a merged PR. It MUST skip the main checkout. A worktree that fails
-any check of step 6 MUST stay, and no question SHOULD go to the user.
+any check of step 6 MUST stay, and no question SHOULD go to the user. The agent
+SHOULD empty the `.trash` folder beside the repos too, since a stopped run
+leaves folders there.
 
 ```bash
 git worktree list --porcelain | awk '/^branch /{sub("refs/heads/","",$2); print $2}'
@@ -114,13 +116,29 @@ head=$(GH_PAGER=cat gh pr view <branch> --json headRefOid -q .headRefOid)
 
 Any line with output MUST halt the removal. The worktree MUST stay, and a line
 in `TODO.md` MUST give the path and what remains in it. Otherwise the agent
-MUST remove it:
+MUST move it to the trash folder beside the repos, then drop it from git:
 
 ```bash
-git worktree remove "$dir"
+trash="$(dirname "$main")/.trash"; mkdir -p "$trash"
+mv "$dir" "$trash/$(basename "$dir")-$(date +%s)"
+git worktree prune
 git branch -D <branch>
 git ls-remote --exit-code --heads "$remote" <branch> >/dev/null && git push "$remote" --delete <branch>
-git worktree prune
+```
+
+- **Why a move** `git worktree remove` deletes each file while the agent
+  waits, and the `node_modules` of a worktree hold the agent for minutes on
+  Windows. A rename on the same disk SHOULD take under a second.
+- **Locked** a `mv` that fails with "Permission denied" or `EBUSY` means a
+  process holds a file. The agent MUST stop it as the hung process rules say,
+  then move once more.
+
+The agent MUST then empty the trash in the background and MUST NOT wait for it.
+On Windows the path MUST be written out, and `rd` leaves the targets of pnpm
+junctions alone. Elsewhere a background `rm -rf` MAY do the job:
+
+```bash
+powershell -NoProfile -Command "Start-Process cmd -WindowStyle Hidden -ArgumentList '/c','rd /s /q C:code.trash'"
 ```
 
 - **Branch delete** the agent MAY use `git branch -D` here, because the PR
@@ -128,14 +146,8 @@ git worktree prune
   wanted. After a squash merge, `git branch -d` sees the branch as unmerged.
 - **Someone else's branch** the remote branch MUST stay, as with a PR under
   review. Only the folder and the local branch MAY go.
-- **Force** `git worktree remove --force` MUST NOT be used unless the user
-  dropped the work. In other cases a refusal means a file remains, one the
-  check above failed to catch.
-- **Folder left over** a folder still on disk after `git worktree remove` held
-  only ignored files, such as `node_modules`. Once `ls "$dir"` shows no source
-  files, the agent SHOULD delete it by its full path written out, such as
-  `rm -rf -- "C:/code/app-fix-login"`. It MUST NOT remove a path held in a
-  variable, since the safety check blocks that.
+- **Untracked files** the move skips the check of `git worktree remove`, so
+  the status check above MUST print empty first. A file it lists MUST stay.
 
 ## 7. Report back
 
