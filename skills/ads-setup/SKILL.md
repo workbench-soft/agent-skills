@@ -92,6 +92,10 @@ consent form, `app-ads.txt`.
 
 - A debug build MUST NOT load real ad unit IDs. One click on a real ad from a
   developer's phone gets the account flagged.
+- The app MUST hide its ads on the developer's own device, with a "Show test
+  ads" switch in Settings that only that device sees. The agent MUST read
+  [references/dev-device.md](references/dev-device.md) and build it with the
+  ad code.
 - The app SHOULD go to Play internal testing with test ads before anything
   else. The `play-release` skill MUST handle the upload.
 
