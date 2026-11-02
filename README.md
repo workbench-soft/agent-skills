@@ -215,7 +215,9 @@ and the pages ad review asks for, and fixes the gaps in code. Then it goes
 through Cloudflare Web Analytics, Google Search Console and Bing in the
 browser, and plans the content.
 
-**`ads-setup`** adds AdSense to the site and AdMob to an Android app. Debug
+**`ads-setup`** adds AdSense to the site and AdMob to an Android app. An app
+site first gets a home page with 300 words of visible text and 5 content
+pages, since a reviewer who sees a map or a button refuses the account. Debug
 builds get test ads, the consent message goes live, and the Play Console ads
 and data safety pages get filled in. A Trusted Web Activity app hides
 AdSense, because the policy bans it inside apps.
