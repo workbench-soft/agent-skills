@@ -12,7 +12,7 @@ show and hide them right in the app.
 - **Link** the app MUST read a deep link such as
   `<org>-dev://unlock?key=<key>&ads=1`, at launch and while it runs. A key
   whose hash matches MUST mark the device in the app's own storage. Any other
-  key MUST change nothing.
+  key MUST leave the storage as it was.
 - **Send it** a script on the PC SHOULD open the link in each app over
   `adb shell am start`, with the link passed through stdin, so the phone log
   stays clean. A repo that already has such a script MUST reuse it.
@@ -40,6 +40,6 @@ as under `import.meta.env.DEV`, off by default. The published site MUST NOT rend
 
 ## Tests
 
-A unit test MUST cover the link: a wrong key marks nothing, the right key
+A unit test MUST cover the link: a wrong key leaves the device unmarked, the right key
 marks the device and sets the switch, and another link stays with the
 router.
