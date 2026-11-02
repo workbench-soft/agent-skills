@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **ads-setup** the dev device reference passes the word check again.
 - **ads-setup** an app site gets a home page with 300 words of visible, server-rendered text and 5 content pages before it goes into AdSense, and the account applies with one site at a time. 4 app sites with a map, a fretboard or a button on the home page got the whole account refused. The word count runs through `perl`, since `sed` strips a one-line page from the first `<script>` to the last.
 - **translations** a new skill: each string a person sees reaches every language in the same change, and English errors from native code map to translated keys.
 - **ads-setup** and **play-release** read and write AdMob, AdSense and Play through their MCP server or API first, and keep the browser for the pages the API lacks. play-release adds the service account to each new app.
