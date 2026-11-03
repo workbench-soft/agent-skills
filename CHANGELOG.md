@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **one-pager** a new skill: a spec, a design doc or a write-up gets the full text first, then a one-pager on top that fits one screen. **specs** writes each spec this way.
 - **create-pr** and **review** draw each diagram as a Before and After pair, with nodes coloured green new, amber changed, red removed, gray unchanged, and **architecture** does the same for a restructure.
 - **ads-setup** the dev device reference passes the word check again.
 - **ads-setup** an app site gets a home page with 300 words of visible, server-rendered text and 5 content pages before it goes into AdSense, and the account applies with one site at a time. 4 app sites with a map, a fretboard or a button on the home page got the whole account refused. The word count runs through `perl`, since `sed` strips a one-line page from the first `<script>` to the last.

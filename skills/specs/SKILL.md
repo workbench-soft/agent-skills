@@ -57,6 +57,8 @@ each change, newest last, in this shape:
 ```markdown
 # <Feature, in the person's words>
 
+## One-pager
+
 ## What it does for the person
 
 ## User flows
@@ -75,6 +77,8 @@ each change, newest last, in this shape:
 - **Docs** the docs this change updates.
 ```
 
+- **Two passes** the agent MUST write the spec through the `one-pager` skill:
+  the full sections first, then the `## One-pager` distilled from them.
 - **Ticket** its key MUST go in the entry heading when one exists.
 - **A new app** its first spec MUST plan the launch as the instructions file
   says: search, ads, Google Play, marketing.
@@ -85,7 +89,9 @@ each change, newest last, in this shape:
    ask.
 2. The agent MUST update the top sections the change makes stale, so the top
    always reads as the feature works after the merge.
-3. The agent MUST leave older entries as they are. They record why the code
+3. The agent MUST update the `## One-pager` lines the change makes stale, and
+   SHOULD add one to a spec that has none.
+4. The agent MUST leave older entries as they are. They record why the code
    looks as it does.
 
 - **Same session** a further request on the same feature, before the PR

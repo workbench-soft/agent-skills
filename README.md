@@ -137,7 +137,12 @@ opens the PR through `create-pr` and moves the ticket to In Review.
 **`specs`** keeps one spec per feature in `specs/<feature>.md`, written before
 the code. Work on a feature with a spec adds a dated entry to that file, and a
 further tweak in the same session extends the entry. A bug fix gets no spec,
-unless it changes the design, the data or several modules.
+unless it changes the design, the data or several modules. Each spec opens
+with a one-pager.
+
+**`one-pager`** writes a spec, a design doc or a write-up in 2 passes. The
+full text comes first, with every fact and decision. Then a one-pager on top
+sums it up in one screen, with no fact of its own.
 
 **`mise`** runs each command through mise, so tools come at the versions the
 repo pins. A mise task runs with `mise run`, any other command with
