@@ -113,7 +113,8 @@ lines.
 
 **`review`** reads a PR, a branch or a diff. It says what the change solves,
 draws the user flow and what each file does, and gives the order to read the
-files in. Then comes one table of every problem, and each problem in detail:
+files in. The lenses run in parallel subagents through `reviewer`. Then comes
+one table of every problem, and each problem in detail:
 the line number, the input that breaks it, the fix. Each one ends with a short
 comment ready to paste on the line. When posted, the comments go up with a
 verdict: approve, request changes for a real blocker, or comments only.
@@ -154,8 +155,21 @@ ships, in the same change. It picks the i18n tool for the stack, matches the
 tone of each catalog and maps English errors from native code to translated
 keys. A test keeps the catalogs on the same keys.
 
-**`app-audit`** checks a whole app in one go, without questions. Agents run in
-parallel, one per angle, each in its own worktree:
+**`reviewer`** is the core that `review` and `app-audit` share. It picks the
+lenses, starts one subagent per lens on the strongest model and checks each
+finding before it goes on:
+
+- **Lenses** bugs, security, architecture, simplicity, speed, state, UX,
+  reliability, platform and agent instructions.
+- **PR size** a change stays small and stands on its own, with a split plan
+  past 400 lines.
+- **Libraries** hand-written code gives way to the platform or a free,
+  maintained library.
+- **Domains** legal, SEO and other fields run on an installed skill, or on
+  the best match from skills.sh, read before use.
+
+**`app-audit`** checks a whole app in one go, without questions. Through
+`reviewer`, agents run in parallel, one per angle, each in its own worktree:
 
 - **Code** bugs, simplicity and tests, architecture and data formats.
 - **Safety** security and privacy, dependencies and CI.

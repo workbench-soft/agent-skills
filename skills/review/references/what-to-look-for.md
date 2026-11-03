@@ -1,38 +1,13 @@
-# What to look for
+# Running the lenses
 
-The agent MUST check these, from most to least important:
-
-1. **Breaks for the user** MUST come first: a wrong result, a crash, data loss,
-   lost input, a stuck spinner, a case left out (an empty list, no network, a
-   slow reply, two clicks in a row). After that, the machine it runs on: a
-   missing tool, a GUI app's short `PATH`, Linux, a detached HEAD.
-2. **Security** MUST cover anything in the OWASP Top 10. User input left
-   unescaped, secrets in code or logs, a missing permission check, an open
-   redirect, a query put together by string concatenation.
-3. **Money and speed** MUST cover work repeated in a loop, one request per item,
-   a file read on each render, a list with no limit kept in memory.
-4. **Will bite later** MUST cover a silent `catch`, a `TODO` covering a known
-   bug, two sources of truth for one value. A comment, a doc line or the PR
-   description that the code now contradicts. A test that can't fail, named by
-   the one-character edit it would let pass: `|| exit 0` turned into `&& exit 0`.
-5. **Already written somewhere** MUST ask whether the repo or a dependency does
-   this already.
-6. **Style** MUST NOT be flagged unless the repo asks for it in writing.
-
-For 5, the agent MUST read [already-written.md](already-written.md) at this
-step. It MUST run on each review.
-
-Whether the design suits the task MUST NOT be judged here. The second round,
-[architecture-pass.md](architecture-pass.md), does that once this report is on
-screen.
-
-A file with no problem MUST be named as fine. Leaving it unmentioned reads as
-"not reviewed". It MUST go in the single "Clean:" line under the findings table.
+The lenses, their checklists, the model and the proof rules MUST come from the
+`reviewer` skill. This file MUST only set what `review` hands it and how the
+findings come back.
 
 ## Skip what is already said
 
 On a PR, the agent MUST read the open threads and the checks once, before the
-first finding:
+lenses start:
 
 ```sh
 GH_PAGER=cat gh api repos/OWNER/REPO/pulls/<number>/comments \
@@ -40,25 +15,31 @@ GH_PAGER=cat gh api repos/OWNER/REPO/pulls/<number>/comments \
 GH_PAGER=cat gh pr view <number> --json reviews,comments,statusCheckRollup
 ```
 
-- **Raised by someone else**: a finding already in a thread or a review MUST
-  NOT go in.
-- **Caught by a check**: a finding a failing lint, typecheck or test already
-  reports MUST NOT go in. The summary MAY mention the failing check in one line.
-- The names and states of the checks are enough. Logs SHOULD stay shut.
+- **Raised by someone else** a finding in a thread or a review MUST go on the
+  Skip list.
+- **Caught by a check** a failing lint, typecheck or test MUST go on the Skip
+  list. The summary MAY name the failing check in one line.
+- **Logs** the names and states of the checks SHOULD be enough.
 
-## Try to knock each finding down
+## Hand over
 
-Before a finding goes in, the agent MUST take one look for the reason it might
-be wrong: a guard in the caller, a type that excludes the case, a test that
-covers it, a config that switches it off.
+The agent MUST give the core read mode, the base and head, the Skip list, a
+project card from the repo rules of step 3, and the stack of step 2. A PR
+lower in the stack MUST be the base, so no lens flags its code.
 
-- Each finding SHOULD get one look: a file that is already open, or one search.
-- A run, a dependency's source or another repo MAY come in only as a last
-  resort, when the finding depends on it. One command on stubs, no network, no
-  writes to the repo. Its marker MUST be `(ran it)`.
-- **Knocked down**: the finding MUST be dropped.
-- **Can't tell**: the agent MUST keep it, marked as unproven.
+## Sort the findings into rounds
 
-Each finding SHOULD be reasoned from the diff and the files near it, and no
-further. A finding the agent can't settle MUST stay in, marked as what it is.
-The digging SHOULD happen in the deep dive, on the findings the user picks.
+Once the core hands back, each finding MUST go to the round of its lens:
+
+| Round                        | Lenses                                                                 |
+| ---------------------------- | ---------------------------------------------------------------------- |
+| The first pass, parts 1 to 4 | bugs, simplicity, libraries, PR size, dependencies                     |
+| The second round             | architecture and fit                                                   |
+| The focused rounds           | security, speed, state, accessibility, agent instructions, the domains |
+
+- **Unproven** a finding the core kept as unproven MUST say so in its heading.
+- **Deep dive** the digging past one look SHOULD wait for the findings the
+  user picks.
+- **Clean** a changed file with no finding MUST go in the single "Clean:" line
+  under the findings table.
+- **Style** MUST NOT be flagged unless the repo asks for it in writing.

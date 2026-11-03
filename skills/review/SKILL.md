@@ -46,12 +46,13 @@ For a suspicious line, the agent MUST find what a person does to make it run,
 and what each changed file does along the way. How far to follow it:
 [references/trace-the-flow.md](references/trace-the-flow.md).
 
-## 5. Look for what matters
+## 5. Run the lenses through the reviewer core
 
-The agent MUST check six things, breakage first and style last, plus the
-duplicate check every review runs. After that it MUST run two quick checks:
-drop what a thread or a check has already raised, and try to knock down each
-finding: [references/what-to-look-for.md](references/what-to-look-for.md).
+The agent MUST load the `reviewer` skill and run it in read mode over the
+change. The core starts one subagent per lens on the strongest model. A
+domain such as legal or SEO gets a skill fetched for it. What the review hands
+the core and how the findings split into rounds:
+[references/what-to-look-for.md](references/what-to-look-for.md).
 
 ## 6. Write the report
 
@@ -74,18 +75,17 @@ The rules that cover all four parts, and what MUST NOT be added to them, live in
 [references/report-shape.md](references/report-shape.md). The agent MUST read
 it before part 1.
 
-## 7. Run the second round: architectural gaps
+## 7. Show the second round: architectural gaps
 
-The four parts MUST go on screen first. Then a further pass over the same
-change MUST ask whether the design fits the task at all and what it misses,
-before any posting:
+The four parts MUST go on screen first. Then the Architecture lens findings
+MUST follow as the second round, before any posting:
 [references/architecture-pass.md](references/architecture-pass.md).
 
-## 8. Run the focused rounds
+## 8. Show the focused rounds
 
-The agent MUST next run one round on security and one on speed. The rounds on
-state and failure, accessibility and agent instructions MUST run when the
-change touches what they cover. Which rounds run and what each one checks:
+The other lenses of step 5 MUST next go on screen, one round each: security,
+speed, state and failure, accessibility, agent instructions and the domain
+lenses. The order and the shape:
 [references/focused-passes.md](references/focused-passes.md).
 
 ## 9. Offer to post the comments and the verdict
