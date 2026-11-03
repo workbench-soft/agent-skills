@@ -54,3 +54,22 @@ PR bodies missed how to try the change and what it built on. Review comments rea
 #### Docs to update
 
 - `README.md`
+
+### 2026-11-03 Before and after diagrams, coloured by status
+
+#### Why
+
+A single diagram of the new state hid what the change moved. The person wants each diagram in a PR body, a review and the docs to show how it was and how it is, with colour on each element.
+
+#### User flows it touches
+
+- **Open a PR** each flowchart comes as a Before and After pair. Nodes are green new, amber changed, red removed, gray unchanged, and the shape gives the kind: screen, code, data store, outside service.
+- **Review** the user flow and the code flow in part 2 come as the same pairs.
+
+#### Changes
+
+- **`skills/create-pr/references/diagrams.md`** new, the pair, the four `classDef` lines, the shapes and the legend.
+- **`skills/create-pr/SKILL.md`** the template and the example draw pairs.
+- **`skills/review/references/part-2-map.md`** and **`final-checklist.md`** the same pairs in the review report.
+- **`skills/architecture/SKILL.md`** a restructure draws pairs.
+- **`feature-docs`** in `agent-skills-private` points to the same rules.

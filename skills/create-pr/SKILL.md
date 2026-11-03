@@ -102,10 +102,21 @@ helps.>
 
 ## User flow
 
+**Before**
+
 ```mermaid
 flowchart LR
-  <what the person does and sees, step by step>
+  <the flow as it was, nodes coloured by status>
 ```
+
+**After**
+
+```mermaid
+flowchart LR
+  <the flow as it is now, same node IDs>
+```
+
+Green new, amber changed, red removed, gray unchanged.
 
 ## Data changes
 
@@ -118,7 +129,7 @@ erDiagram
 
 ```mermaid
 flowchart LR
-  <what starts the write, the step that writes, the table it lands in>
+  <Before and After pair: the trigger, the step that writes, the table>
 ```
 
 ## Try it
@@ -157,7 +168,9 @@ bullet and leave the wording alone.
 ### User flow
 
 The diagram MUST trace the paths a person follows through the change. GitHub
-draws the `mermaid` block as an image.
+draws the `mermaid` block as an image. Each flowchart MUST come as a Before
+and After pair coloured by status:
+[references/diagrams.md](references/diagrams.md).
 
 - Every path the change adds or alters MUST appear. Paths it leaves alone MUST
   stay out.
@@ -417,13 +430,35 @@ file several times and then gave up, so support got about 30 tickets a week.
 
 ## User flow
 
+**Before**
+
 ```mermaid
 flowchart LR
-  A[Picks a photo] --> B{Size}
-  B -->|up to 25 MB| C[Upload starts, button disabled]
-  C --> D[Sees the photo in the list]
-  B -->|over 25 MB| E[Sees the limit and the file size]
+  A(Picks a photo):::same --> B{Size}:::changed
+  B -->|up to 5 MB| C(Upload starts):::changed
+  C --> D(Sees the photo in the list):::same
+  B -.->|over 5 MB| E(Sees "Upload failed"):::removed
+  classDef new fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#111827
+  classDef changed fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#111827
+  classDef removed fill:#fee2e2,stroke:#dc2626,stroke-width:2px,stroke-dasharray:5 3,color:#111827
+  classDef same fill:#f3f4f6,stroke:#9ca3af,color:#111827
 ```
+
+**After**
+
+```mermaid
+flowchart LR
+  A(Picks a photo):::same --> B{Size}:::changed
+  B -->|up to 25 MB| C(Upload starts, button disabled):::changed
+  C --> D(Sees the photo in the list):::same
+  B ==>|over 25 MB| E(Sees the limit and the file size):::new
+  classDef new fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#111827
+  classDef changed fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#111827
+  classDef removed fill:#fee2e2,stroke:#dc2626,stroke-width:2px,stroke-dasharray:5 3,color:#111827
+  classDef same fill:#f3f4f6,stroke:#9ca3af,color:#111827
+```
+
+Green new, amber changed, red removed, gray unchanged.
 
 ## Data changes
 
@@ -440,12 +475,32 @@ erDiagram
   }
 ```
 
+**Before**
+
 ```mermaid
 flowchart LR
-  A[Person uploads a photo] --> B[Upload API]
-  B -->|insert| T[(uploads)]
-  M[Migration] -->|"update size_bytes"| T
+  A(Person uploads a photo):::same --> B[Upload API]:::changed
+  B -->|insert| T[(uploads)]:::changed
+  classDef new fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#111827
+  classDef changed fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#111827
+  classDef removed fill:#fee2e2,stroke:#dc2626,stroke-width:2px,stroke-dasharray:5 3,color:#111827
+  classDef same fill:#f3f4f6,stroke:#9ca3af,color:#111827
 ```
+
+**After**
+
+```mermaid
+flowchart LR
+  A(Person uploads a photo):::same --> B[Upload API]:::changed
+  B -->|insert| T[(uploads)]:::changed
+  M[Migration]:::new ==>|"update size_bytes"| T
+  classDef new fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#111827
+  classDef changed fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#111827
+  classDef removed fill:#fee2e2,stroke:#dc2626,stroke-width:2px,stroke-dasharray:5 3,color:#111827
+  classDef same fill:#f3f4f6,stroke:#9ca3af,color:#111827
+```
+
+Green new, amber changed, red removed, gray unchanged.
 
 ## Sources
 
