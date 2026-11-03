@@ -11,7 +11,7 @@ The skills in `skills/` reach every agent on the machine through `install.sh`. R
 
 1. The agent MUST read `AGENTS.md` here and load `writing-style`.
 2. The skill MUST go in `skills/<name>/SKILL.md`: frontmatter, then the steps in the order the agent runs them.
-3. The `description` MUST name when the skill fires, with trigger phrases in English and Russian, and what it produces. It MUST stay under 1024 characters.
+3. The `description` MUST name when the skill fires, with trigger phrases in English and Russian, and what it produces. It MUST stay under 480 characters, since every session loads it.
 4. Detail for one branch of the work SHOULD go to `skills/<name>/references/<topic>.md`. `SKILL.md` MUST say when to read it.
 5. Work with a fixed result SHOULD go into a script beside the skill, which `SKILL.md` runs.
 

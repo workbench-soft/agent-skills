@@ -1,6 +1,6 @@
 ---
 name: ads-setup
-description: 'Use when the user asks to add ads, set up Google AdSense or AdMob, monetize a site or an Android app, add ads.txt or app-ads.txt, set up the ad consent message, add ad unit IDs or the AdMob app ID, or fill in the ads and data safety answers in Play Console, in any language: "set up ads", "подключи рекламу", "настрой AdSense", "добавь AdMob". First checks that the site and the app follow the ad network rules, chooses AdSense for the site and AdMob for a native Android app, goes through the dashboards in the browser with the user logging in, adds the publisher and unit IDs to the code with test ads in debug builds, publishes the consent message, records what is waiting on Google review, and writes TODO.md with the tasks left for the user.'
+description: 'Use when the user asks to add ads, set up AdSense or AdMob, add ads.txt or app-ads.txt, the consent message, ad unit IDs, or the Play Console ads and data safety answers, in any language: "set up ads", "подключи рекламу", "настрой AdSense", "добавь AdMob". Checks ad policy, picks AdSense for sites and AdMob for Android, goes through the dashboards with the user logged in, wires the IDs with test ads in debug, writes TODO.md.'
 ---
 
 # Set up ads for a site and an Android app

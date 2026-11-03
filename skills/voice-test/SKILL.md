@@ -1,6 +1,6 @@
 ---
 name: voice-test
-description: 'Use when someone wants to hear the text to speech voices, compare them or pick one, in any language: "play all the voices", "let me hear the voices", "test the edge-tts voices", "which voice sounds best", "послушать все голоса", "прогони тесты по голосам", "выбрать голос". Runs a script that plays each Microsoft neural voice from edge-tts on the speakers: its number and name, then numbered lines. A multilingual voice says 4: English, Russian, a mixed phrase, and the same phrase joined from Russian and English chunks the way turn-voice builds it. A voice for one language says only its own line. Plays the voices that read both languages apart from the English only and Russian only ones, and women, men and children apart inside each, caches the clips for the next run, and prints the number and the voice id of each, so the person notes the ones they like, and resumes from any number.'
+description: 'Use when someone wants to hear, compare or pick text to speech voices: "play all the voices", "test the edge-tts voices", "which voice sounds best", "послушать все голоса", "выбрать голос". A script plays each Microsoft neural voice from edge-tts with its number and name, in English, Russian and mixed lines, grouped by language and by women, men and children. Caches clips, prints each voice id and resumes from any number.'
 ---
 
 # Play every voice

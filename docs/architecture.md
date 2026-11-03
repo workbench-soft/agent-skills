@@ -81,7 +81,7 @@ flowchart LR
 ### Checks: Python scripts with no packages
 
 - **Picked** `scripts/check-skills.py` and `scripts/check-prose-budget.py`, standard library only. `mise run test` runs them with the unit tests in `tests/` (`unittest` and `node --test`, no packages) and the temp home install.
-- **Why** they check what a Markdown linter can't see: the `name` equals the folder, the description fits the 1024 characters of the Agent Skills format, links resolve, banned words stay out, and the prose stays under its cap. No record says why Python won over TypeScript.
+- **Why** they check what a Markdown linter can't see: the `name` equals the folder, the description fits the 480 character cap, under the 1024 of the Agent Skills format, since every session loads it, links resolve, banned words stay out, and the prose stays under its cap. No record says why Python won over TypeScript.
 - **Trade-off** the org stack puts scripts in TypeScript and keeps Python for libraries Node lacks, so these scripts are an exception.
 - **Rejected** markdownlint alone: it checks Markdown syntax and none of the skill rules.
 - **Cost to undo** low: two scripts and their CI steps.

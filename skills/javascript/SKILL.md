@@ -1,6 +1,6 @@
 ---
 name: javascript
-description: 'Use when JavaScript or TypeScript code is being written, sped up or reviewed, in any repository and in any language: "make it faster", "why is this page slow", "the bundle is too big", "check the async code", "ускорь код", "почему страница тормозит". It works out where the code runs, then applies the rules that cut round trips, bundle size and main thread work: independent awaits run together, request data stays out of module scope, heavy imports load on use, lookups go through a Map. In a review, every finding gives the rule, the line and its cost.'
+description: 'Use when JavaScript or TypeScript is written, sped up or reviewed: "make it faster", "why is this page slow", "the bundle is too big", "ускорь код", "почему страница тормозит". Works out where the code runs, then cuts round trips, bundle size and main thread work: parallel awaits, lazy heavy imports, Map lookups, no request data in module scope. Each review finding gives the rule, the line and its cost.'
 ---
 
 # JavaScript

@@ -1,6 +1,6 @@
 ---
 name: domain-check
-description: 'Use when someone wants a name for a business, a brand, an app or a site, or wants to know whether a name or a domain is free, in any language: "find a free domain", "suggest a name for", "is this name taken", "check the domain", "check the trade mark", "придумай название", "проверь свободен ли домен", "проверь имя в реестре". Suggests names for the topic, then checks them in batches with a script: .com, .com.au and .au domains, the Australian Business Register for company, business and trading names, and the IP Australia trade mark register. Answers with a table of free, risky and taken names, and the names it would pick with the reason.'
+description: 'Use when someone wants a name for a business, brand, app or site, or to know if a name or domain is free: "find a free domain", "is this name taken", "check the trade mark", "придумай название", "проверь свободен ли домен". Suggests names, then a script checks .com, .com.au and .au, the Australian Business Register and IP Australia trade marks. Answers with a table of free, risky and taken names and its picks.'
 ---
 
 # Find a free name and check it

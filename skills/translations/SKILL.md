@@ -1,6 +1,6 @@
 ---
 name: translations
-description: 'Use in any repository before adding or changing any text a person sees in an app, a site or a tool: a label, a button, an alert, an error, a notification, a permission prompt, a store listing, an email. Also on "translate", "add a language", "check the translations", "переведи", "добавь перевод", "проверь переводы". Each string goes through the repo''s i18n and reaches every language the app ships in the same change, in the tone each catalog uses. English text from native code, a server or a library gets mapped to a translated key. A test keeps the catalogs on the same keys, and a search finds hard-coded text before the commit.'
+description: 'Use before adding or changing any text a person sees in an app, site or tool: labels, buttons, errors, notifications, store listings, emails. Also on "translate", "add a language", "check the translations", "переведи", "добавь перевод". Each string goes through the repo''s i18n into every shipped language in the same change, in each catalog''s tone. Native and server text maps to keys. A test keeps the catalogs in sync.'
 ---
 
 # Every string in every language

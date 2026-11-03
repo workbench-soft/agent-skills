@@ -1,6 +1,6 @@
 ---
 name: reddit-comments
-description: 'Use when someone wants Reddit threads to answer about their repo, product or workflow, a draft comment for each, and the comment typed into the browser so they only press Post, in any language: "find threads to comment on", "what should I answer on reddit", "draft reddit comments", "prefill the comment", "найди треды на реддите", "подготовь комменты", "открой тред и вставь текст". Reads the repo for its practices, pulls the hot threads of the chosen subreddits through the Reddit MCP server, keeps the threads a practice answers, writes a short comment in a human voice for each, then runs a Playwright script that opens each thread in Chrome and types the draft into the comment box. The person reads it and presses Comment.'
+description: 'Use when someone wants Reddit threads to answer about their repo or product, with a draft comment for each: "find threads to comment on", "draft reddit comments", "найди треды на реддите", "подготовь комменты". Reads the repo for its practices, pulls hot threads through the Reddit MCP, keeps the ones a practice answers, writes a short human comment and types it into Chrome with Playwright. The person reads it and presses Comment.'
 ---
 
 # Reddit comments the person only has to post

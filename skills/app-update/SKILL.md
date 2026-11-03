@@ -1,6 +1,6 @@
 ---
 name: app-update
-description: 'Use when someone wants in-app updates added, fixed or checked for an app that gets installed outside a store, such as an APK from GitHub releases, a sideloaded Android build or a desktop installer. Triggers: "add auto update", "check for updates button", "update from GitHub releases", "show the download progress", "добавь автообновление", "кнопка проверить обновления". Adds a check at launch and whenever the app returns to the front, a Check for updates button in Settings that reports checking, found or up to date, and a download in the header with percent, megabytes, a progress bar and a cancel button. Sends a system notification once the update is ready or when no newer version exists. Leaves all of it out of the Google Play build so Play review passes, verifies the built bundle for it, then tests on the device.'
+description: 'Use when an app installed outside a store (APK from GitHub releases, sideloaded build, desktop installer) needs in-app updates added, fixed or checked: "add auto update", "check for updates button", "добавь автообновление". Adds a check at launch and on resume, a Settings button, a download bar with progress and cancel, and a notification. Keeps it all out of the Google Play build, checks the bundle, tests on the device.'
 ---
 
 # Add in-app updates

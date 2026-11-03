@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **Skills** each description fits 480 characters, down from 1024, since every session loads them: the triggers in English and Russian and the result stay, the long lists go.
 - **reviewer** a new core that **review** and **app-audit** both load. It starts one subagent per lens on the strongest model, fetches a skill from skills.sh for a domain lens such as legal or SEO, and adds two lenses: PR size, and free maintained libraries over hand-written code.
 - **one-pager** a new skill: a spec, a design doc or a write-up gets the full text first, then a one-pager on top that fits one screen. **specs** writes each spec this way.
 - **create-pr** and **review** draw each diagram as a Before and After pair, with nodes coloured green new, amber changed, red removed, gray unchanged, and **architecture** does the same for a restructure.

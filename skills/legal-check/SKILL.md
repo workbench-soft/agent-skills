@@ -1,6 +1,6 @@
 ---
 name: legal-check
-description: 'Use when someone wants the legal risks of an app, a site, a repo or an idea checked, in any language: "check the legal risks", "is this legal", "can I ship this", "license check", "do I need a privacy policy", "trade mark risk", "проверь юридические риски", "можно ли это выпускать", "проверь лицензии". Runs a script over the repo for dependency licenses, data SDKs, sensitive permissions and missing legal pages, then walks each risk area: the name and trade marks, licenses and assets, privacy and consent, store and ad policy, and whether the feature is lawful in each market. Writes docs/legal-risks.md with a row per risk, its proof, its severity and the fix, fixes the safe ones in a PR and puts the rest in TODO.md.'
+description: 'Use when someone wants the legal risks of an app, site, repo or idea checked: "is this legal", "license check", "do I need a privacy policy", "trade mark risk", "проверь юридические риски", "проверь лицензии". A script scans licenses, data SDKs, permissions and missing legal pages, then each risk area gets walked: name, assets, privacy, store and ad policy, markets. Writes docs/legal-risks.md, fixes the safe ones in a PR, the rest goes to TODO.md.'
 ---
 
 # Check the legal risks of an app

@@ -1,6 +1,6 @@
 ---
 name: mise
-description: 'Use before running any shell command in a repository, in any language: tests, builds, linters, a dev server, a script, a one-off CLI through npx, uvx or pipx, installing, pinning or upgrading a tool, checking a version. Also on "run it through mise", "install node", "add a tool", "pin the version", "запусти через mise", "поставь инструмент". Each command mise can run goes through it: a mise task with `mise run`, any other command with `mise x --` so the pinned versions and env apply, a new tool with `mise use` in place of brew, winget, npm -g or a version manager. Produces the command run the mise way, and the pin in mise.toml for each tool added.'
+description: 'Use before running any shell command in a repo: tests, builds, linters, dev servers, scripts, one-off CLIs via npx, uvx or pipx, installing or pinning a tool. Also on "run it through mise", "install node", "pin the version", "поставь инструмент". Runs tasks with `mise run`, other commands with `mise x --` so pinned versions and env apply, and adds tools with `mise use` instead of brew, winget or npm -g.'
 ---
 
 # Commands through mise

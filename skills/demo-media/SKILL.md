@@ -1,6 +1,6 @@
 ---
 name: demo-media
-description: 'Use when someone wants screenshots, a screen recording, a demo video or a GIF of the repo''s app, or wants them in the README, in any language: "take screenshots for the README", "record a demo video", "make a demo of the app", "run it on the phone and record it", "сними скриншоты", "запиши видео для демо", "добавь скрины в ридми". Reads the repo for its main flows, writes made-up demo data that looks like real use, runs the app on the web, the desktop, an emulator or a phone over adb, and captures each screen and a short video. Checks every frame for real people, faces, emails, tokens and private files, and retakes the bad ones. Saves the media in docs/screenshots/ with a GIF for each video, adds a Screenshots section to the README, and leaves demo/shots.json so the next run takes the same shots.'
+description: 'Use when someone wants screenshots, a screen recording, a demo video or a GIF of the app, or media in the README: "take screenshots for the README", "record a demo video", "сними скриншоты", "запиши видео для демо". Writes made-up demo data, runs the app on web, desktop, emulator or phone, captures each screen, checks frames for private data, saves to docs/screenshots/ and leaves demo/shots.json for the next run.'
 ---
 
 # Demo screenshots and videos

@@ -1,6 +1,6 @@
 ---
 name: create-pr
-description: "Use in any repository when the user asks to open, create, raise or update a pull request, write a PR description, or fill in a PR body. Writes a PR description in under 20 lines of prose, in bullets anyone can scan: the problem, the solution, links to the related PRs it builds on or goes with in this or another repo, a mermaid diagram of the user flows, the table changes with a relations diagram and a data flow diagram when the database changes, the input and output to expect from any new command, links to the designs and docs the work used, then the repo code it reuses, the packages picked or rejected, and the exact commands that generated or rewrote code. Then creates or updates the PR with gh."
+description: 'Use when the user asks to open, create or update a pull request or write its description, in any repository: "open a PR", "write the PR body", "сделай PR". Writes a scannable body under 20 lines: problem, solution, related PRs, a mermaid diagram of user flows, data changes with diagrams, new command input and output, reused code, packages picked and generator commands. Then creates or updates the PR with gh.'
 ---
 
 # Create a pull request

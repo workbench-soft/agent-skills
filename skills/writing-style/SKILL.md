@@ -1,6 +1,6 @@
 ---
 name: writing-style
-description: 'Use in any repository before writing or editing any text a human will read: chat answers, code comments, commit messages, PR titles and bodies, review comments, README and docs, wiki pages, tickets and comments, changesets and release notes, error messages, UI copy, chat messages. Also use, in any language, when asked to make text sound human, cut the AI tone, tighten wording, or check something already written: "make this sound human", "say it shorter", "clean this up". Rules: plain words, answer first, one idea per sentence, bullets over paragraphs with the point in bold, no em dash, no "never", no "nothing", no "not X but Y", no AI filler, then a final cut-every-spare-word pass.'
+description: 'Use before writing or editing any text a human reads: chat answers, comments, commit messages, PRs, reviews, docs, tickets, release notes, errors, UI copy. Also when asked to make text sound human or shorter: "cut the AI tone", "say it shorter", "сделай текст человечнее". Rules: plain words, answer first, one idea per sentence, bullets with the point in bold, no em dash, no "never" or "nothing", no AI filler, then a final cut pass.'
 ---
 
 # How to write
