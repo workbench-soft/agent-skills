@@ -23,8 +23,9 @@ goes out:
   install or suite.
 - The summary MUST say what was wrong and what happens now, free of code words.
   The table comes before the findings, each row matching one below.
-- Part 2 MUST hold a user flow and a code flow in `mermaid` blocks, each with an
-  `Open the diagram` link. Each code node says what its file does.
+- Part 2 MUST hold a user flow and a code flow, each a Before and After pair
+  of `mermaid` blocks coloured by status, each block with an `Open the
+  diagram` link. Each code node says what its file does.
 - Each finding MUST hold a line link, the flow, the real output with its
   evidence marker in brackets, the fix. No finding stands on "could" alone.
 - The four parts MUST reach the screen before the later rounds, and each round
