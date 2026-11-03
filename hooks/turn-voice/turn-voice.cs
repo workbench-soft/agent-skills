@@ -170,7 +170,8 @@ static class TurnVoice {
             using (var r = new StreamReader(f, Encoding.UTF8))
                 while ((line = r.ReadLine()) != null)
                     if (line.IndexOf("\"customTitle\"", StringComparison.Ordinal) >= 0) title = Field(line, "customTitle") ?? title;
-            return title == null ? null : title.Replace("\"", "").Trim();
+            // Emoji such as the ✅ marker prefix get read out by name, so they go before speech.
+            return title == null ? null : Regex.Replace(title.Replace("\"", ""), @"[\p{So}\p{Cs}︎️‍⃣]", "").Trim();
         } catch { return null; }
     }
 
