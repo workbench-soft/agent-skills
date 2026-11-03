@@ -1,6 +1,6 @@
 ---
 name: monorepo
-description: 'Use when creating, setting up, merging into, restructuring or reviewing a monorepo that holds web apps, mobile apps, backend services or shared packages, in any repository and in any language: "set up a monorepo", "put the app and the API in one repo", "add the mobile app to the monorepo", "merge these repos", "set up pnpm workspaces, Nx or Turborepo", "share types between web, mobile and backend", "сделай монорепо", "перенеси репозитории в монорепо", "добавь мобилку и бекенд в монорепо". Picks the task runner and one native workspace per language, lays out apps, services and packages, shares one API contract with generated clients, pins every tool version, sets up Expo or native mobile and the backend with Docker, and gives CI affected runs, a remote cache and a deploy per app. Scaffolds the skeleton, checks a generated app of each kind passes lint, types, tests and build, and writes the setup into docs/architecture.md and AGENTS.md.'
+description: 'Use when creating, merging into or restructuring a monorepo of web, mobile, backend or shared packages: "set up a monorepo", "merge these repos", "set up pnpm workspaces, Nx or Turborepo", "сделай монорепо", "добавь мобилку и бекенд в монорепо". Picks the task runner and workspaces, lays out apps and packages, shares one API contract, pins tools, sets up Expo and Docker, gives CI affected runs and a cache, and checks a generated app of each kind builds.'
 ---
 
 # Monorepo

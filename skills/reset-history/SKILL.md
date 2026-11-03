@@ -1,6 +1,6 @@
 ---
 name: reset-history
-description: 'Use when the user asks to fully reset, wipe or squash the git history of a repo and start over with one fresh initial commit, in any language: "reset the history", "squash everything into one commit", "make a fresh initial commit", "wipe the git history", "start the repo from scratch", "сбрось историю", "сделай один начальный коммит", "удали историю коммитов". Lists the branches, tags, releases, open PRs and branch rules the reset touches, saves a bundle of the old history outside the repo, builds one commit from the current tree of the default branch and checks the files match, asks once, force pushes with a lease, puts the branch rules back, cleans up old branches and tags, resets the local checkout, and writes TODO.md with the clones, forks and secrets a person still has to handle.'
+description: 'Use when the user asks to wipe or squash the whole git history into one fresh initial commit: "reset the history", "squash everything into one commit", "сбрось историю", "сделай один начальный коммит". Lists the branches, tags, releases, PRs and rules it touches, saves a bundle, builds one commit from the default branch and checks the files match, asks once, force pushes with a lease, restores branch rules, writes TODO.md for clones and forks.'
 ---
 
 # Reset a repo's history to one fresh commit

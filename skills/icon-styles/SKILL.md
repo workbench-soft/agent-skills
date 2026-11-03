@@ -1,6 +1,6 @@
 ---
 name: icon-styles
-description: 'Use when someone wants an icon, a logo mark or an app icon for the repo, or wants to see icon options in different styles, in any language: "draw an icon", "make an app icon", "design a logo for the app", "show me icons in different styles", "придумай иконку", "нарисуй иконки в разных стилях", "сделай иконку для приложения". Reads the repo to learn what the app does, picks 10 visual styles that fit its theme, such as neon, steampunk, pixel art or blueprint, and draws one SVG per style by hand that still reads at 16 px. Sends a picture of all 10 into the session, then a picker in the chat or a small local page, with each icon at 16, 32 and 96 px or more on light and dark. The person clicks one and presses Use, or asks for a redo with a comment. Then a script turns the pick into the PNG sizes, a multi size .ico for Windows and the Android, iOS, Expo and PWA sets, wires them into the repo, and commits them with all 10 drafts kept in design/icons.'
+description: 'Use when someone wants an icon, a logo mark or an app icon, or icon options in different styles: "make an app icon", "design a logo", "придумай иконку", "нарисуй иконки в разных стилях". Draws 10 SVGs in styles that fit the app, readable at 16 px, and shows a picker on light and dark. The person picks one or asks for a redo. A script then makes the PNG sizes, the .ico and the Android, iOS, Expo and PWA sets and wires them in.'
 ---
 
 # Draw 10 icons, pick one

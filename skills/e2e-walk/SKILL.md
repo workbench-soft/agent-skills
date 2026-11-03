@@ -1,6 +1,6 @@
 ---
 name: e2e-walk
-description: 'Use when someone wants an agent to test the app of the repo end to end, by hand the way a user would, in any language: "walk through the main flows", "e2e test the release", "install the release and click through it", "smoke test the app", "пройдись по основным сценариям", "прогони e2e", "протестируй релиз". Installs the newest release on an emulator or the phone over adb, opens the live web build, or runs the desktop installer. Walks each main flow from the docs with taps and typing and checks each screen. Deletes no data, even where a button allows it: each control that deletes, clears, resets, signs out or sends gets skipped, and each confirm dialog gets cancelled. Leaves the flow list in e2e/flows.json for the next run, reports pass or fail per flow with screenshots, and writes each bug to TODO.md.'
+description: 'Use when someone wants the app tested end to end by hand, the way a user would: "walk through the main flows", "smoke test the release", "пройдись по основным сценариям", "протестируй релиз". Installs the newest release on an emulator or phone, or opens the web build or desktop installer, and walks each flow from the docs. Skips every delete, reset, sign-out and send. Reports pass or fail per flow with screenshots, keeps e2e/flows.json, bugs go to TODO.md.'
 ---
 
 # End to end walk of a release

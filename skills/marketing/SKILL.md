@@ -1,6 +1,6 @@
 ---
 name: marketing
-description: 'Use when the user asks to market or promote a site or an app, get the first users, write a marketing plan, post on Reddit, Hacker News, Product Hunt or forums, register on forums, pitch journalists or creators, plan a promotion budget, or make money from a side project, in any language: "do the marketing", "promote the app", "get users", "сделай маркетинг", "продвинь сайт", "запости на реддит". Starts with the budget, total or per year, shows what that sum buys and what a larger one would add, then writes the message and a launch calendar, gets the product ready for visitors, signs up on the chosen sites in the browser with the user logging in, posts and replies to comments, contacts journalists and creators, leaves a plan file for the next run, and writes TODO.md with the tasks left for the user.'
+description: 'Use when the user asks to market or promote a site or app, get first users, post on Reddit, Hacker News or Product Hunt, pitch journalists, or plan a promotion budget: "promote the app", "get users", "сделай маркетинг", "запости на реддит". Starts from the budget, writes the message and a launch calendar, signs up and posts in the browser with the user logged in, replies to comments, leaves a plan file and TODO.md.'
 ---
 
 # Market a site or an app

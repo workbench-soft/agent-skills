@@ -1,6 +1,6 @@
 ---
 name: implement-ticket
-description: 'Use when there is a ticket to do, implement, fix, pick up or work on, in any repository and in any language: "do PROJ-123", "implement this ticket", "pick up EX-42", "сделай тикет", a Jira link plus "do it". It reads the ticket and writes the plan to specs/ in a fresh worktree off the latest main or master. Then it makes the smallest change that does what the ticket asks, in clean code split into modules, and updates the README, architecture, user flow and features docs. Each step is its own commit with the ticket key, per the repo rules. It opens a PR through the create-pr skill and moves the ticket to In Review.'
+description: 'Use when there is a ticket to do or pick up, in any language: "do PROJ-123", "implement this ticket", "сделай тикет", a Jira link plus "do it". Reads the ticket, writes the plan to specs/ in a fresh worktree, makes the smallest clean change, updates the docs, commits each step with the ticket key, opens a PR through create-pr and moves the ticket to In Review.'
 ---
 
 # Implement a ticket

@@ -9,7 +9,7 @@ import sys
 from pathlib import Path
 
 # The Agent Skills spec caps a description here. A stricter agent cuts it.
-DESCRIPTION_LIMIT = 1024
+DESCRIPTION_LIMIT = 480
 LINK = re.compile(r"\]\(([^)\s]+)\)")
 REFERENCE = re.compile(r"`(references/[^`\s]+\.md)`")
 # A fence may sit indented inside a list item.

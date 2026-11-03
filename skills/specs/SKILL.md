@@ -1,6 +1,6 @@
 ---
 name: specs
-description: 'Use before the first edit of any change to a repo, in any repository and in any language: a new feature, a change to a feature, a follow-up tweak in the same session, a refactor, a bug fix. Also on "write a spec", "plan this feature", "update the spec", "напиши спеку", "допиши спеку", "спланируй фичу". It decides whether the change needs a spec: a feature or a change to one does, a bug fix does not unless it reworks the design, the data or several modules. It keeps one file per feature, specs/<feature>.md, finds the one that covers the work and adds a dated entry to it, or creates it for a new feature. The spec lands in the first commit, before the code, and stays true as the work goes on.'
+description: 'Use before the first edit of any change: a feature, a follow-up tweak, a refactor, a bug fix. Also on "write a spec", "plan this feature", "напиши спеку", "спланируй фичу". Decides whether a spec is needed: features yes, bug fixes only when they rework design, data or several modules. Keeps one specs/<feature>.md per feature, adds a dated entry or creates the file, and lands it in the first commit before the code.'
 ---
 
 # Specs, one per feature

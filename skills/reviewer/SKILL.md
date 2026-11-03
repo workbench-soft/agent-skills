@@ -1,6 +1,6 @@
 ---
 name: reviewer
-description: 'The reviewer core that the review and app-audit skills load at their lens step. Use when one of them sends you here, or on "run the reviewer lenses", "review by aspects", "запусти ревьюера по аспектам". It picks the lenses for a diff or a whole repo, loads an installed or downloaded skill for a domain lens such as legal or SEO, starts one subagent per lens on the strongest model, and hands back proven findings with the file, the line, the proof and the fix. Its lenses include PR size and free maintained libraries over hand-written code.'
+description: 'The reviewer core that review and app-audit load at their lens step. Use when one of them sends you here, or on "run the reviewer lenses", "запусти ревьюера по аспектам". Picks the lenses for a diff or a repo, loads a skill for domain lenses such as legal or SEO, starts one subagent per lens and returns proven findings with file, line, proof and fix. Lenses include PR size and libraries over hand-written code.'
 ---
 
 # Reviewer core

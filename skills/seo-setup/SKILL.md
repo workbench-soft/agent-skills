@@ -1,6 +1,6 @@
 ---
 name: seo-setup
-description: 'Use when the user asks to set up SEO, get a site found in search, register it in Google Search Console or Bing Webmaster Tools, add Cloudflare Web Analytics, write a sitemap or robots.txt, add meta tags or structured data, write content that ranks, or make a site ready for AdSense review, in any language: "set up SEO", "get the site indexed", "настрой SEO", "зарегай сайт в гугле". Works out where the domain and DNS sit, Cloudflare first, checks the live site and the repo against a search and ad-review list, fixes what is missing in code, then goes through the dashboards in the browser with the user logging in, records what is registered where, and writes TODO.md with the tasks left for the user.'
+description: 'Use when the user asks to set up SEO, get a site indexed, register it in Search Console or Bing, add Cloudflare Web Analytics, a sitemap, robots.txt, meta tags or structured data, or prepare for AdSense review: "set up SEO", "настрой SEO", "зарегай сайт в гугле". Finds where DNS sits, checks the live site and repo against a list, fixes the code, goes through the dashboards with the user logged in, writes TODO.md.'
 ---
 
 # Set up search for a site

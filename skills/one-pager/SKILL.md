@@ -1,6 +1,6 @@
 ---
 name: one-pager
-description: 'Use in any repository and in any language before writing a text that describes something: a spec, a design doc, an architecture doc, a plan, a proposal, a research or audit write-up, an RFC. Also on "write a one-pager", "make a summary of the doc", "describe it in detail", "distill this", "сделай ван пейджер", "сделай выжимку", "опиши подробно", "распиши детально". The agent writes the full text first, with every fact, decision, number and open question, then distills a one-pager from it and puts it at the top of the same file under ## One-pager. The one-pager fits one screen, adds no fact of its own and changes with the full text in the same commit, so the doc reads in a minute and keeps its meaning.'
+description: 'Use before writing a text that describes something: a spec, design doc, plan, proposal, RFC or audit write-up. Also on "write a one-pager", "distill this", "сделай ван пейджер", "сделай выжимку", "опиши подробно". Writes the full text with every fact and open question first, then puts a one-screen distillation at the top under ## One-pager that adds no facts and changes with the text in the same commit.'
 ---
 
 # Full text first, then a one-pager

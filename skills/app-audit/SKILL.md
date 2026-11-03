@@ -1,6 +1,6 @@
 ---
 name: app-audit
-description: 'Use when the request covers a whole app, site or repo to audit, review or improve, as opposed to a single pull request, in any language: "what can be improved", "audit the app", "review the codebase from different angles", "find what to improve and fix it", "проверь приложение", "что можно улучшить", "прогони агентов по разным критериям". Through the reviewer core it starts one subagent per lens on the strongest model, each in its own worktree: bugs, security, architecture, libraries, performance, UX and more, plus domain lenses such as legal or SEO on a fetched skill. Each lens agent proves its findings and commits the safe fixes. The main agent checks and cherry-picks each commit as its report lands, verifies the build and the running app, has a fresh reviewer read the diff, merges the PR and writes TODO.md with what it left.'
+description: 'Use for an audit of a whole app, site or repo rather than one PR, in any language: "audit the app", "what can be improved", "review the codebase from different angles", "проверь приложение", "что можно улучшить". Starts one subagent per lens (bugs, security, architecture, libraries, performance, UX, legal, SEO) in its own worktree. Each proves findings and commits safe fixes. The main agent cherry-picks, verifies, merges the PR and writes TODO.md.'
 ---
 
 # Audit an app and fix what is worth fixing

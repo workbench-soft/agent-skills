@@ -1,6 +1,6 @@
 ---
 name: address-comments
-description: 'Use in any repository and in any language when the user asks to address, fix, resolve, handle or go through the review comments on a pull request: "address the comments", "fix the PR feedback", "handle the review", "go through the threads", a PR link plus "comments". Each review thread gets one small commit with the least new code that does the job, then a reply in that thread with the commit SHA and one sentence on the fix, and the PR description gets updated when a fix changes what the PR does.'
+description: 'Use when the user asks to address, fix or resolve the review comments on a pull request, in any language: "address the comments", "fix the PR feedback", a PR link plus "comments", "поправь по комментам". Each thread gets one small commit and a reply with its SHA and one sentence on the fix. The PR description gets updated when a fix changes what the PR does.'
 ---
 
 # Address review comments on a pull request

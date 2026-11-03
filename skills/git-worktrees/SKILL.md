@@ -1,6 +1,6 @@
 ---
 name: git-worktrees
-description: 'Use when a piece of work needs a checkout of its own, and again once that work is finished, in any repository and in any language: "make a worktree", "work in a separate folder", "clean up the worktrees", "remove the branch", "сделай ворктри", "удали ворктри". implement-ticket, app-audit, review and the ship rule call it too. It creates a worktree beside the main repo folder off the latest default branch and gives it the local files, trust and dependencies it needs to run. When the PR merges or the work is dropped, it removes the worktree, its folder and its branch, local and remote. On the way it sweeps the other finished worktrees of the repo.'
+description: 'Use when work needs its own checkout, and again once it is finished: "make a worktree", "clean up the worktrees", "remove the branch", "сделай ворктри", "удали ворктри". Ship, implement-ticket, app-audit and review call it. Creates a worktree beside the repo off the latest default branch with its local files, trust and dependencies. After the merge removes the worktree, folder and branch, local and remote, and sweeps other finished ones.'
 ---
 
 # Git worktrees

@@ -1,6 +1,6 @@
 ---
 name: launch
-description: 'Use when the user asks to launch a site or an app end to end, get it found and earning, or do search, ads and Google Play in one go, in any language: "launch the site", "take it live", "set up SEO, ads and Play", "запусти сайт и приложение", "сделай SEO, рекламу и гугл плей". Reads the project, locates the site, the domain and any Android app, asks a single time for the facts each step needs, then runs the seo-setup, ads-setup and play-release skills in the right order, carries forward what is waiting on Google review, writes TODO.md with the tasks left for the user, and finishes with a single table of each service, its state and the next step.'
+description: 'Use when the user asks to launch a site or app end to end, or do search, ads and Google Play in one go: "launch the site", "take it live", "запусти сайт и приложение", "сделай SEO, рекламу и гугл плей". Asks once for the facts, runs seo-setup, ads-setup and play-release in order, tracks what waits on Google review, writes TODO.md and ends with a table of each service, its state and next step.'
 ---
 
 # Launch a site and its Android app

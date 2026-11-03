@@ -1,6 +1,6 @@
 ---
 name: architecture
-description: 'Use when the architecture of an app, a monorepo or a web platform needs designing, restructuring or reviewing, in any repository and in any language: "design the architecture", "where does this package go", "split it into micro frontends", "add a shell", "which layer does this go in", "спроектируй архитектуру", "как разложить пакеты". Setting up the monorepo itself, its tools and its configs, goes to the monorepo skill. Chooses the smallest shape the teams need: one app, a monorepo with packages, or micro frontends behind a shell and the edge. Stacks packages in layers that import downward, gives every shared page resource one owning package, keeps data in query option factories, and makes each rule a generator, a lint rule or a CI check. Writes docs/architecture.md with the diagrams and the decisions, then scaffolds the skeleton.'
+description: 'Use when the architecture of an app, monorepo or web platform needs designing, restructuring or reviewing, in any language: "design the architecture", "where does this package go", "split into micro frontends", "спроектируй архитектуру", "как разложить пакеты". Monorepo tooling goes to the monorepo skill. Picks the smallest shape, layers packages that import downward, enforces rules with lint or CI, writes docs/architecture.md and scaffolds the skeleton.'
 ---
 
 # Architecture

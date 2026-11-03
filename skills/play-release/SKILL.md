@@ -1,6 +1,6 @@
 ---
 name: play-release
-description: 'Use when the user asks to publish an Android app on Google Play, upload an app bundle, set up internal testing, add testers, make an upload key, sign an AAB, wrap a PWA as a Trusted Web Activity with Bubblewrap, fix assetlinks.json, or upload to Play from CI, in any language: "put the app on Google Play", "send it to internal testing", "выложи в гугл плей", "залей на интернал тест". Locates the Android project or proposes a TWA for a PWA, finds or creates the upload key and keeps it outside the repo, builds a signed AAB with a higher version code, goes through Play Console in the browser with the user logging in, creates the app, uploads the bundle, rolls it out to internal testing, returns the tester link, and writes TODO.md with the tasks left for the user.'
+description: 'Use when the user asks to publish an Android app on Google Play, upload an AAB, set up internal testing or testers, make an upload key, wrap a PWA with Bubblewrap, fix assetlinks.json, or upload from CI: "put the app on Google Play", "выложи в гугл плей", "залей на интернал тест". Builds a signed AAB with a new version code, keeps the key outside the repo, rolls out to internal testing, returns the tester link, writes TODO.md.'
 ---
 
 # Release an Android app to Google Play internal testing

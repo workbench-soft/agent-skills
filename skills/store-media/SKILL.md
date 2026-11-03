@@ -1,6 +1,6 @@
 ---
 name: store-media
-description: 'Use when someone wants the screenshots, the video, the feature graphic or the icon of an app updated in Google Play, AdMob, AdSense, the app''s site or any other place the app shows, in any language: "upload the screenshots to Google Play", "update the store listing graphics", "change the icon everywhere", "put the demo video on the store page", "залей скрины в гугл плей", "обнови иконку везде", "обнови графику в сторе". Takes the media from docs/screenshots/ and the icon from design/icons/, makes the sizes each place takes, then goes through Play Console, AdMob and AdSense in the browser with the person logged in. Uploads the store graphics, links the promo video, checks that AdMob and AdSense read the new icon and site, swaps the icon in the repo, the site, the GitHub preview and each installer, asks before any send for review, and ends with a table of each place and its state.'
+description: 'Use when the screenshots, video, feature graphic or icon of an app need updating in Google Play, AdMob, AdSense, the site or elsewhere: "upload the screenshots to Google Play", "change the icon everywhere", "залей скрины в гугл плей", "обнови иконку везде". Takes media from docs/screenshots/ and design/icons/, makes each size, uploads in the browser with the person logged in, asks before sending for review, ends with a table of places and states.'
 ---
 
 # Store media and the icon in every place
