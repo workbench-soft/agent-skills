@@ -5,8 +5,7 @@ the product that makes the line run? Usually the diff and the files already
 open answer it, and a single step up to the caller covers the rest. Still
 unclear after that step, the agent MUST say so in the finding and go on. A path
 MUST NOT be made up, and callers MUST NOT be followed past the first relevant
-one. Library code and other repos SHOULD stay shut, except for the last resort
-in [what-to-look-for.md](what-to-look-for.md).
+one. Library code and other repos SHOULD stay shut.
 
 The agent MUST build the map while reading: what the person does, which changed
 file runs next, what it does to the data, and what that changes on screen. That

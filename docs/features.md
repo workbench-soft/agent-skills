@@ -12,9 +12,9 @@ Spec: [writing-only-rules](../specs/writing-only-rules.md), [agent-doc-keywords]
 ## Code work
 
 - **What it gives** skills to do a ticket, open a PR, answer review threads, review a PR and audit a whole app.
-- **Skills** `implement-ticket`, `create-pr`, `address-comments`, `review`, `app-audit`, `specs`, `git-worktrees`, `reset-history`, `translations`.
+- **Skills** `implement-ticket`, `create-pr`, `address-comments`, `review`, `app-audit`, `reviewer`, `specs`, `git-worktrees`, `reset-history`, `translations`.
 
-Spec: [review-skill](../specs/review-skill.md), [create-pr-skill](../specs/create-pr-skill.md), [address-comments-and-implement-ticket](../specs/address-comments-and-implement-ticket.md), [app-audit](../specs/app-audit.md), [javascript-skill](../specs/javascript-skill.md), [git-worktrees-skill](../specs/git-worktrees-skill.md), [mise-skill](../specs/mise-skill.md), [specs-skill](../specs/specs-skill.md), [app-update-skill](../specs/app-update-skill.md), [reset-history-skill](../specs/reset-history-skill.md), [translations-skill](../specs/translations-skill.md).
+Spec: [review-skill](../specs/review-skill.md), [create-pr-skill](../specs/create-pr-skill.md), [address-comments-and-implement-ticket](../specs/address-comments-and-implement-ticket.md), [app-audit](../specs/app-audit.md), [reviewer-core](../specs/reviewer-core.md), [javascript-skill](../specs/javascript-skill.md), [git-worktrees-skill](../specs/git-worktrees-skill.md), [mise-skill](../specs/mise-skill.md), [specs-skill](../specs/specs-skill.md), [app-update-skill](../specs/app-update-skill.md), [reset-history-skill](../specs/reset-history-skill.md), [translations-skill](../specs/translations-skill.md).
 
 ## Project setup
 

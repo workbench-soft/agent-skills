@@ -1,6 +1,6 @@
 ---
 name: app-audit
-description: 'Use when the request covers a whole app, site or repo to audit, review or improve, as opposed to a single pull request, in any language: "what can be improved", "audit the app", "review the codebase from different angles", "find what to improve and fix it", "run agents on different criteria", "проверь приложение", "что можно улучшить", "прогони агентов по разным критериям". It maps the repo and starts one subagent per lens in its own worktree, all in parallel (bugs, security, architecture, simplicity, dependencies, performance, UX, reliability, platform). Each lens agent proves its findings, fixes the safe ones with a commit each and reports. The main agent checks each commit as its report lands and cherry-picks it onto the audit branch, while slower lenses still run. Proof comes from the checks, a build and the running app, and a fresh reviewer reads the diff the run made. Then it opens a PR through create-pr, merges it when CI is green, and writes TODO.md with what it left and the reason.'
+description: 'Use when the request covers a whole app, site or repo to audit, review or improve, as opposed to a single pull request, in any language: "what can be improved", "audit the app", "review the codebase from different angles", "find what to improve and fix it", "проверь приложение", "что можно улучшить", "прогони агентов по разным критериям". Through the reviewer core it starts one subagent per lens on the strongest model, each in its own worktree: bugs, security, architecture, libraries, performance, UX and more, plus domain lenses such as legal or SEO on a fetched skill. Each lens agent proves its findings and commits the safe fixes. The main agent checks and cherry-picks each commit as its report lands, verifies the build and the running app, has a fresh reviewer read the diff, merges the PR and writes TODO.md with what it left.'
 ---
 
 # Audit an app and fix what is worth fixing
@@ -51,27 +51,16 @@ it SHOULD stay within 15 lines:
 
 ## 2. Pick the lenses
 
-Each lens MUST run when its row says so:
-
-| Lens                                | Runs when                                               |
-| ----------------------------------- | ------------------------------------------------------- |
-| Bugs and edge cases                 | always                                                  |
-| Security, privacy and licences      | always                                                  |
-| Architecture and data formats       | always                                                  |
-| Simplicity, duplication and tests   | always                                                  |
-| Dependencies, tooling and CI        | always                                                  |
-| Performance and cost                | the repo has code that runs                             |
-| UX, accessibility and copy          | a person uses a screen of it                            |
-| Reliability, offline and monitoring | network calls, background work, jobs or a data pipeline |
-| Platform and store                  | a mobile or desktop app, native code, a store listing   |
+The agent MUST load the `reviewer` skill and pick the lenses with its step 2
+in fix mode. A domain lens such as legal or SEO gets its skill through the
+core, installed or fetched.
 
 - **User picked a focus** only the lenses or focus the user named MUST run,
   with Bugs added.
-- **Small repo** below 2,000 lines of code, lenses MAY run in pairs, two to a
-  reviewer.
 - **Skipped lens** it MUST get a single line in the chat with the reason.
-- **Out of scope** search, ads and marketing MUST be left to the `seo-setup`,
-  `ads-setup` and `marketing` skills. The report MAY name one of them.
+- **Setup work** adding ads, search setup or marketing MUST be left to the
+  `ads-setup`, `seo-setup` and `marketing` skills. A domain lens only
+  reviews, and the report MAY name one of them.
 
 ## 3. Make the worktrees
 
@@ -99,23 +88,15 @@ since a pager would hang it.
 
 ## 4. Start the lens agents
 
-Before the first brief is written, [references/briefs.md](references/briefs.md)
-MUST be read.
+The agent MUST start the lens agents with steps 4 and 5 of the `reviewer`
+core: the strongest model, one subagent per lens in its own worktree, all at
+once, with the fix mode frame of its brief file.
 
-- **One subagent per lens** the agent MUST start them all together, in the
-  background, each in its own worktree. Each one reviews its lens, sorts the
-  findings and commits each fix.
-- **Model** when the user named a model, every lens agent MUST run on it.
-  Without a name, the agent's default model MUST run.
-- **Security lens** it SHOULD run on a security review agent if the agent
-  offers one that can edit files.
-- **No subagent tool** the agent MUST run the lenses itself in turn, in the
-  audit worktree, each one a fresh pass with its own brief. The commits land on
-  the audit branch, and step 5 skips the cherry-pick.
-
-Meanwhile, the main agent MUST read the code itself: the entry points, the five
-largest files and the path data takes from its source to the screen. Step 5
-relies on that.
+- **Skip list** the brief MUST carry the Leave items of `TODO.md`.
+- **Triage** the brief MUST point at the absolute path of
+  [references/triage.md](references/triage.md).
+- **No subagent tool** the lenses MUST run in turn in the audit worktree. The
+  commits land on the audit branch, and step 5 skips the cherry-pick.
 
 ## 5. Take each report as it lands
 
@@ -184,8 +165,8 @@ as a line.
 ## 7. Have a fresh reviewer read the branch
 
 Before the PR opens, a new reviewer with no context from this session MUST read
-`git diff <base>...HEAD`. The brief for it sits in
-[references/briefs.md](references/briefs.md). The agent SHOULD point it at the
+`git diff <base>...HEAD`, on the strongest model. Its brief is the fresh
+reviewer brief of the `reviewer` core. The agent SHOULD point it at the
 likeliest breaks: new async code, caches, format changes, CI conditions.
 
 - **Real findings** each one MUST be fixed and checked like the rest, in a new
@@ -196,6 +177,10 @@ likeliest breaks: new async code, caches, format changes, CI conditions.
 ## 8. Open the PR and merge it
 
 The agent MUST load the `create-pr` skill and run it in create mode.
+
+- **Size** before the PR, the agent MUST check the branch with the PR size
+  rules of the `reviewer` core. Past their top limit, the fixes MUST go in one
+  PR per group of lenses, each within the limits.
 
 - **Changelog** the PR MUST carry an entry in the repo's own way. Commits read
   by the release notes already count.
