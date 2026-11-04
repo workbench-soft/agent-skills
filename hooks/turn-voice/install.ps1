@@ -146,7 +146,7 @@ if (Test-Path $exe) {
   try { Remove-Item $exe -Force -ErrorAction Stop }
   catch { Rename-Item $exe ("turn-voice.old" + (Get-Random) + ".exe") }
 }
-& $csc /nologo /target:winexe /codepage:65001 "/out:$exe" (Join-Path $PSScriptRoot "turn-voice.cs")
+& $csc /nologo /target:winexe /codepage:65001 "/out:$exe" (Join-Path $PSScriptRoot "turn-voice.cs") (Join-Path $PSScriptRoot "sound.cs")
 if ($LASTEXITCODE -ne 0) { throw "turn-voice: csc failed with exit code $LASTEXITCODE" }
 
 # "рус" is spelled with char codes, since Windows PowerShell reads a script without a BOM as ANSI.

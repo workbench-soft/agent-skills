@@ -16,19 +16,16 @@ using System.Threading;
 // <lang> is ru or en. The hook JSON comes on stdin. With edge-tts each Russian
 // and each English run of the phrase gets a native neural voice, cached per run.
 // A pitch such as -10Hz moves that voice down 10 Hz. Without edge-tts, or offline, only the cue plays.
-static class TurnVoice {
+static partial class TurnVoice {
     const string Tada = @"C:\Windows\Media\tada.wav";
 
     enum Outcome { Done, UserSteps, NotDone, Running, Error, Ask, Replied, Archived }
 
-    [DllImport("winmm.dll", CharSet = CharSet.Unicode)]
-    static extern bool PlaySound(string sound, IntPtr mod, uint flags);
     [DllImport("winmm.dll", EntryPoint = "PlaySoundW")]
     static extern bool PlayMemory(byte[] sound, IntPtr mod, uint flags);
     [DllImport("winmm.dll", CharSet = CharSet.Unicode)]
     static extern int mciSendString(string command, StringBuilder ret, int length, IntPtr callback);
 
-    const uint SND_SYNC_FILE = 0x00020000 | 0x0002; // SND_FILENAME | SND_NODEFAULT
     const uint SND_SYNC_MEMORY = 0x0004 | 0x0002;   // SND_MEMORY | SND_NODEFAULT
 
     // The MCI mp3 player opens only on an STA thread.
@@ -67,17 +64,13 @@ static class TurnVoice {
         string lead = Lead(outcome, ru, AgentName(input));
         string task = TaskTitle(input);
         Log("says " + outcome + ": " + task);
-        // The clip downloads before the cue. Fetched after it, the sound device fell asleep
-        // in the gap and cut the first word.
+        // The clip downloads before the cue, so the voice follows the cue with no wait.
         string clip = BuildNeural(string.IsNullOrEmpty(task) ? lead : lead + ": " + task, ruVoice, enVoice, tts, ruPitch, enPitch);
         // Sessions that end together speak one after another, not over each other.
         using (var turn = new Mutex(false, @"Local\turn-voice")) {
             bool owned = false;
             try { owned = turn.WaitOne(90000); } catch (AbandonedMutexException) { owned = true; }
-            try {
-                PlayCue(outcome);
-                if (clip != null) PlayMp3(clip);
-            } finally { if (owned) turn.ReleaseMutex(); }
+            try { PlayTurn(outcome, clip); } finally { if (owned) turn.ReleaseMutex(); }
         }
     }
 
@@ -113,47 +106,6 @@ static class TurnVoice {
             catch (IOException) { if (File.GetLastWriteTimeUtc(marker) > DateTime.UtcNow.AddSeconds(-30)) return true; File.SetLastWriteTimeUtc(marker, DateTime.UtcNow); }
             return false;
         } catch { return false; }
-    }
-
-    // Each outcome has a cue the ear tells apart before the voice starts.
-    static void PlayCue(Outcome o) {
-        switch (o) {
-            case Outcome.Done: case Outcome.Archived: PlaySound(Tada, IntPtr.Zero, SND_SYNC_FILE); break;
-            // A sad trombone: four falling notes.
-            case Outcome.NotDone: case Outcome.Error:
-                PlayTones(new[] { 392.0, 370.0, 349.2, 329.6 }, new[] { 0.3, 0.3, 0.3, 0.6 }, true); break;
-            // Two notes going up, like a question.
-            case Outcome.Ask: PlayTones(new[] { 659.3, 987.8 }, new[] { 0.16, 0.38 }, false); break;
-            // A doorbell: two notes going down, the person's turn.
-            case Outcome.UserSteps: PlayTones(new[] { 659.3, 523.3 }, new[] { 0.3, 0.5 }, false); break;
-            default: PlayTones(new[] { 880.0 }, new[] { 0.12 }, false); break;
-        }
-    }
-
-    // Builds a 16-bit mono WAV in memory. Brass adds overtones and holds each note.
-    static void PlayTones(double[] freqs, double[] secs, bool brass) {
-        const int rate = 22050;
-        var samples = new System.Collections.Generic.List<short>();
-        for (int n = 0; n < freqs.Length; n++) {
-            int count = (int)(secs[n] * rate);
-            for (int i = 0; i < count; i++) {
-                double t = (double)i / rate;
-                double phase = 2 * Math.PI * freqs[n] * t;
-                double v = brass
-                    ? 0.6 * Math.Sin(phase) + 0.25 * Math.Sin(2 * phase) + 0.12 * Math.Sin(3 * phase)
-                    : Math.Sin(phase) * Math.Exp(-3.5 * t / secs[n]);
-                double attack = Math.Min(1, t / 0.015), release = Math.Min(1, (secs[n] - t) / 0.04);
-                samples.Add((short)(v * attack * release * 0.5 * short.MaxValue));
-            }
-        }
-        var wav = new MemoryStream();
-        var w = new BinaryWriter(wav);
-        w.Write(Encoding.ASCII.GetBytes("RIFF")); w.Write(36 + samples.Count * 2);
-        w.Write(Encoding.ASCII.GetBytes("WAVEfmt ")); w.Write(16); w.Write((short)1); w.Write((short)1);
-        w.Write(rate); w.Write(rate * 2); w.Write((short)2); w.Write((short)16);
-        w.Write(Encoding.ASCII.GetBytes("data")); w.Write(samples.Count * 2);
-        foreach (var s in samples) w.Write(s);
-        PlayMemory(wav.ToArray(), IntPtr.Zero, SND_SYNC_MEMORY);
     }
 
     // The part before the task title, in the language picked at install.
@@ -210,12 +162,10 @@ static class TurnVoice {
                 if (file == null) return null;
                 files.Add(file);
             }
-            string joined = Path.Combine(Path.GetDirectoryName(files[0]), Hash("lead-in-" + LeadFrames + "|" + string.Join("|", files)) + "-joined.mp3");
+            string joined = Path.Combine(Path.GetDirectoryName(files[0]), Hash(string.Join("|", files)) + "-joined.mp3");
             if (File.Exists(joined)) Touch(joined);
             else {
                 var all = new MemoryStream();
-                byte[] lead = LeadIn(File.ReadAllBytes(files[0]));
-                all.Write(lead, 0, lead.Length);
                 for (int i = 0; i < files.Count; i++) {
                     byte[] clip = Trim(File.ReadAllBytes(files[i]), i > 0, i < files.Count - 1);
                     all.Write(clip, 0, clip.Length);
@@ -224,20 +174,6 @@ static class TurnVoice {
             }
             return joined;
         } catch (Exception e) { Log(e.ToString()); return null; }
-    }
-
-    // A sound device that slept wakes up on the first frames and drops them, so "Агент" came out
-    // as "...ент". An HDMI monitor or TV wakes slower than 0.4 seconds. The first frame of a clip
-    // is silent and stands alone, so 32 of them give 0.77 seconds of silence to wake on.
-    const int LeadFrames = 32;
-
-    static byte[] LeadIn(byte[] mp3) {
-        int gain;
-        int size = mp3.Length >= 8 ? FrameSize(mp3, 0, out gain) : 0;
-        if (size <= 0 || size > mp3.Length || mp3[4 + ((mp3[1] & 1) == 0 ? 2 : 0)] != 0) return new byte[0];
-        var lead = new byte[size * LeadFrames];
-        for (int i = 0; i < LeadFrames; i++) Buffer.BlockCopy(mp3, 0, lead, i * size, size);
-        return lead;
     }
 
     // A run starts at a Cyrillic or a Latin letter. Digits and signs stay with the run before them.
