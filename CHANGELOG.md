@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **turn-voice** the cue and the voice play as one sound, with no gap between them, so the first word "Агент" comes through whole.
 - **turn-voice** the Codex Stop hook prints `{}` and returns in about a second, since the speaking copy no longer holds the hook's pipes.
 - **turn-voice** Codex and Kimi Code speak the end of each turn too. The hook returns at once and speaks from a child process.
 - **install.sh** wires the writing rules into `~/.kimi-code/AGENTS.md` for Kimi Code.

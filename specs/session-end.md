@@ -264,3 +264,18 @@
   - **Stop output** Codex fails a Stop hook with no JSON on stdout, so the
     hook prints `{}`.
 - **Docs** `README.md`, `docs/features.md`, `CHANGELOG.md`.
+
+### 2026-11-04 the cue and the voice play as one stream
+
+- **Why** the person still heard "т" in place of "Агент" after the two fixes
+  of 2026-10-30 and 2026-11-02. The clip itself was whole: 0.8 s of silence,
+  then the word. The cue played through `PlaySound`, then MCI opened the mp3
+  for 0.42 s and played its 0.77 s of digital silence. That made 1.2 s of
+  nothing between two streams on the Audient EVO4, and the next start lost
+  about 1.3 s. More silence made it worse.
+- **Changes** `hooks/turn-voice/sound.cs` decodes the joined mp3 to PCM with
+  the MP3 codec Windows ships for ACM, puts it 0.15 s after the cue at the
+  voice's 24 kHz, and plays both in one `PlaySound` call. The lead-in frames
+  go. A clip ACM can't decode plays through MCI after the cue, as before.
+- **Build** `install.ps1` compiles `turn-voice.cs` and `sound.cs` together.
+- **Docs** `CHANGELOG.md`.
