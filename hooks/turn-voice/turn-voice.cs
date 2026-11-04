@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 
-// Claude Code hook: plays a sound and says how the turn ended.
+// Claude Code, Codex and Kimi Code hook: plays a sound and says how the turn ended.
 //   turn-voice.exe <mode> <lang> [<Russian voice> <English voice> <edge-tts.exe> [<Russian pitch> <English pitch>]]
 //   stop     Stop: done, user steps, not done or running, by the end-of-turn marker
 //   fail     StopFailure: the turn died on an API error
@@ -41,6 +41,18 @@ static class TurnVoice {
         string tts = args.Length > 4 ? args[4] : null;
         string ruPitch = Pitch(args, 5), enPitch = Pitch(args, 6);
         string input = ReadStdin();
+        // Codex and Kimi Code wait for a hook to exit, so the speech runs on in a child process.
+        string child = Environment.GetEnvironmentVariable("TURN_VOICE_INPUT");
+        if (child == null) {
+            string file = Path.GetTempFileName();
+            File.WriteAllText(file, input, Encoding.UTF8);
+            var psi = new ProcessStartInfo(Process.GetCurrentProcess().MainModule.FileName,
+                string.Join(" ", Array.ConvertAll(args, a => "\"" + a + "\""))) { UseShellExecute = false, CreateNoWindow = true };
+            psi.EnvironmentVariables["TURN_VOICE_INPUT"] = file;
+            Process.Start(psi);
+            return;
+        }
+        try { input = File.ReadAllText(child, Encoding.UTF8); File.Delete(child); } catch { }
         // Twins of one event can differ in stdin, so the session and the mode name the event.
         string session = Field(input, "session_id") ?? input;
         if (SeenRecently(mode + "|" + session)) { Log("skip repeat " + mode); return; }
@@ -54,6 +66,7 @@ static class TurnVoice {
             FromMarker(input);
         string lead = Lead(outcome, ru, AgentName(input));
         string task = TaskTitle(input);
+        Log("says " + outcome + ": " + task);
         // The clip downloads before the cue. Fetched after it, the sound device fell asleep
         // in the gap and cut the first word.
         string clip = BuildNeural(string.IsNullOrEmpty(task) ? lead : lead + ": " + task, ruVoice, enVoice, tts, ruPitch, enPitch);
@@ -161,9 +174,13 @@ static class TurnVoice {
 
     // Claude Code writes the session title into the transcript as customTitle, again on each rename.
     // The transcript is read line by line, since a long session's file runs to tens of MB.
+    // Kimi Code sends the title in session_title. Codex sends none.
     static string TaskTitle(string input) {
         string path = Field(input, "transcript_path");
-        if (string.IsNullOrEmpty(path)) return null;
+        if (string.IsNullOrEmpty(path)) {
+            string kimi = Field(input, "session_title");
+            return string.IsNullOrEmpty(kimi) ? null : Regex.Replace(kimi.Replace("\"", ""), @"[\p{So}\p{Cs}︎️‍⃣]", "").Trim();
+        }
         try {
             string title = null, line;
             using (var f = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
@@ -359,7 +376,8 @@ static class TurnVoice {
 
     // The last marker in the final message wins, so a marker quoted earlier doesn't count.
     static Outcome FromMarker(string input) {
-        string text = Field(input, "last_assistant_message") ?? TranscriptTail(Field(input, "transcript_path"));
+        string text = Field(input, "last_assistant_message")
+            ?? (Field(input, "transcript_path") != null ? TranscriptTail(Field(input, "transcript_path")) : KimiTail(Field(input, "session_id")));
         int notDone = text.LastIndexOf("NOT COMPLETED!!!");
         int done = text.LastIndexOf("!!!COMPLETED!!!");
         int running = text.LastIndexOf("!!!RUNNING!!!");
@@ -373,8 +391,23 @@ static class TurnVoice {
         return last == notDone ? Outcome.NotDone : Outcome.Done;
     }
 
+    // Kimi Code sends only the session id. session_index.jsonl gives the session's folder, and
+    // its wire.jsonl holds the reply after the last user message.
+    static string KimiTail(string session) {
+        if (string.IsNullOrEmpty(session)) return "";
+        string home = Environment.GetEnvironmentVariable("KIMI_CODE_HOME");
+        if (string.IsNullOrEmpty(home)) home = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".kimi-code");
+        try {
+            string dir = null;
+            foreach (string line in File.ReadLines(Path.Combine(home, "session_index.jsonl")))
+                if (Field(line, "sessionId") == session) dir = Field(line, "sessionDir");
+            if (dir == null) return "";
+            return TranscriptTail(Path.Combine(dir, "agents", "main", "wire.jsonl"), "\"role\":\"user\"");
+        } catch { return ""; }
+    }
+
     // Older hosts send only the transcript path, so read its last assistant entry.
-    static string TranscriptTail(string path) {
+    static string TranscriptTail(string path, string from = "\"type\":\"assistant\"") {
         if (string.IsNullOrEmpty(path)) return "";
         try {
             using (var f = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)) {
@@ -383,7 +416,7 @@ static class TurnVoice {
                 var buf = new byte[f.Length - start];
                 f.Read(buf, 0, buf.Length);
                 string tail = Encoding.UTF8.GetString(buf);
-                int i = tail.LastIndexOf("\"type\":\"assistant\"");
+                int i = tail.LastIndexOf(from);
                 return i >= 0 ? tail.Substring(i) : tail;
             }
         } catch { return ""; }

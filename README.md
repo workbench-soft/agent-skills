@@ -68,6 +68,7 @@ turn, unasked: the VS Code prompts folder, `~/.claude/CLAUDE.md`,
   read by the multilingual `de-DE-SeraphinaMultilingualNeural`, one run of Russian or English at a time. `install.ps1
   -VoiceLang English` switches the phrases to English.
 - **What it adds for the voice** hooks in `~/.claude/settings.json`,
+  `~/.codex/hooks.json` and `~/.kimi-code/config.toml`,
   `turn-voice.exe` in `~/.claude/hooks`, and `uv` and `edge-tts` in your
   global mise config when mise is installed.
 - **What leaves the PC** `edge-tts` sends each phrase, with the folder name
