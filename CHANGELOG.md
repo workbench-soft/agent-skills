@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **turn-voice** Codex and Kimi Code speak the end of each turn too. The hook returns at once and speaks from a child process.
+- **install.sh** wires the writing rules into `~/.kimi-code/AGENTS.md` for Kimi Code.
 - **turn-voice** drops the emoji from the session title before it speaks, so the ✅ or 👤 marker prefix stays silent.
 - **Skills** each description fits 480 characters, down from 1024, since every session loads them: the triggers in English and Russian and the result stay, the long lists go.
 - **reviewer** a new core that **review** and **app-audit** both load. It starts one subagent per lens on the strongest model, fetches a skill from skills.sh for a domain lens such as legal or SEO, and adds two lenses: PR size, and free maintained libraries over hand-written code.

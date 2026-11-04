@@ -60,7 +60,7 @@ Spec: [e2e-walk](../specs/e2e-walk.md).
 ## Voice at the end of a turn
 
 - **What it gives** the `turn-voice` hook speaks a short line when the agent finishes.
-- **Where** `hooks/turn-voice`, Windows only.
+- **Where** `hooks/turn-voice`, Windows only, for Claude Code, Codex and Kimi Code. Kimi sends no reply in the hook, so the hook reads it from the session's `wire.jsonl`.
 - **Outcomes** the last marker of the turn picks the cue and the phrase: done, user steps, question, running or not done. `!!!USER STEPS!!!` rings a doorbell and says the person's steps wait.
 - **Pick a voice** `voice-test` plays each `edge-tts` voice by number, so the person can choose one for the hook.
 - **Pitch** `hooks\turn-voice\install.ps1 -RuPitch -10 -EnPitch 5` moves each voice up or down in Hz. The root `install.ps1` takes no pitch, and its rerun keeps the one set here.

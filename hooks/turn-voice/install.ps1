@@ -77,6 +77,41 @@ function Get-OwnArgs($settings) {
   return $null
 }
 
+# Codex and Kimi Code take one command line, so a part with a space gets quotes.
+# $voiceArgs set to $null takes their hooks out.
+function Set-OtherAgents($voiceArgs) {
+  $line = { param($mode) (@($exe, $mode) + $voiceArgs | ForEach-Object { if ($_ -match " ") { "`"$_`"" } else { $_ } }) -join " " }
+  $utf8 = New-Object Text.UTF8Encoding $false
+  $codex = Join-Path $userHome ".codex\hooks.json"
+  if (Test-Path (Split-Path $codex)) {
+    $json = if (Test-Path $codex) { [IO.File]::ReadAllText($codex) | ConvertFrom-Json } else { [pscustomobject]@{} }
+    if (-not $json.PSObject.Properties["hooks"]) { $json | Add-Member -NotePropertyName hooks -NotePropertyValue ([pscustomobject]@{}) }
+    foreach ($name in "Stop", "StopFailure") {
+      $kept = @($json.hooks.$name | Where-Object { $_ -and -not ($_.hooks | Where-Object { $_.command -like "*turn-voice.exe*" }) })
+      if ($null -ne $voiceArgs) {
+        $mode = if ($name -eq "Stop") { "stop" } else { "fail" }
+        $kept += [pscustomobject]@{ hooks = @([pscustomobject]@{ type = "command"; command = (& $line $mode); timeout = 10 }) }
+      }
+      $json.hooks.PSObject.Properties.Remove($name)
+      if ($kept.Count) { $json.hooks | Add-Member -NotePropertyName $name -NotePropertyValue $kept }
+    }
+    [IO.File]::WriteAllText($codex, ($json | ConvertTo-Json -Depth 32), $utf8)
+  }
+  $kimi = Join-Path $userHome ".kimi-code\config.toml"
+  if (Test-Path (Split-Path $kimi)) {
+    $text = if (Test-Path $kimi) { [IO.File]::ReadAllText($kimi) } else { "" }
+    # The block sits last, since [[hooks]] tables take each key after them.
+    $text = ([regex]::Replace($text, "(?s)# agent-skills: turn-voice\r?\n.*?# agent-skills: end\r?\n?", "")).TrimEnd()
+    if ($null -ne $voiceArgs) {
+      $tables = foreach ($pair in @(@("Stop", "stop"), @("StopFailure", "fail"))) {
+        "[[hooks]]`nevent = `"$($pair[0])`"`ncommand = '$(& $line $pair[1])'`ntimeout = 10"
+      }
+      $text = ($text + "`n`n# agent-skills: turn-voice`n" + ($tables -join "`n`n") + "`n# agent-skills: end").TrimStart()
+    }
+    [IO.File]::WriteAllText($kimi, $text + "`n", $utf8)
+  }
+}
+
 if (-not (Test-Path $claude)) { return }
 $settings = Read-Settings
 # The root install.ps1 passes no voice or pitch, so the ones picked by hand stay.
@@ -91,6 +126,7 @@ Remove-OwnHooks $settings
 
 if ($Uninstall) {
   Write-Settings $settings
+  Set-OtherAgents $null
   if (Test-Path $exe) { Remove-Item $exe -Force }
   return
 }
@@ -151,4 +187,5 @@ foreach ($name in $own.Keys) {
   else { $settings.hooks | Add-Member -NotePropertyName $name -NotePropertyValue $all }
 }
 Write-Settings $settings
-Write-Host "turn-voice: Claude speaks the end of each turn in $voice."
+Set-OtherAgents $voiceArgs
+Write-Host "turn-voice: Claude Code, Codex and Kimi Code speak the end of each turn in $voice."

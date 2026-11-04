@@ -18,9 +18,10 @@ AGENT_SKILLS_HOOK=1
 export AGENT_SKILLS_HOOK
 
 # Each agent reads these files on every turn, so the writing rules apply
-# unasked. Claude follows an @path. Codex gets the path spelled out.
+# unasked. Claude follows an @path. Codex and Kimi Code get the path spelled out.
 claude_rules="$HOME/.claude/CLAUDE.md"
 codex_rules="$HOME/.codex/AGENTS.md"
+kimi_rules="$HOME/.kimi-code/AGENTS.md"
 
 # Each agent's global skills folder under $HOME, without the /skills at the
 # end. Only agents already installed get a link.
@@ -272,6 +273,7 @@ link_writing_rules() {
 
   append_rules_block "$claude_rules" "@~/.agents/$rules_file"
   append_rules_block "$codex_rules" "Follow ~/.agents/$rules_file: how to write text a person reads."
+  append_rules_block "$kimi_rules" "Follow ~/.agents/$rules_file: how to write text a person reads."
 }
 
 # Worktrees share hooks with the main clone and get deleted when done, so
@@ -362,7 +364,7 @@ $dir/$name"
   fi
 
   rule_files=""
-  for file in "$claude_rules" "$codex_rules"; do
+  for file in "$claude_rules" "$codex_rules" "$kimi_rules"; do
     if [ -f "$file" ] && grep -qF "$rules_open" "$file"; then
       rule_files="$rule_files$file
 "
