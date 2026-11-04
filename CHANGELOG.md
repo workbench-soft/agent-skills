@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- **Checks** fix the architecture diagram link and the new-flow label so skill validation passes.
+- **Tests** stop the icon preview server before closing its socket so Windows tests do not race.
+
 - **turn-voice** the cue and the voice play as one sound, with no gap between them, so the first word "Агент" comes through whole.
 - **turn-voice** the Codex Stop hook prints `{}` and returns in about a second, since the speaking copy no longer holds the hook's pipes.
 - **turn-voice** Codex and Kimi Code speak the end of each turn too. The hook returns at once and speaks from a child process.

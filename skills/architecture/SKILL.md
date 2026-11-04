@@ -234,7 +234,7 @@ keeps it, in this form. A call that costs a lot to undo SHOULD get an ADR too.
   supports and say no record states it.
 - Diagrams SHOULD use mermaid, so they diff and render on GitHub.
 - A restructure MUST show each diagram as a Before and After pair coloured by
-  status, as the `create-pr` skill's `references/diagrams.md` sets out. The
+  status, as the [create-pr diagram rules](../create-pr/references/diagrams.md) set out. The
   doc MAY keep only the After block once the PR carries the pair.
 
 ## 11. Build the skeleton

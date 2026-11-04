@@ -9,7 +9,7 @@ draw their diagrams this way.
 - **Two blocks** the agent MUST draw a `Before` block, then an `After` block,
   each under its bold label, with the same node IDs and direction, so the eye
   finds what moved.
-- **Nothing before** a brand new flow MUST still get a `Before` block: what
+- **New flow** a brand new flow MUST still get a `Before` block: what
   the person did without it, or one gray node such as "No way to share a
   photo".
 - **Same scope** both blocks MUST cover the same paths. A path the change
