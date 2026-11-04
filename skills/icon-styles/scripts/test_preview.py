@@ -25,9 +25,11 @@ class OwnPageOnly(unittest.TestCase):
         self.port = self.server.server_address[1]
         threading.Thread(target=self.server.serve_forever, daemon=True).start()
         self.addCleanup(self.server.server_close)
+        self.addCleanup(self.server.shutdown)
 
     def post(self, headers: dict[str, str]) -> int:
         conn = http.client.HTTPConnection("127.0.0.1", self.port, timeout=5)
+        self.addCleanup(conn.close)
         conn.request("POST", "/answer", BODY, headers)
         return conn.getresponse().status
 
@@ -38,11 +40,9 @@ class OwnPageOnly(unittest.TestCase):
     def test_other_site_gets_403(self) -> None:
         self.assertEqual(self.post({"Origin": "https://evil.example", "Content-Type": "text/plain"}), 403)
         self.assertEqual(self.server.answer, "")
-        self.server.shutdown()
 
     def test_rebound_dns_name_gets_403(self) -> None:
         self.assertEqual(self.post({"Host": "evil.example"}), 403)
-        self.server.shutdown()
 
 
 if __name__ == "__main__":
