@@ -34,24 +34,30 @@ static class TurnVoice {
     // The MCI mp3 player opens only on an STA thread.
     [STAThread]
     static void Main(string[] args) {
+        // The child gets the hook JSON as a file named in its first arg, @<file>.
+        string child = args.Length > 0 && args[0].StartsWith("@") ? args[0].Substring(1) : null;
+        if (child != null) args = Array.FindAll(args, a => a != args[0]);
         string mode = args.Length > 0 ? args[0] : "stop";
         bool ru = args.Length > 1 && args[1] == "ru";
         string ruVoice = args.Length > 2 ? args[2] : null;
         string enVoice = args.Length > 3 ? args[3] : null;
         string tts = args.Length > 4 ? args[4] : null;
         string ruPitch = Pitch(args, 5), enPitch = Pitch(args, 6);
-        string input = ReadStdin();
-        // Codex and Kimi Code wait for a hook to exit, so the speech runs on in a child process.
-        string child = Environment.GetEnvironmentVariable("TURN_VOICE_INPUT");
+        // Codex and Kimi Code wait for a hook's pipes to close, so the speech runs on in a
+        // child. ShellExecute hands the child no pipes of the hook.
         if (child == null) {
             string file = Path.GetTempFileName();
-            File.WriteAllText(file, input, Encoding.UTF8);
-            var psi = new ProcessStartInfo(Process.GetCurrentProcess().MainModule.FileName,
-                string.Join(" ", Array.ConvertAll(args, a => "\"" + a + "\""))) { UseShellExecute = false, CreateNoWindow = true };
-            psi.EnvironmentVariables["TURN_VOICE_INPUT"] = file;
-            Process.Start(psi);
+            File.WriteAllText(file, ReadStdin(), Encoding.UTF8);
+            var all = new string[args.Length + 1];
+            all[0] = "@" + file;
+            args.CopyTo(all, 1);
+            Process.Start(new ProcessStartInfo(Process.GetCurrentProcess().MainModule.FileName,
+                string.Join(" ", Array.ConvertAll(all, a => "\"" + a + "\""))) { UseShellExecute = true });
+            // Codex reads a Stop hook's stdout as JSON and fails the hook on none.
+            try { Console.Out.Write("{}"); } catch { }
             return;
         }
+        string input = "";
         try { input = File.ReadAllText(child, Encoding.UTF8); File.Delete(child); } catch { }
         // Twins of one event can differ in stdin, so the session and the mode name the event.
         string session = Field(input, "session_id") ?? input;
