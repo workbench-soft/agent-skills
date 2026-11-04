@@ -257,8 +257,12 @@
   - **Kimi reply** Kimi sends the session id and title only. `turn-voice.cs`
     finds the session folder in `session_index.jsonl` and reads the reply
     after the last user message in `agents/main/wire.jsonl`.
-  - **Child process** Codex and Kimi wait for a hook to exit, so the exe
-    hands the hook JSON to a copy of itself and returns at once.
+  - **Child process** Codex and Kimi wait for a hook's pipes to close, so
+    the exe writes the hook JSON to a file and starts a copy of itself
+    through ShellExecute, which passes it no pipes. The copy reads the file
+    named in its first arg, `@<file>`.
+  - **Stop output** Codex fails a Stop hook with no JSON on stdout, so the
+    hook prints `{}`.
 - **Docs** `README.md`, `docs/features.md`, `CHANGELOG.md`.
 
 ### 2026-11-04 the cue and the voice play as one stream
