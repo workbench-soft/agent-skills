@@ -246,3 +246,17 @@
 - **Risk** a short Latin run read alone may be guessed as another language,
   as Emma was on 2026-10-30. The voice stays a default the person can swap.
 - **Docs** `README.md`, `docs/architecture.md`, `CHANGELOG.md`.
+
+### 2026-11-04 Codex and Kimi Code speak too
+
+- **Why** the person works in Codex and Kimi Code beside Claude Code.
+- **Changes**
+  - **Hooks** `hooks/turn-voice/install.ps1` adds the Stop and StopFailure
+    hooks to `~/.codex/hooks.json` and to a marked block of `[[hooks]]` at
+    the end of `~/.kimi-code/config.toml`.
+  - **Kimi reply** Kimi sends the session id and title only. `turn-voice.cs`
+    finds the session folder in `session_index.jsonl` and reads the reply
+    after the last user message in `agents/main/wire.jsonl`.
+  - **Child process** Codex and Kimi wait for a hook to exit, so the exe
+    hands the hook JSON to a copy of itself and returns at once.
+- **Docs** `README.md`, `docs/features.md`, `CHANGELOG.md`.
