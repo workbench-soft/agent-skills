@@ -102,3 +102,7 @@ flowchart LR
 - **Rejected** the self-hosted `[self-hosted, local]` runner: the org keeps it for private repos, and a fork PR would run on the PC.
 - **Rejected** a Linux-only check: it misses `install.ps1` and the `turn-voice` build.
 - **Cost to undo** low: two workflows and their scripts.
+
+## Release build timing
+
+Release builds MUST start on pushes alongside their matching checks. Publication MUST wait for successful checks of the same commit and branch. Open PRs MUST NOT delay the build. LocalCI MUST record the causing run, commit and PR before cancelling a replaced build or a release whose checks failed.
