@@ -1,5 +1,13 @@
 # address-comments and implement-ticket skills
 
+## One-pager
+
+- **Problem** `implement-ticket` always creates a worktree and PR.
+- **Fix** it follows the repo's checkout and shipping rules.
+- **How** a repo may allow clean, conflict free work on its default branch.
+- **Risk** repositories without such a rule keep the isolated worktree path.
+- **Next** ship the skill and update its README description.
+
 ## What it does for the person
 
 Answering review threads and doing a ticket from start to PR were manual every time.
@@ -7,7 +15,8 @@ Answering review threads and doing a ticket from start to PR were manual every t
 ## User flows
 
 - **Address comments** one small commit and one reply per thread.
-- **Do a ticket** a worktree, a PR, then the ticket moves to In Review.
+- **Do a ticket** follows the repo's checkout rules, then moves to the status
+  that matches its direct push or PR.
 - **Review** each comment is tagged C1 with its explanation E1.
 
 ## How it works: modules, files, data
@@ -16,7 +25,8 @@ Each entry below names the files it changed.
 
 ## Limits
 
-None written down yet.
+Ticket status transitions vary by project. Repositories without checkout
+instructions keep using a worktree and PR.
 
 ## Changes
 
@@ -31,7 +41,8 @@ Answering review threads and doing a ticket from start to PR were manual every t
 #### User flows it touches
 
 - **Address comments** one small commit and one reply per thread.
-- **Do a ticket** a worktree, a PR, then the ticket moves to In Review.
+- **Do a ticket** follows the repo's checkout rules, then moves to the status
+  that matches its direct push or PR.
 - **Review** each comment is tagged C1 with its explanation E1.
 
 #### Changes
@@ -54,6 +65,15 @@ Answering review threads and doing a ticket from start to PR were manual every t
 4. implement-ticket: do a ticket in a worktree, PR it, move it to In Review (dc41f43, 2025-10-02)
 5. address-comments: keep each fix to the smallest diff (e243257, 2025-10-02)
 6. address-comments: update the PR description when a fix changes behaviour (0037fac, 2025-10-07)
+
+### 2026-11-05 Follow repo checkout rules for tickets
+
+- **Why** work should use clean `main` when the repo allows it and no active
+  session edits the same files.
+- **Changes** `implement-ticket` follows the repo's checkout and ship rules,
+  with the worktree and PR path as its fallback.
+- **Steps** update this spec first, then the skill, README and changelog.
+- **Docs** `README.md` and this spec.
 
 #### Docs to update
 
