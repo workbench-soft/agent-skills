@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **implement-ticket** follows repo checkout rules and can use a clean default branch when the repo allows it.
+
 - **Checks** fix the architecture diagram link and the new-flow label so skill validation passes.
 - **Tests** stop the icon preview server before closing its socket so Windows tests do not race.
 

@@ -10,7 +10,7 @@
 
 ## What it does for the person
 
-Answering review threads and doing a ticket from start to PR were manual every time.
+Answering review threads and carrying a ticket from plan to shipped code were manual every time.
 
 ## User flows
 
@@ -66,15 +66,16 @@ Answering review threads and doing a ticket from start to PR were manual every t
 5. address-comments: keep each fix to the smallest diff (e243257, 2025-10-02)
 6. address-comments: update the PR description when a fix changes behaviour (0037fac, 2025-10-07)
 
+#### Docs to update
+
+- `README.md`
+
 ### 2026-11-05 Follow repo checkout rules for tickets
 
 - **Why** work should use clean `main` when the repo allows it and no active
   session edits the same files.
 - **Changes** `implement-ticket` follows the repo's checkout and ship rules,
   with the worktree and PR path as its fallback.
+- **Files** `skills/implement-ticket/SKILL.md`, `README.md` and this spec.
 - **Steps** update this spec first, then the skill, README and changelog.
-- **Docs** `README.md` and this spec.
-
-#### Docs to update
-
-- `README.md`
+- **Docs** `README.md`, `CHANGELOG.md` and this spec.

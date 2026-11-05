@@ -1,6 +1,6 @@
 ---
 name: implement-ticket
-description: 'Use when there is a ticket to do or pick up, in any language: "do PROJ-123", "implement this ticket", "сделай тикет", a Jira link plus "do it". Reads the ticket, writes the plan to specs/ in a fresh worktree, makes the smallest clean change, updates the docs, commits each step with the ticket key, opens a PR through create-pr and moves the ticket to In Review.'
+description: 'Use when there is a ticket to do or pick up, in any language: "do PROJ-123", "implement this ticket", "сделай тикет", a Jira link plus "do it". Reads the ticket, writes the plan to specs/, follows the repo checkout rules, makes the smallest clean change, updates the docs, commits each step with the ticket key, and moves the ticket to the matching status.'
 ---
 
 # Implement a ticket
@@ -44,17 +44,18 @@ The repo rules MUST beat this skill. The agent MUST read whichever exist:
 - **Checks** it MUST find the commands that run the checks, in
   `package.json`, a `Makefile` or the CI config.
 
-## 3. Worktree
+## 3. Choose the checkout
 
-The work MUST take place in a new worktree off the latest default branch,
-created with the `git-worktrees` skill. The user's checkout MUST stay
-untouched, uncommitted files too.
+The agent MUST follow the repo's checkout and shipping rules. When those rules
+allow default branch work and the checkout is clean with no overlapping file
+claims, the agent MAY work there. If a claim overlaps, the agent MUST wait and
+check again. A dirty checkout MUST use a new worktree. A protected default
+branch MUST use a worktree through `git-worktrees`.
 
-- **Branch name** it MUST hold the ticket key, shaped like the repo's other
-  branches. With no pattern to follow, it SHOULD be `proj-123-short-slug`.
-- **Where to run** from now on each command MUST run inside the worktree.
-- **`gh`** each call MUST start with `GH_PAGER=cat`, since a pager would hang
-  it.
+- **Branch name** a worktree branch MUST hold the ticket key and follow the
+  repo's pattern. With no pattern, it SHOULD be `proj-123-short-slug`.
+- **Where to run** each command MUST run in the chosen checkout.
+- **`gh`** each `gh` call MUST start with `GH_PAGER=cat`.
 
 ## 4. Plan
 
@@ -103,8 +104,8 @@ MUST say so, and the agent MUST NOT build a test setup.
 
 ### Docs
 
-Every doc the change makes stale MUST be updated in the same PR: `README.md`,
-`docs/architecture.md` and its diagrams, `docs/user-flows.md`,
+Every doc the change makes stale MUST be updated in the same change:
+`README.md`, `docs/architecture.md` and its diagrams, `docs/user-flows.md`,
 `docs/features.md`. Any of them missing MUST be created. The docs MUST be the
 only thing outside the ticket that the change touches.
 
@@ -147,23 +148,27 @@ it before the first message.
 
 ## 7. Check
 
-Before the PR, the agent MUST run the repo's checks over the change:
-typecheck, lint, the tests of the modules touched. Each failing check MUST be
-fixed before the PR. While the branch is unpushed, the fix MUST join the
-commit of its step. After a push, it MUST go in a new commit.
+Before shipping, the agent MUST run the repo's checks over the change:
+typecheck, lint and tests for the modules touched. Each failing check MUST be
+fixed before shipping. An unpublished fix MUST join its step's commit. After
+a push, the fix MUST go in a new commit.
 
 A check that is already red on the default branch SHOULD be named in the
 report and left as it is.
 
-## 8. Open the PR
+## 8. Ship the change
 
-The agent MUST load the `create-pr` skill and run it in create mode. As that
-skill says, the ticket key MUST open the body.
+The agent MUST follow the repo's shipping rules. When those rules choose the
+PR path, the agent MUST load `create-pr` and put the ticket key first in the
+body. On a permitted direct default branch push, the agent MUST commit and
+push without opening a PR.
 
-## 9. Move the ticket to In Review
+## 9. Move the ticket to its shipped status
 
 Through the Atlassian MCP server, the agent MUST list the transitions the
-ticket allows right now. With `acli`, it MUST give the target status by name:
+ticket allows right now. The agent MUST choose a status that matches how the
+change shipped: a review status after opening a PR, or a completion status
+after a direct push. With `acli`, it MUST give the target status by name:
 
 ```bash
 acli jira workitem transition --key PROJ-123 --status "In Review"
@@ -181,20 +186,20 @@ the list.
 
 ## 10. Report back
 
-1. The report MUST give the PR link and title.
+1. The report MUST give the PR link and title, or the direct commit hash.
 2. It MUST give the ticket key and the status it now has.
-3. It MUST give the worktree path.
+3. It MUST give the worktree path when it used one.
 4. It MUST list the commits, a line each.
 5. It MUST list whatever the agent noticed and left alone, a line each.
 
 ## Guardrails
 
-- **History** a force push, a rebase or an amend MUST NOT happen.
-- **Default branch** a push to it MUST NOT happen. The agent MUST stop and
-  tell the user.
+- **History** a force push or amend MUST NOT happen. A rebase MUST follow
+  repo rules and MUST only move unpublished commits.
+- **Default branch** a push to it MUST follow the repo's shipping rules.
 - **Other files** files outside the change MUST stay untouched, staged or
   not.
-- **Ticket timing** the ticket MUST NOT move until the PR is open.
+- **Ticket timing** the ticket MUST NOT move until the direct push or PR is
+  complete.
 - **Worktree** it MUST stay while the PR waits on review. After the merge,
-  the `git-worktrees` skill MUST remove it: the folder, and the branch local
-  and remote.
+  `git-worktrees` MUST remove its folder and local and remote branches.

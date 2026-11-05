@@ -131,10 +131,10 @@ thread gets the smallest commit that does what the thread agreed on. Then it
 gets a reply with the SHA and one sentence on the fix. The skill pushes and
 replies without asking.
 
-**`implement-ticket`** carries a Jira ticket to review, in a new worktree off
-the latest `main` or `master`. It makes the smallest change that does the job,
-split into modules, with one commit per step carrying the ticket key. Then it
-opens the PR through `create-pr` and moves the ticket to In Review.
+**`implement-ticket`** carries a Jira ticket through the repo's checkout and
+shipping rules. It uses clean default branch when allowed, otherwise a new
+worktree and PR. It makes the smallest change, commits each step with the
+ticket key, then moves the ticket to the matching status.
 
 **`specs`** keeps one spec per feature in `specs/<feature>.md`, written before
 the code. Work on a feature with a spec adds a dated entry to that file, and a
@@ -184,12 +184,11 @@ build and the app itself, and has a fresh reviewer read the diff. It opens the
 PR and merges it when CI is green. Migrations, product calls and anything touching money or
 keys go in `TODO.md` with the reason.
 
-**`git-worktrees`** puts each piece of work in its own folder, and your
+**`git-worktrees`** puts isolated work in its own folder, and your
 checkout stays as it is. It copies the ignored files the app needs, such as
 `.env` and certificates, installs the dependencies and runs the app on a port
 of its own. When the PR merges it moves the folder to the trash in a second, deletes
-it in the background and removes the branch, local and remote, and clears other merged worktrees as it goes. `implement-ticket`,
-`app-audit` and `review` rely on it.
+it in the background and removes the branch, local and remote, and clears other merged worktrees as it goes. `implement-ticket` uses it when the repo's rules call for isolation. `app-audit` and `review` rely on it.
 
 **`javascript`** keeps JS and TS code fast and safe. Independent calls run
 together, request data stays out of shared module state, and lookups go
