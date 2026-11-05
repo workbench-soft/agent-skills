@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **Parallel release builds** releases build beside checks after a push. Only publication waits for matching checks; open PRs hold no build.
+
 - **implement-ticket** follows repo checkout rules and can use a clean default branch when the repo allows it.
 
 - **Checks** fix the architecture diagram link and the new-flow label so skill validation passes.
