@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **CI** Release starts on `workflow_run` once Checks pass on `main`, one at a time. It no longer holds a PC runner while it waits, which starved Checks and timed releases out.
+
 - **icon-styles** the pick server reads the request body before it answers 403, so Windows no longer resets the socket and the preview test stops failing.
 - **git-worktrees** the background trash delete names `C:\code\.trash` again, with its backslashes.
 - **translations** the examples name the pattern in place of paths in private repos.
