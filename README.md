@@ -471,8 +471,7 @@ mise run test
 
 ## Releases
 
-Each push to `main` starts a release beside its `check` run, and the release
-publishes once that run passes, on the
+Each push to `main` gets a release once its `check` run passes, on the
 [Releases page](https://github.com/workbench-soft/agent-skills/releases), such
 as `v2026.10.30.1`. Its notes list the commits since the release before. The
 release carries no files, so the install above stays the same.
