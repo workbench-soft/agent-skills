@@ -12,11 +12,16 @@ Taking each app live repeated the same steps in Search Console, AdSense, AdMob a
 
 ## How it works: modules, files, data
 
-Each entry below names the files it changed.
+- **`seo-setup`** finds where DNS sits, checks the live site and the repo against `references/site-checklist.md`, fixes the code, then goes through Cloudflare Web Analytics, Search Console and Bing.
+- **`ads-setup`** AdSense for a site, AdMob for Android, test ads in debug, the consent message and the Play Console answers. An app site gets 300 words of visible text on its home page and 5 content pages before it goes into AdSense. `references/dev-device.md` hides ads on the developer's own phone.
+- **`play-release`** a signed AAB with a new version code, the upload key outside the repo, internal testing and the tester link.
+- **`launch`** runs the 3 above in order and asks the shared questions once.
+- **`marketing`** starts from the budget, writes the message and a calendar to `docs/marketing.md`, and posts with the person logged in.
 
 ## Limits
 
-None written down yet.
+- **Logins** the person logs in to each dashboard. The skills don't type passwords or card details.
+- **Google review** what waits on Google review goes to `TODO.md`, with the date to check back.
 
 ## Changes
 
@@ -80,3 +85,9 @@ Taking each app live repeated the same steps in Search Console, AdSense, AdMob a
     that device.
 - **Steps** this entry, then the skill, then the changelog.
 - **Docs** `CHANGELOG.md`.
+
+### 2026-11-03 ads-setup: 300 words of text before AdSense review
+
+- **Why** 4 app sites with a map, a fretboard or a button on the home page got the whole AdSense account refused.
+- **Changes** `skills/ads-setup/SKILL.md` and `references/adsense.md`: a home page with 300 words of visible, server-rendered text and 5 content pages, and one site at a time in the account. The word count strips each `<script>` on its own through `perl`.
+- **Docs** `README.md`, `CHANGELOG.md`.

@@ -8,18 +8,21 @@ flowchart LR
   install -->|links| claude["Claude Code"]
   install -->|links| codex["Codex"]
   install -->|links| other["Cursor, Copilot and more"]
+  install -->|links| kimi["Kimi Code"]
   claude --> hook["hooks/turn-voice<br/>C#, speaks at turn end"]
-  ci["CI: check-skills.py,<br/>check-prose-budget.py"] --> repo
-  ci -->|passes on main| release["Release: tag and notes"]
+  codex --> hook
+  kimi --> hook
+  ci["check: lint, check-skills.py,<br/>check-prose-budget.py, tests"] --> repo
+  ci -->|passes on main, workflow_run| release["Release: tag and notes"]
 ```
 
-| Part      | Technology                 | Job                                                                   |
-| --------- | -------------------------- | --------------------------------------------------------------------- |
-| Skills    | Markdown with front matter | Instructions the agent loads on a match                               |
-| Installer | POSIX shell, PowerShell    | Links the skills into each agent                                      |
-| Hook      | C#                         | Speaks a line at the end of a turn                                    |
-| Checks    | Python                     | Checks the skill format and text length                               |
-| Release   | GitHub Actions, shell      | Tags each push to main that passes the checks and publishes its notes |
+| Part      | Technology                 | Job                                                                 |
+| --------- | -------------------------- | ------------------------------------------------------------------- |
+| Skills    | Markdown with front matter | Instructions the agent loads on a match                             |
+| Installer | POSIX shell, PowerShell    | Links the skills into each agent                                    |
+| Hook      | C#                         | Speaks a line at the end of a turn                                  |
+| Checks    | Python, TypeScript         | Checks the skill format, key words and text length                  |
+| Release   | GitHub Actions, shell      | Tags each push to main once its checks pass and publishes its notes |
 
 ## Decisions
 
@@ -51,7 +54,7 @@ flowchart LR
 
 ### Turn end voice: a C# hook built on the machine
 
-- **Picked** `hooks/turn-voice/turn-voice.cs`, which `install.ps1` builds with the `csc.exe` that ships with Windows, then wires into `~/.claude/settings.json`.
+- **Picked** `hooks/turn-voice/turn-voice.cs` and `sound.cs`, which `install.ps1` builds with the `csc.exe` that ships with Windows. It wires the exe into `~/.claude/settings.json`, `~/.codex/hooks.json` and `~/.kimi-code/config.toml`. `sound.cs` joins the cue and the voice into one `PlaySound` call, so the first word comes through whole.
 - **Why** `csc.exe` is already on each Windows PC, so the hook needs no SDK or download to build.
 - **Trade-off** the hook runs on Windows only, and it is C#, which the org stack keeps out of new code.
 - **Rejected** the agent playing a sound itself: the agent skipped it, so the person heard no sound.
@@ -71,16 +74,16 @@ flowchart LR
 
 ### Rules on every turn: writing rules only
 
-- **Picked** `writing-style.instructions.md` holds the short writing rules. The installer adds it to `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md` and the VS Code prompts folder.
+- **Picked** `writing-style.instructions.md` holds the short writing rules. The installer adds it to `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`, `~/.kimi-code/AGENTS.md` and the VS Code prompts folder.
 - **Why** the agent follows the rules before the `writing-style` skill loads.
 - **Trade-off** the file costs tokens on every turn, and it has to stay in step with the full skill.
-- **Rejected** the spec, ship, TODO and session end rules in the same file: they made a new user's agent merge PRs and add ads unasked. They moved to `agent-skills-private`.
+- **Rejected** the spec, ship, TODO and session end rules in the same file: they made a new user's agent merge PRs and add ads unasked. They moved to the owner's own rules, outside this repo.
 - **Rejected** the skill alone: the agent writes its first lines before it loads a skill.
 - **Cost to undo** low: one file and the lines in `install.sh` that wire it.
 
 ### Checks: Python scripts with no packages
 
-- **Picked** `scripts/check-skills.py` and `scripts/check-prose-budget.py`, standard library only. `mise run test` runs them with the unit tests in `tests/` (`unittest` and `node --test`, no packages) and the temp home install.
+- **Picked** `scripts/check-skills.py` and `scripts/check-prose-budget.py`, standard library only. `scripts/keyword-check.mts` checks that each rule in an agent doc holds a key word such as MUST. `mise run test` runs them with the unit tests in `tests/` (`unittest` and `node --test`, no packages) and the temp home install.
 - **Why** they check what a Markdown linter can't see: the `name` equals the folder, the description fits the 480 character cap, under the 1024 of the Agent Skills format, since every session loads it, links resolve, banned words stay out, and the prose stays under its cap. No record says why Python won over TypeScript.
 - **Trade-off** the org stack puts scripts in TypeScript and keeps Python for libraries Node lacks, so these scripts are an exception.
 - **Rejected** markdownlint alone: it checks Markdown syntax and none of the skill rules.
@@ -88,7 +91,7 @@ flowchart LR
 
 ### Lint and format: oxfmt, ruff, shellcheck, shfmt and actionlint
 
-- **Picked** `mise run lint`: ruff for Python, oxlint for TypeScript, oxfmt for Markdown and config, shellcheck and shfmt for shell, actionlint for the workflows.
+- **Picked** `mise run lint`: ruff for Python, oxlint for TypeScript, oxfmt and markdownlint for Markdown, oxfmt for config, shellcheck and shfmt for shell, actionlint for the workflows.
 - **Why** the org stack wants a linter and a formatter for each language, with one tool per job.
 - **Trade-off** oxfmt pads the tables in each skill, so a small edit can rewrite a whole table.
 - **Rejected** ESLint and Prettier: the org stack bans them, and the `mise` and `architecture` skills now teach oxlint and oxfmt.
@@ -96,9 +99,10 @@ flowchart LR
 
 ### CI and releases: GitHub runners, date tags
 
-- **Picked** `check.yml` runs on `windows-latest` for the PowerShell install and on `ubuntu-latest` for `sh`. `release.yml` starts through `workflow_run` once `check.yml` passes on a push to `main`, then tags the commit with a date version such as `v2026.10.30.1`. Open PRs hold no release.
+- **Picked** `check.yml` runs on `windows-latest` for the PowerShell install and on `ubuntu-latest` for `sh`. `release.yml` starts on `workflow_run` once `check` passes on a push to `main`, one release at a time, then tags the commit with a date version such as `v2026.10.30.1`. A failed `check` or a PR run starts no release.
 - **Why** the repo is public, so GitHub runners cost 0 minutes and fork code stays off the PC. Before the Release workflow a merge left no tagged point to go back to.
 - **Trade-off** a release holds notes only, since the repo builds no file.
 - **Rejected** the self-hosted `[self-hosted, local]` runner: the org keeps it for private repos, and a fork PR would run on the PC.
 - **Rejected** a Linux-only check: it misses `install.ps1` and the `turn-voice` build.
-- **Cost to undo** low: two workflows and their scripts.
+- **Rejected** Release on each push beside `check`, waiting in `wait-for-checks.sh`: the wait held a runner, and with every runner busy `check` starved and the release timed out.
+- **Cost to undo** low: two workflows and their two scripts.

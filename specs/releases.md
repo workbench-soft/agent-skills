@@ -44,6 +44,12 @@ release before, so a reader sees what changed without reading the log.
 - **Changes** Release gets back `concurrency: release`, picks the version after the wait, and `check.yml` cancels stale PR runs only. `wait-for-checks.sh` gets its run bit and the lint.
 - **Docs** `README.md`, `docs/architecture.md`, `docs/user-flows.md`, `CHANGELOG.md`.
 
+### 2026-11-09 Release starts after check, through workflow_run
+
+- **Why** Release waited in `wait-for-checks.sh` and held a runner. With every runner busy, `check` starved and the release timed out.
+- **Changes** `release.yml` starts on `workflow_run` of `check`, from the `repo-ci` template, and `wait-for-checks.sh` goes. A run by hand on `main` first checks that `check` passed on the commit.
+- **Docs** `README.md`, `docs/architecture.md`, `docs/features.md` and this spec.
+
 ### 2026-11-10 audit: lint names only scripts that exist
 
 - **Why** f5b1b56 deleted `wait-for-checks.sh`, but `mise run lint` still passed it to shellcheck and shfmt, so `check` failed on `main` and no release went out.
