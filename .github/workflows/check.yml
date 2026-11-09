@@ -10,7 +10,11 @@ on:
 permissions:
   contents: read
 
-# A newer push to the same branch or PR cancels the run still going.
+# A newer push to the same PR cancels the run still going. A push to main gets a group of its
+# own commit, so its run always finishes: Release waits for it.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.ref || github.sha }}
+  cancel-in-progress: true
 
 # Windows runs steps in PowerShell unless told otherwise.
 defaults:

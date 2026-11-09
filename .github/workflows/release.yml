@@ -1,8 +1,7 @@
 name: Release
 
-# Each push to main whose check run passes gets a release. The version is the date: 2026.10.30.1, then 2026.10.30.2.
-
-# The release carries notes only, since the repo builds no file to ship.
+# Each push to main starts a release beside its check run, and only publication waits for that run to pass.
+# The version is the date: 2026.10.30.1, then 2026.10.30.2. The release carries notes only, since the repo builds no file to ship.
 on:
   push:
     branches: [main]
@@ -14,7 +13,6 @@ permissions:
 
 env:
   GH_TOKEN: ${{ github.token }}
-
   SHA: ${{ github.sha }}
 
 # Windows runs steps in PowerShell unless told otherwise.
@@ -25,7 +23,11 @@ defaults:
 jobs:
   release:
     if: github.ref == 'refs/heads/main'
-
+    # One release runs at a time, so each sees the tag of the one before. A newer push cancels the stale one,
+    # and its notes cover both.
+    concurrency:
+      group: release
+      cancel-in-progress: true
     # The repo is public, so a GitHub runner costs 0 minutes and fork code stays off the PC.
     runs-on: ubuntu-latest
     steps:
@@ -35,19 +37,14 @@ jobs:
           # The release notes and the next version need every earlier tag and commit.
           fetch-depth: 0
 
+      - name: Wait for the check run of the same commit
+        run: .github/scripts/wait-for-checks.sh
+
       - name: Pick the next version
         id: version
         run: echo "tag=v$(.github/scripts/next-version.sh)" >> "$GITHUB_OUTPUT"
 
       # A tag pushed with the workflow token doesn't start other workflows.
-      - name: Wait for matching checks before publication
-        shell: bash
-        working-directory: ${{ github.workspace }}
-        env:
-          GH_TOKEN: ${{ github.token }}
-          CHECKS_WORKFLOW: check.yml
-        run: bash .github/scripts/wait-for-checks.sh
-
       - name: Tag the commit and publish the release
         env:
           TAG: ${{ steps.version.outputs.tag }}

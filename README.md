@@ -471,7 +471,8 @@ mise run test
 
 ## Releases
 
-Each push to `main` that passes `check` gets a release on the
+Each push to `main` starts a release beside its `check` run, and the release
+publishes once that run passes, on the
 [Releases page](https://github.com/workbench-soft/agent-skills/releases), such
 as `v2026.10.30.1`. Its notes list the commits since the release before. The
 release carries no files, so the install above stays the same.
@@ -479,7 +480,3 @@ release carries no files, so the install above stays the same.
 ## Licence
 
 MIT.
-
-## Release build timing
-
-Release builds MUST start on pushes alongside their matching checks. Publication MUST wait for successful checks of the same commit and branch. Open PRs MUST NOT delay the build. LocalCI MUST record the causing run, commit and PR before cancelling a replaced build or a release whose checks failed.

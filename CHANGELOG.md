@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **CI** one release runs at a time again, so two quick merges can no longer pick the same tag. A push to `main` keeps its check run, which Release waits for, `wait-for-checks.sh` gets linted, and each script gets its run bit. The docs lose a pasted "Release build timing" block.
 - **Parallel release builds** releases build beside checks after a push. Only publication waits for matching checks; open PRs hold no build.
 
 - **implement-ticket** follows repo checkout rules and can use a clean default branch when the repo allows it.
@@ -26,7 +27,6 @@
 - **demo-media** retakes a frame that shows the host name of the machine.
 - **git-worktrees** a finished worktree moves to a `.trash` folder beside the repos in under a second, and the delete runs in the background. `git worktree remove` held the agent for minutes on the `node_modules` of a Windows worktree.
 - **ads-setup** an app with ads hides them on the developer's own device, with a Show test ads switch in Settings that only that device sees.
-- **CI** Release waits while a PR of an agent session is open, so the last merge of a batch releases them all.
 - **Docs** each heading of `docs/features.md` links its spec, and each feature that had no spec got one.
 - **specs** a repo with `docs/features.md` ends each feature section with a link to its spec, and `docs/features.md` here does the same.
 - **turn-voice** the phrase always splits into Russian and English runs, even with one voice, and the default voice is `de-DE-SeraphinaMultilingualNeural`.
