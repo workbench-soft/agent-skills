@@ -11,7 +11,7 @@ permissions:
   contents: read
 
 # A newer push to the same PR cancels the run still going. A push to main gets a group of its
-# own commit, so its run always finishes: Release waits for it.
+# own commit, so its run always finishes: Release starts after it.
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.ref || github.sha }}
   cancel-in-progress: true

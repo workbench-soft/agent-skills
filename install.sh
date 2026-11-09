@@ -143,7 +143,7 @@ else
       echo "could not refresh $root, installing the copy on disk" >&2
     # A pull doesn't restore files deleted by hand, so check out those alone.
     # A checkout of . would also throw away the person's edits to the rules.
-    git -C "$root" ls-files -d | while IFS= read -r file; do
+    git -C "$root" -c core.quotePath=false ls-files -d | while IFS= read -r file; do
       git -C "$root" checkout --quiet -- "$file"
     done
   else

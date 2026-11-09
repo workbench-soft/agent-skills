@@ -12,7 +12,7 @@ MUST follow MUST, SHOULD follow SHOULD, and MAY pick either branch of MAY.
 - **Rule** each paragraph and list item MUST hold MUST, MUST NOT, SHOULD,
   SHOULD NOT or MAY in capitals. Lowercase forms MUST NOT appear outside code
   and quotes.
-- **Check** `scripts/keyword-check.ts`, copied from the workspace repo, runs
+- **Check** `scripts/keyword-check.mts`, copied from the workspace repo, runs
   in `mise run lint`.
 
 ## Limits
