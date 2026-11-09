@@ -132,7 +132,7 @@ gets a reply with the SHA and one sentence on the fix. The skill pushes and
 replies without asking.
 
 **`implement-ticket`** carries a Jira ticket through the repo's checkout and
-shipping rules. It uses clean default branch when allowed, otherwise a new
+shipping rules. It works on a clean default branch when the repo allows it, otherwise a new
 worktree and PR. It makes the smallest change, commits each step with the
 ticket key, then moves the ticket to the matching status.
 

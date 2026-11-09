@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- **icon-styles** the pick server reads the request body before it answers 403, so Windows no longer resets the socket and the preview test stops failing.
+- **git-worktrees** the background trash delete names `C:\code\.trash` again, with its backslashes.
+- **translations** the examples name the pattern in place of paths in private repos.
+- **implement-ticket** waits on another session that holds the same files, in words that need no private skill.
 - **CI** one release runs at a time again, so two quick merges can no longer pick the same tag. A push to `main` keeps its check run, which Release waits for, `wait-for-checks.sh` gets linted, and each script gets its run bit. The docs lose a pasted "Release build timing" block.
 - **Parallel release builds** releases build beside checks after a push. Only publication waits for matching checks; open PRs hold no build.
 
