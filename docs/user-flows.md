@@ -9,8 +9,10 @@ commands.
 2. They run `install.sh`, or `install.ps1` on Windows, with `--lang`.
 3. The installer writes `LANGUAGE.md` into each skill folder.
 4. It links each skill into every agent folder it finds under `~`.
-5. It adds the writing rules to `~/.claude/CLAUDE.md` and `~/.codex/AGENTS.md`,
-   and git hooks to the clone. On Windows it also adds the turn-voice hooks.
+5. It adds the writing rules to `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`
+   and `~/.kimi-code/AGENTS.md`, and git hooks to the clone.
+6. On Windows it also builds `turn-voice.exe` and adds its hooks to Claude
+   Code, Codex and Kimi Code.
 
 ```mermaid
 flowchart LR
@@ -19,6 +21,7 @@ flowchart LR
   run --> links["links in each agent folder"]
   run --> rules["writing rules in CLAUDE.md, AGENTS.md"]
   run --> hooks["git hooks in the clone"]
+  run -->|Windows| voice["turn-voice hooks"]
 ```
 
 ## Use a skill
@@ -60,6 +63,22 @@ flowchart LR
 flowchart LR
   rerun["install.sh --lang Russian"] --> write["LANGUAGE.md rewritten"]
   write --> next["next review in Russian"]
+```
+
+## Hear the end of a turn
+
+1. The agent ends its turn with a marker on the last line, such as
+   `!!!COMPLETED!!!`.
+2. Claude Code, Codex or Kimi Code runs the `turn-voice` Stop hook.
+3. The hook reads the marker and picks the cue and the phrase.
+4. The person hears the cue, then the folder, the outcome and the session
+   title.
+
+```mermaid
+flowchart LR
+  turn["last line with a marker"] --> hook["turn-voice Stop hook"]
+  hook --> pick["cue and phrase for the outcome"]
+  pick --> hear["cue, folder, outcome, title"]
 ```
 
 ## Hear the voices

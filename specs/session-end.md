@@ -36,15 +36,19 @@
 
 ## How it works
 
-- **`writing-style.instructions.md`** a section "End of a session" holds the
-  rules. Every agent reads that file on each turn.
-- **Sound** a one line shell command per OS. Claude also has a push
-  notification tool.
+- **Rules** the markers come from the person's own rules, outside this repo.
+  This repo ships the hook that hears them.
+- **`hooks/turn-voice`** `install.ps1` builds `turn-voice.cs` and
+  `sound.cs` with `csc.exe` and adds the Stop hooks to Claude Code, Codex and
+  Kimi Code. The hook reads the marker on the last line and plays the cue and
+  the phrase as one sound.
+- **Sound elsewhere** an agent without the hook plays a one line shell command
+  per OS.
 
 ## Limits
 
-- **Agent made** the agent runs the sound itself. An agent that stops
-  without following the rule plays no sound.
+- **Windows only** the hook builds and speaks on Windows. On another OS the
+  agent runs the sound itself, and an agent that skips the rule plays none.
 - **Question tool** an agent without one, such as Codex in a terminal, asks
   in a single line at the end of the answer.
 

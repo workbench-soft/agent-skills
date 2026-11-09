@@ -59,14 +59,15 @@ turn, unasked: the VS Code prompts folder, `~/.claude/CLAUDE.md`,
 `%APPDATA%\Code\User\prompts`. The rules file holds the short version of
 `writing-style`, so each answer follows it before the skill loads.
 
-- **Spoken turn end** on Windows, `install.ps1` gives Claude hooks that play
-  a cue and say the folder, the outcome and the session title. The outcome
-  comes from a marker on the last line, such as `!!!COMPLETED!!!`,
-  `!!!USER STEPS!!!` or `!!!QUESTION!!!`, when your own rules ask the agent
-  to write one.
-- **Voice language** Russian by default, apart from the review language,
-  read by the multilingual `de-DE-SeraphinaMultilingualNeural`, one run of Russian or English at a time. `install.ps1
-  -VoiceLang English` switches the phrases to English.
+- **Spoken turn end** on Windows, `install.ps1` gives Claude Code, Codex and
+  Kimi Code hooks that play a cue and say the folder, the outcome and the
+  session title. The outcome comes from a marker on the last line, such as
+  `!!!COMPLETED!!!`, `!!!USER STEPS!!!` or `!!!QUESTION!!!`, when your own
+  rules ask the agent to write one.
+- **Voice language** the phrases are in Russian by default, whatever the
+  review language. `install.ps1 -VoiceLang English` switches them to English.
+- **Voice** the multilingual `de-DE-SeraphinaMultilingualNeural` reads each
+  run of Russian or English apart, right after the cue.
 - **What it adds for the voice** hooks in `~/.claude/settings.json`,
   `~/.codex/hooks.json` and `~/.kimi-code/config.toml`,
   `turn-voice.exe` in `~/.claude/hooks`, and `uv` and `edge-tts` in your
@@ -122,19 +123,22 @@ verdict: approve, request changes for a real blocker, or comments only.
 
 **`create-pr`** writes the PR description and opens the PR with `gh`. The
 description holds the problem, the solution and a diagram of the user flows.
-It adds what to type and expect from any new command, and links to the designs
-and docs the work used. It also lists the code reused, the packages added and
-the commands that generated code.
+Each diagram comes as a Before and After pair, with nodes green for new, amber
+for changed and red for removed. It adds what to type and expect from any new
+command, and links to the designs and docs the work used. It also lists the
+code reused, the packages added and the commands that generated code.
 
 **`address-comments`** works through the open review threads on a PR. Each
 thread gets the smallest commit that does what the thread agreed on. Then it
 gets a reply with the SHA and one sentence on the fix. The skill pushes and
-replies without asking.
+replies without asking, and updates the PR description when a fix changes
+what the PR does.
 
 **`implement-ticket`** carries a Jira ticket through the repo's checkout and
-shipping rules. It works on a clean default branch when the repo allows it, otherwise a new
-worktree and PR. It makes the smallest change, commits each step with the
-ticket key, then moves the ticket to the matching status.
+shipping rules. It writes the plan to `specs/` first. It works on a clean
+default branch when the repo allows it, otherwise in a new worktree and PR. It
+makes the smallest change, updates the docs, commits each step with the ticket
+key, then moves the ticket to the matching status.
 
 **`specs`** keeps one spec per feature in `specs/<feature>.md`, written before
 the code. Work on a feature with a spec adds a dated entry to that file, and a
@@ -187,8 +191,10 @@ keys go in `TODO.md` with the reason.
 **`git-worktrees`** puts isolated work in its own folder, and your
 checkout stays as it is. It copies the ignored files the app needs, such as
 `.env` and certificates, installs the dependencies and runs the app on a port
-of its own. When the PR merges it moves the folder to the trash in a second, deletes
-it in the background and removes the branch, local and remote, and clears other merged worktrees as it goes. `implement-ticket` uses it when the repo's rules call for isolation. `app-audit` and `review` rely on it.
+of its own. When the PR merges, it moves the folder to a trash folder in a
+second and deletes it in the background. The branch goes too, local and
+remote, and so do other merged worktrees. `implement-ticket` uses it when the
+repo's rules call for isolation, and `app-audit` and `review` rely on it.
 
 **`javascript`** keeps JS and TS code fast and safe. Independent calls run
 together, request data stays out of shared module state, and lookups go
@@ -239,7 +245,8 @@ site first gets a home page with 300 words of visible text and 5 content
 pages, since a reviewer who sees a map or a button refuses the account. Debug
 builds get test ads, the consent message goes live, and the Play Console ads
 and data safety pages get filled in. A Trusted Web Activity app hides
-AdSense, because the policy bans it inside apps.
+AdSense, because the policy bans it inside apps. The developer's own phone
+sees no ads in any build, and a switch in the app shows them again.
 
 **`play-release`** brings an Android app to Google Play internal testing. It
 finds or makes the upload key outside the repo and builds a signed bundle.
@@ -417,6 +424,8 @@ Ask in plain words:
 - "open a PR for this branch"
 - "do PROJ-123"
 - "write a spec for photo upload"
+- "write a one-pager for this design"
+- "translate the new buttons"
 - "clean up the worktrees"
 - "install jq through mise"
 - "audit the app and fix what you can"
@@ -471,10 +480,12 @@ mise run test
 
 ## Releases
 
-Each push to `main` gets a release once its `check` run passes, on the
-[Releases page](https://github.com/workbench-soft/agent-skills/releases), such
-as `v2026.10.30.1`. Its notes list the commits since the release before. The
-release carries no files, so the install above stays the same.
+Release starts once the `check` run of a push to `main` passes. A failed
+`check` starts no release. Release tags the commit with the date, such as
+`v2026.10.30.1`, and publishes it on the
+[Releases page](https://github.com/workbench-soft/agent-skills/releases). Its
+notes list the commits since the release before. The release carries no
+files, so the install above stays the same.
 
 ## Licence
 
