@@ -6,8 +6,9 @@ Skills for a coding agent. Each skill is a folder in `skills/` with a `SKILL.md`
 
 - **What it gives** `writing-style` makes every text the agent writes short and plain.
 - **Where** loads by itself before chat answers, commits, PRs and docs.
+- **Long texts** `one-pager` writes a spec, a design doc or a write-up in full first, then a one-screen summary on top. `specs` calls it for each spec.
 
-Spec: [writing-only-rules](../specs/writing-only-rules.md), [agent-doc-keywords](../specs/agent-doc-keywords.md), [agent-instructions](../specs/agent-instructions.md).
+Spec: [writing-only-rules](../specs/writing-only-rules.md), [agent-doc-keywords](../specs/agent-doc-keywords.md), [agent-instructions](../specs/agent-instructions.md), [one-pager](../specs/one-pager.md), [token-budget](../specs/token-budget.md).
 
 ## Code work
 
