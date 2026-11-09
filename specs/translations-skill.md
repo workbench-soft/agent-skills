@@ -29,3 +29,9 @@ from native code and servers included.
   agent working on native code missed them.
 - **What** one skill holds every rule on translations. The conventions point
   at it.
+
+### 2026-11-09 week review
+
+- **Why** the skill is public and pointed at paths in two private repos, which
+  a reader outside the org can't open.
+- **What** the examples now describe the pattern with no private repo name.
