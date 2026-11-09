@@ -47,9 +47,9 @@ The repo rules MUST beat this skill. The agent MUST read whichever exist:
 ## 3. Choose the checkout
 
 The agent MUST follow the repo's checkout and shipping rules. When those rules
-allow default branch work and the checkout is clean with no overlapping file
-claims, the agent MAY work there. If a claim overlaps, the agent MUST wait and
-check again. A dirty checkout MUST use a new worktree. A protected default
+allow default branch work and the checkout is clean, with no other session on
+the same files, the agent MAY work there. When another session holds those
+files, the agent MUST wait and check again. A dirty checkout MUST use a new worktree. A protected default
 branch MUST use a worktree through `git-worktrees`.
 
 - **Branch name** a worktree branch MUST hold the ticket key and follow the

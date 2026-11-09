@@ -142,7 +142,7 @@ On Windows the path MUST be written out, and `rd` leaves the targets of pnpm
 junctions alone. Elsewhere a background `rm -rf` MAY do the job:
 
 ```bash
-powershell -NoProfile -Command "Start-Process cmd -WindowStyle Hidden -ArgumentList '/c','rd /s /q C:code.trash'"
+powershell -NoProfile -Command "Start-Process cmd -WindowStyle Hidden -ArgumentList '/c','rd /s /q C:\code\.trash'"
 ```
 
 - **Branch delete** the agent MAY use `git branch -D` here, because the PR

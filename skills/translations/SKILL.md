@@ -33,8 +33,8 @@ Each stack MUST use the tool in its row:
 | Rust              | `rust-i18n`                                              |
 | VS Code extension | `vscode.l10n` and `package.nls.<lang>.json`              |
 
-In TypeScript, `en.ts` MUST type the keys, as in `tickalot/src/i18n`, so a
-missing key fails `tsc`.
+In TypeScript, `en.ts` MUST type the keys, and each other catalog MUST take
+that type, so a missing key fails `tsc`.
 
 ## 2. Add or change a string
 
@@ -67,8 +67,8 @@ MUST NOT show that text to the person.
 - **Code first** native code and servers SHOULD send a stable code, such as
   `E_BUSY`, and the UI MUST pick the key from the code.
 - **Known texts** where only English text arrives, a pure function MUST map
-  each known text to a key, with a test beside it. Shuttrix does this in
-  `apps/shuttrix/src/camera/error-reason.ts` of `memories`.
+  each known text to a key, with a test beside it, such as
+  `src/camera/error-reason.ts` for camera errors.
 - **Unknown text** the mapper MUST fall back to a translated "Something went
   wrong. Try again." The raw text SHOULD go to the log for debugging.
 - **New native error** a change that adds an error text to native code MUST

@@ -179,12 +179,17 @@ class PickHandler(SimpleHTTPRequestHandler):
         super().do_GET()
 
     def do_POST(self) -> None:
+        # The body is read before any answer: Windows resets a socket closed with unread
+        # data, and the caller then sees a dropped connection in place of the 403.
+        try:
+            body = self.rfile.read(int(self.headers.get("Content-Length", 0)))
+        except ValueError:
+            return self.send_error(400, "bad Content-Length")
         if not self.own_page():
             return self.send_error(403, "only the preview page may call this")
         folder = Path(self.directory)
         try:
-            length = int(self.headers.get("Content-Length", 0))
-            data = json.loads(self.rfile.read(length))
+            data = json.loads(body)
             action, name = data["action"], data.get("file", "")
             comment = " ".join(str(data.get("comment", "")).split())
         except (ValueError, KeyError, TypeError, AttributeError):
