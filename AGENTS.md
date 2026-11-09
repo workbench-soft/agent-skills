@@ -53,7 +53,7 @@ words mean, since the reader knows.
 - **Examples** a fenced block, a quote and table rows MAY hold no key word.
   The line above them MUST hold the key word that covers them.
 
-`scripts/keyword-check.ts` MUST pass on each file in scope. `mise run lint`
+`scripts/keyword-check.mts` MUST pass on each file in scope. `mise run lint`
 runs it.
 
 ## Prose
@@ -102,7 +102,7 @@ since a Windows clone without `core.symlinks` turns a link into a text file.
 ## Before you commit
 
 1. `scripts/check-prose-budget.py`, `scripts/check-skills.py` and
-   `scripts/keyword-check.ts` MUST exit 0.
+   `scripts/keyword-check.mts` MUST exit 0.
 2. Each paragraph and list item MUST hold a key word, and no line MAY explain
    the key words.
 3. Each MUST SHOULD hold up as "breaking this ruins the output". Others

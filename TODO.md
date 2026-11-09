@@ -17,3 +17,4 @@
 - Left: turn-voice and the relink hooks fail silently unless `TURN_VOICE_LOG` is set. Logging is a design call
 - Left: a release run cancelled between the tag push and `gh release create` leaves a tag with no release. Rare, harmless
 - Left: check_names.py counts SERVFAIL as taken and has no tests for `verdict` and the page parsers. Tests need saved live pages
+- Left: the piped install restore of deleted files (2026-11-10 audit) has no automated test. A test needs a clone with an origin inside the temp home test, which runs for minutes on Windows

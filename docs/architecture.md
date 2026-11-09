@@ -96,7 +96,7 @@ flowchart LR
 
 ### CI and releases: GitHub runners, date tags
 
-- **Picked** `check.yml` runs on `windows-latest` for the PowerShell install and on `ubuntu-latest` for `sh`. `release.yml` starts on each push to `main` beside `check.yml`, waits in `wait-for-checks.sh` for the check run of the same commit, then tags it with a date version such as `v2026.10.30.1`. Open PRs hold no release.
+- **Picked** `check.yml` runs on `windows-latest` for the PowerShell install and on `ubuntu-latest` for `sh`. `release.yml` starts through `workflow_run` once `check.yml` passes on a push to `main`, then tags the commit with a date version such as `v2026.10.30.1`. Open PRs hold no release.
 - **Why** the repo is public, so GitHub runners cost 0 minutes and fork code stays off the PC. Before the Release workflow a merge left no tagged point to go back to.
 - **Trade-off** a release holds notes only, since the repo builds no file.
 - **Rejected** the self-hosted `[self-hosted, local]` runner: the org keeps it for private repos, and a fork PR would run on the PC.

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **install.sh** a piped install restores only the files deleted by hand in `~/.agent-skills`, and keeps your edits to the rules there.
+- **CI** `mise run lint` stops naming the deleted `wait-for-checks.sh`, so `check` passes on `main` and releases go out again.
 - **CI** Release starts on `workflow_run` once Checks pass on `main`, one at a time. It no longer holds a PC runner while it waits, which starved Checks and timed releases out.
 
 - **icon-styles** the pick server reads the request body before it answers 403, so Windows no longer resets the socket and the preview test stops failing.
