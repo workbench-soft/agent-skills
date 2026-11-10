@@ -197,6 +197,13 @@ The agent MAY pass any of these targets, and each MUST write these files:
   get its background colour in `ic_launcher_background`.
 - **Keep the source** it MUST copy the picked SVG next to the exports as
   `icon.svg`, so the next change starts from it.
+- **In the UI** the icon names the app, so the UI MUST show it. The agent
+  MUST put it beside the app name in the main screen's header, on the home
+  page or landing page, and in the nav of the site pages. It MUST also swap
+  it in each other place the old icon shows: the about screen, the splash,
+  a notification icon, the `og:image`, the README.
+- **Find them** the agent SHOULD search the repo for the old icon's file
+  names and colours, so no place keeps the old one.
 
 ## 6. Check and finish
 
@@ -209,5 +216,10 @@ The agent MAY pass any of these targets, and each MUST write these files:
   10 drafts, `preview.html` and `picked.txt`.
 - **Ship** the commit MUST go through the repo's usual flow: a branch, a PR,
   a merge.
+- **Stores** right after the merge, the agent MUST load `store-media` and put
+  the new icon in each place outside the repo: Google Play, AdMob, AdSense,
+  the app's page on the studio site. It MUST do each step itself in the
+  person's Chrome, and ask the person only for a login or the send for
+  review. It MUST NOT wait to be asked.
 - **Report** the agent MUST report the picked number and style, the files
   written, and each manifest changed.

@@ -195,7 +195,7 @@ Spec: [legal-check](../specs/legal-check.md).
 
 - **Skill** `icon-styles`.
 - **What it gives** 10 icons for the repo's app, each in a style picked for its theme, in a picker in the chat. A click selects one, and buttons send Use, Redo with a comment, or Draw 10 new styles. Without chat widgets, a local page does the same.
-- **Where** the drafts stay in `design/icons/<date>/`. A script exports the pick to PNG, `.ico`, Android, iOS, Expo and PWA sets.
+- **Where** the drafts stay in `design/icons/<date>/`. A script exports the pick to PNG, `.ico`, Android, iOS, Expo and PWA sets. The pick shows beside the app name in the header, the home page and the site nav, and `store-media` then updates Google Play, AdMob and AdSense.
 - **Limits** the agent draws flat SVG shapes by hand, and the export needs `resvg` through mise.
 
 Spec: [icon-styles](../specs/icon-styles.md).

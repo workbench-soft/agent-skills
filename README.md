@@ -290,7 +290,9 @@ one and press Use, or ask for a redo with a comment. An agent without chat
 widgets serves the same picker as a local page. A Python script then writes
 the PNG sizes, the Windows
 `.ico` and the Android, iOS and PWA sets through `resvg`. All 10 drafts stay
-in the repo under `design/icons/<date>/`.
+in the repo under `design/icons/<date>/`. The pick also shows beside the app
+name in the header and on the home page, and right after the merge
+`store-media` puts it in Google Play, AdMob and AdSense.
 
 **`demo-media`** takes screenshots and short videos of the app for the
 README. It writes made-up demo data that looks like real use, runs the app on
