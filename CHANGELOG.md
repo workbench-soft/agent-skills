@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **Lint before the push** a pre-push hook runs `mise run lint`, so a lint or format error stays on the PC instead of failing Checks on `main`.
+
 - **icon-styles** the picked icon now shows beside the app name in the header, the home page and the site nav. Right after the merge the agent updates Google Play, AdMob and AdSense through `store-media`, unasked.
 - **Docs** `docs/features.md` gets a heading per skill with its spec. The README, the architecture, the user flows and the launch and session end specs match the code: Release after `check` through `workflow_run`, turn-voice in Codex and Kimi Code, the new skill behaviour of the week.
 - **install.sh** a piped install restores only the files deleted by hand in `~/.agent-skills`, and keeps your edits to the rules there.
