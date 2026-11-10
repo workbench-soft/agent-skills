@@ -110,3 +110,10 @@
   - **`SKILL.md`** step 4 sends that image through the agent's file tool before any question. The widget, the served page or the question tool comes after it.
 - **Found on the way** a `feTurbulence` wobble rendered fine in the browser and tore the letters apart in `resvg`. The sheet comes from `resvg`, so the agent now sees such a draft before the export does.
 - **Docs** `CHANGELOG.md`.
+
+### 2026-11-11 the icon goes into the UI and the stores
+
+- **Why** the person wants a new icon to show in the app itself and to reach Google Play, AdMob and AdSense without being asked. The icon names the app, so the UI has to show it.
+- **Changes**
+  - **`SKILL.md`** step 5 puts the icon beside the app name in the main header, the home page and the site nav, and swaps it in each other place the old one shows. Step 6 loads `store-media` right after the merge and does the store steps in the person's Chrome.
+- **Docs** `README.md`, `docs/features.md`, `CHANGELOG.md`.
