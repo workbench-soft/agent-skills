@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **Agent hooks** the install adds the time hook, the Chrome only hook and the archive block to Claude Code, the time hook to Codex and Kimi Code, and copies the MCP servers of Claude Code to both. They move here from `agent-skills-private`, along with the `guide-on-site`, `hung-process` and `rewrite-repo` skills.
+
 - **Older runs stop on GitHub** a newer push to `main` cancels the Checks and the release build of the older commit through `concurrency`, with the local-ci page off too.
 
 - **git-worktrees** an agent in a worktree doesn't run `git stash`, since every worktree of a repo shares it. Work goes aside in a WIP commit or a `git diff` patch. The lens brief of `reviewer` and `app-audit` carries the same line.

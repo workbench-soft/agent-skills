@@ -77,6 +77,19 @@ turn, unasked: the VS Code prompts folder, `~/.claude/CLAUDE.md`,
   is then cached in `%LOCALAPPDATA%\turn-voice`. Without `edge-tts` only the
   cue plays.
 
+With Node 24 on the PATH, the installer also adds agent hooks. Your own
+hooks and tables stay:
+
+- **Time** each prompt in Claude Code, Codex and Kimi Code starts with
+  `Now: yyyy-MM-dd HH:mm:ss`, so the agent knows the time.
+- **Chrome only** Claude Code can't open its built-in browser, and the
+  message sends it to Claude in Chrome. Remove that group from
+  `~/.claude/settings.json` to keep the built-in browser.
+- **Archive block** Claude Code can't archive a session. You archive each one.
+- **MCP copy** the user MCP servers of `~/.claude.json` go to
+  `~/.codex/config.toml` and `~/.kimi-code/mcp.json`. Codex asks you to
+  trust its hook once, in `/hooks`.
+
 New skills reach the agents by themselves. The installer adds git hooks to
 the folder the agents link to. After a `git pull`, `merge`, `checkout` or
 `rebase` there, the hooks link each new skill and drop links to removed ones.
@@ -360,6 +373,21 @@ repo, and writes a short comment in a human voice for each. A Playwright
 script then opens each thread in Chrome and types the draft into the comment
 box. You read it and press Comment.
 
+**`rewrite-repo`** reworks a repo so each file reads new and the app behaves
+the same. It records the tests and the output first, moves the files into a
+new layout, renames functions after what they do and moves the code to modern
+syntax. At the end it wipes the git history into one commit through
+`reset-history`.
+
+**`guide-on-site`** walks you through a console or a form in your Chrome. It
+clicks to the exact screen, fills the fields it knows and stops at the one step
+only you can take, such as a login or a CAPTCHA. Then it checks the page and
+opens the next one.
+
+**`hung-process`** frees a stuck run on Windows: a command silent for 5
+minutes, a busy port, a file lock. It stops only the dev tools of its own
+worktree, or the one holding the port, and reruns the step.
+
 These skills open dashboards in the agent's browser and ask you to log in
 there. They don't type passwords or card details. Each leaves `TODO.md` in the
 repo with the tasks still yours and the dates to check back.
@@ -465,7 +493,8 @@ On Windows, in PowerShell:
 powershell -ExecutionPolicy Bypass -File "$HOME\.agent-skills\install.ps1" -Uninstall
 ```
 
-It lists the folders it will clear and asks before it deletes. Your own notes
+It lists the folders it will clear and asks before it deletes. On a yes the
+agent hooks and the MCP copies go too. Your own notes
 in `CLAUDE.md` and `AGENTS.md` stay, and only the installer's block goes.
 `--yes` MAY be added to skip the question.
 

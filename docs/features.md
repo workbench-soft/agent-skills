@@ -129,6 +129,27 @@ Spec: [monorepo-skill](../specs/monorepo-skill.md).
 
 Spec: [reset-history-skill](../specs/reset-history-skill.md).
 
+## Rewrite a repo
+
+- **What it gives** `rewrite-repo` renames files and functions, moves folders and rewrites the docs, with the same behaviour.
+- **Limits** ends with a single fresh commit in place of the history.
+
+Spec: [rewrite-repo-skill](../specs/rewrite-repo-skill.md).
+
+## Help on a site
+
+- **What it gives** `guide-on-site` opens each screen in the person's Chrome, fills the known fields and stops at the login, the secret or the payment.
+- **Limits** the person types passwords and card numbers.
+
+Spec: [move-from-private](../specs/move-from-private.md).
+
+## Hung runs
+
+- **What it gives** `hung-process` finds the dev tool that holds a port or a lock, ends its process tree and reruns the step.
+- **Limits** Windows only. An "Access is denied" gets an elevated command for the person.
+
+Spec: [move-from-private](../specs/move-from-private.md).
+
 ## Search setup
 
 - **Skill** `seo-setup`.
@@ -257,6 +278,14 @@ Spec: [session-end](../specs/session-end.md).
 - **Where** `install.sh` on macOS and Linux, `install.ps1` on Windows.
 
 Spec: [install](../specs/install.md), [install-auto-link](../specs/install-auto-link.md).
+
+## Agent hooks
+
+- **What it gives** the time on each prompt, the Chrome only hook and the archive block in Claude Code, and the time hook in Codex and Kimi Code.
+- **MCP copy** the user MCP servers of Claude Code go to Codex and Kimi Code.
+- **Limits** needs Node 24. An install from `agent-skills-private` left its own markers, and the install takes those blocks over.
+
+Spec: [claude-hooks](../specs/claude-hooks.md), [any-agent](../specs/any-agent.md).
 
 ## Releases
 
