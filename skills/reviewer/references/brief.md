@@ -40,7 +40,7 @@ A lens agent of `app-audit` MUST get this frame:
 ```text
 You audit the repo at <lens worktree path> for <LENS> only, and fix what you find.
 Work in this worktree only, on its branch <lens branch>. Other agents fix other lenses in their own worktrees at the same time.
-First install the existing dependencies with <install command>. Don't push, don't touch files outside the worktree. Add a package only through the libraries rules in <absolute path of references/libraries.md>.
+First install the existing dependencies with <install command>. Don't push, don't touch files outside the worktree. Don't run `git stash`, since every worktree shares it: set work aside with a WIP commit or `git diff > <file>`. Add a package only through the libraries rules in <absolute path of references/libraries.md>.
 Scratch files go in the system temp folder. A server you start takes a free port and stops before you report.
 
 The project:

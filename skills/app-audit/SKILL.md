@@ -93,6 +93,8 @@ core: the strongest model, one subagent per lens in its own worktree, all at
 once, with the fix mode frame of its brief file.
 
 - **Skip list** the brief MUST carry the Leave items of `TODO.md`.
+- **No stash** the brief MUST keep the line that bans `git stash`, since the
+  lens worktrees share one stash.
 - **Triage** the brief MUST point at the absolute path of
   [references/triage.md](references/triage.md).
 - **No subagent tool** the lenses MUST run in turn in the audit worktree. The

@@ -191,7 +191,8 @@ keys go in `TODO.md` with the reason.
 **`git-worktrees`** puts isolated work in its own folder, and your
 checkout stays as it is. It copies the ignored files the app needs, such as
 `.env` and certificates, installs the dependencies and runs the app on a port
-of its own. When the PR merges, it moves the folder to a trash folder in a
+of its own. Agents there set work aside in a WIP commit, since the stash is
+shared by every worktree. When the PR merges, it moves the folder to a trash folder in a
 second and deletes it in the background. The branch goes too, local and
 remote, and so do other merged worktrees. `implement-ticket` uses it when the
 repo's rules call for isolation, and `app-audit` and `review` rely on it.
