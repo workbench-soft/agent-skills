@@ -94,6 +94,11 @@ The agent SHOULD treat the worktree as a normal checkout. It MUST commit, push
 and open the PR as the task's own skill says. Before step 6, the shell MUST be
 out of `$dir`.
 
+- **No stash** an agent in a worktree MUST NOT run `git stash`. Each worktree
+  of a repo shares one stash, so a pop can take another agent's work.
+- **Set aside** to put work aside, the agent SHOULD make a WIP commit on its
+  own branch, or save a patch with `git diff > <file>`.
+
 ## 6. Remove
 
 This step MUST run only once the work is finished:

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **git-worktrees** an agent in a worktree doesn't run `git stash`, since every worktree of a repo shares it. Work goes aside in a WIP commit or a `git diff` patch. The lens brief of `reviewer` and `app-audit` carries the same line.
+
 - **Lint before the push** a pre-push hook runs `mise run lint`, so a lint or format error stays on the PC instead of failing Checks on `main`.
 
 - **icon-styles** the picked icon now shows beside the app name in the header, the home page and the site nav. Right after the merge the agent updates Google Play, AdMob and AdSense through `store-media`, unasked.
