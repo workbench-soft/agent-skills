@@ -57,3 +57,10 @@ Worktrees, folders and branches piled up after their PRs merged.
 - **Limits** a locked file stops the move, as it stopped `git worktree remove`. The disk space comes back only once the background delete ends.
 - **Steps** spec, the skill, docs.
 - **Docs** `README.md`, `CHANGELOG.md`.
+
+### 2026-11-11 No git stash in a worktree
+
+- **Why** in a farnear app audit, 2 lens subagents each ran `git stash` in their own worktree. The stash is shared by every worktree of a repo, so one popped the other's stash and their uncommitted work got swapped.
+- **Changes** `skills/git-worktrees/SKILL.md` step 5 bans `git stash` and sets work aside with a WIP commit or `git diff > <file>`. The fix mode frame in `skills/reviewer/references/brief.md` carries the ban, and `skills/app-audit/SKILL.md` step 4 keeps it in each lens brief.
+- **Steps** spec, the skills, docs.
+- **Docs** `README.md`, `docs/features.md`, `CHANGELOG.md`.
