@@ -307,6 +307,45 @@ EOF
   done
 }
 
+# Node and mise on Windows read /c/... as C:c...
+native() {
+  case $(uname -s) in
+    MINGW* | MSYS* | CYGWIN*) cygpath -w "$1" ;;
+    *) printf '%s
+' "$1" ;;
+  esac
+}
+
+# A mise node shim stops on an untrusted mise.toml, as in a fresh clone.
+# It trusts this repo's and skips the ones above it.
+run_node() { # script args...
+  (
+    cd "$root"
+    MISE_TRUSTED_CONFIG_PATHS=$(native "$root") MISE_CEILING_PATHS=$(native "$(dirname "$root")") node "$@"
+  )
+}
+
+# Claude Code gets the time hook, the Chrome only hook and the archive block.
+# Codex and Kimi Code get the time hook and the MCP servers of Claude Code.
+# specs/claude-hooks.md and specs/any-agent.md map each piece.
+agent_hooks() { # [--uninstall]
+  if ! command -v node >/dev/null; then
+    echo "skipped the agent hooks: install Node 24 and run this again" >&2
+    return 0
+  fi
+  native_home=$(native "$HOME")
+  if [ -d "$HOME/.claude" ]; then
+    run_node claude/install-hooks.mts "$native_home/.claude/settings.json" "$@"
+  fi
+  if [ -d "$HOME/.codex" ]; then
+    run_node claude/install-hooks.mts "$native_home/.codex/hooks.json" agents/codex-hooks.json "$@"
+  fi
+  if [ -d "$HOME/.kimi-code" ]; then
+    run_node agents/kimi-hooks.mts "$native_home/.kimi-code/config.toml" "$@"
+  fi
+  run_node agents/sync-mcp.mts "$native_home/.claude.json" "$native_home/.codex/config.toml" "$native_home/.kimi-code/mcp.json" "$@"
+}
+
 if [ "$uninstall" -eq 1 ]; then
   doomed=""
   listing=""
@@ -377,7 +416,8 @@ $file (the writing rules block only)"
   done
 
   if [ -z "$doomed" ] && [ -z "$rule_files" ]; then
-    echo "nothing to remove"
+    agent_hooks --uninstall
+    echo "nothing else to remove"
     exit 0
   fi
 
@@ -405,6 +445,7 @@ $file (the writing rules block only)"
     strip_rules_block "$file" || true
   done
   IFS=$old_ifs
+  agent_hooks --uninstall
   echo "removed. The folder in $root is still there, delete it by hand if you want it gone."
   exit 0
 fi
@@ -475,6 +516,7 @@ done
 
 link_writing_rules
 install_relink_hooks
+agent_hooks
 
 echo "Skills live in $root, report language $lang."
 echo "Linked into:$linked"

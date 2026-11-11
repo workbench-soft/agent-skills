@@ -43,6 +43,14 @@ flowchart LR
 - **Rejected** a rerun by hand after each pull: `rewrite-repo` landed on `main` and the agents missed it until the next run.
 - **Cost to undo** medium: `install.sh`, `install.ps1`, their CI jobs and the README.
 
+### Agent hooks: a Node merge from `claude/hooks.json`
+
+- **Picked** `install.sh` runs `claude/install-hooks.mts`, which puts each group from `claude/hooks.json` into `~/.claude/settings.json` and from `agents/codex-hooks.json` into `~/.codex/hooks.json`. `agents/kimi-hooks.mts` and `agents/sync-mcp.mts` write marked blocks for Kimi Code and Codex.
+- **Why** a JSON merge in `sh` breaks on the person's own hooks, and Node is already pinned in `mise.toml`.
+- **Trade-off** without Node the install skips the hooks and says so.
+- **Rejected** a copy of the settings file: it would wipe the person's own hooks.
+- **Cost to undo** low: `claude/`, `agents/` and the `agent_hooks` step of `install.sh`.
+
 ### Installer language: POSIX sh, with a PowerShell wrapper
 
 - **Picked** one `install.sh`. `install.ps1` finds the bash of Git for Windows, installs Git through `winget` when it is missing, and runs `install.sh`.

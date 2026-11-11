@@ -161,4 +161,64 @@ test ! -L "$home/.claude/skills/zz-new"
 HOME="$home" sh "$src/install.sh" --uninstall --yes
 test ! -e "$src/.git/hooks/post-merge"
 
+# The agent hooks and the MCP copy, beside the person's own hooks and tables.
+home="$scratch/home7"
+src="$scratch/src7"
+copy_repo "$src"
+mkdir -p "$home/.claude" "$home/.codex" "$home/.kimi-code"
+# An empty hooks file counts as no hooks.
+: >"$home/.codex/hooks.json"
+# The person's own Stop hook, and the time hook an older PowerShell script added.
+cat >"$home/.claude/settings.json" <<'EOF'
+{"model": "opus", "hooks": {
+  "Stop": [{"hooks": [{"type": "command", "command": "turn-voice.exe"}]}],
+  "UserPromptSubmit": [{"hooks": [{"type": "command", "command": "powershell", "args": ["'Now: ' + (Get-Date)"]}]}]
+}}
+EOF
+# Claude Code MCP servers, one with a key header, and a Codex table of the person's.
+printf '{"mcpServers": {"palace": {"command": "uvx", "args": ["palace"]}, "web": {"type": "http", "url": "https://x/mcp", "headers": {"Authorization": "Bearer k"}}}}\n' >"$home/.claude.json"
+# An install from agent-skills-private left its own markers. They count as this repo's.
+printf 'model = "gpt"\n\n[mcp_servers.mine]\ncommand = "mine"\n\n# agent-skills-private: MCP servers of Claude Code\n[mcp_servers."palace"]\ncommand = "old"\n# agent-skills-private: end\n' >"$home/.codex/config.toml"
+printf '# agent-skills-private: hooks\n[[hooks]]\nevent = "X"\n# agent-skills-private: end\n' >"$home/.kimi-code/config.toml"
+HOME="$home" sh "$src/install.sh" --lang English
+HOME="$home" sh "$src/install.sh" --lang English
+# Claude: one time hook in bash, one browser block, one archive block, the person's hook.
+test 1 -eq "$(grep -c 'Now: ' "$home/.claude/settings.json")"
+grep -q "date '+Now: " "$home/.claude/settings.json"
+test 1 -eq "$(grep -c 'mcp__Claude_Browser__' "$home/.claude/settings.json")"
+grep -q archive_session "$home/.claude/settings.json"
+grep -q turn-voice "$home/.claude/settings.json"
+# Codex: one time hook, the server in a block once, the person's table kept.
+test 1 -eq "$(grep -c commandWindows "$home/.codex/hooks.json")"
+test 1 -eq "$(grep -cxF '[mcp_servers."palace"]' "$home/.codex/config.toml")"
+test 0 -eq "$(grep -c 'agent-skills-private\|command = "old"' "$home/.codex/config.toml")"
+grep -qxF '[mcp_servers.mine]' "$home/.codex/config.toml"
+grep -qxF 'http_headers = { "Authorization" = "Bearer k" }' "$home/.codex/config.toml"
+# Codex saves config.toml without the open comment. A moved server still gets its new url, once.
+sed -i '/MCP servers of Claude Code/d' "$home/.codex/config.toml"
+sed -i 's#https://x/mcp#https://y/mcp#' "$home/.claude.json"
+HOME="$home" sh "$src/install.sh" --lang English
+test 1 -eq "$(grep -cxF '[mcp_servers."web"]' "$home/.codex/config.toml")"
+grep -qxF 'url = "https://y/mcp"' "$home/.codex/config.toml"
+# Kimi: the server and one time hook, with the old block gone.
+grep -q '"palace"' "$home/.kimi-code/mcp.json"
+test 1 -eq "$(grep -cxF '[[hooks]]' "$home/.kimi-code/config.toml")"
+test 0 -eq "$(grep -c 'agent-skills-private\|event = "X"' "$home/.kimi-code/config.toml")"
+HOME="$home" sh "$src/install.sh" --uninstall --yes
+# The hooks and the copies are gone. The person's hook, settings and tables stay.
+test 0 -eq "$(grep -c 'Now: \|mcp__Claude_Browser__\|archive_session' "$home/.claude/settings.json")"
+grep -q turn-voice "$home/.claude/settings.json"
+grep -q '"model": "opus"' "$home/.claude/settings.json"
+test 0 -eq "$(grep -c 'Now: ' "$home/.codex/hooks.json")"
+test 0 -eq "$(cat "$home/.codex/config.toml" "$home/.kimi-code/mcp.json" | grep -c palace)"
+grep -qxF '[mcp_servers.mine]' "$home/.codex/config.toml"
+test 0 -eq "$(grep -c hooks "$home/.kimi-code/config.toml")"
+# A block that lost its end line stays as it is, with the person's tables after it.
+printf '# agent-skills: hooks\n[[hooks]]\nevent = "X"\n\n[mine]\nkeep = true\n' >"$home/.kimi-code/config.toml"
+printf '# agent-skills: MCP servers of Claude Code\n[mcp_servers."palace"]\ncommand = "old"\n\n[projects.mine]\nkeep = true\n' >"$home/.codex/config.toml"
+HOME="$home" sh "$src/install.sh" --lang English
+grep -qxF '[mine]' "$home/.kimi-code/config.toml"
+grep -qxF '[projects.mine]' "$home/.codex/config.toml"
+HOME="$home" sh "$src/install.sh" --uninstall --yes
+
 echo "install test passed"

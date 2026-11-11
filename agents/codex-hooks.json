@@ -1,0 +1,16 @@
+[
+  {
+    "event": "UserPromptSubmit",
+    "marker": "Now: ",
+    "group": {
+      "hooks": [
+        {
+          "type": "command",
+          "command": "date '+Now: %Y-%m-%d %H:%M:%S'",
+          "commandWindows": "powershell -NoProfile -Command \"'Now: ' + (Get-Date -Format 'yyyy-MM-dd HH:mm:ss')\"",
+          "timeout": 10
+        }
+      ]
+    }
+  }
+]

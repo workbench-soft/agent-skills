@@ -1,0 +1,43 @@
+[
+  {
+    "event": "UserPromptSubmit",
+    "marker": "Now: ",
+    "group": {
+      "hooks": [
+        {
+          "type": "command",
+          "shell": "bash",
+          "command": "date '+Now: %Y-%m-%d %H:%M:%S'"
+        }
+      ]
+    }
+  },
+  {
+    "event": "PreToolUse",
+    "marker": "mcp__Claude_Browser__",
+    "group": {
+      "matcher": "mcp__Claude_Browser__.*|mcp__remote-devices__Claude_Browser__.*|enable__mcp__remote-devices__Claude_Browser",
+      "hooks": [
+        {
+          "type": "command",
+          "shell": "bash",
+          "command": "echo 'The built-in browser is blocked. Open sites only in the person'\\''s Chrome through Claude in Chrome (mcp__claude-in-chrome__* tools).' >&2; exit 2"
+        }
+      ]
+    }
+  },
+  {
+    "event": "PreToolUse",
+    "marker": "mcp__ccd_session_mgmt__archive_session",
+    "group": {
+      "matcher": "mcp__ccd_session_mgmt__archive_session",
+      "hooks": [
+        {
+          "type": "command",
+          "shell": "bash",
+          "command": "echo 'Archiving a session is blocked. Only the person archives sessions, by hand. Leave the session as it is.' >&2; exit 2"
+        }
+      ]
+    }
+  }
+]

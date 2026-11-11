@@ -11,7 +11,10 @@ commands.
 4. It links each skill into every agent folder it finds under `~`.
 5. It adds the writing rules to `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`
    and `~/.kimi-code/AGENTS.md`, and git hooks to the clone.
-6. On Windows it also builds `turn-voice.exe` and adds its hooks to Claude
+6. With Node on the PATH it adds the time hook to Claude Code, Codex and
+   Kimi Code, the Chrome only and archive hooks to Claude Code, and copies the
+   MCP servers of Claude Code to Codex and Kimi Code.
+7. On Windows it also builds `turn-voice.exe` and adds its hooks to Claude
    Code, Codex and Kimi Code.
 
 ```mermaid
@@ -21,6 +24,7 @@ flowchart LR
   run --> links["links in each agent folder"]
   run --> rules["writing rules in CLAUDE.md, AGENTS.md"]
   run --> hooks["git hooks in the clone"]
+  run -->|Node| agent["agent hooks, MCP copy"]
   run -->|Windows| voice["turn-voice hooks"]
 ```
 
@@ -103,7 +107,8 @@ flowchart LR
 
 1. The person runs the install with `--uninstall`.
 2. The installer lists each link, rules block and git hook it found.
-3. On a yes, or with `--yes`, it deletes them. The clone stays.
+3. On a yes, or with `--yes`, it deletes them with the agent hooks and the
+   MCP copies. The clone stays.
 
 ```mermaid
 flowchart LR
