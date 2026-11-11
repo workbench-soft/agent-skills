@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **Older runs stop on GitHub** a newer push to `main` cancels the Checks and the release build of the older commit through `concurrency`, with the local-ci page off too.
+
 - **git-worktrees** an agent in a worktree doesn't run `git stash`, since every worktree of a repo shares it. Work goes aside in a WIP commit or a `git diff` patch. The lens brief of `reviewer` and `app-audit` carries the same line.
 
 - **Lint before the push** a pre-push hook runs `mise run lint`, so a lint or format error stays on the PC instead of failing Checks on `main`.
