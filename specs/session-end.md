@@ -283,3 +283,23 @@
   go. A clip ACM can't decode plays through MCI after the cue, as before.
 - **Build** `install.ps1` compiles `turn-voice.cs` and `sound.cs` together.
 - **Docs** `CHANGELOG.md`.
+
+### 2026-11-12 the voice on a Mac
+
+- **Why** the person works on a Mac too and wants the same spoken turn end.
+- **Changes** `hooks/turn-voice/voice.mts` holds the logic of `turn-voice.cs`
+  in TypeScript: the outcome from the marker, the phrase, the runs per
+  language, the mp3 trim and the cue tones as a WAV. `turn-voice.mts` is the
+  hook: it hands the work to a detached child, skips twins, fetches the clips
+  through `edge-tts`, then plays the cue and the voice with `afplay`. A lock
+  folder stands in for the Windows mutex.
+- **Install** `install-mac.mts` writes the hooks into Claude Code, Codex and
+  Kimi Code with the same events and args as `install.ps1`. `install.sh` runs
+  it on macOS, so a pull relinks it too. `TURN_VOICE_LANG=en` picks English.
+- **Done cue** `/System/Library/Sounds/Glass.aiff` in place of `tada.wav`.
+- **Cache** `~/Library/Caches/turn-voice`.
+- **Limits** the cue and the voice play as two `afplay` runs, so a short gap
+  sits between them. The checks run on Windows and Linux, so the sound itself
+  is untested on a Mac.
+- **Docs** `README.md`, `docs/features.md`, `docs/architecture.md`,
+  `docs/user-flows.md`, `CHANGELOG.md`.

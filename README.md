@@ -59,23 +59,27 @@ turn, unasked: the VS Code prompts folder, `~/.claude/CLAUDE.md`,
 `%APPDATA%\Code\User\prompts`. The rules file holds the short version of
 `writing-style`, so each answer follows it before the skill loads.
 
-- **Spoken turn end** on Windows, `install.ps1` gives Claude Code, Codex and
-  Kimi Code hooks that play a cue and say the folder, the outcome and the
+- **Spoken turn end** `install.ps1` on Windows and `install.sh` on a Mac
+  give Claude Code, Codex and Kimi Code hooks that play a cue and say the folder, the outcome and the
   session title. The outcome comes from a marker on the last line, such as
   `!!!COMPLETED!!!`, `!!!USER STEPS!!!` or `!!!QUESTION!!!`, when your own
   rules ask the agent to write one.
 - **Voice language** the phrases are in Russian by default, whatever the
-  review language. `install.ps1 -VoiceLang English` switches them to English.
+  review language. `install.ps1 -VoiceLang English` switches them to English, and
+  `TURN_VOICE_LANG=en ./install.sh` does it on a Mac.
 - **Voice** the multilingual `de-DE-SeraphinaMultilingualNeural` reads each
   run of Russian or English apart, right after the cue.
 - **What it adds for the voice** hooks in `~/.claude/settings.json`,
   `~/.codex/hooks.json` and `~/.kimi-code/config.toml`,
-  `turn-voice.exe` in `~/.claude/hooks`, and `uv` and `edge-tts` in your
-  global mise config when mise is installed.
+  `turn-voice.exe` in `~/.claude/hooks` on Windows, and `uv` and `edge-tts`
+  in your global mise config when mise is installed. A Mac runs
+  `hooks/turn-voice/turn-voice.mts` from the clone with Node and plays it
+  through `afplay`.
 - **What leaves the PC** `edge-tts` sends each phrase, with the folder name
   and the session title, to Microsoft's online read aloud service. Each clip
-  is then cached in `%LOCALAPPDATA%\turn-voice`. Without `edge-tts` only the
-  cue plays.
+  is then cached in `%LOCALAPPDATA%\turn-voice`, or
+  `~/Library/Caches/turn-voice` on a Mac. Without `edge-tts` only the cue
+  plays.
 
 With Node 24 on the PATH, the installer also adds agent hooks. Your own
 hooks and tables stay:

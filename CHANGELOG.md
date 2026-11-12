@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **turn-voice on a Mac** `install.sh` gives Claude Code, Codex and Kimi Code the spoken turn end on macOS too: the same cues, phrases and voices, played through `afplay`. `TURN_VOICE_LANG=en` picks English.
+
 - **Agent hooks** the install adds the time hook, the Chrome only hook and the archive block to Claude Code, the time hook to Codex and Kimi Code, and copies the MCP servers of Claude Code to both. They move here from `agent-skills-private`, along with the `guide-on-site`, `hung-process` and `rewrite-repo` skills.
 
 - **Older runs stop on GitHub** a newer push to `main` cancels the Checks and the release build of the older commit through `concurrency`, with the local-ci page off too.

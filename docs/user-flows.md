@@ -73,7 +73,8 @@ flowchart LR
 
 1. The agent ends its turn with a marker on the last line, such as
    `!!!COMPLETED!!!`.
-2. Claude Code, Codex or Kimi Code runs the `turn-voice` Stop hook.
+2. Claude Code, Codex or Kimi Code runs the `turn-voice` Stop hook:
+   `turn-voice.exe` on Windows, `turn-voice.mts` on a Mac.
 3. The hook reads the marker and picks the cue and the phrase.
 4. The person hears the cue, then the folder, the outcome and the session
    title.

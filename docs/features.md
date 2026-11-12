@@ -266,9 +266,9 @@ Spec: [reddit-comments](../specs/reddit-comments.md).
 ## Voice at the end of a turn
 
 - **What it gives** the `turn-voice` hook plays a cue and speaks the folder, the outcome and the session title when the agent finishes.
-- **Where** `hooks/turn-voice`, Windows only, for Claude Code, Codex and Kimi Code. Kimi sends no reply in the hook, so the hook reads it from the session's `wire.jsonl`.
+- **Where** `hooks/turn-voice`, on Windows and macOS, for Claude Code, Codex and Kimi Code. A Mac plays it through `afplay`, with a short gap between the cue and the voice. Kimi sends no reply in the hook, so the hook reads it from the session's `wire.jsonl`.
 - **Outcomes** the marker on the last line picks the cue and the phrase: done, user steps, question, running or not done.
-- **Pitch** `hooks\turn-voice\install.ps1 -RuPitch -10 -EnPitch 5` moves each voice up or down in Hz. The root `install.ps1` takes no pitch, and its rerun keeps the one set here.
+- **Pitch** `hooks\turn-voice\install.ps1 -RuPitch -10 -EnPitch 5` moves each voice up or down in Hz. The root `install.ps1` takes no pitch, and its rerun keeps the one set here. A Mac takes `node hooks/turn-voice/install-mac.mts --ru-pitch -10 --en-pitch 5`.
 
 Spec: [session-end](../specs/session-end.md).
 
