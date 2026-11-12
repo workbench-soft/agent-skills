@@ -69,6 +69,14 @@ flowchart LR
 - **Rejected** a Rust or Node player: it would need a toolchain or a runtime on each machine to build or run. The code supports this reason, and no spec records it.
 - **Cost to undo** medium: the player, its installer and the hook entries in the settings file.
 
+### Turn end voice on a Mac: a Node twin of the C# hook
+
+- **Picked** `hooks/turn-voice/turn-voice.mts`, with its logic in `voice.mts` and `sound.mts`. Node runs it from the clone, and `afplay` plays the cue and the voice. `install-mac.mts` writes the same hook groups as `install.ps1`, and `install.sh` runs it on macOS.
+- **Why** `csc.exe` and the Windows audio calls are missing on a Mac, and Node is already pinned for the agent hooks.
+- **Trade-off** two `afplay` runs leave a short gap between the cue and the voice. The logic lives twice, in C# and TypeScript.
+- **Rejected** a Swift build with the Command Line Tools: no Mac in CI to build and check it on.
+- **Cost to undo** low: the `.mts` files and the Darwin step in `install.sh`.
+
 ### Voice: one multilingual edge-tts voice for the whole phrase
 
 - **Picked** the free Microsoft neural voices through `edge-tts`, which mise installs. `de-DE-SeraphinaMultilingualNeural` reads the phrase, Russian by default. The phrase always splits into Cyrillic and Latin runs, each fetched apart, and the voices passed to the installer may differ. Each clip is cached in `%LOCALAPPDATA%\turn-voice`.

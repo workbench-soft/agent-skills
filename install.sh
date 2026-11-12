@@ -344,6 +344,11 @@ agent_hooks() { # [--uninstall]
     run_node agents/kimi-hooks.mts "$native_home/.kimi-code/config.toml" "$@"
   fi
   run_node agents/sync-mcp.mts "$native_home/.claude.json" "$native_home/.codex/config.toml" "$native_home/.kimi-code/mcp.json" "$@"
+  # A Mac has no turn-voice.exe, so its Node twin speaks the end of a turn.
+  # TURN_VOICE_LANG=en picks English. install.ps1 sets up the voice on Windows.
+  if [ "$(uname -s)" = Darwin ]; then
+    run_node hooks/turn-voice/install-mac.mts "$@"
+  fi
 }
 
 if [ "$uninstall" -eq 1 ]; then
