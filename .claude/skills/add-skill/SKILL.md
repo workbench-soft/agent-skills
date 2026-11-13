@@ -20,10 +20,8 @@ The skills in `skills/` reach every agent on the machine through `install.sh`. R
 The agent MUST run each of these:
 
 ```sh
-mise x -- python scripts/check-skills.py
-mise x -- python scripts/check-prose-budget.py skills/*/SKILL.md skills/*/references/*.md
-mise x -- shellcheck install.sh scripts/install-in-temp-home.sh
-sh scripts/install-in-temp-home.sh
+mise run lint
+mise run test
 ```
 
 Each MUST exit 0. The agent MUST then run the "Before you commit" list in `AGENTS.md`.

@@ -74,12 +74,12 @@ A third round MAY follow when fewer than 3 names come back free.
 
 The agent MUST act on each verdict as this table says:
 
-| Verdict   | Meaning                                                                          | What to do              |
-| --------- | -------------------------------------------------------------------------------- | ----------------------- |
-| `free`    | all domains free, no business or live mark with the words                        | a pick                  |
-| `risky`   | `.com` or `.au` taken, a business uses the name, or live marks contain the words | open each hit and judge |
-| `taken`   | a live mark with the same words, or `.com.au` registered                         | drop it                 |
-| `unknown` | a check failed                                                                   | rerun it                |
+| Verdict   | Meaning                                                                                                                | What to do              |
+| --------- | ---------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| `free`    | all domains free, no business or live mark with the words                                                              | a pick                  |
+| `risky`   | `.com` or `.au` taken, a business uses the name, live marks contain the words, or newer trade mark results went unread | open each hit and judge |
+| `taken`   | a live mark with the same words, or `.com.au` registered                                                               | drop it                 |
+| `unknown` | a check failed                                                                                                         | rerun it                |
 
 The agent MUST read `references/naming.md` when judging a `risky` row. The
 trade mark class and the owner's field decide most of them.
