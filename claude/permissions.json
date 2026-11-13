@@ -1,0 +1,23 @@
+{
+  "claude": [
+    "Bash(sh ~/.agents/skills/git-worktrees/scripts/remove-merged.sh:*)",
+    "Bash(git worktree remove:*)",
+    "Bash(git worktree prune:*)",
+    "Bash(git branch -d:*)",
+    "Bash(git branch -D:*)",
+    "Bash(git push origin --delete:*)",
+    "PowerShell(git worktree remove:*)",
+    "PowerShell(git worktree prune:*)",
+    "PowerShell(git branch -d:*)",
+    "PowerShell(git branch -D:*)",
+    "PowerShell(git push origin --delete:*)"
+  ],
+  "codex": [
+    ["sh", "~/.agents/skills/git-worktrees/scripts/remove-merged.sh"],
+    ["git", "worktree", "remove"],
+    ["git", "worktree", "prune"],
+    ["git", "branch", "-d"],
+    ["git", "branch", "-D"],
+    ["git", "push", "origin", "--delete"]
+  ]
+}

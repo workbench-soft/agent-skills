@@ -170,7 +170,7 @@ mkdir -p "$home/.claude" "$home/.codex" "$home/.kimi-code"
 : >"$home/.codex/hooks.json"
 # The person's own Stop hook, and the time hook an older PowerShell script added.
 cat >"$home/.claude/settings.json" <<'EOF'
-{"model": "opus", "hooks": {
+{"model": "opus", "permissions": {"allow": ["Bash(ls:*)"]}, "hooks": {
   "Stop": [{"hooks": [{"type": "command", "command": "turn-voice.exe"}]}],
   "UserPromptSubmit": [{"hooks": [{"type": "command", "command": "powershell", "args": ["'Now: ' + (Get-Date)"]}]}]
 }}
@@ -188,6 +188,11 @@ grep -q "date '+Now: " "$home/.claude/settings.json"
 test 1 -eq "$(grep -c 'mcp__Claude_Browser__' "$home/.claude/settings.json")"
 grep -q archive_session "$home/.claude/settings.json"
 grep -q turn-voice "$home/.claude/settings.json"
+# The cleanup rules sit once beside the person's own rule, and Codex has its rules file.
+test 1 -eq "$(grep -cF "Bash(git branch -D:*)" "$home/.claude/settings.json")"
+grep -qF "remove-merged.sh:*)" "$home/.claude/settings.json"
+grep -qF "Bash(ls:*)" "$home/.claude/settings.json"
+grep -qF '["git","branch","-D"]' "$home/.codex/rules/agent-skills.rules"
 # Codex: one time hook, the server in a block once, the person's table kept.
 test 1 -eq "$(grep -c commandWindows "$home/.codex/hooks.json")"
 test 1 -eq "$(grep -cxF '[mcp_servers."palace"]' "$home/.codex/config.toml")"
@@ -209,6 +214,9 @@ HOME="$home" sh "$src/install.sh" --uninstall --yes
 test 0 -eq "$(grep -c 'Now: \|mcp__Claude_Browser__\|archive_session' "$home/.claude/settings.json")"
 grep -q turn-voice "$home/.claude/settings.json"
 grep -q '"model": "opus"' "$home/.claude/settings.json"
+test 0 -eq "$(grep -c "git branch -D|remove-merged" "$home/.claude/settings.json")"
+grep -qF "Bash(ls:*)" "$home/.claude/settings.json"
+test ! -e "$home/.codex/rules/agent-skills.rules"
 test 0 -eq "$(grep -c 'Now: ' "$home/.codex/hooks.json")"
 test 0 -eq "$(cat "$home/.codex/config.toml" "$home/.kimi-code/mcp.json" | grep -c palace)"
 grep -qxF '[mcp_servers.mine]' "$home/.codex/config.toml"

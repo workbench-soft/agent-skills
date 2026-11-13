@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **git-worktrees** agents remove a merged worktree, its branch and the remote branch themselves. `scripts/remove-merged.sh` checks that the PR merged and nothing is left unsaved, and the install allows it and the git cleanup commands in Claude Code and Codex, so auto mode no longer denies them.
+
 - **turn-voice on a Mac** `install.sh` gives Claude Code, Codex and Kimi Code the spoken turn end on macOS too: the same cues, phrases and voices, played through `afplay`. `TURN_VOICE_LANG=en` picks English.
 
 - **Agent hooks** the install adds the time hook, the Chrome only hook and the archive block to Claude Code, the time hook to Codex and Kimi Code, and copies the MCP servers of Claude Code to both. They move here from `agent-skills-private`, along with the `guide-on-site`, `hung-process` and `rewrite-repo` skills.
