@@ -93,6 +93,7 @@ Spec: [translations-skill](../specs/translations-skill.md).
 - **Skill** `git-worktrees`.
 - **What it gives** isolated work gets its own folder beside the repo, with the ignored files it needs, its trust and its dependencies. Your checkout stays as it is.
 - **Clean up** once the PR merges, the folder moves to a trash folder in a second and gets deleted in the background. The branch goes, local and remote, and other merged worktrees go with it.
+- **No prompt** `scripts/remove-merged.sh` checks that the PR merged and no work is left, then removes the folder and the branches. The install allows it and the git cleanup commands, so auto mode doesn't stop an agent at the cleanup.
 - **No stash** agents in worktrees set work aside with a WIP commit or a patch. The stash is shared by every worktree, so 2 agents could swap their work.
 
 Spec: [git-worktrees-skill](../specs/git-worktrees-skill.md).

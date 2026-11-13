@@ -90,6 +90,12 @@ hooks and tables stay:
   message sends it to Claude in Chrome. Remove that group from
   `~/.claude/settings.json` to keep the built-in browser.
 - **Archive block** Claude Code can't archive a session. You archive each one.
+- **Cleanup rules** agents remove a merged worktree and its branches without
+  a prompt. `~/.claude/settings.json` gets allow rules for
+  `remove-merged.sh`, `git worktree remove`, `git branch -D` and
+  `git push origin --delete`, and Codex gets
+  `~/.codex/rules/agent-skills.rules`. The script stops on a worktree with
+  work that hasn't landed. Kimi Code has no such rules.
 - **MCP copy** the user MCP servers of `~/.claude.json` go to
   `~/.codex/config.toml` and `~/.kimi-code/mcp.json`. Codex asks you to
   trust its hook once, in `/hooks`.

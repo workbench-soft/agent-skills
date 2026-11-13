@@ -108,8 +108,24 @@ This step MUST run only once the work is finished:
   review MUST be posted or handed back.
 - **Dropped** the user MUST have said to drop the work.
 
-The agent MUST check from the main checkout first. Unless the user dropped the
-work, each line MUST print empty:
+The agent MUST remove it with the script, from the main checkout. It runs the
+checks below and the removal in one go:
+
+```bash
+cd "$main"
+sh ~/.agents/skills/git-worktrees/scripts/remove-merged.sh "$dir"
+```
+
+- **Flags** `--dropped` MUST be added only when the user dropped the work.
+  `--keep-remote` MUST be added for someone else's branch.
+- **Kept** a line `kept <dir>: <reason>` MUST halt the removal. The worktree
+  MUST stay, and a line in `TODO.md` MUST give the path and the reason.
+- **Allowed** the install lets this exact command and the git commands below
+  run without a prompt, so auto mode doesn't deny them. The agent MUST type
+  the command as written, since the rule matches its text.
+
+Without the script, the agent MUST check from the main checkout first. Unless
+the user dropped the work, each line MUST print empty:
 
 ```bash
 cd "$main"
