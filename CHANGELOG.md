@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **domain-check and add-skill** the `risky` row names unread trade mark results, and add-skill runs `mise run lint` and `mise run test`.
+
 - **git-worktrees** agents remove a merged worktree, its branch and the remote branch themselves. `scripts/remove-merged.sh` checks that the PR merged and nothing is left unsaved, and the install allows it and the git cleanup commands in Claude Code and Codex, so auto mode no longer denies them.
 
 - **turn-voice on a Mac** `install.sh` gives Claude Code, Codex and Kimi Code the spoken turn end on macOS too: the same cues, phrases and voices, played through `afplay`. `TURN_VOICE_LANG=en` picks English.
