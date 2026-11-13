@@ -64,3 +64,12 @@ Worktrees, folders and branches piled up after their PRs merged.
 - **Changes** `skills/git-worktrees/SKILL.md` step 5 bans `git stash` and sets work aside with a WIP commit or `git diff > <file>`. The fix mode frame in `skills/reviewer/references/brief.md` carries the ban, and `skills/app-audit/SKILL.md` step 4 keeps it in each lens brief.
 - **Steps** spec, the skills, docs.
 - **Docs** `README.md`, `docs/features.md`, `CHANGELOG.md`.
+
+### 2026-11-13 Agents remove their own worktrees and branches
+
+- **Why** auto mode in Claude Code denied every `git worktree remove`, `git branch -D` and `git push --delete` after a merge, so the cleanup piled up in `TODO.md` for the owner. A narrow allow rule skips that check.
+- **Script** `skills/git-worktrees/scripts/remove-merged.sh <worktree>` MUST remove only a worktree with no uncommitted files and no stash of its branch. Its PR MUST show as merged with the same head, or a detached HEAD MUST sit on the default branch. `--dropped` skips the PR check once the person drops the work, and `--keep-remote` keeps someone else's branch.
+- **Rules** the install MUST add an allow rule for the script, plus the git commands as a fallback: `git worktree remove`, `git worktree prune`, `git branch -d`, `git branch -D`, `git push origin --delete`. Claude Code gets them in `permissions.allow` for Bash and PowerShell, and Codex in `~/.codex/rules/agent-skills.rules`. Kimi Code has no command rules, so it gets none.
+- **Uninstall** `--uninstall` MUST take out only these rules. The person's own rules stay.
+- **Steps** spec, the script and its test, the install, the skill, docs.
+- **Docs** `README.md`, `docs/features.md`, `CHANGELOG.md`, and the auto mode list in `workflow.instructions.md` of `agent-skills-private`.
