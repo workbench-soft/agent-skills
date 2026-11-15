@@ -22,7 +22,8 @@ Spec: [review-skill](../specs/review-skill.md).
 
 - **Skill** `reviewer`.
 - **What it gives** the core that `review` and `app-audit` share. It picks the lenses, starts one subagent per lens and keeps only the findings it can prove.
-- **Lenses** bugs, security, architecture, speed, state, UX, reliability, PR size and free libraries over hand-written code. A domain lens such as legal or SEO loads a skill for it.
+- **Lenses** bugs, security, architecture, maintainability, speed, state, UX, reliability, PR size and free libraries over hand-written code. A domain lens such as legal or SEO loads a skill for it.
+- **Web pages** the speed, UX and security lenses add the Lighthouse based skills of `addyosmani/web-quality-skills` and measure the build with Lighthouse.
 
 Spec: [reviewer-core](../specs/reviewer-core.md).
 

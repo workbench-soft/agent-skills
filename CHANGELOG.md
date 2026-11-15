@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **Web quality lenses** `reviewer` pairs the performance, UX and security lenses of a web page with the Lighthouse based skills of `addyosmani/web-quality-skills`, pinned to a commit, and measures the build with Lighthouse. The simplicity lens now checks maintainability, and the UX lens checks TalkBack and VoiceOver names on native screens.
+
 - **Site tasks to the end** `guide-on-site` does the whole task in Chrome unasked and presses each consent, accept and permission prompt. `store-media` sends the Play listing for review itself. A Claude Code hook reminds the agent on each `TODO.md` write to finish the task first and to name what stopped it.
 
 - **domain-check and add-skill** the `risky` row names unread trade mark results, and add-skill runs `mise run lint` and `mise run test`.

@@ -37,7 +37,7 @@ Each lens MUST run when its row says so. The checklists sit in
 | Bugs and edge cases                 | always                                       | always                             |
 | Security, privacy and licences      | always                                       | always                             |
 | Architecture and fit                | always                                       | always                             |
-| Simplicity, duplication and tests   | the diff has code                            | always                             |
+| Maintainability and tests           | the diff has code                            | always                             |
 | Libraries over hand-written code    | the diff adds code                           | always                             |
 | PR size                             | always                                       | on the audit branch, before the PR |
 | Dependencies, tooling and CI        | a manifest, a lockfile or a workflow changes | always                             |
@@ -64,6 +64,11 @@ A domain lens covers ground the checklists lack: law and privacy policy,
 search, ads, payments, a game engine. The agent MUST read
 [references/outside-skills.md](references/outside-skills.md) and find one
 skill per domain lens. An installed skill MUST win over a downloaded one.
+
+A repo with a page a browser opens MUST also pair the performance, UX and
+security lenses with the web quality skills of
+[references/web-quality.md](references/web-quality.md), and measure the page
+with Lighthouse.
 
 ## 4. Pick the model
 

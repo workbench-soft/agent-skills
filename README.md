@@ -189,8 +189,10 @@ keys. A test keeps the catalogs on the same keys.
 lenses, starts one subagent per lens on the strongest model and checks each
 finding before it goes on:
 
-- **Lenses** bugs, security, architecture, simplicity, speed, state, UX,
-  reliability, platform and agent instructions.
+- **Lenses** bugs, security, architecture, maintainability, speed, state,
+  UX, reliability, platform and agent instructions.
+- **Web pages** speed, UX and security add the Lighthouse based skills of
+  `addyosmani/web-quality-skills` and measure the build with Lighthouse.
 - **PR size** a change stays small and stands on its own, with a split plan
   past 400 lines.
 - **Libraries** hand-written code gives way to the platform or a free,
