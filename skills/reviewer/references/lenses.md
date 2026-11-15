@@ -35,9 +35,10 @@ Sketch a plainer version in two or three sentences with the file it would sit in
 ```
 
 ```text
-SIMPLICITY, DUPLICATION AND TESTS
+MAINTAINABILITY, DUPLICATION AND TESTS
 Look for duplicated logic, dead code, unused exports and dependencies, functions with several jobs, files too long to follow, unnamed numbers.
 Look for weak types at the edges: parsed JSON cast without a check, `any`.
+Maintainability: a function past 50 lines or nested past 3 levels, a name that hides what the thing does, one change that has to touch many files, a module that imports a layer above it.
 Tests: logic that matters with no test, a test that can't fail (name the one-character edit it lets pass), test runs that pick up the wrong files.
 For a bug fixed by hand, name the lint rule or check that would catch the next one.
 ```
@@ -78,6 +79,7 @@ Check WCAG 2.2 AA: Tab reaches each control and Enter or Space works it; focus m
 Check markup: a clickable div in place of a button, a skipped heading level, a field without a label.
 Check tap targets and one-hand use, the back button and browser history, permission prompts and what the app says before them.
 Check dark mode, units, dates and language, and UI text that is unclear or out of step with what the app does.
+Native screens: a name for TalkBack and VoiceOver on each control (`contentDescription`, `accessibilityLabel`), 48 dp tap targets, text at 200% font scale, focus order with a keyboard or switch.
 ```
 
 ```text

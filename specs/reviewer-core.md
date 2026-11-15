@@ -63,3 +63,17 @@ through parallel subagents and report findings with proof.
 - **Steps** the spec, then the core, then `review`, then `app-audit`, then
   the README and the changelog.
 - **Docs** `README.md`, `CHANGELOG.md`, `docs/features.md`.
+
+### 2026-11-16 Web quality skills and a maintainability lens
+
+- **Why** the person asked for a skill from the web for a full code audit:
+  speed, UX, accessibility, maintainability. `addyosmani/web-quality-skills`
+  fits the web half, built on Lighthouse, MIT, 3k stars, pushed 2026-08.
+- **Changes** new `skills/reviewer/references/web-quality.md`: the
+  performance, UX and security lenses of a repo with a web page get its
+  `performance`, `core-web-vitals`, `accessibility` and `best-practices`
+  files at commit `afa8da9`, and measure the build with Lighthouse 13.6.0.
+  The simplicity lens becomes maintainability, duplication and tests. The UX
+  lens gets native accessibility lines.
+- **Steps** the spec, then the reference, then the core, then the docs.
+- **Docs** `README.md`, `CHANGELOG.md`, `docs/features.md`.
