@@ -325,7 +325,8 @@ run_node() { # script args...
   )
 }
 
-# Claude Code gets the time hook, the Chrome only hook and the archive block.
+# Claude Code gets the time hook, the Chrome only hook, the archive block and
+# the TODO.md reminder.
 # Claude Code and Codex get allow rules for the cleanup of a merged worktree.
 # Codex and Kimi Code get the time hook and the MCP servers of Claude Code.
 # specs/claude-hooks.md and specs/any-agent.md map each piece.

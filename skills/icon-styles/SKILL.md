@@ -219,7 +219,7 @@ The agent MAY pass any of these targets, and each MUST write these files:
 - **Stores** right after the merge, the agent MUST load `store-media` and put
   the new icon in each place outside the repo: Google Play, AdMob, AdSense,
   the app's page on the studio site. It MUST do each step itself in the
-  person's Chrome, and ask the person only for a login or the send for
-  review. It MUST NOT wait to be asked.
+  person's Chrome, send the listing for review itself, and ask the person
+  only for a login. It MUST NOT wait to be asked.
 - **Report** the agent MUST report the picked number and style, the files
   written, and each manifest changed.

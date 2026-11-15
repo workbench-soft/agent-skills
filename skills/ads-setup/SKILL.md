@@ -164,12 +164,13 @@ in each page in the browser.
 
 ## 9. Write TODO.md
 
-`TODO.md` at the target repo root MUST hold each task this run leaves for the
-user. The agent MUST touch only the `## ads-setup` section, adding or
+`TODO.md` at the target repo root MUST hold only the tasks the agent tried and couldn't
+finish, such as a login, a payment or a wait. The agent MUST touch only the `## ads-setup` section, adding or
 updating it.
 
 - **One task per line** each line MUST hold a checkbox, the task, the place,
-  and a date for a wait.
+  what stopped the agent in brackets, such as `(login)`, and a date for a
+  wait.
 - **Done tasks** they MUST come off once the user says so or the dashboard
   shows it.
 - **No tasks left** the section MUST be removed.
@@ -180,8 +181,8 @@ The section SHOULD read like this:
 ```markdown
 ## ads-setup
 
-- [ ] Fill in the tax form in AdSense, Payments: https://adsense.google.com
-- [ ] Run `ads-setup` again when the approval email comes, review sent <date>
+- [ ] Fill in the tax form in AdSense, Payments: https://adsense.google.com (secret)
+- [ ] Run `ads-setup` again when the approval email comes, review sent <date> (wait)
 ```
 
 The agent MUST commit it together with the README record.

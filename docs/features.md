@@ -139,7 +139,7 @@ Spec: [rewrite-repo-skill](../specs/rewrite-repo-skill.md).
 
 ## Help on a site
 
-- **What it gives** `guide-on-site` opens each screen in the person's Chrome, fills the known fields and stops at the login, the secret or the payment.
+- **What it gives** `guide-on-site` does the whole site task in the person's Chrome, unasked. It fills the known fields, presses each consent, accept, permission and Save button, and stops only at a login, a CAPTCHA, a secret or a payment.
 - **Limits** the person types passwords and card numbers.
 
 Spec: [move-from-private](../specs/move-from-private.md).
@@ -234,7 +234,7 @@ Spec: [demo-media](../specs/demo-media.md).
 ## Store media
 
 - **Skill** `store-media`.
-- **What it gives** the same media and the icon reach Google Play, the site, the GitHub preview and each installer. It asks before any send for review.
+- **What it gives** the same media and the icon reach Google Play, the site, the GitHub preview and each installer. The agent sends the Play listing for review itself.
 - **Limits** Play takes a YouTube link for the video. AdMob and AdSense take no media, so the skill only checks them.
 
 Spec: [demo-media](../specs/demo-media.md).
@@ -282,7 +282,7 @@ Spec: [install](../specs/install.md), [install-auto-link](../specs/install-auto-
 
 ## Agent hooks
 
-- **What it gives** the time on each prompt, the Chrome only hook and the archive block in Claude Code, and the time hook in Codex and Kimi Code.
+- **What it gives** the time on each prompt, the Chrome only hook, the archive block and the `TODO.md` reminder in Claude Code, and the time hook in Codex and Kimi Code.
 - **MCP copy** the user MCP servers of Claude Code go to Codex and Kimi Code.
 - **Limits** needs Node 24. An install from `agent-skills-private` left its own markers, and the install takes those blocks over.
 

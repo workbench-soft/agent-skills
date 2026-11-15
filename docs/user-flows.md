@@ -12,7 +12,7 @@ commands.
 5. It adds the writing rules to `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`
    and `~/.kimi-code/AGENTS.md`, and git hooks to the clone.
 6. With Node on the PATH it adds the time hook to Claude Code, Codex and
-   Kimi Code, the Chrome only and archive hooks to Claude Code, and copies the
+   Kimi Code, the Chrome only, archive and `TODO.md` hooks to Claude Code, and copies the
    MCP servers of Claude Code to Codex and Kimi Code.
 7. On Windows it also builds `turn-voice.exe` and adds its hooks to Claude
    Code, Codex and Kimi Code.
