@@ -72,8 +72,16 @@ through parallel subagents and report findings with proof.
 - **Changes** new `skills/reviewer/references/web-quality.md`: the
   performance, UX and security lenses of a repo with a web page get its
   `performance`, `core-web-vitals`, `accessibility` and `best-practices`
-  files at commit `afa8da9`, and measure the build with Lighthouse 13.6.0.
+  files at commit `afa8da9`, and measure the build with Lighthouse 12.8.2.
   The simplicity lens becomes maintainability, duplication and tests. The UX
   lens gets native accessibility lines.
 - **Steps** the spec, then the reference, then the core, then the docs.
 - **Docs** `README.md`, `CHANGELOG.md`, `docs/features.md`.
+
+### 2026-11-16 Lighthouse 12.8.2
+
+- **Why** the spotthecam audit found that `mise` refuses Lighthouse 13.6.0:
+  its `chromium-bidi` 157 has no trust evidence, while 10.4.0 had a trusted
+  publisher.
+- **Changes** `web-quality.md` pins Lighthouse 12.8.2 and bans 13.x until
+  `mise` accepts it.

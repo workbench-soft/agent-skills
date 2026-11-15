@@ -40,11 +40,13 @@ In fix mode, the lens MUST measure the production build served on a free
 local port, before and after its fixes:
 
 ```bash
-mise x npm:lighthouse@13.6.0 -- lighthouse "http://localhost:<port>/" --quiet \
+mise x npm:lighthouse@12.8.2 -- lighthouse "http://localhost:<port>/" --quiet \
   --only-categories=performance,accessibility,best-practices --form-factor=mobile \
   --chrome-flags="--headless=new --no-sandbox" --output=json --output-path="$dir/lh.json"
 ```
 
+- **Version** 13.x MUST NOT replace the pin while `mise` refuses its
+  `chromium-bidi` for a trust downgrade.
 - **Chrome** with no Chrome found, the lens MUST set `CHROME_PATH` to the
   Playwright Chromium.
 - **Report** the lens MUST give the score and the failing audit ids, before
