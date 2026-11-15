@@ -9,8 +9,8 @@ edits `settings.json` by hand.
 ## User flows
 
 1. The person runs `./install.sh` in Git Bash.
-2. The installer adds the time hook, the Chrome only hook and the archive
-   block to
+2. The installer adds the time hook, the Chrome only hook, the archive
+   block and the `TODO.md` reminder to
    `%USERPROFILE%\.claude\settings.json`, beside the hooks already there.
 3. A second run changes nothing. `./install.sh --uninstall` takes both hooks
    out and keeps the rest.
@@ -28,6 +28,9 @@ edits `settings.json` by hand.
 - **Archive block** a `PreToolUse` hook stops
   `mcp__ccd_session_mgmt__archive_session`, so only the person archives a
   session.
+- **TODO.md reminder** a `PostToolUse` hook on `Edit`, `Write` and
+  `MultiEdit` of a `TODO.md` tells the agent to finish the task with its
+  tools first, and to name what stopped it in brackets.
 
 ## Limits
 
@@ -73,3 +76,21 @@ edits `settings.json` by hand.
 - **Changes** the files move from `agent-skills-private` as they are. The
   install step sits in the public `install.sh`. See
   [move-from-private](move-from-private.md).
+
+### 2026-11-15 a reminder on each TODO.md write
+
+- **Why** agents left site tasks in `TODO.md` that Claude in Chrome could
+  finish, Google Play Console ones among them. The owner asked that agents
+  do each such task to the end and press consent prompts themselves.
+- **Changes** `claude/hooks.json` gets a `PostToolUse` group. Its bash
+  command greps the tool input for a `file_path` that ends in `TODO.md` and
+  prints the reminder as `additionalContext`. Other files pass silently.
+- **Skills** `guide-on-site` does the whole site task and presses each
+  consent, accept and permission prompt. `store-media` and `icon-styles`
+  send the Play listing for review without a question. `play-release`,
+  `ads-setup` and `seo-setup` write a `TODO.md` task only after a try,
+  with what stopped the agent in brackets.
+- **Limits** Codex edits through `apply_patch`, so the hook stays in Claude
+  Code.
+- **Docs** `README.md`, `docs/features.md`, `docs/user-flows.md`,
+  `CHANGELOG.md`.
