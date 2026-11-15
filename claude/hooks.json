@@ -39,5 +39,19 @@
         }
       ]
     }
+  },
+  {
+    "event": "PostToolUse",
+    "marker": "TODO.md takes a task only after",
+    "group": {
+      "matcher": "Edit|Write|MultiEdit",
+      "hooks": [
+        {
+          "type": "command",
+          "shell": "bash",
+          "command": "grep -qE '\"file_path\" *: *\"[^\"]*TODO.md\"' || exit 0; echo '{\"hookSpecificOutput\":{\"hookEventName\":\"PostToolUse\",\"additionalContext\":\"TODO.md takes a task only after you tried it with each tool you have. If a tool can finish it, such as a site in Claude in Chrome where you press each consent, accept and Save, do it now and drop the line. Each line left names what stopped you in brackets: (login), (CAPTCHA), (secret), (payment), (admin), (denied), (wait) or (decision).\"}}'"
+        }
+      ]
+    }
   }
 ]

@@ -129,12 +129,13 @@ MUST be uploaded by hand, since the Play API can't create an app.
 
 ## 10. Write TODO.md
 
-`TODO.md` at the target repo root MUST hold each task this run leaves for the
-user. The agent MUST touch only the `## play-release` section, adding or
+`TODO.md` at the target repo root MUST hold only the tasks the agent tried and couldn't
+finish, such as a login, a payment or a wait. The agent MUST touch only the `## play-release` section, adding or
 updating it.
 
 - **One task per line** each line MUST hold a checkbox, the task, the place,
-  and a date for a wait.
+  what stopped the agent in brackets, such as `(login)`, and a date for a
+  wait.
 - **Production** the steps still needed before it MUST be listed as well. The
   agent MUST read the production note in
   [references/play-console.md](references/play-console.md).
@@ -147,8 +148,8 @@ The section SHOULD read like this:
 ```markdown
 ## play-release
 
-- [ ] Back up the upload key from `%USERPROFILE%\.android-keys\<repo-name>` to a password manager
-- [ ] Open the tester link on an Android phone and accept: <link>
+- [ ] Back up the upload key from `%USERPROFILE%\.android-keys\<repo-name>` to a password manager (secret)
+- [ ] Open the tester link on an Android phone and accept: <link> (login)
 ```
 
 The agent MUST commit it together with the README record.

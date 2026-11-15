@@ -135,12 +135,13 @@ through each dashboard again.
 
 ## 8. Write TODO.md
 
-`TODO.md` at the target repo root MUST hold each task this run leaves for the
-user. The agent MUST touch only the `## seo-setup` section, adding or updating
+`TODO.md` at the target repo root MUST hold only the tasks the agent tried and couldn't
+finish, such as a login, a payment or a wait. The agent MUST touch only the `## seo-setup` section, adding or updating
 it.
 
 - **One task per line** each line MUST hold a checkbox, the task, the place,
-  and a date for a wait.
+  what stopped the agent in brackets, such as `(login)`, and a date for a
+  wait.
 - **Done tasks** MUST come off once the user says so or the dashboard shows it.
 - **No tasks left** the section MUST be removed.
 - **Secrets** passwords and tokens MUST be left out.
@@ -150,8 +151,8 @@ The section SHOULD read like this:
 ```markdown
 ## seo-setup
 
-- [ ] Read Pages in Search Console on <date>: https://search.google.com/search-console
-- [ ] Add the TXT record `google-site-verification=...` at the DNS host
+- [ ] Read Pages in Search Console on <date>: https://search.google.com/search-console (wait)
+- [ ] Add the TXT record `google-site-verification=...` at the DNS host, its login failed (login)
 ```
 
 The agent MUST commit it together with the README record.

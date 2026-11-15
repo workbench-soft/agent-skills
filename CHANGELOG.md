@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **Site tasks to the end** `guide-on-site` does the whole task in Chrome unasked and presses each consent, accept and permission prompt. `store-media` sends the Play listing for review itself. A Claude Code hook reminds the agent on each `TODO.md` write to finish the task first and to name what stopped it.
+
 - **domain-check and add-skill** the `risky` row names unread trade mark results, and add-skill runs `mise run lint` and `mise run test`.
 
 - **git-worktrees** agents remove a merged worktree, its branch and the remote branch themselves. `scripts/remove-merged.sh` checks that the PR merged and nothing is left unsaved, and the install allows it and the git cleanup commands in Claude Code and Codex, so auto mode no longer denies them.

@@ -90,6 +90,8 @@ hooks and tables stay:
   message sends it to Claude in Chrome. Remove that group from
   `~/.claude/settings.json` to keep the built-in browser.
 - **Archive block** Claude Code can't archive a session. You archive each one.
+- **TODO.md last** each Claude Code write to a `TODO.md` reminds the agent to
+  finish the task with its tools first, and to name what stopped it.
 - **Cleanup rules** agents remove a merged worktree and its branches without
   a prompt. `~/.claude/settings.json` gets allow rules for
   `remove-merged.sh`, `git worktree remove`, `git branch -D` and
@@ -327,7 +329,7 @@ in `docs/screenshots/`, with a GIF for each video, and the README shows them.
 **`store-media`** puts those shots, the video and the icon in each place the
 app shows. It uploads the Play listing graphics with you logged in, links the
 promo video, checks AdMob and AdSense, and swaps the icon on the site, the
-GitHub preview and each installer. It asks before any send for review.
+GitHub preview and each installer. It sends the listing for review itself.
 
 **`e2e-walk`** tests the newest release by hand, the way a user would. It
 installs the APK on an emulator or the phone over adb, opens the web build or
@@ -389,10 +391,11 @@ new layout, renames functions after what they do and moves the code to modern
 syntax. At the end it wipes the git history into one commit through
 `reset-history`.
 
-**`guide-on-site`** walks you through a console or a form in your Chrome. It
-clicks to the exact screen, fills the fields it knows and stops at the one step
-only you can take, such as a login or a CAPTCHA. Then it checks the page and
-opens the next one.
+**`guide-on-site`** does a task in a console or a form in your Chrome,
+without asking first. It clicks to the exact screen, fills the fields it
+knows, and presses each consent, permission and Save button. It stops only
+at a login, a CAPTCHA, a secret or a payment, then finishes and checks the
+result.
 
 **`hung-process`** frees a stuck run on Windows: a command silent for 5
 minutes, a busy port, a file lock. It stops only the dev tools of its own

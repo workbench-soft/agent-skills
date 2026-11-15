@@ -1,6 +1,6 @@
 ---
 name: store-media
-description: 'Use when the screenshots, video, feature graphic or icon of an app need updating in Google Play, AdMob, AdSense, the site or elsewhere: "upload the screenshots to Google Play", "change the icon everywhere", "залей скрины в гугл плей", "обнови иконку везде". Takes media from docs/screenshots/ and design/icons/, makes each size, uploads in the browser with the person logged in, asks before sending for review, ends with a table of places and states.'
+description: 'Use when the screenshots, video, feature graphic or icon of an app need updating in Google Play, AdMob, AdSense, the site or elsewhere: "upload the screenshots to Google Play", "change the icon everywhere", "залей скрины в гугл плей", "обнови иконку везде". Takes media from docs/screenshots/ and design/icons/, makes each size, uploads in the browser with the person logged in, sends the listing for review itself, ends with a table of places and states.'
 ---
 
 # Store media and the icon in every place
@@ -15,16 +15,13 @@ reads, unless it is in context. It MUST load `mise` before the first command.
 
 ## Logins
 
-- **Browser** the agent SHOULD drive the browser tool it has, such as Claude
-  in Chrome, where the person is logged in. Without one, it MUST give the
-  person the link and the clicks as numbered steps, and wait.
+- **Browser** the agent MUST drive Claude in Chrome, where the person is
+  logged in, through `guide-on-site`, without asking first.
 - **Login screen** the person logs in and says "done". The agent MUST NOT
   type a password, a 2FA code or card details.
-- **Send for review** Play sends listing changes to review. The agent MUST ask
-  in the chat before pressing Send changes for review, with the list of
-  changes.
-- **Publish** the agent MUST ask before a YouTube upload goes live, even as
-  unlisted.
+- **Send for review** the agent MUST press Send changes for review itself and
+  list the changes in its answer.
+- **Publish** the agent MUST upload the YouTube video as unlisted itself.
 
 ## 1. Gather the media
 
@@ -68,8 +65,7 @@ Main store listing.
 2. It SHOULD add the tablet shots when the app runs on tablets.
 3. It MUST paste the YouTube link of the promo video, when there is one.
 4. It MUST press Save, then check the listing preview.
-5. It MUST open Publishing overview, list the changes in the chat and ask. It
-   MUST press Send changes for review only on a yes.
+5. It MUST open Publishing overview and press Send changes for review.
 
 - **Promo video** Play takes a YouTube link only. The agent MUST upload the
   MP4 in YouTube Studio of the person's channel as unlisted, with ads off and
