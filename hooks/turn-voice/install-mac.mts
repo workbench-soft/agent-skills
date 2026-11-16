@@ -7,6 +7,7 @@ import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseArgs } from "node:util";
+import { micHelper } from "./call.mts";
 
 const { values: opt } = parseArgs({
   options: {
@@ -68,6 +69,9 @@ if (tts && (pitches[0] !== "+0Hz" || pitches[1] !== "+0Hz") && pitches[0] && pit
   voice.push(...(pitches as string[]));
 // edge-tts takes a signed rate such as +30%. The hook finds it by the %.
 if (tts) voice.push(rate);
+// The call check builds here, so the first turn after a pull doesn't wait for swiftc.
+if (!opt.uninstall && !process.env.CI && process.platform === "darwin")
+  micHelper(process.env.TURN_VOICE_CACHE ?? join(home, "Library", "Caches", "turn-voice"));
 const line = (mode: string) => [process.execPath, script, mode, ...voice].map(quote).join(" ");
 
 // Claude Code: the same five groups as on Windows.

@@ -352,6 +352,17 @@ agent_hooks() { # [--uninstall]
   if [ "$(uname -s)" = Darwin ]; then
     run_node hooks/turn-voice/install-mac.mts "$@"
   fi
+  # A pull with new turn-voice sources rebuilds the exe, with the voices kept.
+  case $(uname -s) in
+    MINGW* | MSYS* | CYGWIN*)
+      tv_exe="$HOME/.claude/hooks/turn-voice.exe"
+      if [ "$uninstall" -eq 0 ] && [ -f "$tv_exe" ] &&
+        [ -n "$(find "$root/hooks/turn-voice" -newer "$tv_exe" \( -name '*.cs' -o -name '*.py' -o -name '*.ps1' \) 2>/dev/null)" ]; then
+        powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$(native "$root/hooks/turn-voice/install.ps1")" >/dev/null 2>&1 ||
+          echo "turn-voice: the rebuild failed, run hooks/turn-voice/install.ps1" >&2
+      fi
+      ;;
+  esac
 }
 
 if [ "$uninstall" -eq 1 ]; then

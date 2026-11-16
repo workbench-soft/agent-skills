@@ -73,7 +73,7 @@ function Get-OwnArgs($settings) {
   foreach ($event in @($settings.hooks.PSObject.Properties)) {
     foreach ($group in @($event.Value)) {
       foreach ($hook in @($group.hooks)) {
-        if ($hook.command -like "*turn-voice.exe" -and @($hook.args).Count -ge 4) { return @($hook.args) }
+        if ($hook.command -like "*turn-voice.exe" -and @($hook.args).Count -ge 2) { return @($hook.args) }
       }
     }
   }
@@ -119,7 +119,9 @@ if (-not (Test-Path $claude)) { return }
 $settings = Read-Settings
 # The root install.ps1 passes no voice or pitch, so the ones picked by hand stay.
 $kept = Get-OwnArgs $settings
-if ($kept) {
+# A rebuild after a pull passes no language either.
+if ($kept -and -not $Lang) { $Lang = $kept[1] }
+if ($kept.Count -ge 4) {
   if (-not $PSBoundParameters.ContainsKey("RuVoice")) { $RuVoice = $kept[2] }
   if (-not $PSBoundParameters.ContainsKey("EnVoice")) { $EnVoice = $kept[3] }
   $hz = @($kept | Select-Object -Skip 5 | Where-Object { $_ -match "Hz$" })

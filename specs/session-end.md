@@ -334,3 +334,19 @@
   `~/.claude/hooks/turn-voice-fetch.py`.
 - **Docs** `README.md`, `docs/features.md`, `docs/architecture.md`,
   `CHANGELOG.md`.
+
+## 2026-11-17: the pull installs it
+
+- **Why** the person runs one install once. Each later pull has to bring
+  the new hook with no step of theirs, on Windows and on a Mac.
+- **Windows** the relink hook runs `install.sh`. When a `.cs`, `.py` or
+  `.ps1` in `hooks/turn-voice` is newer than `turn-voice.exe`, it runs
+  `hooks/turn-voice/install.ps1`, which rebuilds the exe. A pull with no
+  such change costs one `find`.
+- **Kept** that rerun passes no args, so `install.ps1` takes the language
+  from the hook line too, beside the voices, pitches and rate.
+- **Mac** `install-mac.mts` builds `mic.swift` at install, so the first
+  turn doesn't wait for `swiftc`. Without the Xcode tools `swiftc` opens an
+  install dialog, so the build runs only when `xcode-select -p` passes. A
+  failed build leaves a `.failed` file and gets no second try, and only a
+  Zoom call is seen then.
