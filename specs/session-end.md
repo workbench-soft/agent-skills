@@ -303,3 +303,27 @@
   is untested on a Mac.
 - **Docs** `README.md`, `docs/features.md`, `docs/architecture.md`,
   `docs/user-flows.md`, `CHANGELOG.md`.
+
+### 2026-11-16 a cue only on a call, and a faster voice
+
+- **Why** the voice cuts into a Zoom, Google Meet or Farnear call, and both
+  hosts read too slowly.
+- **On a call** while an app holds the microphone the hook plays only the
+  cue and fetches no clip. Out of a call the cue and the voice play as
+  before.
+- **Windows** `turn-voice.cs` reads the microphone keys of
+  `CapabilityAccessManager\ConsentStore` in the registry. An app whose
+  `LastUsedTimeStop` is 0 holds the microphone now. Chrome, Edge, Zoom and
+  the packaged apps all show there.
+- **Mac** `mic.swift` asks Core Audio whether a process records input, or on
+  macOS before 14.2 whether the default input device runs. The hook builds
+  it once with `swiftc` into the cache. Without `swiftc` a running Zoom
+  meeting process, `CptHost`, counts as a call.
+- **Override** `TURN_VOICE_MEETING=1` or `0` forces the call state, for the
+  tests and for a call the check misses.
+- **Faster** each clip is fetched with an edge-tts rate, `+30%` by default.
+  `install.ps1 -Rate 50` or `install-mac.mts --rate 50` changes it, and a
+  rerun keeps the rate set by hand. The cache key holds the rate.
+- **Args** the rate is the hook arg that ends in `%`, so the old hook lines
+  without it still work.
+- **Docs** `README.md`, `docs/features.md`, `CHANGELOG.md`.
