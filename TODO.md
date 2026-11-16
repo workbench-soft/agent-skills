@@ -1,5 +1,10 @@
 # TODO
 
+## turn-voice-meeting
+
+- [ ] Rebuild the turn-voice hook on the PC, so calls get only the cue and the voice reads 30% faster: `& "$env:WBS_ROOT\agent-skills\hooks\turn-voice\install.ps1"` in PowerShell (denied: auto mode blocks the write to `%USERPROFILE%\.claude\settings.json`)
+- [ ] On the Mac, pull `agent-skills` and run `node hooks/turn-voice/install-mac.mts`, then end a turn during a Zoom call and check only the cue plays. The Core Audio check is untested on a real Mac (wait)
+
 ## app-audit
 
 - [ ] Check Play and Use still work after the 2026-11-01 origin check. The sound needs ears, so an agent can't check it.
