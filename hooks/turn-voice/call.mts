@@ -1,24 +1,32 @@
 // The Mac twin of call.cs: a call holds the microphone, so the voice stays quiet.
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { existsSync, mkdirSync, readFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const source = fileURLToPath(new URL("mic.swift", import.meta.url));
 
 // mic.swift asks Core Audio. It gets built once per source, so an edit builds it again.
-function micHelper(cache: string): string | undefined {
+export function micHelper(cache: string): string | undefined {
   if (!existsSync(source)) return undefined;
   const hash = createHash("sha1").update(readFileSync(source)).digest("hex").slice(0, 12);
   const bin = join(cache, `mic-${hash}`);
   if (existsSync(bin)) return bin;
+  // Without Xcode tools swiftc opens an install dialog, so only Zoom is seen.
+  if (existsSync(`${bin}.failed`)) return undefined;
   mkdirSync(cache, { recursive: true });
+  if (spawnSync("xcode-select", ["-p"], { stdio: "ignore" }).status !== 0) {
+    writeFileSync(`${bin}.failed`, "");
+    return undefined;
+  }
   const build = spawnSync("swiftc", ["-O", source, "-o", bin], {
     stdio: "ignore",
     timeout: 120000,
   });
-  return build.status === 0 && existsSync(bin) ? bin : undefined;
+  if (build.status === 0 && existsSync(bin)) return bin;
+  writeFileSync(`${bin}.failed`, "");
+  return undefined;
 }
 
 // TURN_VOICE_MEETING=1 or 0 forces the state, for the tests and for a call the check misses.

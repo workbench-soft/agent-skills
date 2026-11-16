@@ -1,10 +1,5 @@
 # TODO
 
-## turn-voice-meeting
-
-- [ ] Rebuild the turn-voice hook on the PC, so calls get only the cue and the voice reads 30% faster: `& "$env:WBS_ROOT\agent-skills\hooks\turn-voice\install.ps1"` in PowerShell (denied: auto mode blocks the write to `%USERPROFILE%\.claude\settings.json`)
-- [ ] On the Mac, pull `agent-skills` and run `node hooks/turn-voice/install-mac.mts`, then end a turn during a Zoom call and check only the cue plays. The Core Audio check is untested on a real Mac (wait)
-
 ## app-audit
 
 - [ ] Check Play and Use still work after the 2026-11-01 origin check. The sound needs ears, so an agent can't check it.
@@ -12,7 +7,6 @@
   2. Ask an agent to "make icon options" in any repo. In the picker press Use on one icon and check the agent gets the pick.
 - [ ] Decide: `hooks/turn-voice/install.ps1` runs `mise use -g uv@0.9`, which rewrites the person's global uv pin (latest 0.13.6)
 - [ ] Decide: answering "no" at the `install.ps1 -Uninstall` prompt still removes the turn-voice hooks, since install.sh exits 0 on "left alone"
-- Left: the git hooks don't rebuild `turn-voice.exe` after a pull. Rebuilding there puts csc and mise on every checkout, a design call
 - Left: the mp3 split and trim code sits in `turn-voice.cs` and `voice_test.py` with no shared test. A test needs a C# harness the repo lacks
 - Left: `writing-style.instructions.md` is 8.4 KB and loads on every agent turn. Trimming it is a product call
 - Left: no `tsc --noEmit` and no typeAware oxlint. Each needs new packages and a package.json

@@ -272,6 +272,7 @@ Spec: [reddit-comments](../specs/reddit-comments.md).
 - **Outcomes** the marker on the last line picks the cue and the phrase: done, user steps, question, running or not done.
 - **Pitch** `hooks\turn-voice\install.ps1 -RuPitch -10 -EnPitch 5` moves each voice up or down in Hz. The root `install.ps1` takes no pitch, and its rerun keeps the one set here. A Mac takes `node hooks/turn-voice/install-mac.mts --ru-pitch -10 --en-pitch 5`.
 - **Speed** the voice reads 30% faster than its own pace. `install.ps1 -Rate 50` or `install-mac.mts --rate 50` changes it, and a rerun keeps it. A phrase gets all its clips in one `edge-tts` process.
+- **Updates** a `git pull` brings the new hook. On Windows it rebuilds `turn-voice.exe` when its sources changed, with the voices kept.
 - **On a call** while an app holds the microphone, such as Zoom, Google Meet or Farnear, only the cue plays. Windows reads it from the privacy keys in the registry, a Mac from Core Audio. `TURN_VOICE_MEETING=1` or `0` forces it.
 
 Spec: [session-end](../specs/session-end.md).
