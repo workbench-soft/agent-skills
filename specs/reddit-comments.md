@@ -74,3 +74,12 @@
   `docs/features.md` and `CHANGELOG.md`.
 - **Steps** this spec, then the script, then the skill and the docs.
 - **Docs** `README.md`, `docs/features.md`, `CHANGELOG.md`.
+
+### 2026-11-17 a draft that names your own work says you made it
+
+- **Why** the FTC Endorsement Guides and the Australian Consumer Law treat a
+  comment that praises your own product with no word of the tie as
+  misleading. The skill banned links in the first week only.
+- **Rule** a draft that names or links the person's own repo, app or site
+  MUST say in plain words that they made it, such as "I built this".
+- **Docs** the skill, `CHANGELOG.md`.

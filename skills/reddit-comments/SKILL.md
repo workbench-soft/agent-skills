@@ -56,6 +56,9 @@ The agent MUST write one draft per thread, 2 to 4 sentences, following
 - **No link, no repo name** a draft MUST NOT carry either until the person
   says the account is past its first week. A fresh account with a link gets
   filtered.
+- **Say you made it** a draft that names or links the person's own repo,
+  app or site MUST say they made it, such as "I built this". The FTC and
+  the ACCC count a hidden tie as misleading.
 - **Their language** the draft MUST be in the thread's language.
 - **Show first** the person MUST see every draft with its thread and sub
   before anything opens.
