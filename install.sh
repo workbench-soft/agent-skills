@@ -449,7 +449,8 @@ $file (the writing rules block only)"
       y | Y | yes | YES) ;;
       *)
         echo "left alone"
-        exit 0
+        # 3 tells install.ps1 the person said no, so it keeps the turn-voice hooks too.
+        exit 3
         ;;
     esac
   fi

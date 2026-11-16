@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **Install keeps your settings** the turn-voice install leaves your global `uv` pin alone, and a no at the `install.ps1 -Uninstall` question keeps the turn-voice hooks too.
+
 - **reddit-comments says you made it** a draft that names or links your own repo, app or site says so in plain words, as the FTC and ACCC rules ask.
 
 - **Decisions stay out of TODO.md** the hook on a `TODO.md` write drops `(decision)` and tells the agent to ask the decision now, with 2 to 4 options to click.
