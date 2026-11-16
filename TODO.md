@@ -5,8 +5,6 @@
 - [ ] Check Play and Use still work after the 2026-11-01 origin check. The sound needs ears, so an agent can't check it.
   1. Ask an agent to "play the voices". On the voice-test page press Play on one voice and check you hear it.
   2. Ask an agent to "make icon options" in any repo. In the picker press Use on one icon and check the agent gets the pick.
-- [ ] Decide: `hooks/turn-voice/install.ps1` runs `mise use -g uv@0.9`, which rewrites the person's global uv pin (latest 0.13.6)
-- [ ] Decide: answering "no" at the `install.ps1 -Uninstall` prompt still removes the turn-voice hooks, since install.sh exits 0 on "left alone"
 - Left: the mp3 split and trim code sits in `turn-voice.cs` and `voice_test.py` with no shared test. A test needs a C# harness the repo lacks
 - Left: `writing-style.instructions.md` is 8.4 KB and loads on every agent turn. Trimming it is a product call
 - Left: no `tsc --noEmit` and no typeAware oxlint. Each needs new packages and a package.json

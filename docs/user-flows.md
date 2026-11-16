@@ -115,5 +115,5 @@ flowchart LR
 flowchart LR
   un["install.sh --uninstall"] --> list["list of what goes"]
   list -->|yes| delete["links, rules block, hooks removed"]
-  list -->|no| keep["left alone"]
+  list -->|no| keep["left alone, turn-voice hooks too"]
 ```

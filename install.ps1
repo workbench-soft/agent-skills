@@ -62,8 +62,11 @@ if ($PSScriptRoot -and (Test-Path (Join-Path $PSScriptRoot "skills"))) {
 }
 
 & $bash $script @installArgs
+$installCode = $LASTEXITCODE
+# install.sh exits 3 when the person answers no at the uninstall question, so the hooks stay too.
+if ($Uninstall -and $installCode -eq 3) { return }
 # throw keeps the window open. exit would close the PowerShell it ran in.
-if ($LASTEXITCODE -ne 0) { throw "install.sh failed with exit code $LASTEXITCODE" }
+if ($installCode -ne 0) { throw "install.sh failed with exit code $installCode" }
 
 # Claude speaks the end of each turn in -VoiceLang, Russian unless asked otherwise.
 $repoDir = Split-Path $script

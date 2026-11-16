@@ -71,8 +71,8 @@ turn, unasked: the VS Code prompts folder, `~/.claude/CLAUDE.md`,
   run of Russian or English apart, right after the cue.
 - **What it adds for the voice** hooks in `~/.claude/settings.json`,
   `~/.codex/hooks.json` and `~/.kimi-code/config.toml`,
-  `turn-voice.exe` in `~/.claude/hooks` on Windows, and `uv` and `edge-tts`
-  in your global mise config when mise is installed. A Mac runs
+  `turn-voice.exe` in `~/.claude/hooks` on Windows, and `edge-tts` in your
+  global mise config when mise is installed. Your global `uv` pin stays as it is. A Mac runs
   `hooks/turn-voice/turn-voice.mts` from the clone with Node and plays it
   through `afplay`.
 - **What leaves the PC** `edge-tts` sends each phrase, with the folder name

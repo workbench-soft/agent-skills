@@ -169,7 +169,8 @@ $voiceArgs = @($voice)
 # edge-tts gives the free Microsoft neural voices. It goes through mise, and CI skips it,
 # since mise keeps its global config outside the temporary HOME.
 if (-not $env:CI -and (Get-Command mise -ErrorAction SilentlyContinue)) {
-  & mise use -g --quiet uv@0.9 pipx:edge-tts@7.3.1 2>$null | Out-Null
+  # mise x puts uv on PATH for the pipx install only, so the person's global uv pin stays as it is.
+  & mise x uv@0.9 -- mise use -g --quiet pipx:edge-tts@7.3.1 2>$null | Out-Null
   $tts = "$(& mise which edge-tts 2>$null)".Trim()
   if ($tts -and (Test-Path $tts)) {
     $voiceArgs += $RuVoice, $EnVoice, $tts
