@@ -80,6 +80,8 @@ turn, unasked: the VS Code prompts folder, `~/.claude/CLAUDE.md`,
   is then cached in `%LOCALAPPDATA%\turn-voice`, or
   `~/Library/Caches/turn-voice` on a Mac. Without `edge-tts` only the cue
   plays.
+- **Calls** while Zoom, Google Meet or another app holds the microphone, only
+  the cue plays. The voice reads 30% faster, set with `-Rate` or `--rate`.
 
 With Node 24 on the PATH, the installer also adds agent hooks. Your own
 hooks and tables stay:

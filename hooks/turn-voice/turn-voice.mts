@@ -1,12 +1,14 @@
 // The Mac twin of turn-voice.exe: Claude Code, Codex and Kimi Code run it at
 // the end of a turn, and it plays a cue and says how the turn ended.
-//   node turn-voice.mts <mode> <lang> [<Russian voice> <English voice> <edge-tts> [<Russian pitch> <English pitch>]]
+//   node turn-voice.mts <mode> <lang> [<Russian voice> <English voice> <edge-tts> [<Russian pitch> <English pitch>] [<rate>]]
 // The modes and the args match turn-voice.cs. The hook JSON comes on stdin.
 import { spawn, spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import * as fs from "node:fs";
 import { homedir, tmpdir } from "node:os";
 import { join } from "node:path";
+import { onCall } from "./call.mts";
+import { type Clip, clip, fetchAll } from "./fetch.mts";
 import { cueWav, trim } from "./sound.mts";
 import { agentName, cyrillic, fromMarker, lead, runs, taskTitle, type Outcome } from "./voice.mts";
 
@@ -67,50 +69,27 @@ function kimiTail(session: unknown): string {
   }
 }
 
-// edge-tts as a .mts script is the test's fake, which runs through node.
-function fetchRun(
-  text: string,
-  voice: string,
-  pitch: string | undefined,
-  tts: string,
-): string | undefined {
-  const file = join(cache, `${hash(`${voice}|${pitch ? `${pitch}|` : ""}${text}`)}.mp3`);
-  if (fs.existsSync(file)) return (touch(file), file);
-  const part = `${file}.part`;
-  const args = [
-    "--voice",
-    voice,
-    ...(pitch ? [`--pitch=${pitch}`] : []),
-    "--text",
-    text,
-    "--write-media",
-    part,
-  ];
-  const [cmd, ...pre] = /\.m?[jt]s$/.test(tts) ? [process.execPath, tts] : [tts];
-  const run = spawnSync(cmd, [...pre, ...args], { timeout: 30000, stdio: "ignore" });
-  if (run.status !== 0 || !fs.existsSync(part) || !fs.statSync(part).size)
-    return log(`edge-tts exit ${run.status}`);
-  fs.renameSync(part, file);
-  return file;
-}
-
 // Each Russian and each English run gets its own voice, joined into one mp3 with the silence cut.
-function neural(
-  text: string,
-  [ruVoice, enVoice, tts, ruPitch, enPitch]: string[],
-): string | undefined {
+// The pitches end in Hz and the rate in %, so hooks from before the rate still work.
+function neural(text: string, [ruVoice, enVoice, tts, ...tune]: string[]): string | undefined {
+  const [ruPitch, enPitch] = tune.filter((a) => a.endsWith("Hz"));
+  const rate = tune.find((a) => /^[+-]\d{1,3}%$/.test(a) && a !== "+0%");
   if (!ruVoice || !enVoice || !tts || !fs.existsSync(tts)) return log(`no edge-tts at ${tts}`);
   fs.mkdirSync(cache, { recursive: true });
   for (const old of fs.readdirSync(cache))
     if (age(join(cache, old)) > 30 * 86400000)
       fs.rmSync(join(cache, old), { force: true, recursive: true });
-  const files: string[] = [];
-  for (const run of runs(text)) {
-    const ru = cyrillic(run);
-    const file = fetchRun(run, ru ? ruVoice : enVoice, valid(ru ? ruPitch : enPitch), tts);
-    if (!file) return undefined;
-    files.push(file);
-  }
+  const clips = runs(text).map((run) =>
+    cyrillic(run)
+      ? clip(cache, run, ruVoice, valid(ruPitch), rate)
+      : clip(cache, run, enVoice, valid(enPitch), rate),
+  );
+  const missing: Clip[] = [];
+  for (const c of clips)
+    if (fs.existsSync(c.file)) touch(c.file);
+    else missing.push(c);
+  if (missing.length && !fetchAll(missing, tts, log)) return undefined;
+  const files = clips.map((c) => c.file);
   if (!files.length) return undefined;
   const joined = join(cache, `${hash(files.join("|"))}-joined.mp3`);
   if (fs.existsSync(joined)) touch(joined);
@@ -194,6 +173,9 @@ if (!first?.startsWith("@")) {
     const head = lead(outcome, lang === "ru", agentName(input.cwd as string | undefined));
     const task = taskTitle(input);
     log(`says ${outcome}: ${task}`);
-    play(outcome, neural(task ? `${head}: ${task}` : head, voices));
+    // On a call the voice would talk over the people, so only the cue plays.
+    const call = onCall(cache);
+    if (call) log("on a call, cue only");
+    play(outcome, call ? undefined : neural(task ? `${head}: ${task}` : head, voices));
   }
 }

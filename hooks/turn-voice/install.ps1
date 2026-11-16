@@ -9,6 +9,8 @@ param(
   # Hz above or below each voice's own pitch, such as -10.
   [ValidateRange(-100, 100)][int]$RuPitch = 0,
   [ValidateRange(-100, 100)][int]$EnPitch = 0,
+  # Percent faster than each voice's own speed, or slower below 0.
+  [ValidateRange(-50, 100)][int]$Rate = 30,
   [switch]$Uninstall
 )
 $ErrorActionPreference = "Stop"
@@ -18,6 +20,7 @@ $userHome = if ($env:HOME) { $env:HOME } else { $HOME }
 $claude = Join-Path $userHome ".claude"
 $settingsPath = Join-Path $claude "settings.json"
 $exe = Join-Path $claude "hooks\turn-voice.exe"
+$fetch = Join-Path $claude "hooks\turn-voice-fetch.py"
 
 function Read-Settings {
   if (-not (Test-Path $settingsPath)) { return [pscustomobject]@{} }
@@ -119,8 +122,12 @@ $kept = Get-OwnArgs $settings
 if ($kept) {
   if (-not $PSBoundParameters.ContainsKey("RuVoice")) { $RuVoice = $kept[2] }
   if (-not $PSBoundParameters.ContainsKey("EnVoice")) { $EnVoice = $kept[3] }
-  if (-not $PSBoundParameters.ContainsKey("RuPitch") -and $kept.Count -ge 7) { $RuPitch = [int]($kept[5] -replace "Hz$") }
-  if (-not $PSBoundParameters.ContainsKey("EnPitch") -and $kept.Count -ge 7) { $EnPitch = [int]($kept[6] -replace "Hz$") }
+  $hz = @($kept | Select-Object -Skip 5 | Where-Object { $_ -match "Hz$" })
+  if (-not $PSBoundParameters.ContainsKey("RuPitch") -and $hz.Count -ge 2) { $RuPitch = [int]($hz[0] -replace "Hz$") }
+  if (-not $PSBoundParameters.ContainsKey("EnPitch") -and $hz.Count -ge 2) { $EnPitch = [int]($hz[1] -replace "Hz$") }
+  # A hook from before the rate has no % arg, so it gets the default.
+  $pct = @($kept | Select-Object -Skip 5 | Where-Object { $_ -match "%$" })
+  if (-not $PSBoundParameters.ContainsKey("Rate") -and $pct.Count) { $Rate = [int]($pct[0] -replace "%$") }
 }
 Remove-OwnHooks $settings
 
@@ -128,6 +135,7 @@ if ($Uninstall) {
   Write-Settings $settings
   Set-OtherAgents $null
   if (Test-Path $exe) { Remove-Item $exe -Force }
+  if (Test-Path $fetch) { Remove-Item $fetch -Force }
   return
 }
 
@@ -146,8 +154,10 @@ if (Test-Path $exe) {
   try { Remove-Item $exe -Force -ErrorAction Stop }
   catch { Rename-Item $exe ("turn-voice.old" + (Get-Random) + ".exe") }
 }
-& $csc /nologo /target:winexe /codepage:65001 "/out:$exe" (Join-Path $PSScriptRoot "turn-voice.cs") (Join-Path $PSScriptRoot "sound.cs")
+& $csc /nologo /target:winexe /codepage:65001 "/out:$exe" (Join-Path $PSScriptRoot "turn-voice.cs") (Join-Path $PSScriptRoot "sound.cs") (Join-Path $PSScriptRoot "call.cs") (Join-Path $PSScriptRoot "fetch.cs")
 if ($LASTEXITCODE -ne 0) { throw "turn-voice: csc failed with exit code $LASTEXITCODE" }
+# The exe runs it with the Python of edge-tts, to fetch a phrase in one process.
+Copy-Item (Join-Path $PSScriptRoot "fetch.py") $fetch -Force
 
 # "рус" is spelled with char codes, since Windows PowerShell reads a script without a BOM as ANSI.
 $rus = -join @([char]0x0440, [char]0x0443, [char]0x0441)
@@ -163,6 +173,8 @@ if (-not $env:CI -and (Get-Command mise -ErrorAction SilentlyContinue)) {
     $voiceArgs += $RuVoice, $EnVoice, $tts
     # edge-tts takes a signed pitch such as +0Hz or -10Hz.
     if ($RuPitch -or $EnPitch) { $voiceArgs += ($RuPitch.ToString("+0;-0;+0") + "Hz"), ($EnPitch.ToString("+0;-0;+0") + "Hz") }
+    # edge-tts takes a signed rate such as +30%. The hook finds it by the %.
+    $voiceArgs += $Rate.ToString("+0;-0;+0") + "%"
   } else {
     Write-Warning "turn-voice: edge-tts is missing, so only the cues play."
   }

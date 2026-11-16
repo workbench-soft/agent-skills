@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **turn-voice on a call** while Zoom, Google Meet or another app holds the microphone, only the cue plays. The voice reads 30% faster, and a phrase gets all its clips in one edge-tts process, so a new title speaks seconds sooner.
+
 - **Lighthouse pin** the web quality lenses run Lighthouse 12.8.2, since `mise` refuses 13.6.0: its `chromium-bidi` lost the trusted publisher.
 
 - **Web quality lenses** `reviewer` pairs the performance, UX and security lenses of a web page with the Lighthouse based skills of `addyosmani/web-quality-skills`, pinned to a commit, and measures the build with Lighthouse. The simplicity lens now checks maintainability, and the UX lens checks TalkBack and VoiceOver names on native screens.
