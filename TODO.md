@@ -17,3 +17,7 @@
 - Left: a release run cancelled between the tag push and `gh release create` leaves a tag with no release. Rare, harmless
 - Left: check_names.py counts SERVFAIL as taken and has no tests for `verdict` and the page parsers. Tests need saved live pages
 - Left: the piped install restore of deleted files (2026-11-10 audit) has no automated test. A test needs a clone with an origin inside the temp home test, which runs for minutes on Windows
+
+## Decisions as options
+
+- [ ] Install the new `TODO.md` hook text into Claude Code, in Windows PowerShell: `Set-Location "$env:WBS_ROOT\agent-skills"; mise x -- node claude/install-hooks.mts "$env:USERPROFILE\.claude\settings.json"` (denied)
