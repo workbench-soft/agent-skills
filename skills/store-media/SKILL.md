@@ -34,7 +34,7 @@ reads, unless it is in context. It MUST load `mise` before the first command.
 - **Places** the agent MUST find each place the app lives:
 
 ```bash
-git grep -nE 'applicationId|"package"|ca-app-pub-|ca-pub-|workbench-soft.github.io' -- ':!*.lock'
+git grep -nE 'applicationId|"package"|ca-app-pub-|ca-pub-|workbench-soft.com' -- ':!*.lock'
 ls design/icons public src-tauri/icons assets android/app/src/main/res 2>/dev/null
 ```
 
@@ -92,7 +92,7 @@ store listing, so the agent MUST only check the link.
 AdSense takes no media. It reads the site, so the site MUST get the new shots
 and icon.
 
-- **App page** the app's page on `workbench-soft.github.io` or its own
+- **App page** the app's page on `workbench-soft.com` or its own
   domain MUST get the screenshots, the GIF, the favicon and the PWA icons.
 - **Link preview** the page MUST have a 1200 × 630 `og:image` with the icon
   and a shot.
