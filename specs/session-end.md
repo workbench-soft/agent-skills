@@ -326,4 +326,11 @@
   rerun keeps the rate set by hand. The cache key holds the rate.
 - **Args** the rate is the hook arg that ends in `%`, so the old hook lines
   without it still work.
-- **Docs** `README.md`, `docs/features.md`, `CHANGELOG.md`.
+- **One fetch per phrase** Python took 8 to 15 seconds to import `edge_tts`
+  on a busy PC, and the hook paid it once per run of the phrase. `fetch.py`
+  now gets every missing run in one process, side by side, with the venv
+  Python of `edge-tts`. `fetch.cs` and `fetch.mts` call it and fall back to
+  one CLI run per clip. `install.ps1` copies it to
+  `~/.claude/hooks/turn-voice-fetch.py`.
+- **Docs** `README.md`, `docs/features.md`, `docs/architecture.md`,
+  `CHANGELOG.md`.

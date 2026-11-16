@@ -40,7 +40,7 @@ test("the hook plays the cue then the voice, once per event", () => {
   const tts = join(tmp, "tts.mts");
   writeFileSync(
     tts,
-    'import { writeFileSync } from "node:fs";\nconst a = process.argv;\nwriteFileSync(a[a.indexOf("--write-media") + 1], "x");\n',
+    'import { appendFileSync, writeFileSync } from "node:fs";\nconst a = process.argv;\nwriteFileSync(a[a.indexOf("--write-media") + 1], "x");\nappendFileSync(process.env.TTS_ARGS, a.slice(2).join(" ") + "\\n");\n',
   );
   const transcript = join(tmp, "t.jsonl");
   writeFileSync(transcript, '{"type":"x","customTitle":"✅ Fix login"}\n');
@@ -50,6 +50,8 @@ test("the hook plays the cue then the voice, once per event", () => {
     TURN_VOICE_LOG: join(tmp, "log"),
     TURN_VOICE_PLAYER: process.execPath,
     TURN_VOICE_DONE: "done.aiff",
+    TURN_VOICE_MEETING: "0",
+    TTS_ARGS: join(tmp, "tts-args"),
   };
   const event = JSON.stringify({
     session_id: "s1",
@@ -57,19 +59,25 @@ test("the hook plays the cue then the voice, once per event", () => {
     transcript_path: transcript,
     last_assistant_message: "ok\n✅ !!!COMPLETED!!!",
   });
-  for (let i = 0; i < 2; i++) {
+  const run = (input: string, i: number, extra: Record<string, string> = {}) => {
     const file = join(tmp, `in${i}.json`);
-    writeFileSync(file, event);
+    writeFileSync(file, input);
     spawnSync(
       process.execPath,
-      [join(dir, "turn-voice.mts"), `@${file}`, "stop", "ru", "v1", "v2", tts],
-      { env },
+      [join(dir, "turn-voice.mts"), `@${file}`, "stop", "ru", "v1", "v2", tts, "+30%"],
+      { env: { ...env, ...extra } },
     );
-  }
+  };
+  for (let i = 0; i < 2; i++) run(event, i);
   const log = readFileSync(join(tmp, "log"), "utf8");
   assert.match(log, /says done: Fix login/);
   assert.match(log, /play done\.aiff\n.*play .*-joined\.mp3/);
   assert.match(log, /skip repeat stop/);
+  assert.match(readFileSync(env.TTS_ARGS, "utf8"), /--voice v2 --rate=\+30% --text Fix login/);
+  // On a call only the cue plays.
+  run(event.replace('"s1"', '"s2"'), 2, { TURN_VOICE_MEETING: "1" });
+  const call = readFileSync(join(tmp, "log"), "utf8").slice(log.length);
+  assert.match(call, /on a call, cue only\n.*play done\.aiff\n?$/);
 });
 
 test("the installer adds the hooks once and keeps the person's", () => {

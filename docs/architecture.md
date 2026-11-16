@@ -62,7 +62,7 @@ flowchart LR
 
 ### Turn end voice: a C# hook built on the machine
 
-- **Picked** `hooks/turn-voice/turn-voice.cs` and `sound.cs`, which `install.ps1` builds with the `csc.exe` that ships with Windows. It wires the exe into `~/.claude/settings.json`, `~/.codex/hooks.json` and `~/.kimi-code/config.toml`. `sound.cs` joins the cue and the voice into one `PlaySound` call, so the first word comes through whole.
+- **Picked** `hooks/turn-voice/turn-voice.cs` and `sound.cs`, which `install.ps1` builds with the `csc.exe` that ships with Windows. It wires the exe into `~/.claude/settings.json`, `~/.codex/hooks.json` and `~/.kimi-code/config.toml`. `sound.cs` joins the cue and the voice into one `PlaySound` call, so the first word comes through whole. `call.cs` keeps the voice quiet while an app holds the microphone, and `fetch.cs` gets a phrase's clips through `fetch.py` in one Python process.
 - **Why** `csc.exe` is already on each Windows PC, so the hook needs no SDK or download to build.
 - **Trade-off** the hook runs on Windows only, and it is C#, which the org stack keeps out of new code.
 - **Rejected** the agent playing a sound itself: the agent skipped it, so the person heard no sound.
@@ -71,7 +71,7 @@ flowchart LR
 
 ### Turn end voice on a Mac: a Node twin of the C# hook
 
-- **Picked** `hooks/turn-voice/turn-voice.mts`, with its logic in `voice.mts` and `sound.mts`. Node runs it from the clone, and `afplay` plays the cue and the voice. `install-mac.mts` writes the same hook groups as `install.ps1`, and `install.sh` runs it on macOS.
+- **Picked** `hooks/turn-voice/turn-voice.mts`, with its logic in `voice.mts`, `sound.mts`, `fetch.mts` and `call.mts`. `call.mts` builds `mic.swift` once with `swiftc` to ask Core Audio about the microphone. Node runs it from the clone, and `afplay` plays the cue and the voice. `install-mac.mts` writes the same hook groups as `install.ps1`, and `install.sh` runs it on macOS.
 - **Why** `csc.exe` and the Windows audio calls are missing on a Mac, and Node is already pinned for the agent hooks.
 - **Trade-off** two `afplay` runs leave a short gap between the cue and the voice. The logic lives twice, in C# and TypeScript.
 - **Rejected** a Swift build with the Command Line Tools: no Mac in CI to build and check it on.

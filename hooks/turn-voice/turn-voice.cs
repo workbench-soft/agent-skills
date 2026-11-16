@@ -8,14 +8,15 @@ using System.Text.RegularExpressions;
 using System.Threading;
 
 // Claude Code, Codex and Kimi Code hook: plays a sound and says how the turn ended.
-//   turn-voice.exe <mode> <lang> [<Russian voice> <English voice> <edge-tts.exe> [<Russian pitch> <English pitch>]]
+//   turn-voice.exe <mode> <lang> [<Russian voice> <English voice> <edge-tts.exe> [<Russian pitch> <English pitch>] [<rate>]]
 //   stop     Stop: done, user steps, not done or running, by the end-of-turn marker
 //   fail     StopFailure: the turn died on an API error
 //   ask      a question or a permission prompt waits for the person
 //   archive  the agent is about to archive its session
 // <lang> is ru or en. The hook JSON comes on stdin. With edge-tts each Russian
 // and each English run of the phrase gets a native neural voice, cached per run.
-// A pitch such as -10Hz moves that voice down 10 Hz. Without edge-tts, or offline, only the cue plays.
+// A pitch such as -10Hz moves that voice down 10 Hz, and a rate such as +30% reads faster.
+// Without edge-tts, offline, or while an app holds the microphone, only the cue plays.
 static partial class TurnVoice {
     const string Tada = @"C:\Windows\Media\tada.wav";
 
@@ -39,7 +40,7 @@ static partial class TurnVoice {
         string ruVoice = args.Length > 2 ? args[2] : null;
         string enVoice = args.Length > 3 ? args[3] : null;
         string tts = args.Length > 4 ? args[4] : null;
-        string ruPitch = Pitch(args, 5), enPitch = Pitch(args, 6);
+        string ruPitch = Pitch(args, 5), enPitch = Pitch(args, 6), rate = Rate(args);
         // Codex and Kimi Code wait for a hook's pipes to close, so the speech runs on in a
         // child. ShellExecute hands the child no pipes of the hook.
         if (child == null) {
@@ -70,8 +71,11 @@ static partial class TurnVoice {
         string lead = Lead(outcome, ru, AgentName(input));
         string task = TaskTitle(input);
         Log("says " + outcome + ": " + task);
+        // On a call the voice would talk over the people, so only the cue plays.
+        bool call = OnCall();
+        if (call) Log("on a call, cue only");
         // The clip downloads before the cue, so the voice follows the cue with no wait.
-        string clip = BuildNeural(string.IsNullOrEmpty(task) ? lead : lead + ": " + task, ruVoice, enVoice, tts, ruPitch, enPitch);
+        string clip = call ? null : BuildNeural(string.IsNullOrEmpty(task) ? lead : lead + ": " + task, ruVoice, enVoice, tts, ruPitch, enPitch, rate);
         // Sessions that end together speak one after another, not over each other.
         using (var turn = new Mutex(false, @"Local\turn-voice")) {
             bool owned = false;
@@ -154,7 +158,7 @@ static partial class TurnVoice {
     // The runs go into one mp3 with their silence cut, so no pause opens between voices.
     // The phrase splits the same way when one multilingual voice reads both languages.
     // Returns the joined mp3, or null when only the cue plays.
-    static string BuildNeural(string text, string ruVoice, string enVoice, string tts, string ruPitch, string enPitch) {
+    static string BuildNeural(string text, string ruVoice, string enVoice, string tts, string ruPitch, string enPitch, string rate) {
         if (string.IsNullOrEmpty(ruVoice) || string.IsNullOrEmpty(enVoice) || string.IsNullOrEmpty(tts) || !File.Exists(tts)) {
             Log("no edge-tts at " + tts); return null;
         }
@@ -162,12 +166,14 @@ static partial class TurnVoice {
             var runs = Runs(text);
             if (runs.Count == 0) return null;
             var files = new System.Collections.Generic.List<string>();
+            var missing = new System.Collections.Generic.List<Clip>();
             foreach (var run in runs) {
                 bool cyrillic = Regex.IsMatch(run, @"\p{IsCyrillic}");
-                string file = Fetch(run, cyrillic ? ruVoice : enVoice, cyrillic ? ruPitch : enPitch, tts);
-                if (file == null) return null;
-                files.Add(file);
+                var clip = new Clip(run, cyrillic ? ruVoice : enVoice, cyrillic ? ruPitch : enPitch, rate);
+                files.Add(clip.File);
+                if (File.Exists(clip.File)) Touch(clip.File); else missing.Add(clip);
             }
+            if (missing.Count > 0 && !FetchAll(missing, tts)) return null;
             string joined = Path.Combine(Path.GetDirectoryName(files[0]), Hash(string.Join("|", files)) + "-joined.mp3");
             if (File.Exists(joined)) Touch(joined);
             else {
@@ -244,25 +250,11 @@ static partial class TurnVoice {
         return args.Length > i && Regex.IsMatch(args[i], @"^[+-][1-9]\d{0,2}Hz$") ? args[i] : null;
     }
 
-    // Each run is fetched once, then played from %LOCALAPPDATA%\turn-voice.
-    static string Fetch(string text, string voice, string pitch, string tts) {
-        string dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "turn-voice");
-        Directory.CreateDirectory(dir);
-        Prune(dir);
-        // A clip at the voice's own pitch keeps the name it had before pitches.
-        string file = Path.Combine(dir, Hash(voice + "|" + (pitch == null ? "" : pitch + "|") + text) + ".mp3");
-        if (File.Exists(file)) { Touch(file); return file; }
-        string part = file + ".part";
-        // Backslashes before the closing quote get doubled, or a title such as C:\temp\
-        // escapes the quote and swallows --write-media.
-        string quoted = Regex.Replace(text.Replace("\"", ""), @"(\\+)$", "$1$1");
-        var p = Process.Start(new ProcessStartInfo(tts,
-            "--voice " + voice + (pitch == null ? "" : " --pitch=" + pitch) + " --text \"" + quoted + "\" --write-media \"" + part + "\"") {
-            UseShellExecute = false, CreateNoWindow = true });
-        if (!p.WaitForExit(30000)) { try { p.Kill(); } catch { } Log("edge-tts timed out"); return null; }
-        if (p.ExitCode != 0 || !File.Exists(part) || new FileInfo(part).Length == 0) { Log("edge-tts exit " + p.ExitCode); return null; }
-        File.Move(part, file);
-        return file;
+    // The arg after the voices that ends in %, such as +30%. Hooks from before the rate have none.
+    static string Rate(string[] args) {
+        for (int i = 5; i < args.Length; i++)
+            if (Regex.IsMatch(args[i], @"^[+-]\d{1,3}%$")) return args[i] == "+0%" ? null : args[i];
+        return null;
     }
 
     // Each session title adds clips, so a clip unplayed for 30 days goes, with any .part a killed fetch left.

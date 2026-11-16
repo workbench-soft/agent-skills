@@ -1,7 +1,7 @@
 // Adds the Mac turn-voice hooks to Claude Code, Codex and Kimi Code, with the
 // events and args install.ps1 gives the Windows exe. install.sh runs it on macOS.
 // Usage: node install-mac.mts [--lang ru|en] [--ru-voice <v>] [--en-voice <v>]
-//                             [--ru-pitch <hz>] [--en-pitch <hz>] [--uninstall]
+//                             [--ru-pitch <hz>] [--en-pitch <hz>] [--rate <percent>] [--uninstall]
 import { spawnSync } from "node:child_process";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
@@ -15,6 +15,7 @@ const { values: opt } = parseArgs({
     "en-voice": { type: "string" },
     "ru-pitch": { type: "string" },
     "en-pitch": { type: "string" },
+    rate: { type: "string" },
     uninstall: { type: "boolean" },
   },
 });
@@ -25,7 +26,8 @@ const read = (file: string) => (existsSync(file) ? readFileSync(file, "utf8").tr
 type Group = { matcher?: string; hooks: Record<string, unknown>[] };
 const ours = (g: Group) => JSON.stringify(g).includes("turn-voice.mts");
 
-// The hooks already there keep the voices and pitches picked by hand: <mode> <lang> <ru> <en> <tts> [<ru Hz> <en Hz>].
+// The hooks already there keep the voices, pitches and rate picked by hand:
+// <mode> <lang> <ru> <en> <tts> [<ru Hz> <en Hz>] [<rate %>].
 const settingsFile = join(home, ".claude", "settings.json");
 const settings = JSON.parse(read(settingsFile) || "{}");
 const hooks: Record<string, Group[]> = (settings.hooks ??= {});
@@ -38,7 +40,14 @@ const ru = opt["ru-voice"] ?? kept[1] ?? "de-DE-SeraphinaMultilingualNeural";
 const en = opt["en-voice"] ?? kept[2] ?? "de-DE-SeraphinaMultilingualNeural";
 const hz = (v: string | undefined, k: string | undefined) =>
   v === undefined ? k : `${Number(v) >= 0 ? "+" : ""}${Number(v)}Hz`;
-const pitches = [hz(opt["ru-pitch"], kept[4]), hz(opt["en-pitch"], kept[5])];
+const keptHz = kept.slice(4).filter((a) => a.endsWith("Hz"));
+const pitches = [hz(opt["ru-pitch"], keptHz[0]), hz(opt["en-pitch"], keptHz[1])];
+// A hook from before the rate has no % arg, so it gets the default +30%.
+const keptRate = kept.slice(4).find((a) => a.endsWith("%"));
+const rate =
+  opt.rate === undefined
+    ? (keptRate ?? "+30%")
+    : `${Number(opt.rate) >= 0 ? "+" : ""}${Number(opt.rate)}%`;
 
 // edge-tts gives the free Microsoft neural voices through mise. CI skips it, as install.ps1 does.
 let tts = "";
@@ -57,6 +66,8 @@ const voice = [
 ];
 if (tts && (pitches[0] !== "+0Hz" || pitches[1] !== "+0Hz") && pitches[0] && pitches[1])
   voice.push(...(pitches as string[]));
+// edge-tts takes a signed rate such as +30%. The hook finds it by the %.
+if (tts) voice.push(rate);
 const line = (mode: string) => [process.execPath, script, mode, ...voice].map(quote).join(" ");
 
 // Claude Code: the same five groups as on Windows.
