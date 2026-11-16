@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **Decisions stay out of TODO.md** the hook on a `TODO.md` write drops `(decision)` and tells the agent to ask the decision now, with 2 to 4 options to click.
 - **turn-voice updates on a pull** Windows rebuilds the hook when its code changed, and a Mac without the Xcode tools gets no install dialog.
 
 - **turn-voice on a call** while Zoom, Google Meet or another app holds the microphone, only the cue plays. The voice reads 30% faster, and a phrase gets all its clips in one edge-tts process, so a new title speaks seconds sooner.

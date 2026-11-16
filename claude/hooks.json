@@ -49,7 +49,7 @@
         {
           "type": "command",
           "shell": "bash",
-          "command": "grep -qE '\"file_path\" *: *\"[^\"]*TODO.md\"' || exit 0; echo '{\"hookSpecificOutput\":{\"hookEventName\":\"PostToolUse\",\"additionalContext\":\"TODO.md takes a task only after you tried it with each tool you have. If a tool can finish it, such as a site in Claude in Chrome where you press each consent, accept and Save, do it now and drop the line. Each line left names what stopped you in brackets: (login), (CAPTCHA), (secret), (payment), (admin), (denied), (wait) or (decision).\"}}'"
+          "command": "grep -qE '\"file_path\" *: *\"[^\"]*TODO.md\"' || exit 0; echo '{\"hookSpecificOutput\":{\"hookEventName\":\"PostToolUse\",\"additionalContext\":\"TODO.md takes a task only after you tried it with each tool you have. If a tool can finish it, such as a site in Claude in Chrome where you press each consent, accept and Save, do it now and drop the line. Each line left names what stopped you in brackets: (login), (CAPTCHA), (secret), (payment), (admin), (denied) or (wait). A decision stays out of TODO.md: ask it now through AskUserQuestion with 2 to 4 options, your pick first.\"}}'"
         }
       ]
     }
