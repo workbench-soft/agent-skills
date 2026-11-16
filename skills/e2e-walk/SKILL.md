@@ -55,7 +55,7 @@ the release workflow to learn where the app runs, then pick the target here:
 | The app                  | The target                                                 |
 | ------------------------ | ---------------------------------------------------------- |
 | Android, Expo, Capacitor | the APK of the newest release, on an emulator or the phone |
-| Web, PWA, static site    | the live web build under `workbench-soft.github.io`        |
+| Web, PWA, static site    | the live web build under `workbench-soft.com`              |
 | Tauri, Windows           | the installer of the newest release, on this PC            |
 
 - **Emulator first** a running emulator SHOULD win over the person's phone,

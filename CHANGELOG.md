@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **Site links** e2e-walk and store-media name `workbench-soft.com`, where `workbench-soft.github.io` now forwards.
+
 - **Install keeps your settings** the turn-voice install leaves your global `uv` pin alone, and a no at the `install.ps1 -Uninstall` question keeps the turn-voice hooks too.
 
 - **reddit-comments says you made it** a draft that names or links your own repo, app or site says so in plain words, as the FTC and ACCC rules ask.
