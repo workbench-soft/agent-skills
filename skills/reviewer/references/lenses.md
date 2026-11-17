@@ -75,6 +75,7 @@ List the order of steps that breaks it, a step per line. Flag a message that poi
 ```text
 UX, ACCESSIBILITY AND COPY
 Look from the user's side: first run, empty, loading, error and offline states.
+Flag a step that runs with no sign on screen, a glow or spinner that ends before the result, and an action that needs a second tap to finish, as `visible-work` says.
 Check WCAG 2.2 AA: Tab reaches each control and Enter or Space works it; focus moves sensibly in dialogs; each control, icon button and image has a name; contrast of 4.5:1; meaning not shown by colour alone; 200% zoom; prefers-reduced-motion.
 Check markup: a clickable div in place of a button, a skipped heading level, a field without a label.
 Check tap targets and one-hand use, the back button and browser history, permission prompts and what the app says before them.

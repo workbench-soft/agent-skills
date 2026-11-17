@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **visible-work** a new skill: each step an app takes shows on screen while it runs, a wait names its step, and a "play" plays without a second tap. The UX lens of `reviewer` looks for a silent step.
+
 - **Site links** e2e-walk and store-media name `workbench-soft.com`, where `workbench-soft.github.io` now forwards.
 
 - **Install keeps your settings** the turn-voice install leaves your global `uv` pin alone, and a no at the `install.ps1 -Uninstall` question keeps the turn-voice hooks too.

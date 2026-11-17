@@ -187,6 +187,11 @@ ships, in the same change. It picks the i18n tool for the stack, matches the
 tone of each catalog and maps English errors from native code to translated
 keys. A test keeps the catalogs on the same keys.
 
+**`visible-work`** makes each step of an app show on screen while it runs,
+from the tap or the voice command to the result. A wait names what it waits
+for, a failure says so in words, and an action the person asked for finishes
+without a second tap.
+
 **`reviewer`** is the core that `review` and `app-audit` share. It picks the
 lenses, starts one subagent per lens on the strongest model and checks each
 finding before it goes on:
