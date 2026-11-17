@@ -26,7 +26,7 @@ grep -il worktree AGENTS.md CLAUDE.md CONTRIBUTING.md README.md 2>/dev/null
 The agent SHOULD run step 6 for every other worktree of this repo whose
 branch has a merged PR. It MUST skip the main checkout. A worktree that fails
 any check of step 6 MUST stay, and no question SHOULD go to the user. The agent
-SHOULD empty the `.trash` folder beside the repos too, since a stopped run
+SHOULD empty the `.trash` folder beside each worktree folder too, since a stopped run
 leaves folders there.
 
 ```bash
@@ -140,10 +140,10 @@ head=$(GH_PAGER=cat gh pr view <branch> --json headRefOid -q .headRefOid)
 
 Any line with output MUST halt the removal. The worktree MUST stay, and a line
 in `TODO.md` MUST give the path and what remains in it. Otherwise the agent
-MUST move it to the trash folder beside the repos, then drop it from git:
+MUST move it to the trash folder beside the worktree, then drop it from git:
 
 ```bash
-trash="$(dirname "$main")/.trash"; mkdir -p "$trash"
+trash="$(dirname "$dir")/.trash"; mkdir -p "$trash"
 mv "$dir" "$trash/$(basename "$dir")-$(date +%s)"
 git worktree prune
 git branch -D <branch>
@@ -152,7 +152,9 @@ git ls-remote --exit-code --heads "$remote" <branch> >/dev/null && git push "$re
 
 - **Why a move** `git worktree remove` deletes each file while the agent
   waits, and the `node_modules` of a worktree hold the agent for minutes on
-  Windows. A rename on the same disk SHOULD take under a second.
+  Windows. A rename on the same disk SHOULD take under a second. The trash
+  MUST sit beside the worktree: a move to another drive copies each file,
+  hangs on `node_modules` and fails on pnpm junctions.
 - **Locked** a `mv` that fails with "Permission denied" or `EBUSY` means a
   process holds a file. The usual holders are a Gradle daemon, which
   `./gradlew --stop` in `$dir` ends, and a shell still inside `$dir`. The agent MUST stop it as the hung process rules say,
@@ -163,7 +165,7 @@ On Windows the path MUST be written out, and `rd` leaves the targets of pnpm
 junctions alone. Elsewhere a background `rm -rf` MAY do the job:
 
 ```bash
-powershell -NoProfile -Command "Start-Process cmd -WindowStyle Hidden -ArgumentList '/c','rd /s /q C:\code\.trash'"
+powershell -NoProfile -Command "Start-Process cmd -WindowStyle Hidden -ArgumentList '/c','rd /s /q D:\WBS-worktrees\.trash'"
 ```
 
 - **Branch delete** the agent MAY use `git branch -D` here, because the PR

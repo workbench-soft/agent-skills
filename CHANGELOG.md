@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **git-worktrees on another drive** `remove-merged.sh` puts the trash beside the worktree, so a worktree on `D:` with its repo on `C:` goes in a second. Before, the move copied it across drives, hung on `node_modules` and failed on pnpm junctions.
+
 - **visible-work** a new skill: each step an app takes shows on screen while it runs, a wait names its step, and a "play" plays without a second tap. The UX lens of `reviewer` looks for a silent step.
 
 - **Site links** e2e-walk and store-media name `workbench-soft.com`, where `workbench-soft.github.io` now forwards.

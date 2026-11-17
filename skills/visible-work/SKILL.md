@@ -1,6 +1,6 @@
 ---
 name: visible-work
-description: 'Use before writing or changing app code that does work after a tap, a voice command, a timer or a push: a search, a load, a stream, a sync, a save, playback. Also on "show what is happening", "the app looks frozen", "nothing happens on screen", "покажи что происходит", "приложение молчит". Each step shows on screen while it runs, a wait says what it waits for, the end shows the result or an error, and an action the person asked for finishes without a second tap.'
+description: 'Use before writing or changing app code that does work after a tap, a voice command, a timer or a push: a search, a load, a stream, a sync, a save, playback. Also on "show what is happening", "the app looks frozen", "the screen does not change", "покажи что происходит", "приложение молчит". Each step shows on screen while it runs, a wait says what it waits for, the end shows the result or an error, and an action the person asked for finishes without a second tap.'
 ---
 
 # Work shows on screen

@@ -55,7 +55,8 @@ if [ "$dropped" = no ]; then
 fi
 
 # A rename takes under a second. Deleting node_modules in place holds the agent for minutes.
-trash="$(dirname "$main")/.trash"
+# The trash sits beside the worktree, so the rename stays on its drive and never turns into a copy.
+trash="$(dirname "$dir")/.trash"
 mkdir -p "$trash"
 mv "$dir" "$trash/$(basename "$dir")-$(date +%s)" || stop "a process holds a file in it"
 git -C "$main" worktree prune
