@@ -2,9 +2,6 @@
 
 ## app-audit
 
-- [ ] Check Play and Use still work after the 2026-11-01 origin check. The sound needs ears, so an agent can't check it.
-  1. Ask an agent to "play the voices". On the voice-test page press Play on one voice and check you hear it.
-  2. Ask an agent to "make icon options" in any repo. In the picker press Use on one icon and check the agent gets the pick.
 - Left: the mp3 split and trim code sits in `turn-voice.cs` and `voice_test.py` with no shared test. A test needs a C# harness the repo lacks
 - Left: `writing-style.instructions.md` is 8.4 KB and loads on every agent turn. Trimming it is a product call
 - Left: no `tsc --noEmit` and no typeAware oxlint. Each needs new packages and a package.json
