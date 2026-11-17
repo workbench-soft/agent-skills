@@ -73,3 +73,10 @@ Worktrees, folders and branches piled up after their PRs merged.
 - **Uninstall** `--uninstall` MUST take out only these rules. The person's own rules stay.
 - **Steps** spec, the script and its test, the install, the skill, docs.
 - **Docs** `README.md`, `docs/features.md`, `CHANGELOG.md`, and the auto mode list in `workflow.instructions.md` of `agent-skills-private`.
+
+### 2026-11-17 Trash on the worktree drive
+
+- **Why** `remove-merged.sh` moved a worktree on `D:` into `.trash` beside its repo on `C:`. The move became a copy that hung 40 minutes on `node_modules`, failed on pnpm junctions and left a partial copy.
+- **Changes** the script and step 6 of `skills/git-worktrees/SKILL.md` put `.trash` beside the worktree folder, so the rename stays on one drive. Step 2 empties the trash beside each worktree.
+- **Steps** spec, the script, the skill, docs.
+- **Docs** `CHANGELOG.md`.
