@@ -149,7 +149,9 @@ comment ready to paste on the line. When posted, the comments go up with a
 verdict: approve, request changes for a real blocker, or comments only.
 
 **`create-pr`** writes the PR description and opens the PR with `gh`. The
-description holds the problem, the solution and a diagram of the user flows.
+description holds the problem, how it worked before and how it works now. An
+agent adds how it did the work: the skills it used and the code it read, with
+the reason. A diagram of the user flows follows, also for a skill or a tool.
 Each diagram comes as a Before and After pair, with nodes green for new, amber
 for changed and red for removed. It adds what to type and expect from any new
 command, and links to the designs and docs the work used. It also lists the
