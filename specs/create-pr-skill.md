@@ -73,3 +73,23 @@ A single diagram of the new state hid what the change moved. The person wants ea
 - **`skills/review/references/part-2-map.md`** and **`final-checklist.md`** the same pairs in the review report.
 - **`skills/architecture/SKILL.md`** a restructure draws pairs.
 - **`feature-docs`** in `agent-skills-private` points to the same rules.
+
+### 2026-11-18 Before, now and how it was done
+
+#### Why
+
+A PR body showed the new state only. The reader couldn't tell what changed for them, or how the agent got there and which skills it leaned on.
+
+#### User flows it touches
+
+- **Open a PR** the body adds How it worked before and, when an agent wrote the change, How it was done: each skill, agent or tool with a plain line on what it is, and each read of code with its reason. A change with no screen gets the before and after flow of the agent or tool steps. The prose cap is 30 lines.
+
+#### Changes
+
+- **`skills/create-pr/SKILL.md`** the template, the section rules, the writing rules and the example body.
+- **`README.md`** and **`docs/features.md`** describe the new sections.
+
+#### Docs to update
+
+- `README.md`
+- `docs/features.md`
