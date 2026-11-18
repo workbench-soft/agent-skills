@@ -30,7 +30,7 @@ Spec: [reviewer-core](../specs/reviewer-core.md).
 ## Pull requests
 
 - **Skill** `create-pr`.
-- **What it gives** a PR body under 20 lines: the problem, the solution, related PRs, the code reused and the packages picked. It opens or updates the PR with `gh`.
+- **What it gives** a PR body under 30 lines: the problem, how it worked before, how it works now, how the agent did it, related PRs, the code reused and the packages picked. It opens or updates the PR with `gh`.
 - **Diagrams** each flow comes as a Before and After pair, with nodes green for new, amber for changed, red for removed and gray for the rest.
 
 Spec: [create-pr-skill](../specs/create-pr-skill.md).
