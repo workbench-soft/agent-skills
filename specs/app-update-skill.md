@@ -20,6 +20,12 @@ None written down yet.
 
 ## Changes
 
+### 2026-11-24 The offer comes back on each return
+
+- **Why** the person wants the update offered at each start and each return from another app, in every app, until it is installed. The skill let a version stay quiet after Later until the next cold start, and a return within 5 minutes of a GitHub answer showed nothing.
+- **Changes** `skills/app-update/SKILL.md`: Later only closes the dialog, a return within 5 minutes offers the release GitHub last found, the dialog names the installed and the new version, the mobile data warning stands out. The device test checks the dialog comes back.
+- **Docs** `README.md`, `docs/features.md`, `CHANGELOG.md`.
+
 ### 2025-10-28 app-update checks on return and stays out of the Play build, features.md for tickets
 
 Done on 2025-10-28, before the history was reset to one commit. The old commits sit under `refs/backup/main` in the local backup mirror of `agent-skills`.

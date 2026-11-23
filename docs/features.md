@@ -194,7 +194,7 @@ Spec: [launch-skills](../specs/launch-skills.md).
 ## In-app updates
 
 - **Skill** `app-update`.
-- **What it gives** an app installed outside a store updates itself from GitHub releases: a check at launch and on resume, a Check for updates button, a download bar with a cancel cross and a notification.
+- **What it gives** an app installed outside a store updates itself from GitHub releases: a dialog at launch and on each return from another app until the update is installed, with the installed and new version and a mobile data warning, a Check for updates button, a download bar with a cancel cross and a notification.
 - **Limits** the code stays out of the Google Play build.
 
 Spec: [app-update-skill](../specs/app-update-skill.md).

@@ -41,16 +41,21 @@ ls .github/workflows; grep -rn 'apk\|release' .github/workflows | head -20
 - **Quiet check** once the first screen has drawn, the app MUST ask GitHub
   away from the UI thread. A GitHub error or a missing connection MUST show
   no sign.
-- **Back in front** every return of the app to the front MUST run the same
-  check, so a release published while it was in the background appears.
-- **Once at a time** a return check SHOULD be skipped while a check, the
-  dialog or a download is running, and for 5 minutes after GitHub last
-  answered.
-- **Newer version** a dialog MUST ask yes or no. It MUST show the version,
-  the size in MB, a warning when on mobile data, and Update and Later.
-- **Answered** once the person picks Later or Update for a version, returns
-  SHOULD stay quiet about it until the next cold start. Settings MUST still
-  list it.
+- **Back in front** every return of the app to the front from another app
+  MUST run the same check, so a release published while it was in the
+  background appears.
+- **Once at a time** a return check MUST be skipped while a check, the
+  dialog or a download is running.
+- **Quiet minutes** within 5 minutes of the last GitHub answer, a return
+  SHOULD offer the release that answer found without asking GitHub again.
+- **Newer version** a dialog MUST ask yes or no: "You have version 1.3.2.
+  Version 1.4.0 is out. Download 29 MB and install it now?" It MUST show the
+  installed version, the new version, the size in MB, a warning when on
+  mobile data, and Update and Later.
+- **Mobile data** the warning MUST stand out from the question, such as a
+  warning alert, and MUST be left out when the APK is already downloaded.
+- **Again and again** Later MUST only close the dialog. Each cold start and
+  each return MUST offer the version again until it is installed.
 - **No newer version** the app MUST show no sign and delete the old
   downloaded APKs.
 
@@ -173,7 +178,9 @@ The agent MUST take the split for each stack from `references/play-build.md`.
 2. It MUST launch the app in airplane mode and see no dialog. It MUST switch
    the network on, go to another app and come back, and see the dialog offer
    the release.
-3. It MUST pick Later, then Check for updates. The button MUST read
+3. It MUST pick Later, go to another app and come back, and see the dialog
+   again with the installed and the new version. It MUST pick Later, then
+   Check for updates. The button MUST read
    "Checking for updates…", then the found line and the dialog MUST appear.
 4. It MUST pick Update and see percent, MB and the bar in the header. It MUST
    cancel and see the header go back to normal.

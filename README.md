@@ -291,7 +291,9 @@ Then it creates the app in Play Console, rolls it out to testers and hands
 back the join link. A site with no app MAY turn into one through Bubblewrap.
 
 **`app-update`** lets an app installed outside a store update itself from
-GitHub releases. It checks on each start, and a Check for updates button says
+GitHub releases. It offers a newer version on each start and each return from
+another app until it is installed, with both versions and a mobile data
+warning. A Check for updates button says
 when it is checking and what it found. The download shows percent, MB, a bar
 and a cancel cross in the header. A notification says when the update is
 ready.

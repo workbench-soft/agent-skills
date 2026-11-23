@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **app-update offers again on each return** the dialog comes back at each start and each return from another app until the update is installed. It names the installed and the new version, and the mobile data warning stands out.
 - **create-pr says how the work was done** the PR body adds how it worked before and, for an agent, how it did the work: the skills it used or changed and the code it read, with the reason. A skill or tool with no screen still gets the before and after flow. The prose cap goes from 20 to 30 lines.
 
 - **No release for docs** Release runs the shared `affected` step of `workbench-soft/ci` with `since: release`, so a push that changed only Markdown or `docs/` since the last tag cuts no release. Proof with `affected.ts --since release`: code commit `75708ba` gives `run=true`, docs commit `4f89a2b` gives `run=false`.
