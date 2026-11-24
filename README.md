@@ -150,7 +150,7 @@ rules file of yours MAY add to it, and its line wins.
 
 - **Plan** each feature gets a spec in `specs/` before the code. Each change
   updates the docs it makes stale, and each command runs through mise.
-- **Ship** `ship` commits to clean `main` or opens a PR and merges it at once.
+- **Ship** `ship-change` commits to clean `main` or opens a PR and merges it at once.
   `feature-queue` lets several sessions share one repo, and a broken build
   gets its own fix session.
 - **Do it yourself** the agent runs each step it has a tool for, with your
@@ -437,7 +437,7 @@ new layout, renames functions after what they do and moves the code to modern
 syntax. At the end it wipes the git history into one commit through
 `reset-history`.
 
-**`ship`** takes a change from the first edit to `main`. It commits straight
+**`ship-change`** takes a change from the first edit to `main`. It commits straight
 to a clean `main`, or opens a worktree and a draft PR and merges it once the
 checks pass on your machine. A repo with a `deploy` task goes live at once.
 

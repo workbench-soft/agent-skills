@@ -43,7 +43,7 @@ The agent MUST also log:
 
 ## Draft PR opened early
 
-`ship` opens the draft PR right after the spec commit. The agent MUST then
+`ship-change` opens the draft PR right after the spec commit. The agent MUST then
 update the list with `gh pr edit --body-file` before `gh pr ready`, so the
 merged body holds each step up to the merge.
 

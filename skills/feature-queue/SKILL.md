@@ -54,7 +54,7 @@ worktree: ~/code/memories
 area: src/upload/queue.ts, src/upload/ui/
 ```
 
-- **No overlap** the state MUST be `working`, and `ship` chooses the checkout.
+- **No overlap** the state MUST be `working`, and `ship-change` chooses the checkout.
 - **Overlap** a path in two areas, or a file inside a claimed folder, MUST
   set the state to `waits for <session>`. The session MUST be the working
   claim it overlaps, or else the waiting claim with the earliest `since`.
@@ -81,7 +81,7 @@ while [ -e "$board/<blocker>.md" ]; do touch "$board/<session>.md"; sleep 120; d
 ## 5. Open the PR
 
 On the worktree path, the agent MUST open the draft PR right after the spec
-commit, as step 7 of `ship` says, so other sessions see the work.
+commit, as step 7 of `ship-change` says, so other sessions see the work.
 
 - **Dropped** work the person drops MUST close its PR.
 
@@ -125,7 +125,7 @@ Right after the commit is pushed or the PR merges, the agent MUST delete its
 claim, then drop stale claims from step 2.
 
 - **Release** the agent MUST NOT start Release, build an APK or touch the
-  phone, apart from the launch check of "Risky builds" in `ship`. A direct
+  phone, apart from the launch check of "Risky builds" in `ship-change`. A direct
   push or the last PR merge releases through CI.
 - **Phone test** when the board is empty and queued PRs remain, the answer
   MUST tell the person the repo is ready for "test the merged work". Direct

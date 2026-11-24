@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **ship-change** the `ship` skill takes the name `ship-change`. Claude Code now has its own `/ship` command, which starts only from a line the person types, and it hid the skill, so an agent's Skill call stopped with "Nothing started".
 - **Workflow and code rules** `workflow.instructions.md` and `code.instructions.md` move here from the private repos, so a work laptop on macOS gets them too. The install links them beside `writing-style.instructions.md` and wires each one into `CLAUDE.md` and the Codex and Kimi `AGENTS.md`. Steps for the person take a `.ps1` on Windows and a `.sh` on macOS and Linux.
 - **ship, feature-queue, mcp-setup** move here from `agent-skills-private`, with the studio paths and the vault project taken out.
 - **One script for the person** `guide-on-site`, `play-release`, `ads-setup` and `seo-setup` put each step they can't reach into one script per task, `scripts/person-steps/<task>.ps1`, in place of numbered clicks. The script runs each CLI step, skips the done ones on a rerun, and waits only for a login, a CAPTCHA, a secret or a payment. The person gets one PowerShell 5.1 line that runs it, and the `TODO.md` hook says so.

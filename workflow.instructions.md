@@ -16,7 +16,7 @@ skill. The agent MUST load the skill in a job's row before that job:
 
 | Job                                                   | Skill           |
 | ----------------------------------------------------- | --------------- |
-| Any change to a git repo: queue, Main, worktree, PR   | `ship`          |
+| Any change to a git repo: queue, Main, worktree, PR   | `ship-change`   |
 | A new or broken MCP server                            | `mcp-setup`     |
 | Any step on a site or a console, Google Play included | `guide-on-site` |
 | A hung command, a busy port, a file lock              | `hung-process`  |
@@ -77,16 +77,16 @@ find and fix those docs unasked.
 
 ## Ship every change
 
-Each change to a git repo MUST ship through the `ship` skill, unless the
+Each change to a git repo MUST ship through the `ship-change` skill, unless the
 repo's rules say otherwise. The skill picks a direct push to clean `main` or
 a worktree and PR. Checks MUST follow the repo's test rules.
 
 - **Safety** force push, `--no-verify` and `gh pr merge --admin` MUST NOT be
-  used. A push to `main` MUST follow the clean checkout path in `ship`.
+  used. A push to `main` MUST follow the clean checkout path in `ship-change`.
 - **Shared systems** a test MUST NOT touch a shared or production
   environment.
 - **Deploy** once a change is on `main`, a repo with a `deploy` mise task
-  MUST go live from this machine at once, through `ship`. The agent MUST NOT
+  MUST go live from this machine at once, through `ship-change`. The agent MUST NOT
   wait for CI to deploy.
 - **Risky builds** a change to a shrink or build setting, keep rules, native
   code or a native package MUST pass a launch check on its release build
@@ -96,7 +96,7 @@ a worktree and PR. Checks MUST follow the repo's test rules.
 
 A broken build, test, lint or CI check that the agent meets, in any repo,
 MUST get its own session at once. That session MUST fix it and merge the fix
-to `main` through `ship`.
+to `main` through `ship-change`.
 
 - **No question** the agent MUST start the session without asking, with the
   command, the error and what it found in the brief, then go on with its own
@@ -201,7 +201,7 @@ person.
 The script MUST follow these:
 
 - **One file** each task MUST get one script in the repo of the work,
-  shipped through `ship`: `scripts/person-steps/<task>.ps1` on Windows,
+  shipped through `ship-change`: `scripts/person-steps/<task>.ps1` on Windows,
   `scripts/person-steps/<task>.sh` on macOS and Linux. A single command MAY
   go as that one line, with no file.
 - **Does the rest** the script MUST run each step a tool can do: `gh`,

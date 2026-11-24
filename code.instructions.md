@@ -91,7 +91,7 @@ the job in their row:
 | Before the worktree, and after the merge                  | `feature-queue` |
 | Before the first command                                  | `mise`          |
 | A checkout for the work, and cleanup after the merge      | `git-worktrees` |
-| Commit, PR, merge and cleanup                             | `ship`          |
+| Commit, PR, merge and cleanup                             | `ship-change`   |
 | Open or update a PR                                       | `create-pr`     |
 
 A new skill SHOULD go to `agent-skills`. Its description MUST name the job

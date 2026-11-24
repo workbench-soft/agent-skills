@@ -418,7 +418,7 @@ For an existing PR the agent MUST run:
 GH_PAGER=cat gh pr edit --title "<title>" --body-file <file>
 ```
 
-`--draft` MAY be added only when the user asked for a draft, or `ship` opens
+`--draft` MAY be added only when the user asked for a draft, or `ship-change` opens
 it early. A PR opened early MUST get Step by step brought up to date with
 `gh pr edit` before `gh pr ready`.
 

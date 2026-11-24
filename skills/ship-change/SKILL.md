@@ -1,5 +1,5 @@
 ---
-name: ship
+name: ship-change
 description: 'Use in a git repo once a change is planned, right after specs, and again at commit, merge and cleanup. Also on "ship it", "open the PR", "merge it", "залей", "смёржи". Checks for overlapping sessions and local edits, then commits straight to clean main or uses a worktree, branch and PR. Also the changelog entry and safety bans.'
 ---
 
