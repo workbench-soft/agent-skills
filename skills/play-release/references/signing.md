@@ -63,6 +63,20 @@ sed -n 's/^password: //p' "$dir/README.txt" | gh secret set ANDROID_KEYSTORE_PAS
 
 In CI, a step MUST decode it with `echo "$ANDROID_KEYSTORE" | base64 -d > "$RUNNER_TEMP/upload-key.jks"`.
 
+## Sign local builds
+
+A local APK or AAB MUST sign with the key the store or CI release uses, so it
+installs over the release on a phone and the app keeps its data. A phone
+refuses an update signed with another key, and an uninstall wipes the data.
+
+- **Vault** when no local copy of the key exists, the build script MUST read
+  it from the secret store the CI secrets come from, into a temp file it
+  deletes on exit.
+- **No fallback** a script that can't get the key MUST stop before the
+  build. A quiet fallback to the debug key costs the whole build.
+- **Debug on purpose** a debug key build MAY run behind an explicit flag, such
+  as `DEBUG_KEY=1`, for an emulator without the app.
+
 ## Version codes
 
 Every upload MUST take a higher `versionCode`. Before the CI build, CI SHOULD

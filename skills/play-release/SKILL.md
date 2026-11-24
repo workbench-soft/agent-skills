@@ -80,6 +80,8 @@ keytool -printcert -jarfile app/build/outputs/bundle/release/app-release.aab | g
 
 - The upload key MUST be what signs the bundle: the printed SHA-256 equals the
   one in the key's notes.
+- A local build MUST sign with the release or upload key, and the debug key
+  MUST NOT sign it: [references/signing.md](references/signing.md) "Sign local builds".
 - `versionCode` MUST be above each bundle uploaded so far. Play turns down a
   repeat.
 - Flutter MUST build with `flutter build appbundle`. React Native and

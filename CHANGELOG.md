@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **play-release signs local builds with the release key** a local APK or AAB takes the key the release uses, read from the vault into a temp file when no local copy exists, so it installs over the release and the app keeps its data. A script that can't get the key stops before the build, in place of a quiet debug key fallback.
 - **Faster install on Windows** `install.sh` links the skills of each agent folder with one `ln` and removes them with one `rm`, in place of one process per skill. A process start costs 0.1 s to 0.5 s in Git Bash, so an install in a fresh home drops from about 30 s to 12 s on a busy PC, and `mise run test` finishes in minutes.
 - **create-pr logs each step** a PR an agent wrote gets a numbered Step by step list in the order of the work: the pages and repos read, the files used as a template, each exact command with its failures, the files saved, each commit, the push and the PR. A reader redoes the work from the body alone. A draft PR opened early gets the list brought up to date before it goes ready.
 - **app-update offers again on each return** the dialog comes back at each start and each return from another app until the update is installed. It names the installed and the new version, and the mobile data warning stands out.
