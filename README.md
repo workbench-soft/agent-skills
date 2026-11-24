@@ -27,9 +27,9 @@ installer through it. Without Git, it installs Git through `winget` first. The
 macOS lines below also work unchanged in Git Bash.
 
 - **Developer Mode** MAY stay off. The agents then get a junction to each
-  skill folder, and a copy of the writing rules file.
-- **While it is off** rerun the install after each edit to
-  `writing-style.instructions.md`, so the copy stays current.
+  skill folder, and a copy of each rules file.
+- **While it is off** rerun the install after each edit to a rules file, so
+  the copy stays current.
 - **Turning it on** Settings, then System, then For developers. The next
   install then makes real symlinks.
 
@@ -53,11 +53,18 @@ too.
 
 The command keeps one folder on disk and links it into each agent installed on
 the machine: Claude Code, Codex, Cursor, Copilot, Crush, Goose, Roo, Windsurf
-and others. The writing rules also land where an agent reads them on every
+and others. The rules files also land where an agent reads them on every
 turn, unasked: the VS Code prompts folder, `~/.claude/CLAUDE.md`,
 `~/.codex/AGENTS.md`. On Windows `~` means your user folder, and VS Code reads
-`%APPDATA%\Code\User\prompts`. The rules file holds the short version of
-`writing-style`, so each answer follows it before the skill loads.
+`%APPDATA%\Code\User\prompts`. A rules file you wired in by hand keeps your
+line. The rules files are:
+
+- **`writing-style.instructions.md`** the short version of `writing-style`,
+  so each answer follows it before the skill loads.
+- **`workflow.instructions.md`** how each change gets planned, shipped and
+  reported. [Workflow rules](#workflow-rules) below sums them up.
+- **`code.instructions.md`** the rules for code and agent docs: a key word in
+  each rule, the newest stable tools, less code, the languages to write in.
 
 - **Progress bars** Claude Code gets the `progress` mod: a long turn posts
   text bars each minute for the script, the step and the whole task, and a
@@ -135,6 +142,25 @@ Comments for the PR MUST stay in English, since the whole team reads them.
 `review`, `create-pr`, `address-comments`, `implement-ticket` and `app-audit`
 also read pull requests through `gh`. `implement-ticket` reads Jira as well,
 through the Atlassian MCP server or `acli`.
+
+## Workflow rules
+
+`workflow.instructions.md` loads on every turn of every agent. A private
+rules file of yours MAY add to it, and its line wins.
+
+- **Plan** each feature gets a spec in `specs/` before the code. Each change
+  updates the docs it makes stale, and each command runs through mise.
+- **Ship** `ship` commits to clean `main` or opens a PR and merges it at once.
+  `feature-queue` lets several sessions share one repo, and a broken build
+  gets its own fix session.
+- **Do it yourself** the agent runs each step it has a tool for, with your
+  yes taken as given. It presses each consent and Save on a site, and stops
+  only for a login, a CAPTCHA, a secret or a payment.
+- **One script for you** what is left comes as one script per task, safe to
+  rerun, started by one line: `.ps1` on Windows, `.sh` on macOS and Linux.
+- **Every turn** each message starts with the time, and long work shows
+  progress bars each minute. A decision comes as options to click, and the
+  last line holds a marker such as `✅ !!!COMPLETED!!!`.
 
 ## What you get
 
@@ -410,6 +436,18 @@ the same. It records the tests and the output first, moves the files into a
 new layout, renames functions after what they do and moves the code to modern
 syntax. At the end it wipes the git history into one commit through
 `reset-history`.
+
+**`ship`** takes a change from the first edit to `main`. It commits straight
+to a clean `main`, or opens a worktree and a draft PR and merges it once the
+checks pass on your machine. A repo with a `deploy` task goes live at once.
+
+**`feature-queue`** lets 10 sessions work on one repo without merge
+conflicts. Each session writes the files it plans to edit to a board in
+`~/.agents/queue/`, and waits its turn when another session holds one.
+
+**`mcp-setup`** adds an MCP server to Claude Code and Claude Desktop and
+copies it to Codex and Kimi. It counts the server added only once a real
+tool call returns data.
 
 **`guide-on-site`** does a task in a console or a form in your Chrome,
 without asking first. It clicks to the exact screen, fills the fields it

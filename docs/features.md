@@ -307,3 +307,19 @@ Spec: [claude-hooks](../specs/claude-hooks.md), [any-agent](../specs/any-agent.m
 - **Limits** notes only, with no files to download.
 
 Spec: [releases](../specs/releases.md).
+
+## Feature queue
+
+- **What it gives** sessions claim every file they edit. Clean `main` with no overlap and direct push allowed can be used directly; overlapping files wait and recheck.
+- **Where** each session runs `feature-queue` before choosing its checkout. The board sits in `~/.agents/queue/<repo>/`, a file per session.
+- **Limits** dirty or protected branches use a worktree and PR. The board sits on one PC, so a cloud session doesn't see it. A file found later needs a second look at the board.
+
+Spec: [feature-queue](../specs/feature-queue.md).
+
+## Workflow and code rules
+
+- **What it gives** each agent session plans, ships and reports the same way: a spec first, a PR merged at once, each step the agent has a tool for done by the agent, one script for what is left, the time on each message, progress bars and a marker on the last line.
+- **Where** `workflow.instructions.md` and `code.instructions.md`, which `install.sh` links into `~/.agents/` and the VS Code prompts folder and wires into `CLAUDE.md` and the Codex and Kimi `AGENTS.md`. `ship`, `feature-queue` and `mcp-setup` hold the rules of one job each.
+- **Limits** each line loads on every turn, so it costs tokens. A private rules file MAY add lines, and its line wins.
+
+Spec: [move-from-private](../specs/move-from-private.md).
