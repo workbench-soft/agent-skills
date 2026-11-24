@@ -96,7 +96,8 @@ hooks and tables stay:
   `~/.claude/settings.json` to keep the built-in browser.
 - **Archive block** Claude Code can't archive a session. You archive each one.
 - **TODO.md last** each Claude Code write to a `TODO.md` reminds the agent to
-  finish the task with its tools first, and to name what stopped it.
+  finish the task with its tools first, and to name what stopped it. A step
+  left for you goes in one script, and the line holds the command that runs it.
 - **Cleanup rules** agents remove a merged worktree and its branches without
   a prompt. `~/.claude/settings.json` gets allow rules for
   `remove-merged.sh`, `git worktree remove`, `git branch -D` and
@@ -414,7 +415,8 @@ syntax. At the end it wipes the git history into one commit through
 without asking first. It clicks to the exact screen, fills the fields it
 knows, and presses each consent, permission and Save button. It stops only
 at a login, a CAPTCHA, a secret or a payment, then finishes and checks the
-result.
+result. A step it can't reach goes in one script, `scripts/person-steps/<task>.ps1`,
+and you get one PowerShell line that runs it.
 
 **`hung-process`** frees a stuck run on Windows: a command silent for 5
 minutes, a busy port, a file lock. It stops only the dev tools of its own

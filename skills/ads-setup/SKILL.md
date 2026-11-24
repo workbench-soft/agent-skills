@@ -11,8 +11,9 @@ with each ad policy kept on the way.
 ## Logins and keys
 
 - **Browser** the agent SHOULD drive whatever browser tool it has: the VS
-  Code browser tools, or the `agent-browser` skill. Without one, it MUST hand
-  the user the link and the clicks as numbered steps, one per line, and wait.
+  Code browser tools, or the `agent-browser` skill. Without one, it MUST put
+  the steps in one script for the person and give the one line that runs it,
+  as "No browser" of `guide-on-site` says.
 - **API first** when an AdMob, AdSense or Google Play MCP server is connected,
   the agent MUST read the accounts, apps, units and sites through it. The
   browser SHOULD serve only the pages the API lacks, such as a new app, a
@@ -170,7 +171,7 @@ updating it.
 
 - **One task per line** each line MUST hold a checkbox, the task, the place,
   what stopped the agent in brackets, such as `(login)`, and a date for a
-  wait.
+  wait. A task the person runs MUST hold the one line that runs its script.
 - **Done tasks** they MUST come off once the user says so or the dashboard
   shows it.
 - **No tasks left** the section MUST be removed.

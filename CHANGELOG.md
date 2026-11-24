@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **One script for the person** `guide-on-site`, `play-release`, `ads-setup` and `seo-setup` put each step they can't reach into one script per task, `scripts/person-steps/<task>.ps1`, in place of numbered clicks. The script runs each CLI step, skips the done ones on a rerun, and waits only for a login, a CAPTCHA, a secret or a payment. The person gets one PowerShell 5.1 line that runs it, and the `TODO.md` hook says so.
 - **Progress bars** the new `progress` mod gives Claude Code a `report` tool that draws text bars for the script, the step and the whole task with minutes left, a Progress pane beside the chat, and a reminder after 60 seconds with no report. `install.sh` names `mods/` in `CLAUDE_CODE_PLUGIN_DIRS` of `~/.claude/settings.json`, and `--uninstall` takes it out.
 - **play-release signs local builds with the release key** a local APK or AAB takes the key the release uses, read from the vault into a temp file when no local copy exists, so it installs over the release and the app keeps its data. A script that can't get the key stops before the build, in place of a quiet debug key fallback.
 - **Faster install on Windows** `install.sh` links the skills of each agent folder with one `ln` and removes them with one `rm`, in place of one process per skill. A process start costs 0.1 s to 0.5 s in Git Bash, so an install in a fresh home drops from about 30 s to 12 s on a busy PC, and `mise run test` finishes in minutes.
