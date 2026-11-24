@@ -43,6 +43,13 @@ flowchart LR
 - **Rejected** a rerun by hand after each pull: `rewrite-repo` landed on `main` and the agents missed it until the next run.
 - **Cost to undo** medium: `install.sh`, `install.ps1`, their CI jobs and the README.
 
+### Mods: `CLAUDE_CODE_PLUGIN_DIRS` names `mods/`
+
+- **Picked** `claude/install-mods.mts` adds each folder in `mods/` to `env.CLAUDE_CODE_PLUGIN_DIRS` of `~/.claude/settings.json`. Claude Code loads each one as a plugin in every session, the desktop app's included, and reloads it from the clone on a pull.
+- **Why** a marketplace install runs a copy, so a pull would need `claude plugin update`. The env list reads the clone itself.
+- **Trade-off** a running session sees a new mod only after a restart.
+- **Cost to undo** low: `mods/`, `claude/install-mods.mts` and its line in `install.sh`.
+
 ### Agent hooks: a Node merge from `claude/hooks.json`
 
 - **Picked** `install.sh` runs `claude/install-hooks.mts`, which puts each group from `claude/hooks.json` into `~/.claude/settings.json` and from `agents/codex-hooks.json` into `~/.codex/hooks.json`. `agents/kimi-hooks.mts` and `agents/sync-mcp.mts` write marked blocks for Kimi Code and Codex.

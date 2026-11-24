@@ -1,0 +1,6 @@
+{
+  "name": "progress",
+  "version": "0.1.0",
+  "description": "Progress bars for long agent work: a report tool, a pane and a nudge after 60 s of silence",
+  "types": "./types/index.d.ts"
+}

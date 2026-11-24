@@ -152,6 +152,14 @@ Spec: [move-from-private](../specs/move-from-private.md).
 
 Spec: [move-from-private](../specs/move-from-private.md).
 
+## Progress bars
+
+- **Mod** `progress`, in `mods/progress/`.
+- **What it gives** a long Claude Code turn posts text bars each minute: the script, the step and the whole task, with minutes left. A Progress pane beside the chat keeps the last report and the tool calls still running, and the agent gets a reminder after 60 quiet seconds.
+- **Limits** the percent and the minutes are the agent's estimates. A session loads the mod after a restart that follows the install.
+
+Spec: [progress-reports](../specs/progress-reports.md).
+
 ## Search setup
 
 - **Skill** `seo-setup`.

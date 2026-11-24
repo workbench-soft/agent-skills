@@ -188,6 +188,7 @@ grep -q "date '+Now: " "$home/.claude/settings.json"
 test 1 -eq "$(grep -c 'mcp__Claude_Browser__' "$home/.claude/settings.json")"
 grep -q archive_session "$home/.claude/settings.json"
 grep -q turn-voice "$home/.claude/settings.json"
+test 1 -eq "$(grep -c 'CLAUDE_CODE_PLUGIN_DIRS.*progress' "$home/.claude/settings.json")"
 # The cleanup rules sit once beside the person's own rule, and Codex has its rules file.
 test 1 -eq "$(grep -cF "Bash(git branch -D:*)" "$home/.claude/settings.json")"
 grep -qF "remove-merged.sh:*)" "$home/.claude/settings.json"

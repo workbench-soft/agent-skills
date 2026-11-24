@@ -59,6 +59,9 @@ turn, unasked: the VS Code prompts folder, `~/.claude/CLAUDE.md`,
 `%APPDATA%\Code\User\prompts`. The rules file holds the short version of
 `writing-style`, so each answer follows it before the skill loads.
 
+- **Progress bars** Claude Code gets the `progress` mod: a long turn posts
+  text bars each minute for the script, the step and the whole task, and a
+  Progress pane keeps the last report. Restart Claude Code after the install.
 - **Spoken turn end** `install.ps1` on Windows and `install.sh` on a Mac
   give Claude Code, Codex and Kimi Code hooks that play a cue and say the folder, the outcome and the
   session title. The outcome comes from a marker on the last line, such as

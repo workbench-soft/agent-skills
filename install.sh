@@ -326,7 +326,7 @@ run_node() { # script args...
 }
 
 # Claude Code gets the time hook, the Chrome only hook, the archive block and
-# the TODO.md reminder.
+# the TODO.md reminder, and loads the mods in mods/, such as progress.
 # Claude Code and Codex get allow rules for the cleanup of a merged worktree.
 # Codex and Kimi Code get the time hook and the MCP servers of Claude Code.
 # specs/claude-hooks.md and specs/any-agent.md map each piece.
@@ -338,6 +338,7 @@ agent_hooks() { # [--uninstall]
   native_home=$(native "$HOME")
   if [ -d "$HOME/.claude" ]; then
     run_node claude/install-hooks.mts "$native_home/.claude/settings.json" "$@"
+    run_node claude/install-mods.mts "$native_home/.claude/settings.json" "$@"
   fi
   run_node claude/install-permissions.mts "$native_home/.claude/settings.json" "$native_home/.codex/rules/agent-skills.rules" "$@"
   if [ -d "$HOME/.codex" ]; then
