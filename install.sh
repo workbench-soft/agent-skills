@@ -458,9 +458,11 @@ $file (the writing rules block only)"
   old_ifs=$IFS
   IFS='
 '
-  for target in $doomed; do
-    rm -rf "${target:?}"
-  done
+  # One rm for every link, with globbing off so a path can't expand.
+  set -f
+  # shellcheck disable=SC2086 # split on the newlines between paths
+  [ -z "$doomed" ] || rm -rf -- $doomed
+  set +f
   for file in $rule_files; do
     strip_rules_block "$file" || true
   done
@@ -516,11 +518,12 @@ for agent in $agent_homes; do
       esac
     fi
   done
+  # The skills to link pile up in "$@", so one ln makes them all. Each
+  # process costs 0.1 s to 0.5 s in Git Bash, times every skill and agent.
+  set --
   for dir in "$root"/skills/*/; do
     dir=${dir%/}
     [ -f "$dir/SKILL.md" ] || continue
-    # Parameter expansion, since each basename or ln costs about 0.1 s in
-    # Git Bash, times every skill and every agent.
     target="$HOME/$agent/skills/${dir##*/}"
     # shellcheck disable=SC3013 # dash, bash and busybox sh all have -ef
     if [ "$target" -ef "$dir" ]; then continue; fi
@@ -529,8 +532,14 @@ for agent in $agent_homes; do
 "
       continue
     fi
-    make_link "$dir" "$target"
+    if [ "$link_kind" = symlink ]; then
+      set -- "$@" "$dir"
+    else
+      make_link "$dir" "$target"
+    fi
   done
+  # -n replaces an old link to a skill folder instead of linking inside it.
+  if [ $# -gt 0 ]; then ln -sfn "$@" "$HOME/$agent/skills/"; fi
   linked="$linked $agent"
 done
 
