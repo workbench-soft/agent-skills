@@ -140,7 +140,7 @@ Spec: [rewrite-repo-skill](../specs/rewrite-repo-skill.md).
 
 ## Help on a site
 
-- **What it gives** `guide-on-site` does the whole site task in the person's Chrome, unasked. It fills the known fields, presses each consent, accept, permission and Save button, and stops only at a login, a CAPTCHA, a secret or a payment.
+- **What it gives** `guide-on-site` does the whole site task in the person's Chrome, unasked. It fills the known fields, presses each consent, accept, permission and Save button, and stops only at a login, a CAPTCHA, a secret or a payment. A step it can't reach goes in one script, `scripts/person-steps/<task>.ps1`, rerun safe, and the person gets one PowerShell line that runs it.
 - **Limits** the person types passwords and card numbers.
 
 Spec: [move-from-private](../specs/move-from-private.md).

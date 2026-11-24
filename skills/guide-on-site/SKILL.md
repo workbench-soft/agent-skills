@@ -44,6 +44,14 @@ console with an MCP server or a CLI MUST go through that first.
   busy, so the AdMob, AdSense and Google Play MCP servers SHOULD come first.
   A hung page MUST get a reload and a second try before the task goes to
   `TODO.md`.
-- **No browser** when the agent can't reach the page, the steps MUST be
-  numbered, one action each, with the link and the exact button text, plain
-  enough for a child of 3.
+- **No browser** when the agent can't reach the page, or a step waits past
+  the session, the steps MUST go in one script per task,
+  `scripts/person-steps/<task>.ps1`. Numbered clicks and several commands
+  MUST NOT go to the person.
+- **Script** the script MUST run each step a CLI or an API can do, and skip
+  each step already done, so a rerun is safe. It MUST open a page with
+  `Start-Process <url>` only where no API exists, name the exact button, and
+  wait with `Read-Host` only for a login, a CAPTCHA, a secret or a payment.
+- **One line** the answer and `TODO.md` MUST give one Windows PowerShell 5.1
+  line that runs the script, with no value to fill in. The agent MUST parse
+  the file first and check the final state once the person has run it.

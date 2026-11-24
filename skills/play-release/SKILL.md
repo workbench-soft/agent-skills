@@ -11,8 +11,9 @@ phones through the internal testing track.
 ## Logins and keys
 
 - **Browser** the agent MUST drive whatever browser tool it has: the VS Code
-  browser tools, or the `agent-browser` skill. Without one, it MUST hand the
-  user the link and the clicks as numbered steps, one per line, and wait.
+  browser tools, or the `agent-browser` skill. Without one, it MUST put the
+  steps in one script for the person and give the one line that runs it, as
+  "No browser" of `guide-on-site` says.
 - **API first** when a Google Play MCP server or the Play Developer API with a
   service account is at hand, the agent MUST upload bundles, set listings and
   move tracks through it. The browser SHOULD serve only the app creation and
@@ -137,7 +138,7 @@ updating it.
 
 - **One task per line** each line MUST hold a checkbox, the task, the place,
   what stopped the agent in brackets, such as `(login)`, and a date for a
-  wait.
+  wait. A task the person runs MUST hold the one line that runs its script.
 - **Production** the steps still needed before it MUST be listed as well. The
   agent MUST read the production note in
   [references/play-console.md](references/play-console.md).
