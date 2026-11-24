@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **Faster install on Windows** `install.sh` links the skills of each agent folder with one `ln` and removes them with one `rm`, in place of one process per skill. A process start costs 0.1 s to 0.5 s in Git Bash, so an install in a fresh home drops from about 30 s to 12 s on a busy PC, and `mise run test` finishes in minutes.
 - **create-pr logs each step** a PR an agent wrote gets a numbered Step by step list in the order of the work: the pages and repos read, the files used as a template, each exact command with its failures, the files saved, each commit, the push and the PR. A reader redoes the work from the body alone. A draft PR opened early gets the list brought up to date before it goes ready.
 - **app-update offers again on each return** the dialog comes back at each start and each return from another app until the update is installed. It names the installed and the new version, and the mobile data warning stands out.
 - **create-pr says how the work was done** the PR body adds how it worked before and, for an agent, how it did the work: the skills it used or changed and the code it read, with the reason. A skill or tool with no screen still gets the before and after flow. The prose cap goes from 20 to 30 lines.
