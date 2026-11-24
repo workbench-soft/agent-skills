@@ -6,7 +6,7 @@ Writes a PR body with the flows, sources and commands, then opens the PR.
 
 ## User flows
 
-- **Open a PR** the body shows user flows, new commands, database changes, related PRs and the commands that generated code.
+- **Open a PR** the body shows user flows, new commands, database changes, related PRs, the commands that generated code and a step by step log of the work.
 - **Review** comments use hedges and the skill searches them for "never".
 
 ## How it works: modules, files, data
@@ -29,7 +29,7 @@ PR bodies missed how to try the change and what it built on. Review comments rea
 
 #### User flows it touches
 
-- **Open a PR** the body shows user flows, new commands, database changes, related PRs and the commands that generated code.
+- **Open a PR** the body shows user flows, new commands, database changes, related PRs, the commands that generated code and a step by step log of the work.
 - **Review** comments use hedges and the skill searches them for "never".
 
 #### Changes
@@ -88,6 +88,29 @@ A PR body showed the new state only. The reader couldn't tell what changed for t
 
 - **`skills/create-pr/SKILL.md`** the template, the section rules, the writing rules and the example body.
 - **`README.md`** and **`docs/features.md`** describe the new sections.
+
+#### Docs to update
+
+- `README.md`
+- `docs/features.md`
+
+### 2026-11-24 Step by step log of the work
+
+#### Why
+
+A reader of the PR couldn't redo the work by hand. The body named the skills and the code read, but left out the order: which page opened, which repo and files served as a pattern, which commands ran, where each file got saved.
+
+#### User flows it touches
+
+- **Open a PR** the body adds a `Step by step` section when an agent wrote the change: a numbered list in the order the work happened. Each step names its repo, the link or file, the exact command, and what it settled or saved. The section sits outside the 30 line cap.
+- **Draft PR opened early** the agent fills the list once more with `gh pr edit` before `gh pr ready`, so the merged body holds every step.
+
+#### Changes
+
+- **`skills/create-pr/references/step-log.md`** new, the rules for the list and an example.
+- **`skills/create-pr/SKILL.md`** the template gets the section, the section rules point to the reference, the description names it.
+- **`README.md`** and **`docs/features.md`** describe the new section.
+- **`ship`** in `agent-skills-private` refreshes the body before `gh pr ready`, in its own PR.
 
 #### Docs to update
 
