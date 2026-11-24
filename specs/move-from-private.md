@@ -61,3 +61,23 @@ repo is no longer needed for those.
   copies in its own commit.
 - **Docs** `README.md`, `docs/features.md`, `docs/architecture.md`,
   `docs/user-flows.md`, `CHANGELOG.md`.
+
+### 2026-11-24 the workflow rules and the ship skills
+
+- **Why** the owner wants the same rules on a work laptop, a Mac, and asked
+  to move each private rule and skill that isn't tied to Workbench Soft.
+- **Rules** the generic part of the private `workflow.instructions.md` moves
+  here as it is, with the Windows and studio lines left out. The generic part
+  of the workspace `conventions.md` becomes `code.instructions.md`. Steps for
+  the person take a `.ps1` on Windows and a `.sh` on macOS and Linux.
+- **Install** `install.sh` links the three rules files into `~/.agents/` and
+  the VS Code prompts folder, and wires each one into the one rules block. A
+  rules file the person wired in by hand keeps that line.
+- **Skills** `ship`, `feature-queue` and `mcp-setup` move here, with the
+  studio paths, the vault project and the gateway taken out.
+- **Stays private** `workbench-soft.instructions.md` with Bitwarden, the
+  workspace repo, the release key, the ABN, Windows PowerShell 5.1 and the
+  MCP gateway, and the skills `feature-docs`, `test-merged`, `stack`,
+  `repo-ci`, `rotate-secrets`, `move-repo` and `skyaltar-art`.
+- **Docs** `README.md`, `docs/features.md`, `CHANGELOG.md`, and the moved
+  spec `feature-queue.md`.

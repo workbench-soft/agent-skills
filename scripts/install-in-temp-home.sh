@@ -13,6 +13,7 @@ copy_repo() {
 }
 
 rules_file=writing-style.instructions.md
+rule_names="writing-style.instructions.md workflow.instructions.md code.instructions.md"
 
 # Windows without Developer Mode gets a copy of the rules file.
 has_rules_file() {
@@ -47,11 +48,24 @@ grep -qx Spanish "$home/.agents/skills/review/LANGUAGE.md"
 # The files sit in the repo only. Each agent folder holds links.
 test 0 -eq "$(find "$home" -name SKILL.md -type f | wc -l)"
 # The rules land where each agent reads them on every turn.
-has_rules_file "$home/.agents/$rules_file"
-has_rules_file "$home/AppData/Roaming/Code/User/prompts/$rules_file"
+for name in $rule_names; do
+  has_rules_file "$home/.agents/$name"
+  has_rules_file "$home/AppData/Roaming/Code/User/prompts/$name"
+  grep -qxF "@~/.agents/$name" "$home/.claude/CLAUDE.md"
+  grep -qF "Follow ~/.agents/$name" "$home/.codex/AGENTS.md"
+done
 test -f "$home/.codex/AGENTS.md"
+cp "$home/.claude/CLAUDE.md" "$scratch/claude-first-run"
 HOME="$home" sh "$src/install.sh" --lang Spanish
 test 1 -eq "$(grep -c 'agent-skills: writing rules' "$home/.claude/CLAUDE.md")"
+# A second run leaves the file as the first run wrote it.
+cmp "$scratch/claude-first-run" "$home/.claude/CLAUDE.md"
+# A rules file wired in by hand keeps its own line and gets no second one.
+printf '@~/.agents/workflow.instructions.md\n' >"$scratch/hand"
+cat "$home/.claude/CLAUDE.md" >>"$scratch/hand"
+cp "$scratch/hand" "$home/.claude/CLAUDE.md"
+HOME="$home" sh "$src/install.sh" --lang Spanish
+test 1 -eq "$(grep -c 'workflow.instructions.md' "$home/.claude/CLAUDE.md")"
 # A link left by a clone that was deleted goes on uninstall too.
 rm -f "$home/.codex/skills/create-pr"
 mkdir -p "$scratch/gone/skills/create-pr"
@@ -61,8 +75,10 @@ rm -rf "$scratch/gone"
 HOME="$home" sh "$src/install.sh" --uninstall --yes
 test ! -L "$home/.codex/skills/create-pr"
 test ! -e "$home/.claude/skills/review"
-test ! -e "$home/.agents/$rules_file"
-test ! -e "$home/AppData/Roaming/Code/User/prompts/$rules_file"
+for name in $rule_names; do
+  test ! -e "$home/.agents/$name"
+  test ! -e "$home/AppData/Roaming/Code/User/prompts/$name"
+done
 grep -qx '# codex note' "$home/.codex/AGENTS.md"
 if grep -q agent-skills "$home/.codex/AGENTS.md"; then exit 1; fi
 grep -qx '# a note of my own' "$home/.claude/CLAUDE.md"

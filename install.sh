@@ -7,7 +7,8 @@ repo=https://github.com/workbench-soft/agent-skills.git
 lang=""
 uninstall=0
 yes=0
-rules_file=writing-style.instructions.md
+# Each rules file loads on every turn of every agent.
+rule_names="writing-style.instructions.md workflow.instructions.md code.instructions.md"
 rules_open='<!-- agent-skills: writing rules -->'
 rules_close='<!-- agent-skills: end -->'
 hook_marker='# agent-skills: relink hook'
@@ -209,23 +210,37 @@ make_link() {
   fi
 }
 
-append_rules_block() {
+rule_line() { # agent name
+  case $2 in
+    writing-style*) what="how to write text a person reads." ;;
+    workflow*) what="how each change gets planned, shipped and reported." ;;
+    *) what="the rules for code and agent docs." ;;
+  esac
+  if [ "$1" = claude ]; then echo "@~/.agents/$2"; else echo "Follow ~/.agents/$2: $what"; fi
+}
+
+append_rules_block() { # file agent
   file=$1
-  body=$2
   dir=${file%/*}
   if [ ! -d "$dir" ]; then return 0; fi
+  before=$(cat "$file" 2>/dev/null || true)
+  # The block gets written fresh each run, so older words go.
   if [ -f "$file" ] && grep -qxF "$rules_open" "$file"; then
-    if grep -qxF "$body" "$file"; then return 0; fi
-    # An older install wrote other words. Swap the block for the new one.
     strip_rules_block "$file" || return 0
-  elif [ -f "$file" ] && grep -qF "$rules_file" "$file"; then
-    # The person wired the rules in by hand.
-    return 0
   fi
-  # Exactly one blank line before the block, after any number of runs.
-  if [ -s "$file" ] && [ -n "$(tail -n 1 "$file")" ]; then printf '\n' >>"$file"; fi
-  printf '%s\n%s\n%s\n' "$rules_open" "$body" "$rules_close" >>"$file"
-  echo "Writing rules wired into $file"
+  # A rules file the person wired in by hand keeps that line.
+  body=""
+  for name in $rule_names; do
+    if [ -f "$file" ] && grep -qF "$name" "$file"; then continue; fi
+    body="$body$(rule_line "$2" "$name")
+"
+  done
+  if [ -n "$body" ]; then
+    # Exactly one blank line before the block, after any number of runs.
+    if [ -s "$file" ] && [ -n "$(tail -n 1 "$file")" ]; then printf '\n' >>"$file"; fi
+    printf '%s\n%s%s\n' "$rules_open" "$body" "$rules_close" >>"$file"
+  fi
+  if [ "$before" != "$(cat "$file" 2>/dev/null || true)" ]; then echo "Rules wired into $file"; fi
 }
 
 strip_rules_block() {
@@ -261,7 +276,10 @@ strip_rules_block() {
 }
 
 link_writing_rules() {
-  make_link "$root/$rules_file" "$HOME/.agents/$rules_file"
+  mkdir -p "$HOME/.agents"
+  for name in $rule_names; do
+    make_link "$root/$name" "$HOME/.agents/$name"
+  done
 
   old_ifs=$IFS
   IFS='
@@ -269,14 +287,19 @@ link_writing_rules() {
   for dir in $vscode_dirs; do
     [ -d "$dir" ] || continue
     mkdir -p "$dir/prompts"
-    make_link "$root/$rules_file" "$dir/prompts/$rules_file"
-    echo "VS Code reads the writing rules from $dir/prompts"
+    IFS=$old_ifs
+    for name in $rule_names; do
+      make_link "$root/$name" "$dir/prompts/$name"
+    done
+    IFS='
+'
+    echo "VS Code reads the rules from $dir/prompts"
   done
   IFS=$old_ifs
 
-  append_rules_block "$claude_rules" "@~/.agents/$rules_file"
-  append_rules_block "$codex_rules" "Follow ~/.agents/$rules_file: how to write text a person reads."
-  append_rules_block "$kimi_rules" "Follow ~/.agents/$rules_file: how to write text a person reads."
+  append_rules_block "$claude_rules" claude
+  append_rules_block "$codex_rules" codex
+  append_rules_block "$kimi_rules" codex
 }
 
 # Worktrees share hooks with the main clone and get deleted when done, so
@@ -395,24 +418,23 @@ if [ "$uninstall" -eq 1 ]; then
   old_ifs=$IFS
   IFS='
 '
-  for dir in $vscode_dirs; do
-    rules="$dir/prompts/$rules_file"
-    if [ -e "$rules" ] || [ -L "$rules" ]; then
-      doomed="$doomed$rules
+  # A symlink, or a copy on Windows without Developer Mode.
+  for dir in $vscode_dirs "$HOME/.agents"; do
+    case $dir in "$HOME/.agents") ;; *) dir="$dir/prompts" ;; esac
+    IFS=$old_ifs
+    for name in $rule_names; do
+      rules="$dir/$name"
+      if [ -e "$rules" ] || [ -L "$rules" ]; then
+        doomed="$doomed$rules
 "
-      listing="$listing
+        listing="$listing
 $rules"
-    fi
+      fi
+    done
+    IFS='
+'
   done
   IFS=$old_ifs
-
-  # A symlink, or a copy on Windows without Developer Mode.
-  if [ -e "$HOME/.agents/$rules_file" ] || [ -L "$HOME/.agents/$rules_file" ]; then
-    doomed="$doomed$HOME/.agents/$rules_file
-"
-    listing="$listing
-$HOME/.agents/$rules_file"
-  fi
 
   if dir=$(git_hooks_path); then
     for name in $hook_names; do
@@ -431,7 +453,7 @@ $dir/$name"
       rule_files="$rule_files$file
 "
       listing="$listing
-$file (the writing rules block only)"
+$file (the rules block only)"
     fi
   done
 
@@ -552,8 +574,8 @@ echo "Skills live in $root, report language $lang."
 echo "Linked into:$linked"
 
 if [ "$link_kind" = junction ]; then
-  echo "Developer Mode is off, so the skill folders are junctions and $rules_file is a copy."
-  echo "Run the install again after you edit $rules_file, or turn on Developer Mode for real links."
+  echo "Developer Mode is off, so the skill folders are junctions and the rules files are copies."
+  echo "Run the install again after you edit a rules file, or turn on Developer Mode for real links."
 fi
 
 if [ -n "$skipped" ]; then
