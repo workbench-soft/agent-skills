@@ -50,8 +50,20 @@ console with an MCP server or a CLI MUST go through that first.
   MUST NOT go to the person.
 - **Script** the script MUST run each step a CLI or an API can do, and skip
   each step already done, so a rerun is safe. It MUST open a page with
-  `Start-Process <url>` only where no API exists, name the exact button, and
-  wait with `Read-Host` only for a login, a CAPTCHA, a secret or a payment.
+  `Start-Process <url>` only where no API exists, and wait with `Read-Host`
+  only for a login, a CAPTCHA, a secret or a payment.
+- **Exact link** each page in a script, a `TODO.md` line or an answer MUST
+  carry its full deep URL with each account, developer, app and section id,
+  such as
+  `https://play.google.com/console/u/8/developers/<dev>/app/<app>/app-content/testing-credentials`.
+  The agent MUST find the ids by API, from the repo or in Chrome, and open
+  the link once to check that it lands on the right page. A console home
+  MUST NOT go to the person.
+- **Where to press** each step MUST name the button or field by its label
+  on the page and its place, such as "the pencil icon at the right end of
+  the Demo NAS row" or "Save at the bottom right", read off the page in
+  Chrome first. It MUST say what to type or paste and what the person sees
+  once it worked.
 - **One line** the answer and `TODO.md` MUST give one Windows PowerShell 5.1
   line that runs the script, with no value to fill in. The agent MUST parse
   the file first and check the final state once the person has run it.

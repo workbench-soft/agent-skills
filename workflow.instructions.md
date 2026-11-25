@@ -232,8 +232,7 @@ The script MUST follow these:
 - **Does the rest** the script MUST run each step a tool can do: `gh`,
   `gcloud`, `wrangler`, the secret manager's CLI, the package manager,
   `mise`. A console page with no API or CLI MUST open at its exact screen,
-  through `Start-Process <url>` or `open <url>`, with one line that names
-  the button to press.
+  through `Start-Process <url>` or `open <url>`, with the detail below.
 - **Pauses** the script MUST stop only for a login, a secret, a CAPTCHA or a
   payment, with `Read-Host` or `read`, and say in one line what to do. A
   secret MUST go from a hidden prompt into the secret manager or
@@ -244,6 +243,26 @@ The script MUST follow these:
   step as done or left.
 - **Admin** a step that needs admin rights MUST raise itself inside the
   script, through `Start-Process powershell -Verb RunAs -Wait` or `sudo`.
+
+Each script, `TODO.md` line and answer that sends the person to a page MUST
+be as detailed as the agent can make it:
+
+- **Exact link** a page MUST carry its full deep URL, with each account,
+  developer, project, app and section id in it, such as
+  `https://play.google.com/console/u/8/developers/<dev>/app/<app>/app-content/testing-credentials`.
+  A console home or a link without the ids MUST NOT go to the person.
+- **Ids first** the agent MUST find each id before it writes the link: by
+  API or CLI, from the repo, or by opening the console in the person's
+  Chrome. It MUST open the link once and check that it lands on the right
+  page, in the right account.
+- **Where to press** each button, field and menu MUST get its label as the
+  page shows it and its place on the page, such as "the pencil icon at the
+  right end of the Demo NAS row" or "Save at the bottom right". The agent
+  SHOULD open the page itself first to read the labels and positions.
+- **What to type** each field MUST say what to type or paste and where the
+  value comes from, such as "paste the password the script copied".
+- **What it looks like** each step MUST say what the person sees once it
+  worked, such as "the row shows Saved" or "the status turns green".
 
 The handover MUST follow these:
 
