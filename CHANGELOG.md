@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **Sessions start without a worktree from the app** starts with `use_worktree: true` into `guitar-upscale` still failed with "could not anchor this repository". The app's record anchored `C:\WBS\guitar-upscale` to the git dir of `strange-almeida-f8c0fe`, an app worktree removed before the last fix. The workflow rules now start each session for another repo with `use_worktree: false` and `cwd` set to its main checkout, and the brief tells it to make its own worktree through `git-worktrees`. A failed start gets that retry at once, in place of a step for the person.
 - **Sessions keep their folder** new sessions in a repo failed with "could not anchor this repository" once an agent left its app worktree with `cd` and removed it. `remove-merged.sh` now keeps each worktree under `.claude/worktrees/`, the skill runs its `cd` in a subshell, and the workflow rules start each session with `cwd` set to its repo and keep it in its worktree.
 - **create-pr tells the reviewer how to review** the body gets a How to review section after How it works now: the file to open first, a numbered reading order with what to check in each file, a map of which file calls which, and the parts to skim, such as lockfiles. A PR of one or two files gets one line instead.
 - **ship-change** the `ship` skill takes the name `ship-change`. Claude Code now has its own `/ship` command, which starts only from a line the person types, and it hid the skill, so an agent's Skill call stopped with "Nothing started".

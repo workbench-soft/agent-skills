@@ -121,6 +121,9 @@ a bare `cd` in Claude Code moves the session to that folder:
   Claude app made it for a session and removes it when the session is
   archived. Once it goes early, the app keeps a record of the gone git dir and
   refuses each new session from that folder. The script stops on it.
+  A session for another repo MUST start with `use_worktree: false` and make
+  its worktree here, per "Each session MUST start" in
+  `workflow.instructions.md`.
 
 - **Flags** `--dropped` MUST be added only when the user dropped the work.
   `--keep-remote` MUST be added for someone else's branch.

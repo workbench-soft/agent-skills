@@ -89,3 +89,11 @@ Worktrees, folders and branches piled up after their PRs merged.
 - **Rules** `workflow.instructions.md` gets a "Session folder" list: a session for another repo MUST start with `cwd` set to that repo, and a session MUST NOT move out of its worktree with `cd` or `change_directory`.
 - **Steps** spec, the script and its test, the skill, the rules, docs.
 - **Docs** `README.md`, `CHANGELOG.md`.
+
+### 2026-11-25 Sessions start without an app worktree
+
+- **Why** 2 starts into `C:\WBS\guitar-upscale` with `use_worktree: true` failed with "could not anchor this repository" after the fix above shipped. In `git-worktrees.json` of the Claude app, the anchor of `C:\WBS\guitar-upscale` names the git dir `.git/worktrees/strange-almeida-f8c0fe`. That app worktree was removed before `remove-merged.sh` learned to keep app worktrees. Folders whose anchor has no git dir, such as `C:\WBS\neuroigry`, start fine. A `use_worktree: false` start into the same folder worked.
+- **Rules** a session for another repo MUST start with `cwd` set to its main checkout and `use_worktree: false`. Its brief MUST tell it to make its own worktree through `git-worktrees`. A failed start MUST get that retry at once, and only a second failure goes to the person.
+- **Not changed** the stale record sits in the app's own state, so no script here edits it. The rule works around it.
+- **Steps** spec, the rules, the skill, docs.
+- **Docs** `README.md`, `CHANGELOG.md`, `docs/agent-lessons.md` of `workspace`.
