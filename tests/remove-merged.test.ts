@@ -38,6 +38,14 @@ test("removes a dropped worktree with its local and remote branch", () => {
   assert.equal(git(repo, "ls-remote", "--heads", "origin", "feat"), "");
 });
 
+test("keeps a worktree the Claude app made", () => {
+  git(repo, "worktree", "add", "-q", "-b", "app", ".claude/worktrees/app");
+  const run = remove(repo, join(repo, ".claude", "worktrees", "app"), "--dropped");
+  assert.equal(run.status, 1);
+  assert.match(run.stderr, /Claude app owns it/);
+  assert.ok(existsSync(join(repo, ".claude", "worktrees", "app")));
+});
+
 test("keeps a worktree with an untracked file", () => {
   git(repo, "worktree", "add", "-q", "-b", "wip", "../wip");
   writeFileSync(join(root, "wip", "notes.md"), "draft\n");

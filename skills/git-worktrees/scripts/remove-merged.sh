@@ -29,6 +29,9 @@ main=$(git -C "$dir" worktree list --porcelain | sed -n '1s/^worktree //p')
 main=$(cd "$main" && pwd -P)
 [ "$dir" != "$main" ] || stop "it is the main checkout"
 case $PWD/ in "$dir"/*) stop "this shell is inside it, cd out first" ;; esac
+# The Claude app made it for a session and removes it when the session is archived.
+# Removing it here leaves the app with a record of a gone git dir, and new sessions fail.
+case $dir/ in */.claude/worktrees/*) stop "the Claude app owns it, archive its session instead" ;; esac
 
 branch=$(git -C "$dir" branch --show-current)
 remote=$(git -C "$dir" config "branch.$branch.remote" 2>/dev/null || echo origin)

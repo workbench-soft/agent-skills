@@ -109,6 +109,23 @@ to `main` through `ship-change`.
   `mcp__ccd_session__hand_off_to_session` when the fix is the task at hand.
   An agent with no session tool MUST fix it first, in its own worktree and PR.
 
+Each session MUST start in the folder of its repo and stay there, since the
+Claude app refuses new sessions from a folder whose record points at a gone
+worktree.
+
+- **Start there** a session for another repo MUST start with `cwd` set to
+  that repo's main checkout. A proposal card can't set `cwd`, so it MUST
+  start with `use_worktree: false`, and its brief MAY move it once with
+  `change_directory` before the first step.
+- **Stay there** a session in a worktree MUST NOT leave it with `cd` or
+  `change_directory`. A command in another folder MUST use `git -C`, an
+  absolute path or a subshell, `(cd <dir> && <command>)`.
+- **App worktrees** a worktree under `.claude/worktrees/` MUST stay until
+  the app removes it, when its session is archived.
+- **Failed start** a start that fails with "could not anchor this
+  repository" MUST get one try from the person's side, a new session opened
+  in that folder from the app, through "Steps for the person".
+
 Each change MUST ship fast, in this order:
 
 1. **Code first** the agent MUST merge the code as soon as the repo's checks
