@@ -53,10 +53,12 @@ ls docs/marketing*.md docs/*plan*.md 2>/dev/null
 git grep -liE 'og:image|opengraph|sponsors|buymeacoffee|ko-fi|ca-pub-|gtag|cloudflareinsights' -- ':!*.lock'
 ```
 
-## 2. Ask the budget first
+## 2. Ask the budget
 
-The agent MUST put the questions in a single form, money at the top,
-prefilled with the step 1 guesses:
+The agent MUST start on the step 1 guesses with a $0 budget, 2 hours a week
+and users as the goal, and do each step those defaults allow. The form MUST
+wait until no step can move without it, per "Decisions for the person". It
+MUST be a single form, money at the top, prefilled with the guesses:
 
 - **Money** the form MUST ask the sum the user will spend, as a total or per
   year. Options: $0, up to $100 a year, up to $500, up to $2000, more.

@@ -162,8 +162,12 @@ rules file of yours MAY add to it, and its line wins.
 - **One script for you** what is left comes as one script per task, safe to
   rerun, started by one line: `.ps1` on Windows, `.sh` on macOS and Linux.
 - **Every turn** each message starts with the time, and long work shows
-  progress bars each minute. A decision comes as options to click, and the
-  last line holds a marker such as `✅ !!!COMPLETED!!!`.
+  progress bars each minute. The last line holds a marker such as
+  `✅ !!!COMPLETED!!!`.
+- **Questions last** the agent does each step that needs no answer first and
+  takes the reasonable default for a choice, named in the final answer. A
+  session doesn't pause halfway. The questions left come together at the end,
+  as options to click.
 
 ## What you get
 
@@ -340,8 +344,8 @@ ready.
 the shared questions once. It ends with one table: each service, its state,
 the next step.
 
-**`marketing`** finds the first users for someone new to marketing. It asks
-for the budget first, then shows what that money buys and what the next tier
+**`marketing`** finds the first users for someone new to marketing. It starts on a $0
+budget and asks for the real one at the end, then shows what that money buys and what the next tier
 adds. It writes the message and a launch calendar, and readies the site for
 visitors. It registers on Reddit, Hacker News and the forums that fit, posts,
 answers comments and writes to journalists. The plan goes in

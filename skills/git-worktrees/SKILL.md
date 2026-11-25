@@ -56,8 +56,9 @@ git worktree add --no-track -b <branch> "$dir" "$remote/$default"
   as `m-sq`.
 - **Upstream** `--no-track` MUST stop the branch from tracking the default
   branch. The first push MUST give it one: `git push -u "$remote" HEAD`.
-- **Already there** when the branch or the folder exists, the agent MUST stop
-  and ask, since it might hold someone's work.
+- **Already there** when the branch or the folder exists, it might hold
+  someone's work. The agent MUST leave it as it is and pick a new name with a
+  suffix, such as `<branch>-2`, without a question.
 - **Existing branch** to check one out, such as a PR under review, the agent
   MUST fetch it first and leave out `-b`:
   `git fetch "$remote" pull/<number>/head:<branch>`.

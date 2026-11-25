@@ -181,9 +181,10 @@ The agent MUST also keep to these:
   passport numbers MUST stay with the person.
 - **Check** the agent MUST check its own result: the output, a screenshot, a
   reload. "Check that it works" MUST NOT go to the person.
-- **Choice** a choice with a sensible default MUST NOT become a question. The
-  agent SHOULD pick, name the pick in one line and go on. A choice without
-  one MUST go through "Decisions for the person".
+- **Choice** a choice with any reasonable default MUST NOT become a
+  question. The agent MUST pick, go on and name the pick in the final
+  answer. A choice without one MUST wait for the end of the work, per
+  "Decisions for the person".
 - **Left over** the person MUST only log in, pass a CAPTCHA, copy a secret,
   pay, say yes to an admin prompt, or take a step the permission check
   denied. Those steps MUST reach the person as one script, per "Steps for
@@ -271,8 +272,23 @@ sh -n '<file>'
 
 ## Decisions for the person
 
-A decision only the person can make MUST reach them as options to click, in
-the session where it comes up, as soon as it comes up.
+A session MUST run as far as it can without the person. A question MUST wait
+until no other step can move without its answer.
+
+- **Questions last** the agent MUST first do each step that needs no answer.
+  It MAY ask only once the rest of the work, the next tasks of the plan
+  included, can't move without an answer.
+- **Default first** a decision with any reasonable default MUST go ahead on
+  that default. The final answer MUST name each pick in one line, so the
+  person can reverse it later.
+- **No midway pause** a session MUST NOT stop halfway to wait for the
+  person. A blocked part MUST go aside while the agent goes on with the
+  rest.
+- **One batch** the questions left MUST go together at the end of the work,
+  in one `AskUserQuestion` call of up to 4 questions. The agent MUST act on
+  each answer in the same session.
+
+Each question MUST follow these:
 
 - **Options** each decision MUST go through the question tool, such as
   `AskUserQuestion`, with 2 to 4 options. Each option's description MUST say
@@ -281,9 +297,8 @@ the session where it comes up, as soon as it comes up.
 - **Context** each question MUST stand alone: what the decision is about and
   why it matters, in one or two sentences. The person MUST NOT need to scroll
   back or open a file to answer.
-- **One by one** open decisions SHOULD go in one call, up to 4 questions.
-  The rest MUST follow in the next calls until each one has an answer, and
-  the agent MUST act on each answer in the same session.
+- **More than 4** the questions past the first 4 MUST follow in the next
+  calls until each one has an answer.
 - **Not in TODO.md** a decision MUST NOT go to `TODO.md`. A subagent MUST
   hand its decision back to the main agent, which asks the person.
 - **Old lines** a `(decision)` line the agent finds in a `TODO.md` MUST
@@ -385,7 +400,7 @@ Their emoji MAY appear as the one exception to the emoji ban.
 | work merged, at most a phone test is left | `✅ !!!COMPLETED!!!`                                |
 | agent work done, the person owes a step   | `👤 !!!USER STEPS!!!` and what the script asks for  |
 | work still runs in the background         | `⏳ !!!RUNNING!!!` and what runs                    |
-| only a question to the person is open     | `❓ !!!QUESTION!!!` and the question in a few words |
+| all else done, only questions are open    | `❓ !!!QUESTION!!!` and the question in a few words |
 | work left: a failure, a stop              | `⚠️ !!!NOT COMPLETED!!!` and what is left           |
 
 - **Questions** each question to the person MUST go through the agent's
@@ -397,7 +412,8 @@ Their emoji MAY appear as the one exception to the emoji ban.
   branch, MUST NOT block `✅` either.
 - **User steps** `👤` MUST stay for a real step the person owes: a login, a
   key, a payment, a wait for an outside email, or work the agent left
-  unfinished. A turn that waits on a decision MUST end with `❓`. The steps
+  unfinished. A turn that waits on a decision MUST end with `❓`, and only
+  once each step that needs no answer is done. The steps
   MUST sit in one script, per "Steps for the person". `TODO.md` and the
   answer MUST give the one line that runs it, and one plain sentence on what
   it asks the person to do.
