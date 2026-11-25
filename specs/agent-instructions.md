@@ -21,6 +21,21 @@ None written down yet.
 
 ## Changes
 
+### 2026-11-25 Questions wait for the end of the work
+
+- **Why** the owner found sessions stopped halfway on a question and waited
+  for hours. The owner asked that each step that needs no answer go first,
+  and that the questions come only once nothing else can move.
+- **Changes** "Decisions for the person" of `workflow.instructions.md`
+  gets Questions last, Default first, No midway pause and One batch. The
+  Choice line of "Do it yourself" and the `❓` row follow it.
+- **Skills** `implement-ticket` takes the likeliest reading of an unclear
+  ticket. `create-pr` takes the problem from the commits and the spec.
+  `git-worktrees` picks a new name for a taken branch. `launch` and
+  `marketing` start on their defaults and ask at the end.
+- **Docs** the README "Workflow rules" and `marketing` lines, and
+  `CHANGELOG.md`.
+
 ### 2025-10-28 Plan in specs/, docs with every change, launch planned with a new app
 
 #### Why
