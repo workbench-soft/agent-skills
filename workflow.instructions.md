@@ -109,22 +109,29 @@ to `main` through `ship-change`.
   `mcp__ccd_session__hand_off_to_session` when the fix is the task at hand.
   An agent with no session tool MUST fix it first, in its own worktree and PR.
 
-Each session MUST start in the folder of its repo and stay there, since the
-Claude app refuses new sessions from a folder whose record points at a gone
-worktree.
+Each session MUST start in the folder of its repo with `use_worktree: false`
+and stay there. The Claude app keeps a record of each folder's git dir. Once
+that record points at a gone worktree, the app refuses each
+`use_worktree: true` start there with "could not anchor this repository". A
+`use_worktree: false` start skips that check.
 
 - **Start there** a session for another repo MUST start with `cwd` set to
-  that repo's main checkout. A proposal card can't set `cwd`, so it MUST
-  start with `use_worktree: false`, and its brief MAY move it once with
-  `change_directory` before the first step.
-- **Stay there** a session in a worktree MUST NOT leave it with `cd` or
+  that repo's main checkout and `use_worktree: false`. A proposal card can't
+  set `cwd`, so its brief MAY move it once with `change_directory` before the
+  first step.
+- **Own worktree** the brief MUST tell the session to make its own worktree
+  through `git-worktrees` before the first edit. The session MUST work there
+  through absolute paths and `git -C`, and leave the main checkout as it is.
+- **Stay there** a session MUST NOT leave its folder with `cd` or
   `change_directory`. A command in another folder MUST use `git -C`, an
   absolute path or a subshell, `(cd <dir> && <command>)`.
 - **App worktrees** a worktree under `.claude/worktrees/` MUST stay until
   the app removes it, when its session is archived.
 - **Failed start** a start that fails with "could not anchor this
-  repository" MUST get one try from the person's side, a new session opened
-  in that folder from the app, through "Steps for the person".
+  repository" MUST get one retry at once with the same `cwd`,
+  `use_worktree: false` and the worktree step in its brief. Only a second
+  failure MAY go to the person, as a new session opened in that folder from
+  the app, through "Steps for the person".
 
 Each change MUST ship fast, in this order:
 
