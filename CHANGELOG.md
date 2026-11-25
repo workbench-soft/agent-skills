@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **create-pr tells the reviewer how to review** the body gets a How to review section after How it works now: the file to open first, a numbered reading order with what to check in each file, a map of which file calls which, and the parts to skim, such as lockfiles. A PR of one or two files gets one line instead.
 - **ship-change** the `ship` skill takes the name `ship-change`. Claude Code now has its own `/ship` command, which starts only from a line the person types, and it hid the skill, so an agent's Skill call stopped with "Nothing started".
 - **Workflow and code rules** `workflow.instructions.md` and `code.instructions.md` move here from the private repos, so a work laptop on macOS gets them too. The install links them beside `writing-style.instructions.md` and wires each one into `CLAUDE.md` and the Codex and Kimi `AGENTS.md`. Steps for the person take a `.ps1` on Windows and a `.sh` on macOS and Linux.
 - **ship, feature-queue, mcp-setup** move here from `agent-skills-private`, with the studio paths and the vault project taken out.

@@ -179,7 +179,9 @@ comment ready to paste on the line. When posted, the comments go up with a
 verdict: approve, request changes for a real blocker, or comments only.
 
 **`create-pr`** writes the PR description and opens the PR with `gh`. The
-description holds the problem, how it worked before and how it works now. An
+description holds the problem, how it worked before and how it works now.
+A How to review part tells a reviewer which file to open first, the order to
+read the rest, and draws a map of which file calls which, in plain words. An
 agent adds how it did the work: the skills it used and the code it read, with
 the reason. A numbered Step by step list follows, so a reader can redo the
 work by hand: the pages and repos it read, the files it used as a template,
