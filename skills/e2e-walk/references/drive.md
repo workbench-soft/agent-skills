@@ -8,7 +8,7 @@ repo.
 
 The tag SHOULD start with the repo name, apart from a few apps: `memories`
 publishes as `memories-mobile`, `spotthecam` as `speed-camera-map`. The agent
-MUST take the tag from the `tag` field of `launcher/apps.json` in the
+MUST take the tag from the `tag` field of `archon/apps.json` in the
 workspace repo, which lists each app, and run:
 
 ```sh
