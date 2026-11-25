@@ -27,3 +27,14 @@ of clicks or several commands to copy no longer comes from the site skills.
   several commands, and asked for one script for what is left.
 - **Changes** the skills and the hook above, `README.md`,
   `docs/features.md`, `CHANGELOG.md`.
+
+### 2026-11-26 exact links and button places
+
+- **Why** a Memories script opened
+  `/console/developers/app/app-content/testing-credentials` with no ids, and
+  the person couldn't find the App access page. The owner asked for steps as
+  detailed as they can be.
+- **Changes** "Steps for the person" asks for a full deep link with each
+  account, developer, app and section id, checked by the agent, and for
+  each button's label and place, what to type and what the person sees.
+  `guide-on-site`, `README.md`, `docs/features.md`, `CHANGELOG.md`.

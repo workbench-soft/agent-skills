@@ -161,6 +161,8 @@ rules file of yours MAY add to it, and its line wins.
   only for a login, a CAPTCHA, a secret or a payment.
 - **One script for you** what is left comes as one script per task, safe to
   rerun, started by one line: `.ps1` on Windows, `.sh` on macOS and Linux.
+  Each page in it comes as a full deep link with its account and app ids,
+  checked to open, and each button gets its label and its place on the page.
 - **Every turn** each message starts with the time, and long work shows
   progress bars each minute. The last line holds a marker such as
   `✅ !!!COMPLETED!!!`.
