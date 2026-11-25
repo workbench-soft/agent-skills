@@ -152,7 +152,8 @@ rules file of yours MAY add to it, and its line wins.
   updates the docs it makes stale, and each command runs through mise.
 - **Ship** `ship-change` commits to clean `main` or opens a PR and merges it at once.
   `feature-queue` lets several sessions share one repo, and a broken build
-  gets its own fix session.
+  gets its own fix session. A new session starts in its repo's folder and
+  stays in its worktree, so the Claude app keeps starting new ones there.
 - **Do it yourself** the agent runs each step it has a tool for, with your
   yes taken as given. It presses each consent and Save on a site, and stops
   only for a login, a CAPTCHA, a secret or a payment.

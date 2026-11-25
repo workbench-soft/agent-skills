@@ -24,7 +24,8 @@ grep -il worktree AGENTS.md CLAUDE.md CONTRIBUTING.md README.md 2>/dev/null
 ## 2. Sweep finished worktrees
 
 The agent SHOULD run step 6 for every other worktree of this repo whose
-branch has a merged PR. It MUST skip the main checkout. A worktree that fails
+branch has a merged PR. It MUST skip the main checkout and each worktree
+under `.claude/worktrees/`. A worktree that fails
 any check of step 6 MUST stay, and no question SHOULD go to the user. The agent
 SHOULD empty the `.trash` folder beside each worktree folder too, since a stopped run
 leaves folders there.
@@ -109,12 +110,17 @@ This step MUST run only once the work is finished:
 - **Dropped** the user MUST have said to drop the work.
 
 The agent MUST remove it with the script, from the main checkout. It runs the
-checks below and the removal in one go:
+checks below and the removal in one go. The `cd` MUST sit in a subshell, since
+a bare `cd` in Claude Code moves the session to that folder:
 
 ```bash
-cd "$main"
-sh ~/.agents/skills/git-worktrees/scripts/remove-merged.sh "$dir"
+(cd "$main" && sh ~/.agents/skills/git-worktrees/scripts/remove-merged.sh "$dir")
 ```
+
+- **App worktrees** a worktree under `.claude/worktrees/` MUST stay. The
+  Claude app made it for a session and removes it when the session is
+  archived. Once it goes early, the app keeps a record of the gone git dir and
+  refuses each new session from that folder. The script stops on it.
 
 - **Flags** `--dropped` MUST be added only when the user dropped the work.
   `--keep-remote` MUST be added for someone else's branch.
@@ -187,3 +193,6 @@ removed or kept, with the reason.
 - **Unsaved work** a worktree holding uncommitted, stashed or unpushed work
   MUST NOT be removed.
 - **Default branch** it MUST NOT be deleted, local or remote.
+- **Session folder** the agent MUST NOT `cd` or `change_directory` out of
+  the worktree its session runs in. A command in another folder MUST use
+  `git -C`, an absolute path or a subshell.
