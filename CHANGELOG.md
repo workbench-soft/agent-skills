@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **e2e-walk** reads the release tags from `archon/apps.json` of the workspace, where Archon now sits.
+
 - **Detailed steps for the person** a Memories script opened a Play Console link without the developer and app ids, and the person couldn't find the App access page. "Steps for the person" now asks for a full deep link with every id, found by API, the repo or Chrome and opened once to check it, plus each button's label and place on the page, what to type and what the person sees once it worked. `guide-on-site` says the same.
 - **Questions last** a session no longer stops halfway to wait for the person. "Decisions for the person" of the workflow rules now has the agent do each step that needs no answer first, go ahead on any reasonable default and name it in the final answer, and put the questions left in one `AskUserQuestion` call at the end. `implement-ticket`, `create-pr`, `git-worktrees`, `launch` and `marketing` drop the questions they asked at the start.
 - **Sessions start without a worktree from the app** starts with `use_worktree: true` into `guitar-upscale` still failed with "could not anchor this repository". The app's record anchored `C:\WBS\guitar-upscale` to the git dir of `strange-almeida-f8c0fe`, an app worktree removed before the last fix. The workflow rules now start each session for another repo with `use_worktree: false` and `cwd` set to its main checkout, and the brief tells it to make its own worktree through `git-worktrees`. A failed start gets that retry at once, in place of a step for the person.
