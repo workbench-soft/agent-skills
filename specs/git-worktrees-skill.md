@@ -80,3 +80,12 @@ Worktrees, folders and branches piled up after their PRs merged.
 - **Changes** the script and step 6 of `skills/git-worktrees/SKILL.md` put `.trash` beside the worktree folder, so the rename stays on one drive. Step 2 empties the trash beside each worktree.
 - **Steps** spec, the script, the skill, docs.
 - **Docs** `CHANGELOG.md`.
+
+### 2026-11-25 Sessions keep their folder
+
+- **Why** new Claude Desktop sessions in `memories`, `songfactory` and the workspace root failed to start with `worktree_backlink_broken`. The app logs showed the cause: the app had recorded a folder's git dir as a worktree that was gone, such as `.git/worktrees/shuttrix-raw-out-of-beta-49f08d` for `C:\WBS\memories`. A session in an app worktree ran `cd "$main"` from step 6, which moved the session to the main checkout, then removed its own worktree. Each later worktree from that folder then got refused.
+- **Script** `remove-merged.sh` MUST stop on a worktree under `.claude/worktrees/`, since the Claude app made it and removes it when its session is archived.
+- **Skill** step 6 MUST run the script from a subshell, `(cd "$main" && sh ...)`, so the cd doesn't move the session.
+- **Rules** `workflow.instructions.md` gets a "Session folder" list: a session for another repo MUST start with `cwd` set to that repo, and a session MUST NOT move out of its worktree with `cd` or `change_directory`.
+- **Steps** spec, the script and its test, the skill, the rules, docs.
+- **Docs** `README.md`, `CHANGELOG.md`.
