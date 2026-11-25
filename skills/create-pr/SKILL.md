@@ -1,6 +1,6 @@
 ---
 name: create-pr
-description: 'Use when the user asks to open, create or update a pull request or write its description, in any repository: "open a PR", "write the PR body", "сделай PR". Writes a body under 30 lines: problem, before and now, how the agent did it, a numbered step by step log to redo the work by hand, related PRs, mermaid user flows, data changes, new command output, reused code, packages and generator commands. Then creates or updates the PR with gh.'
+description: 'Use when the user asks to open, create or update a pull request or write its description, in any repository: "open a PR", "write the PR body", "сделай PR". Writes a short body: problem, before and now, how to review it with the entry point, reading order and a map of what calls what, how the agent did it, a step by step log, related PRs, mermaid flows, data changes, commands, reused code and packages. Then creates or updates the PR with gh.'
 ---
 
 # Create a pull request
@@ -70,6 +70,9 @@ both lack it, and MUST drop the line when no ticket exists.
 
 The sections MUST follow in the order below. Some are conditional:
 
+- **`How to review`** MUST appear in each PR that changes code or a skill.
+  The agent MUST read [references/review-guide.md](references/review-guide.md)
+  before it writes the section.
 - **`Related PRs`** MUST appear only when the change builds on or goes with
   another PR.
 - **`Data changes`** MUST appear only when the diff adds or changes a database
@@ -89,7 +92,7 @@ MUST still get the User flow diagrams. They MUST show the steps the agent or
 tool runs, before and after.
 
 The prose MUST stay under 30 lines, not counting the diagrams, the command
-blocks and Step by step. Its reader is on a phone, in a notification, and hasn't opened the diff.
+blocks, How to review and Step by step. Its reader is on a phone, in a notification, and hasn't opened the diff.
 The body MUST follow this template:
 
 ````markdown
@@ -108,6 +111,19 @@ sentences, or two to four bullets.>
 <What the change does, in order. Two to five bullets, one line each. Each one
 opens with its point in bold, then the behaviour. The file name only if it
 helps.>
+
+## How to review
+
+Start at `<file>`: <what a person or a trigger reaches there first>.
+
+1. `<file>`: <what to check there, in plain words>.
+
+```mermaid
+flowchart TD
+  <the caller --> the code it calls, changed files coloured by status>
+```
+
+Skim: <generated files, lockfiles, moved code>.
 
 ## How it was done
 
@@ -464,6 +480,27 @@ the same file twice.
 - **Too big** the error names the limit and the file's own size, so the person
   knows what to do next.
 - **Double submit** the upload button stays disabled while a file is in flight.
+
+## How to review
+
+Start at `src/ui/UploadButton.tsx`: the person picks a photo there.
+
+1. `src/ui/UploadButton.tsx`: the button stays off while a file uploads.
+2. `src/api/upload.ts`: **Look here**, the 25 MB limit, the only check on size.
+3. `src/ui/SizeError.tsx`: the error shows the limit and the file size.
+
+```mermaid
+flowchart TD
+  A["UploadButton.tsx: picks the photo"]:::changed --> B["upload.ts: checks the size"]:::changed
+  B -->|too big| C["SizeError.tsx: shows the error"]:::new
+  C --> D["formatBytes: prints 25 MB"]:::same
+  classDef new fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#111827
+  classDef changed fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#111827
+  classDef removed fill:#fee2e2,stroke:#dc2626,stroke-width:2px,stroke-dasharray:5 3,color:#111827
+  classDef same fill:#f3f4f6,stroke:#9ca3af,color:#111827
+```
+
+Skim: `pnpm-lock.yaml`, written by `pnpm add`.
 
 ## How it was done
 

@@ -32,6 +32,7 @@ Spec: [reviewer-core](../specs/reviewer-core.md).
 - **Skill** `create-pr`.
 - **What it gives** a PR body under 30 lines: the problem, how it worked before, how it works now, how the agent did it, a step by step log a reader can redo by hand, related PRs, the code reused and the packages picked. It opens or updates the PR with `gh`.
 - **Diagrams** each flow comes as a Before and After pair, with nodes green for new, amber for changed, red for removed and gray for the rest.
+- **How to review** the file a reviewer opens first, a numbered reading order with what to check in each file, a map of which file calls which, and the parts to skim.
 
 Spec: [create-pr-skill](../specs/create-pr-skill.md).
 

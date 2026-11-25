@@ -116,3 +116,25 @@ A reader of the PR couldn't redo the work by hand. The body named the skills and
 
 - `README.md`
 - `docs/features.md`
+
+### 2026-11-25 A guide for the reviewer: where to start and what depends on what
+
+#### Why
+
+A reviewer opened the diff and didn't know which file to read first. The body told what changed for the person, but not how the code pieces connect, so the reviewer jumped between files to guess the order.
+
+#### User flows it touches
+
+- **Open a PR** the body adds a `How to review` section right after `How it works now`: the entry point, a numbered reading order, a mermaid map of which file calls which, and the parts a reviewer can skim. It uses plain words a newcomer follows.
+- **Small PR** a change of one or two files gets one line: the file to open and what to check there, with no map.
+
+#### Changes
+
+- **`skills/create-pr/references/review-guide.md`** new, the rules for the section and an example.
+- **`skills/create-pr/SKILL.md`** the template, the section rules, the example body and the description.
+- **`README.md`** and **`docs/features.md`** describe the new section.
+
+#### Docs to update
+
+- `README.md`
+- `docs/features.md`
