@@ -452,7 +452,9 @@ there.
 - A push or a PR on the default branch or a protected one MUST NOT happen. The
   agent MUST stop and report it.
 - The problem statement MUST NOT be made up. When the diff doesn't show why the
-  change exists, the agent MUST ask the user one question.
+  change exists, the agent MUST take it from the commits, the spec and the
+  session. Only when none of them shows it MAY one question go to the user,
+  at the end of the work.
 - A force push, an amend of published commits and `--no-verify` MUST NOT
   happen.
 - Staged or untracked files unrelated to the change MUST stay as they are.

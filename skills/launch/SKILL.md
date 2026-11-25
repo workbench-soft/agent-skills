@@ -29,8 +29,11 @@ git grep -lE 'ca-pub-|ca-app-pub-|google-site-verification|sitemap' -- ':!*.lock
 
 ## 2. Ask once
 
-The agent MUST put the questions in a single form, prefilled with what the repo
-shows:
+A field that the repo or the person's rules answer MUST take that answer
+without a question, and the parts the repo shows MUST start at once. The
+form MUST hold only the fields left, and MUST wait until each step that
+needs no answer is done, per "Decisions for the person". It MUST be a single
+form, prefilled with each guess:
 
 - **Parts** the user MUST tick the ones that apply: search, ads on the site,
   ads in the app, Google Play.

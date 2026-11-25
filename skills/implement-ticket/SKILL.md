@@ -27,9 +27,11 @@ It MUST follow each link in the ticket: a Figma frame, a doc, a thread. It
 MUST save the URLs, since the PR MUST link them.
 
 - **Clear ask** it MUST be clear before the first edit. If it isn't, the
-  agent MUST ask the user one question and wait.
+  agent MUST take the likeliest reading, write it in the spec and go on. The
+  final answer MUST name it, and a question MAY come only at the end.
 - **Too big** a ticket that needs a redesign or covers several features
-  SHOULD stop at this point. The agent SHOULD suggest a split and wait.
+  SHOULD get split. The agent SHOULD build the first part and propose the
+  rest in the final answer.
 
 ## 2. Read the repo rules
 
