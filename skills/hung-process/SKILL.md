@@ -26,7 +26,8 @@ SHOULD only say yes to an admin prompt.
    MAY go only when it holds the port or the lock the step needs, since Git
    Bash and other sessions leave live processes without a parent too. The
    agent MUST NOT stop the person's editor, browser, terminal, a system
-   process, the adb server or the Gradle daemon unless it blocks the step.
+   process or the adb server unless it blocks the step. A Gradle or Kotlin
+   daemon MUST stay even then, as "Folders held open" says.
 4. **Stop** the agent MUST end the whole tree with `taskkill /PID <pid> /T /F`,
    then run the step once more. A second hang MUST go in `TODO.md` with the
    command and its last output.
@@ -41,9 +42,15 @@ SHOULD only say yes to an admin prompt.
 
 ## Folders held open
 
-- **Gradle** a folder an Android build used SHOULD get `gradlew --stop` before
-  its removal, and the shell MUST leave the folder first. Either one holds it
-  open on Windows.
+- **Gradle** an agent's build MUST run with `--no-daemon`, or with
+  `GRADLE_OPTS=-Dorg.gradle.daemon=false` for a script that calls `gradlew`.
+  The CI runners on this PC share each daemon of the same Gradle version.
+- **No global stop** `gradlew --stop` and a kill of a `GradleDaemon` or
+  `KotlinCompileDaemon` process MUST NOT run, since they end the CI build
+  too. On 2026-11-26 a stop killed a lumiere-player Release.
+- **Own folder** a folder a build holds MUST get only the processes whose
+  command line holds its path stopped, as in step 2, and the shell MUST
+  leave the folder first.
 - **Long jobs** a job of several hours MUST start outside the agent's process
   tree, with `Invoke-CimMethod Win32_Process -MethodName Create`. A process
   the session started dies when the session restarts.

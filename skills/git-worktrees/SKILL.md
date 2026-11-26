@@ -78,6 +78,10 @@ from the main checkout what the checks and the app need:
   lockfile: `pnpm install --frozen-lockfile`, `bundle install`, `uv sync`.
 - **Port** a dev server MUST pick a free port, so the user's copy keeps
   running apart.
+- **Gradle** a build MUST run with `--no-daemon`, or with
+  `GRADLE_OPTS=-Dorg.gradle.daemon=false` for a script that calls `gradlew`,
+  so no daemon of it outlives the build. Daemons serve each checkout on the
+  PC, the CI runners included.
 
 The agent SHOULD list the ignored files to copy with this:
 
@@ -166,9 +170,20 @@ git ls-remote --exit-code --heads "$remote" <branch> >/dev/null && git push "$re
   MUST sit beside the worktree: a move to another drive copies each file,
   hangs on `node_modules` and fails on pnpm junctions.
 - **Locked** a `mv` that fails with "Permission denied" or `EBUSY` means a
-  process holds a file. The usual holders are a Gradle daemon, which
-  `./gradlew --stop` in `$dir` ends, and a shell still inside `$dir`. The agent MUST stop it as the hung process rules say,
-  then move once more.
+  process holds a file, most often a shell still inside `$dir` or a Gradle
+  build run there. The agent MUST end only the processes whose command line
+  holds `$dir`, as the hung process rules say, then move once more:
+
+  ```bash
+  win=$(cygpath -w "$dir")
+  powershell -NoProfile -Command "Get-CimInstance Win32_Process | Where-Object { \$_.CommandLine -like '*$win*' -and \$_.CommandLine -notmatch 'Win32_Process|GradleDaemon|KotlinCompileDaemon' } | ForEach-Object { taskkill /PID \$_.ProcessId /T /F }"
+  ```
+
+- **Shared daemon** `gradlew --stop` and a kill of a Gradle or Kotlin daemon
+  MUST NOT run. Each checkout of one Gradle version on the PC shares its
+  daemons, so a stop ends the CI runner's build too. A folder still held
+  MUST stay, with its line in `TODO.md`, and the next sweep of step 2 tries
+  it again.
 
 The agent MUST then empty the trash in the background and MUST NOT wait for it.
 On Windows the path MUST be written out, and `rd` leaves the targets of pnpm

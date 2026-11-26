@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **No global Gradle stop** an agent ran `./gradlew --stop` before a worktree removal, and it killed a lumiere-player Release on the CI runner of the same PC, since every checkout of one Gradle version shares its daemons. `git-worktrees` and `hung-process` now build with `--no-daemon`, end only the processes whose command line holds the worktree path, and ban `gradlew --stop` and a kill of a Gradle or Kotlin daemon.
+
 - **e2e-walk** reads the release tags from `archon/apps.json` of the workspace, where Archon now sits.
 
 - **Detailed steps for the person** a Memories script opened a Play Console link without the developer and app ids, and the person couldn't find the App access page. "Steps for the person" now asks for a full deep link with every id, found by API, the repo or Chrome and opened once to check it, plus each button's label and place on the page, what to type and what the person sees once it worked. `guide-on-site` says the same.
