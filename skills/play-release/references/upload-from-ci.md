@@ -52,7 +52,12 @@ gh secret set PLAY_SERVICE_ACCOUNT_JSON < key.json && rm key.json
     releaseFiles: android/app/build/outputs/bundle/release/app-release.aab
     track: internal
     status: completed
+    whatsNewDirectory: distribution/whatsnew
 ```
+
+- **Notes** a release to `production` SHOULD pass `whatsNewDirectory`, a
+  folder of `whatsnew-<locale>` files such as `whatsnew-en-US`, or Play shows
+  it with empty notes.
 
 - **Where** the step MUST follow the signed build step, and run only on pushes
   to the default branch.

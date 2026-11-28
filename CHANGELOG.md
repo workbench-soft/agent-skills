@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **Play notes from CI** `play-release` passes `whatsNewDirectory` in its CI upload, so a production release no longer goes out with empty notes.
 - **No global Gradle stop** an agent ran `./gradlew --stop` before a worktree removal, and it killed a lumiere-player Release on the CI runner of the same PC, since every checkout of one Gradle version shares its daemons. `git-worktrees` and `hung-process` now build with `--no-daemon`, end only the processes whose command line holds the worktree path, and ban `gradlew --stop` and a kill of a Gradle or Kotlin daemon.
 
 - **e2e-walk** reads the release tags from `archon/apps.json` of the workspace, where Archon now sits.
